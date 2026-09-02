@@ -450,6 +450,10 @@ label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(-
   </div>
   <div class="panel">
     <div class="ph"><span class="pt">ANÁLISIS 80/20 · PRODUCTOS REALES</span><span class="ps">qué productos concentran tu venta · acumulado del periodo importado</span><div class="sp"></div><span class="tag t-green">Fuente: tabla dinámica Odoo</span></div>
+    <div class="grid g2" style="margin-bottom:14px">
+      <div><label class="fl">Sucursal</label><select id="tpBranch" style="width:100%"><option value="all">Todas</option></select></div>
+      <div><label class="fl">Categoría <span style="text-transform:none;font-weight:400;color:var(--dim)">(inferida por nombre, no es campo de Odoo)</span></label><select id="tpCategory" style="width:100%"><option value="all">Todas</option></select></div>
+    </div>
     <div id="topProductsWrap"></div>
   </div>
   <div class="grid g21">
@@ -1181,24 +1185,47 @@ function renderMonthlyTrend(){
  const series=BR.map(b=>({n:b.n,c:b.c,v:months.map(m=>Math.round(MONTHLY[m].byBranch[b.id]||0))}));
  xyChart('monthlyTrendChart',{labels,series,yfmt:fmtK,tipfmt:v=>fmtK(v),min0:true,h:260,legend:'monthlyTrendLegend',
   onPick:i=>{const m=months[i];toast('📅 '+labels[i],'Total del mes: <b>'+fmtK(MONTHLY[m].sales)+'</b>')}})}
+const tpFilter={branch:'all',category:'all'};
+function populateTopProductsFilters(){
+ const bSel=$('#tpBranch'),cSel=$('#tpCategory');
+ if(!bSel||!cSel)return;
+ if(bSel.options.length<=1){BR.forEach(b=>{const o=document.createElement('option');o.value=b.id;o.textContent=b.n;bSel.appendChild(o)})}
+ if(cSel.options.length<=1){CATEGORY_KEYWORDS.map(c=>c[0]).concat(['Otros']).forEach(cat=>{const o=document.createElement('option');o.value=cat;o.textContent=cat;cSel.appendChild(o)})}
+ bSel.value=tpFilter.branch;cSel.value=tpFilter.category}
 function renderTopProducts(){
  const wrap=$('#topProductsWrap');if(!wrap)return;
+ populateTopProductsFilters();
  const months=Object.keys(SKU_MONTHLY).sort();
  if(!months.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">Aún no hay detalle de productos importado. Se genera automáticamente al subir una tabla dinámica de Ventas con detalle de SKU.</p>';return}
+ const branchName=tpFilter.branch==='all'?null:(BR.find(b=>b.id===tpFilter.branch)||{}).n;
+ const valFor=e=>tpFilter.branch==='all'?e.sales:((e.byBranch&&e.byBranch[tpFilter.branch])||0);
  const totals={};
  months.forEach(m=>{Object.keys(SKU_MONTHLY[m]).forEach(code=>{
   const e=SKU_MONTHLY[m][code];
+  if(tpFilter.category!=='all'&&categorizeProduct(e.name)!==tpFilter.category)return;
+  const v=valFor(e);if(!v)return;
   if(!totals[code])totals[code]={name:e.name,sales:0};
-  totals[code].sales+=e.sales})});
+  totals[code].sales+=v})});
  const marginTotals={};
  Object.keys(SKU_MARGIN_MONTHLY).forEach(m=>{Object.keys(SKU_MARGIN_MONTHLY[m]).forEach(code=>{
-  marginTotals[code]=(marginTotals[code]||0)+SKU_MARGIN_MONTHLY[m][code].sales})});
+  const e=SKU_MARGIN_MONTHLY[m][code];
+  if(tpFilter.category!=='all'&&categorizeProduct(e.name)!==tpFilter.category)return;
+  const v=valFor(e);if(!v)return;
+  marginTotals[code]=(marginTotals[code]||0)+v})});
  const hasMargin=Object.keys(marginTotals).length>0;
  const all=Object.entries(totals).map(([code,v])=>{
   const mg=marginTotals[code];
   return{code,name:v.name,sales:v.sales,margin:mg!=null?mg:null,marginPct:(mg!=null&&v.sales)?mg/v.sales*100:null}
  }).sort((a,b)=>b.sales-a.sales);
- if(!all.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">No se identificaron productos con código SKU en el archivo importado.</p>';return}
+ const filterNote=(branchName?' · sucursal: <b style="color:var(--txt)">'+branchName+'</b>':'')+(tpFilter.category!=='all'?' · categoría: <b style="color:var(--txt)">'+tpFilter.category+'</b>':'');
+ if(!all.length){
+  const br=tpFilter.branch!=='all'?BR.find(b=>b.id===tpFilter.branch):null;
+  if(br&&br.sales>0){
+   wrap.innerHTML='<div class="alert-it" style="--ac:var(--amber)"><div class="ab"><h4>⚠ Sin detalle de producto para '+br.n+'</h4><p>Tu archivo de Odoo trae el total de venta de <b style="color:var(--txt)">'+br.n+'</b> ('+fmtK(br.sales)+', ya reflejado en Command Center y Sucursales), pero no el desglose por producto de esa sucursal específica — solo vino el subtotal, sin líneas de detalle debajo. Para ver sus productos aquí, en Odoo asegúrate de que el detalle de '+br.n+' esté expandido antes de exportar la tabla dinámica.</p></div></div>';
+  }else{
+   wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">Sin productos para este filtro'+filterNote+'.</p>';
+  }
+  return}
  const grandTotal=all.reduce((a,p)=>a+p.sales,0);
  let cum=0,cutoffIdx=-1;
  all.forEach((p,i)=>{cum+=p.sales;p.cumPct=grandTotal?cum/grandTotal*100:0;if(cutoffIdx<0&&p.cumPct>=80)cutoffIdx=i});
@@ -1220,22 +1247,24 @@ function renderTopProducts(){
   const eligible=all.slice(0,Math.max(vitalCount,100)).filter(plausibleMg);
   const best=eligible.slice().sort((a,b)=>b.marginPct-a.marginPct).slice(0,5);
   const worst=eligible.slice().sort((a,b)=>a.marginPct-b.marginPct).slice(0,5);
-  const miniList=(list,color)=>list.map(p=>'<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:11.5px">'+esc(p.name)+'</span><b class="num" style="color:'+color+';flex-shrink:0;font-size:11.5px">'+p.marginPct.toFixed(1)+'%</b></div>').join('');
+  const miniList=(list,color)=>list.length?list.map(p=>'<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:11.5px">'+esc(p.name)+'</span><b class="num" style="color:'+color+';flex-shrink:0;font-size:11.5px">'+p.marginPct.toFixed(1)+'%</b></div>').join(''):'<p class="note">Sin suficientes productos con margen para este filtro.</p>';
   marginSection='<div class="grid g2" style="margin-top:16px">'
    +'<div class="panel" style="background:#0d1622"><div class="ph" style="margin-bottom:8px"><span class="pt" style="font-size:11px">MEJOR MARGEN</span><span class="ps">entre tus '+Math.max(vitalCount,100)+' productos con más venta</span></div>'+miniList(best,'var(--green)')+'</div>'
    +'<div class="panel" style="background:#0d1622"><div class="ph" style="margin-bottom:8px"><span class="pt" style="font-size:11px">PEOR MARGEN</span><span class="ps">venden bien pero dejan poco</span></div>'+miniList(worst,'var(--red)')+'</div>'
    +'</div>'
-   +'<p class="note" style="margin-top:8px">Margen real importado de Odoo (medida "Margen" del mismo reporte de Análisis de ventas) · '+Object.keys(marginTotals).length+' productos con margen identificado · se excluyeron valores fuera de −100%/100% (probables devoluciones o ajustes de inventario) del ranking de mejor/peor margen.</p>';
+   +'<p class="note" style="margin-top:8px">Margen real importado de Odoo (medida "Margen" del mismo reporte de Análisis de ventas) · '+Object.keys(marginTotals).length+' productos con margen identificado en este filtro · se excluyeron valores fuera de −100%/100% (probables devoluciones o ajustes de inventario) del ranking de mejor/peor margen.</p>';
  }else{
   marginSection='<div class="alert-it" style="--ac:var(--amber);margin-top:14px"><div class="ab"><h4>⚠ Margen por producto: no disponible todavía</h4><p>Tus archivos traen venta ("Total sin impuestos") pero no costo por SKU, así que no calculo margen por producto para no inventar cifras. En Odoo, dentro del mismo reporte de <b style="color:var(--txt)">Análisis de ventas</b>, agrega la medida <b style="color:var(--txt)">"Margen"</b> junto a "Total sin impuestos" antes de exportar y mándamelo — con eso extiendo este 80/20 a margen real, no solo venta.</p></div></div>'}
  wrap.innerHTML='<div class="grid g3" style="margin-bottom:16px">'
   +'<div class="panel" style="background:#0d1622"><div class="kl">REGLA 80/20</div><div class="num" style="font-size:24px;color:var(--teal)">'+vitalCount+' de '+all.length+'</div><div class="kd">productos ('+vitalPct+'% del catálogo) generan el 80% de tu venta real</div></div>'
-  +'<div class="panel" style="background:#0d1622"><div class="kl">VENTA TOTAL ANALIZADA</div><div class="num" style="font-size:24px">'+fmtK(grandTotal)+'</div><div class="kd">'+months[0]+' a '+months[months.length-1]+' · todas las sucursales</div></div>'
+  +'<div class="panel" style="background:#0d1622"><div class="kl">VENTA TOTAL ANALIZADA</div><div class="num" style="font-size:24px">'+fmtK(grandTotal)+'</div><div class="kd">'+months[0]+' a '+months[months.length-1]+(branchName?' · '+branchName:' · todas las sucursales')+'</div></div>'
   +'<div class="panel" style="background:#0d1622"><div class="kl">COLA LARGA</div><div class="num" style="font-size:24px;color:var(--dim)">'+(all.length-vitalCount)+'</div><div class="kd">productos generan solo el 20% restante de la venta</div></div>'
   +'</div>'
-  +'<p class="note" style="margin-bottom:10px">Mostrando '+showCount+' de '+all.length+' productos, ordenados de mayor a menor venta · la línea punteada marca dónde se cruza el 80% acumulado'+(hasMargin?' · el color del margen: <span style="color:var(--red)">rojo &lt;8%</span>, <span style="color:var(--amber)">ámbar 8–15%</span>, <span style="color:var(--green)">verde &gt;15%</span>':'')+'</p>'
+  +'<p class="note" style="margin-bottom:10px">Mostrando '+showCount+' de '+all.length+' productos, ordenados de mayor a menor venta'+filterNote+' · la línea punteada marca dónde se cruza el 80% acumulado'+(hasMargin?' · el color del margen: <span style="color:var(--red)">rojo &lt;8%</span>, <span style="color:var(--amber)">ámbar 8–15%</span>, <span style="color:var(--green)">verde &gt;15%</span>':'')+'</p>'
   +rows
   +marginSection}
+$('#tpBranch').addEventListener('change',e=>{tpFilter.branch=e.target.value;renderTopProducts()});
+$('#tpCategory').addEventListener('change',e=>{tpFilter.category=e.target.value;renderTopProducts()});
 
 /* ---------------- RENDER: RENTABILIDAD ---------------- */
 function renderRent(){
@@ -1642,6 +1671,26 @@ function classifyColLabel(label){
  if(monthLabelToISO(label))return 'month';
  if(odooBranchToId(label))return 'branch';
  return null}
+/* Categoría no viene en el export de Odoo (solo código+nombre de SKU), así que se infiere
+   por palabras clave del nombre real del producto. Es una aproximación, no un campo de Odoo. */
+const CATEGORY_KEYWORDS=[
+ ['Cerveza',/cerveza|chelada/i],
+ ['Refrescos',/refresco|coca.?cola|pepsi|sprite|fanta|boing|jumex|jugo/i],
+ ['Agua',/\bagua (mineral|purificada|embotellada)\b|topo chico/i],
+ ['Vinos y licores',/tequila|whisky|whiskey|vodka|brandy|\bron\b|\bvino\b|licor|mezcal/i],
+ ['Higiene',/higienico|shampoo|pasta dental|desodorante|toalla femenina|pa[ñn]al|jabon de tocador|jabon corporal/i],
+ ['Limpieza',/detergente|cloralex|blanqueador|suavizante|fabuloso|pinol|jabon de lavanderia|jabon en polvo/i],
+ ['Afeitado',/rasurador|rastrillo|afeitar|gillette/i],
+ ['Botanas',/sabritas|papas fritas|frituras|cacahuate|botana|palomitas|totopos|tostadas charras/i],
+ ['Dulces',/\bdulce\b|chocolate|paleta|chicle|goma de mascar|caramelo|mazapan/i],
+ ['Conservas',/conserva|enlatad|sardina|atun en lata|chiles en lata/i],
+ ['Servicios',/telcel|telmex|cfe|megacable|total ?play|recarga|tiempo aire|pago de servicio/i],
+ ['Abarrotes',/arroz|frijol|aceite vegetal|azucar|harina|sopa|maruchan|especias|consome|polvo p.horn|levadura|leche|huevo|cafe\b/i],
+];
+function categorizeProduct(name){
+ const n=String(name||'');
+ for(const[cat,re]of CATEGORY_KEYWORDS){if(re.test(n))return cat}
+ return 'Otros'}
 function looksLikePivot(rows){
  if(!rows||rows.length<5)return false;
  const r0=rows[0],r2=rows[2];
@@ -1694,9 +1743,11 @@ function applyVentasPivotImport(rows){
    const key2=colMeta[i];if(!key2)return;
    const val=toNum(row[i]);if(!val)return;
    const month=colKind==='month'?key2:currentKey;
+   const branchId=colKind==='month'?currentKey:key2;
    if(!skuAcc[month])skuAcc[month]={};
-   if(!skuAcc[month][skuCode])skuAcc[month][skuCode]={name:skuName,sales:0};
-   skuAcc[month][skuCode].sales+=val})
+   if(!skuAcc[month][skuCode])skuAcc[month][skuCode]={name:skuName,sales:0,byBranch:{}};
+   skuAcc[month][skuCode].sales+=val;
+   skuAcc[month][skuCode].byBranch[branchId]=(skuAcc[month][skuCode].byBranch[branchId]||0)+val})
  }
  const months=Object.keys(acc);
  if(!months.length)return{ok:false,msg:'No se encontraron valores dentro del archivo.'};
