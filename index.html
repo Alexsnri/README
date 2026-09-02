@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
   --bg:#0a0f16;--panel:#111a26;--panel2:#0e1621;--line:#1c2939;--line2:#27394f;
@@ -337,12 +338,12 @@ label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(-
       <div class="grid g4" id="kpiStrip"></div>
       <div class="divv"></div>
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-        <span class="tag t-teal">● Cierre agosto cargado</span>
-        <span class="tag t-blue">Ventas $16.33M</span>
-        <span class="tag t-amber">Margen 11.6%</span>
-        <span class="tag t-violet">Inventario 33 días</span>
-        <span class="tag t-green">Plan 95.4%</span>
-        <span class="tag t-red">5 tareas vencidas</span>
+        <span class="tag t-teal" id="tagCierre">● Cierre agosto cargado</span>
+        <span class="tag t-blue" id="tagVentas">Ventas $16.33M</span>
+        <span class="tag t-amber" id="tagMargen">Margen 11.6%</span>
+        <span class="tag t-violet" id="tagInv">Inventario 33 días</span>
+        <span class="tag t-green" id="tagPlan">Plan 95.4%</span>
+        <span class="tag t-red" id="tagTareas">5 tareas vencidas</span>
         <div class="sp"></div>
         <span style="font:600 9.5px var(--fm);letter-spacing:2px;color:var(--dim)">MAKRO AI · STATUS MONITORING</span>
         <span class="eq"><i></i><i></i><i></i><i></i></span>
@@ -661,6 +662,7 @@ label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(-
       </div>
       <div class="prog" style="margin-top:12px;display:none" id="upProg"><i style="width:0%"></i></div>
       <div id="fileLog" style="margin-top:12px;font-size:11.5px;color:var(--mut)"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn ghost xs" data-act="reset-import">↺ Restablecer datos de ejemplo</button></div>
     </div>
     <div style="display:flex;flex-direction:column;gap:var(--gap)">
       <div class="panel">
@@ -912,7 +914,7 @@ let state={
  recipes:LS.get('mk_recipes',[
   {m:'Ventas',r:'POS · Diario por sucursal',c:'fecha, sucursal, sku, qty, importe'},
   {m:'Inventario',r:'Stock · Valuación por categoría',c:'categoria, inv_final, ddi'},
-  {m:'Compras',r:'PO · Recibos y precios',c:'proveedor, sku, costo, vigencia'}]),
+  {m:'Compras',r:'PO · Cambios de precio',c:'proveedor, categoria, costo_actual, costo_nuevo, vigencia'}]),
  agendaDone:LS.get('mk_agd',[]),
  dq:{p3:3,c1:1}
 };
@@ -1120,7 +1122,7 @@ function vData(){
  const bmg={'Todas':0,'Real Providencia':9.1,'Castillos':20.4,'Villas de San Juan':20.7,'Hilario Medina':19.7}[vState.branch];
  let rows=DAYS.map(d=>{const s=Math.round(d.sales*bw);const mg=vState.branch==='Todas'?d.margin:+(bmg+(d.margin-11.5)*0.3).toFixed(1);
   return{date:d.date,sales:s,profit:Math.round(s*mg/100),margin:mg,tickets:Math.round(d.tickets*bw),tk:+(s/Math.max(1,Math.round(d.tickets*bw))).toFixed(1)}});
- const p=vState.period,end=31-vState.offset;rows=rows.slice(Math.max(0,end-vState.period),end);
+ const p=vState.period,end=DAYS.length-vState.offset;rows=rows.slice(Math.max(0,end-vState.period),end);
  if(vState.group==='week'){const w=[];for(let i=0;i<rows.length;i+=7){const c=rows.slice(i,i+7);const s=c.reduce((a,r)=>a+r.sales,0);
   w.push({date:'Sem '+(w.length+1),sales:s,profit:c.reduce((a,r)=>a+r.profit,0),margin:s?c.reduce((a,r)=>a+r.profit,0)/s*100:0,tickets:c.reduce((a,r)=>a+r.tickets,0),tk:s/Math.max(1,c.reduce((a,r)=>a+r.tickets,0))})}rows=w}
  else if(vState.group==='cum'){let s=0,pf=0,tk=0;rows=rows.map(r=>{s+=r.sales;pf+=r.profit;tk+=r.tickets;return{date:r.date,sales:s,profit:pf,margin:pf/s*100,tickets:tk,tk:s/tk}})}
@@ -1130,7 +1132,7 @@ function renderVentas(){
  const rows=vData();const[mlabel,acc,tf]=MF[vState.metric];
  const labels=rows.map(r=>r.date==='Sem 1'?'S1':r.date==='Sem 2'?'S2':r.date==='Sem 3'?'S3':r.date==='Sem 4'?'S4':r.date==='Sem 5'?'S5':r.date.slice(8));
  xyChart('vChart',{labels,series:[{n:mlabel,c:'#2fe6c8',v:rows.map(acc),fill:true}],yfmt:tf,tipfmt:v=>tf(v),min0:vState.metric!=='margin',h:280,
-  onPick:i=>{const r=rows[i];toast('📅 '+(r.date.includes('-')?'31 Ago 2026 · Día '+r.date.slice(8):r.date),'Venta <b>'+fmtK(r.sales)+'</b> · Margen <b>'+pct(r.margin)+'</b> · <b>'+r.tickets.toLocaleString()+'</b> tickets · Ticket <b>$'+r.tk.toFixed(0)+'</b>')}});
+  onPick:i=>{const r=rows[i];const dLbl=r.date.includes('-')?new Date(r.date+'T00:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}):r.date;toast('📅 '+dLbl,'Venta <b>'+fmtK(r.sales)+'</b> · Margen <b>'+pct(r.margin)+'</b> · <b>'+r.tickets.toLocaleString()+'</b> tickets · Ticket <b>$'+r.tk.toFixed(0)+'</b>')}});
  $('#vChartTitle').textContent='TENDENCIA DE '+mlabel.toUpperCase();
  $('#vChartSub').textContent=(vState.period===1?'último día':'últimos '+vState.period+' días')+' · '+vState.branch.toLowerCase()+(vState.offset?' · −'+vState.offset+'d desplazado':'');
  // lectura ejecutiva
@@ -1147,7 +1149,7 @@ function renderVentas(){
  // tabla
  $('#vTable').innerHTML='<thead><tr><th>Fecha</th><th class="r">Venta</th><th class="r">Utilidad</th><th class="r">Margen</th><th class="r">Clientes</th><th class="r">Ticket prom.</th><th class="r">Vs día anterior</th></tr></thead><tbody>'
  +rows.map((r,i)=>{const prev=i>0?rows[i-1].sales:r.sales;const ch=prev?(r.sales/prev-1)*100:0;
-  return'<tr><td class="num">'+(r.date.includes('-')?'2026-08-'+r.date.slice(8):r.date)+'</td><td class="r"><b>'+MXN(r.sales)+'</b></td><td class="r">'+MXN(r.profit)+'</td><td class="r">'+pct(r.margin)+'</td><td class="r">'+r.tickets.toLocaleString()+'</td><td class="r">$'+r.tk.toFixed(0)+'</td><td class="r '+(ch>=0?'up':'dn')+'">'+(i===0?'—':(ch>=0?'▲ +':'▼ ')+ch.toFixed(1)+'%')+'</td></tr>'}).join('')+'</tbody>'}
+  return'<tr><td class="num">'+r.date+'</td><td class="r"><b>'+MXN(r.sales)+'</b></td><td class="r">'+MXN(r.profit)+'</td><td class="r">'+pct(r.margin)+'</td><td class="r">'+r.tickets.toLocaleString()+'</td><td class="r">$'+r.tk.toFixed(0)+'</td><td class="r '+(ch>=0?'up':'dn')+'">'+(i===0?'—':(ch>=0?'▲ +':'▼ ')+ch.toFixed(1)+'%')+'</td></tr>'}).join('')+'</tbody>'}
 function exportCSV(){
  const rows=vData();let csv='Fecha,Venta,Utilidad,Margen %,Clientes,Ticket promedio\n';
  rows.forEach(r=>csv+=[r.date,r.sales,r.profit,r.margin.toFixed(1),r.tickets,r.tk.toFixed(1)].join(',')+'\n');
@@ -1188,11 +1190,13 @@ function renderCompras(){
   analiza:i=>poState[i]==='ok'?'<span class="tag t-green">Adelanto solicitado ✓</span>':'<button class="btn xs" data-act="po-analiza" data-i="'+i+'">Analizar</button>',
   logic:i=>'<button class="btn xs ghost" data-act="po-logic" data-i="'+i+'">Ver lógica</button>'};
  $('#poTable').innerHTML='<thead><tr><th>Proveedor</th><th>Categoría</th><th class="r">Actual</th><th class="r">Nuevo</th><th class="r">Cambio</th><th>Vigencia</th><th class="r">Días inv.</th><th>IA recomienda</th><th class="r">Ahorro</th><th>Acción</th></tr></thead><tbody>'
- +PO.map((p,i)=>'<tr><td><b>'+p.p+'</b></td><td>'+p.cat+'</td><td class="r">$'+p.a.toFixed(2)+'</td><td class="r">$'+p.b.toFixed(2)+'</td><td class="r dn">+'+p.ch+'%</td><td class="wr">'+p.vig+'</td><td class="r num '+(p.ddi<10?'dn':'')+'">'+p.ddi+'</td><td><span class="tag '+(p.sav?'t-green':'t-blue')+'">'+p.rec+'</span></td><td class="r up">'+(p.sav?MXN(p.sav):'$0')+'</td><td>'+btns[p.kind](i)+'</td></tr>').join('')+'</tbody>';
+ +PO.map((p,i)=>'<tr><td><b>'+p.p+'</b></td><td>'+p.cat+'</td><td class="r">$'+p.a.toFixed(2)+'</td><td class="r">$'+p.b.toFixed(2)+'</td><td class="r dn">+'+p.ch+'%</td><td class="wr">'+p.vig+'</td><td class="r num '+(p.ddi!=null&&p.ddi<10?'dn':'')+'">'+(p.ddi!=null?p.ddi:'—')+'</td><td><span class="tag '+(p.sav?'t-green':'t-blue')+'">'+p.rec+'</span></td><td class="r up">'+(p.sav?MXN(p.sav):'$0')+'</td><td>'+btns[p.kind](i)+'</td></tr>').join('')+'</tbody>';
+ const totalSav=PO.reduce((a,p)=>a+(p.sav||0),0);
+ const nextRow=PO[0];
  $('#poSummary').innerHTML=[
-  ['AHORRO POTENCIAL TOTAL',MXN(90660),'Adelantos recomendados por MAKRO AI','#51d88a'],
+  ['AHORRO POTENCIAL TOTAL',MXN(totalSav),'Adelantos recomendados por MAKRO AI','#51d88a'],
   ['CAPITAL REQUERIDO','≈ $486K','Para +31 días de cobertura combinada','#39c6ff'],
-  ['PRÓXIMO AUMENTO','05 Sep · Coca-Cola','En 3 días · 8 días de inventario actual','#ff5c6c']
+  ['PRÓXIMO CAMBIO DE PRECIO',nextRow?(nextRow.vig+' · '+nextRow.p):'N/D',nextRow?('Categoría '+nextRow.cat):'Sin datos cargados','#ff5c6c']
  ].map(k=>'<div class="panel kpi" style="--kc:'+k[3]+'"><div class="kl">'+k[0]+'</div><div class="kv num" style="font-size:22px;color:'+k[3]+'">'+k[1]+'</div><div class="kd">'+k[2]+'</div></div>').join('')}
 function renderProveedores(){
  $('#supGrid').innerHTML=SUP.map((s,i)=>'<div class="panel" style="background:#101a26"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><b style="font-size:13.5px">'+s.n+'</b><div style="font-size:11px;color:var(--dim)">'+s.cat+'</div></div><span class="tag '+(s.score>=90?'t-green':s.score>=82?'t-blue':'t-amber')+'">SCORE '+s.score+'</span></div>'
@@ -1309,7 +1313,7 @@ function poSimModal(i){
  +'<div class="panel" style="background:#0d1622;margin:10px 0"><div class="tr" style="display:flex;justify-content:space-between;padding:4px 0"><span>Ahorro por precio</span><b class="num up">'+MXN(q*(p.b-p.a))+'</b></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span>Costo financiero del capital</span><b class="num dn">−'+MXN(costFin)+'</b></div><div class="divv"></div><div style="display:flex;justify-content:space-between"><b>AHORRO NETO ESTIMADO</b><b class="num" style="color:var(--teal);font-size:17px">'+MXN(ahorro)+'</b></div></div>'
  +'<p style="font-size:12px;color:var(--mut)">✔ La IA recomienda adelantar: el ahorro supera 6× el costo financiero. Cobertura pasaría de '+p.ddi+' a '+(p.ddi+d)+' días.</p>'
  +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cerrar</button><button class="btn" data-act="po-auth" data-i="'+i+'">Autorizar adelanto ✓</button></div>')}
-function briefData(){const last=DAYS[30],prev=DAYS[29];return{s:last.sales,ch:(last.sales/prev.sales-1)*100,mg:last.margin,tk:last.tickets}}
+function briefData(){const last=DAYS[DAYS.length-1],prev=DAYS[DAYS.length-2]||last;return{s:last.sales,ch:(last.sales/prev.sales-1)*100,mg:last.margin,tk:last.tickets}}
 function briefModal(){
  const b=briefData();
  const html='<div id="briefPrint"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span class="tag t-teal">DAILY EXECUTIVE BRIEF</span><span class="ps num" style="font:600 10px var(--fm);color:var(--dim)">'+new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · MAKRO AI · 87% confianza</span></div>'
@@ -1362,12 +1366,13 @@ const ACTIONS={
  'alert-goto':(d)=>setView(d.v),
  'po-sim':(d)=>poSimModal(+d.i),
  'po-auth':(d)=>{const i=+d.i;poState[i]='ok';closeModal();renderCompras();toast('✅ Adelanto autorizado','Pedido a '+PO[i].p+' registrado · ahorro estimado '+MXN(PO[i].sav)+'. Se creó tarea de seguimiento.','ok');addTask('Ejecutar pedido adelantado · '+PO[i].p,'Todas','Compras','crítica')},
- 'po-analiza':(d)=>{const p=PO[+d.i];openModal('<h3>ANÁLISIS · '+p.p.toUpperCase()+'</h3><div class="msub">MAKRO AI · Purchasing Intelligence</div>'
-  +'<p style="font-size:12.5px;color:var(--mut);line-height:1.8">Aumento <b class="dn">+'+p.ch+'%</b> vigente el <b>'+p.vig+'</b>. Inventario actual: <b>'+p.ddi+' días</b> · rotación anual 20.5x. Adelantar 14 días genera ahorro de <b class="up">'+MXN(p.sav)+'</b> con costo financiero menor al 18% del beneficio.</p>'
-  +'<p style="font-size:12.5px;margin-top:8px">🎯 Recomendación: <b style="color:var(--teal)">ADELANTAR</b> — cerveza es la categoría de mayor rotación y el capital requerido (~$190K) está dentro del OTB disponible.</p>'
+ 'po-analiza':(d)=>{const p=PO[+d.i];const rot=p.ddi?(365/p.ddi).toFixed(1)+'x':'—';const savTxt=p.sav?MXN(p.sav):'por definir (agrega días de inventario y cantidad estimada)';
+  openModal('<h3>ANÁLISIS · '+p.p.toUpperCase()+'</h3><div class="msub">MAKRO AI · Purchasing Intelligence</div>'
+  +'<p style="font-size:12.5px;color:var(--mut);line-height:1.8">Aumento <b class="dn">+'+p.ch+'%</b> vigente el <b>'+p.vig+'</b>. '+(p.ddi?('Inventario actual: <b>'+p.ddi+' días</b> · rotación anual '+rot+'. '):'')+'Ahorro estimado: <b class="up">'+savTxt+'</b>.</p>'
+  +'<p style="font-size:12.5px;margin-top:8px">🎯 Recomendación: <b style="color:var(--teal)">'+(p.ch>3?'ADELANTAR':'EVALUAR')+'</b> — categoría <b>'+p.cat+'</b>'+(p.ddi&&p.ddi<20?' con inventario ajustado.':'.')+'</p>'
   +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Esperar</button><button class="btn pri" data-act="po-auth" data-i="'+d.i+'">Adelantar compra ✓</button></div>')},
  'po-logic':(d)=>{const p=PO[+d.i];openModal('<h3>LÓGICA IA · '+p.p.toUpperCase()+'</h3><div class="msub">¿Por qué NO adelantar?</div>'
-  +'<div style="font-size:12.5px;color:var(--mut);line-height:2">1. DDI actual = <b>'+p.ddi+' días</b> &gt; umbral de 20 días.<br>2. Aumento de solo <b>+'+p.ch+'%</b> → ahorro marginal ≈ $0 tras costo financiero.<br>3. Capital liberado puede destinarse a Coca-Cola (+5.2%, 8 DDI).<br><br>Regla MAKRO: adelantar solo si ahorro &gt; 3× costo de capital <b>y</b> DDI &lt; 20.</div>'
+  +'<div style="font-size:12.5px;color:var(--mut);line-height:2">1. DDI actual '+(p.ddi?('= <b>'+p.ddi+' días</b> &gt; umbral de 20 días.'):'no disponible en el archivo importado.')+'<br>2. Aumento de solo <b>+'+p.ch+'%</b> → ahorro marginal limitado tras costo financiero.<br>3. Categoría <b>'+p.cat+'</b>: revisar si hay otra prioridad de capital con mayor retorno.<br><br>Regla MAKRO: adelantar solo si ahorro &gt; 3× costo de capital <b>y</b> DDI &lt; 20.</div>'
   +'<div class="mfoot"><button class="btn pri" data-act="close-modal">Entendido ✓</button></div>')},
  'sup-score':(d)=>scorecardModal(+d.i),
  'sup-nego':(d)=>{closeModal();const s=SUP[+d.i];const dt=new Date();dt.setDate(dt.getDate()+3);state.events.push({date:iso(dt),h:'10:00',t:'Negociación · '+s.n,k:'reunion'});save('events',state.events);renderCalendar();toast('📅 Negociación agendada','Con '+s.n+' el '+dt.toLocaleDateString('es-MX',{day:'numeric',month:'long'})+' 10:00 · visible en Calendario.','ok')},
@@ -1406,7 +1411,9 @@ const ACTIONS={
  'routine-save':()=>toast('💾 Rutina guardada','MAKRO AI ejecutará esta secuencia diariamente.','ok'),
  backup:()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='MAKRO_respaldo_'+todayISO()+'.json';a.click();toast('⬇ Respaldo exportado','JSON con tareas, eventos, recetas y preferencias.','ok')},
  wipe:()=>openModal('<h3>🗑 BORRAR DATOS LOCALES</h3><div class="msub">Esta acción elimina tareas, eventos, decisiones y preferencias guardadas en este navegador.</div><div class="mfoot"><button class="btn ghost" data-act="close-modal">Cancelar</button><button class="btn danger" data-act="wipe-now">Sí, borrar todo</button></div>'),
- 'wipe-now':()=>{try{Object.keys(localStorage).filter(k=>k.startsWith('mk_')).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()}
+ 'wipe-now':()=>{try{Object.keys(localStorage).filter(k=>k.startsWith('mk_')).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()},
+ 'reset-import':()=>openModal('<h3>↺ RESTABLECER A DATOS DE EJEMPLO</h3><div class="msub">Esto reemplaza los datos importados (ventas, inventario, compras) por el demo de agosto 2026. Tareas, eventos y otras configuraciones no se ven afectados.</div><div class="mfoot"><button class="btn ghost" data-act="close-modal">Cancelar</button><button class="btn danger" data-act="reset-import-now">Sí, restablecer</button></div>'),
+ 'reset-import-now':()=>{closeModal();resetImports()}
 };
 document.addEventListener('click',e=>{
  const t=e.target.closest('[data-act]');
@@ -1426,7 +1433,7 @@ $('#vPeriod').addEventListener('change',e=>{vState.period=+e.target.value;vState
 $('#vGroup').addEventListener('change',e=>{vState.group=e.target.value;renderVentas()});
 $('#vMetric').addEventListener('change',e=>{vState.metric=e.target.value;renderVentas()});
 $('#vReset').addEventListener('click',()=>{vState.branch='Todas';vState.period=30;vState.group='day';vState.metric='sales';vState.offset=0;$('#vBranch').value='Todas';$('#vPeriod').value='30';$('#vGroup').value='day';$('#vMetric').value='sales';renderVentas();toast('↺ Filtros restablecidos','Vista de 30 días · todas las sucursales.','ok')});
-$('#vPrev').addEventListener('click',()=>{if(vState.offset<31-vState.period){vState.offset+=Math.min(7,31-vState.period);renderVentas()}});
+$('#vPrev').addEventListener('click',()=>{if(vState.offset<DAYS.length-vState.period){vState.offset+=Math.min(7,DAYS.length-vState.period);renderVentas()}});
 $('#vNext').addEventListener('click',()=>{if(vState.offset>0){vState.offset=Math.max(0,vState.offset-7);renderVentas()}});
 
 /* ---------------- PILLS GLOBALES ---------------- */
@@ -1489,17 +1496,183 @@ const dz=$('#dropzone');
 ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over')}));
 dz.addEventListener('drop',e=>{if(e.dataTransfer.files.length)handleFile(e.dataTransfer.files[0])});
 $('#fileIn').addEventListener('change',e=>{if(e.target.files.length)handleFile(e.target.files[0])});
+/* ---------------- IMPORTADOR DE DATOS ODOO (real, vía SheetJS) ---------------- */
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'');
+const toNum=v=>{if(v==null||v==='')return 0;const n=parseFloat(String(v).replace(/[^0-9.\-]/g,''));return isNaN(n)?0:n};
+function parseOdooDate(v){
+ if(v==null||v==='')return null;
+ if(typeof v==='number'&&window.XLSX&&XLSX.SSF){const d=XLSX.SSF.parse_date_code(v);if(d)return d.y+'-'+String(d.m).padStart(2,'0')+'-'+String(d.d).padStart(2,'0')}
+ const s=String(v).trim();
+ let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(m)return m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');
+ m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);if(m)return m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');
+ return null}
+function matchBranch(raw){const n=norm(raw);if(!n)return null;return BR.find(b=>{const bn=norm(b.n);return bn===n||bn.includes(n)||n.includes(bn)})||null}
+const IMPORT_SCHEMAS={
+ Ventas:{keys:['fecha','sucursal','sku','qty','importe'],required:['fecha','importe'],apply:applyVentasImport},
+ Inventario:{keys:['categoria','inv_final','ddi'],required:['categoria','inv_final','ddi'],apply:applyInventarioImport},
+ Compras:{keys:['proveedor','categoria','costo_actual','costo_nuevo','vigencia'],required:['proveedor','costo_actual','costo_nuevo'],apply:applyComprasImport}
+};
+function recipeKeysFor(modulo){
+ const r=state.recipes.find(x=>x.m===modulo);const fallback=IMPORT_SCHEMAS[modulo].keys;
+ if(!r||!r.c)return fallback;
+ const parts=r.c.split(',').map(s=>s.trim()).filter(Boolean);
+ return parts.length===fallback.length?parts:fallback}
+function mapHeadersByName(headerRow,internalKeys,recipeKeys){
+ const H=headerRow.map(norm);const map={};
+ internalKeys.forEach((key,i)=>{
+  const wanted=norm(recipeKeys[i]||key);
+  map[key]=H.findIndex(h=>h&&(h===wanted||h.includes(wanted)||wanted.includes(h)))});
+ return map}
+function mapHeaders(headerRow,internalKeys,recipeKeys){
+ const map=mapHeadersByName(headerRow,internalKeys,recipeKeys);
+ internalKeys.forEach((key,i)=>{
+  if(map[key]<0&&i<headerRow.length&&norm(headerRow[i])) map[key]=i});
+ return map}
+function detectModule(headerRow){
+ let best=null,bestScore=0;
+ Object.keys(IMPORT_SCHEMAS).forEach(mod=>{
+  const schema=IMPORT_SCHEMAS[mod];const rk=recipeKeysFor(mod);
+  const map=mapHeadersByName(headerRow,schema.keys,rk);
+  const score=schema.required.filter(k=>map[k]>=0).length;
+  if(score===schema.required.length&&score>bestScore){bestScore=score;best=mod}});
+ return best}
+function applyVentasImport(rows,map){
+ const byDate={},byBranch={};
+ rows.forEach(r=>{
+  const fecha=parseOdooDate(r[map.fecha]);if(!fecha)return;
+  const importe=toNum(r[map.importe]);
+  if(!byDate[fecha])byDate[fecha]={sales:0,tickets:0};
+  byDate[fecha].sales+=importe;byDate[fecha].tickets+=1;
+  if(map.sucursal>=0){const b=matchBranch(r[map.sucursal]);if(b)byBranch[b.id]=(byBranch[b.id]||0)+importe}
+ });
+ const dates=Object.keys(byDate).sort();
+ if(!dates.length)return{ok:false,msg:'No se encontraron fechas válidas en la columna configurada.'};
+ dates.forEach(fecha=>{
+  const agg=byDate[fecha];const margin=TOT.mg||11.6;
+  const row={date:fecha,sales:Math.round(agg.sales),margin,tickets:agg.tickets,profit:Math.round(agg.sales*margin/100)};
+  const idx=DAYS.findIndex(d=>d.date===fecha);
+  if(idx>=0)DAYS[idx]=row;else DAYS.push(row)});
+ DAYS.sort((a,b)=>a.date<b.date?-1:1);
+ TOT.sales=DAYS.reduce((a,d)=>a+d.sales,0);TOT.tk=DAYS.reduce((a,d)=>a+d.tickets,0);
+ Object.keys(byBranch).forEach(id=>{const b=BR.find(x=>x.id===id);if(b)b.sales=Math.round(byBranch[id])});
+ save('days_ovr',DAYS);save('tot_ovr',TOT);save('br_ovr',BR);
+ return{ok:true,msg:dates.length+' día(s) actualizados · '+MXN(TOT.sales)+' en ventas'+(Object.keys(byBranch).length?(' · '+Object.keys(byBranch).length+' sucursal(es)'):'')+'.'}}
+function applyInventarioImport(rows,map){
+ const out=[];
+ rows.forEach(r=>{
+  const categoria=String(r[map.categoria]||'').trim();if(!categoria)return;
+  const inv=toNum(r[map.inv_final]);const ddi=Math.max(1,Math.round(toNum(r[map.ddi])));
+  out.push({c:categoria,inv:Math.round(inv),ddi})});
+ if(!out.length)return{ok:false,msg:'No se encontraron categorías válidas.'};
+ CATINV.length=0;out.forEach(o=>CATINV.push(o));
+ const total=CATINV.reduce((a,c)=>a+c.inv,0);
+ const wddi=CATINV.reduce((a,c)=>a+c.ddi*c.inv,0)/(total||1);
+ TOT.inv=Math.round(total);TOT.ddi=Math.round(wddi);
+ save('catinv_ovr',CATINV);save('tot_ovr',TOT);
+ return{ok:true,msg:CATINV.length+' categoría(s) · '+MXN(total)+' en inventario.'}}
+function applyComprasImport(rows,map){
+ const out=[];
+ rows.forEach(r=>{
+  const proveedor=String(r[map.proveedor]||'').trim();if(!proveedor)return;
+  const categoria=map.categoria>=0?(String(r[map.categoria]||'').trim()||'—'):'—';
+  const a=toNum(r[map.costo_actual]),b=toNum(r[map.costo_nuevo]);
+  if(!a||!b)return;
+  const ch=+(((b-a)/a)*100).toFixed(1);
+  const vig=map.vigencia>=0?(String(r[map.vigencia]||'').trim()||'—'):'—';
+  const cinv=CATINV.find(c=>norm(c.c)===norm(categoria));
+  out.push({p:proveedor,cat:categoria,a,b,ch,vig,ddi:cinv?cinv.ddi:null,rec:ch>3?'Evaluar adelanto':'No adelantar',sav:null,kind:'logic'})});
+ if(!out.length)return{ok:false,msg:'No se encontraron cambios de precio (revisa costo actual/nuevo).'};
+ PO.length=0;out.forEach(o=>PO.push(o));poState.length=0;PO.forEach(()=>poState.push(''));
+ save('po_ovr',PO);
+ return{ok:true,msg:PO.length+' cambio(s) de precio de proveedor cargados.'}}
+function sheetToRows(wb){const ws=wb.Sheets[wb.SheetNames[0]];return XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''})}
+function logFile(f,size,tag,detail){
+ const log=document.createElement('div');log.className='feed-it';
+ log.innerHTML='<span class="ft num">'+esc(tag)+'</span><p><b>'+esc(f.name)+'</b> ('+size+') · '+esc(detail)+'</p>';
+ $('#fileLog').prepend(log)}
+function updateTopTags(){
+ const last=DAYS[DAYS.length-1];
+ const cierreLbl=last&&last.date?new Date(last.date+'T00:00:00').toLocaleDateString('es-MX',{month:'long',year:'numeric'}):'agosto 2026';
+ $('#tagCierre').textContent='● Cierre '+cierreLbl+' cargado';
+ $('#tagVentas').textContent='Ventas '+fmtK(TOT.sales);
+ $('#tagMargen').textContent='Margen '+TOT.mg+'%';
+ $('#tagInv').textContent='Inventario '+TOT.ddi+' días';
+ $('#tagPlan').textContent='Plan '+TOT.plan+'%';
+ $('#tagTareas').textContent=state.tasks.filter(isOver).length+' tareas vencidas';
+ const top=BR.slice().sort((a,b)=>b.sales-a.sales)[0];
+ $('#briefIntro').innerHTML='El cierre de '+cierreLbl+' suma <b style="color:var(--teal)">'+fmtK(TOT.sales)+'</b> en ventas, equivalente a <b>'+TOT.plan+'%</b> del plan. El margen bruto consolidado fue <b>'+TOT.mg+'%</b>. La principal concentración está en <b>'+top.n+'</b>: '+fmtK(top.sales)+' de venta, '+top.mg+'% de margen y '+top.ddi+' días de inventario.'}
+function refreshAfterImport(modulo){
+ if(modulo==='Ventas'){renderKpis();renderVentas()}
+ if(modulo==='Inventario'){renderInvView()}
+ if(modulo==='Compras'){renderCompras()}
+ updateTopTags()}
+const DEFAULTS_SNAPSHOT={DAYS:JSON.parse(JSON.stringify(DAYS)),CATINV:JSON.parse(JSON.stringify(CATINV)),PO:JSON.parse(JSON.stringify(PO)),BR:JSON.parse(JSON.stringify(BR)),TOT:JSON.parse(JSON.stringify(TOT))};
+function hydrateImports(){
+ const dOvr=LS.get('mk_days_ovr',null);if(dOvr&&dOvr.length){DAYS.length=0;dOvr.forEach(x=>DAYS.push(x))}
+ const cOvr=LS.get('mk_catinv_ovr',null);if(cOvr&&cOvr.length){CATINV.length=0;cOvr.forEach(x=>CATINV.push(x))}
+ const pOvr=LS.get('mk_po_ovr',null);if(pOvr&&pOvr.length){PO.length=0;pOvr.forEach(x=>PO.push(x));poState.length=0;PO.forEach(()=>poState.push(''))}
+ const bOvr=LS.get('mk_br_ovr',null);if(bOvr&&bOvr.length)bOvr.forEach(o=>{const b=BR.find(x=>x.id===o.id);if(b)Object.assign(b,o)});
+ const tOvr=LS.get('mk_tot_ovr',null);if(tOvr)Object.assign(TOT,tOvr)}
+function resetImports(){
+ DAYS.length=0;DEFAULTS_SNAPSHOT.DAYS.forEach(x=>DAYS.push(x));
+ CATINV.length=0;DEFAULTS_SNAPSHOT.CATINV.forEach(x=>CATINV.push(x));
+ PO.length=0;DEFAULTS_SNAPSHOT.PO.forEach(x=>PO.push(x));poState.length=0;PO.forEach(()=>poState.push(''));
+ BR.forEach((b,i)=>Object.assign(b,DEFAULTS_SNAPSHOT.BR[i]));
+ Object.assign(TOT,DEFAULTS_SNAPSHOT.TOT);
+ ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
+ $('#fileLog').innerHTML='';$('#lastSync').textContent='31 agosto 2026 · 06:12';
+ renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();updateTopTags();
+ toast('↺ Datos restablecidos','Volviste a los datos de ejemplo de agosto 2026.','ok')}
 function handleFile(f){
  const size=f.size>1048576?(f.size/1048576).toFixed(1)+' MB':Math.max(1,Math.round(f.size/1024))+' KB';
  const pg=$('#upProg');pg.style.display='block';const bar=pg.querySelector('i');bar.style.width='0%';
- const kw=/venta/i.test(f.name)?'Ventas > Diario':/inv/i.test(f.name)?'Inventario > Valuación':/compra|po/i.test(f.name)?'Compras > Recibos':'Odoo > General';
- let v=0;const iv=setInterval(()=>{v+=18;bar.style.width=Math.min(100,v)+'%';
-  if(v>=100){clearInterval(iv);
-   const now=new Date();$('#lastSync').textContent=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-   const log=document.createElement('div');log.className='feed-it';log.innerHTML='<span class="ft num">✔ OK</span><p><b>'+esc(f.name)+'</b> ('+size+') · validado · receta sugerida: <b style="color:var(--teal)">'+kw+'</b></p>';
-   $('#fileLog').prepend(log);
-   toast('📤 Archivo procesado','<b>'+esc(f.name)+'</b> recibido. Cuando exportes más archivos, dime qué módulo alimentan y complemento los datos.','ok');
-   addFeed(true)}},220)}
+ let v=0;const iv=setInterval(()=>{v=Math.min(90,v+15);bar.style.width=v+'%'},110);
+ const isCsv=/\.csv$/i.test(f.name);
+ const reader=new FileReader();
+ reader.onload=e=>{
+  try{
+   if(!window.XLSX)throw new Error('El lector de archivos no cargó (revisa tu conexión) — intenta de nuevo.');
+   let wb;
+   if(isCsv){const text=new TextDecoder('utf-8').decode(e.target.result);wb=XLSX.read(text,{type:'string'})}
+   else wb=XLSX.read(e.target.result,{type:'array'});
+   const rowsRaw=sheetToRows(wb);
+   if(!rowsRaw.length||rowsRaw.length<2)throw new Error('El archivo no tiene datos.');
+   const headerRow=rowsRaw[0];
+   const dataRows=rowsRaw.slice(1).filter(r=>r.some(c=>String(c).trim()!==''));
+   let modulo=detectModule(headerRow);
+   if(!modulo){
+    if(/venta/i.test(f.name))modulo='Ventas';
+    else if(/inv/i.test(f.name))modulo='Inventario';
+    else if(/compra|po/i.test(f.name))modulo='Compras';
+   }
+   clearInterval(iv);bar.style.width='100%';
+   if(!modulo){
+    logFile(f,size,'⚠ No identificado','No identifiqué el módulo (Ventas / Inventario / Compras). Ajusta las columnas en "ODOO EXPORT RECIPES".');
+    toast('⚠ Módulo no identificado','Ajusta las columnas en "ODOO EXPORT RECIPES" o incluye ventas/inventario/compras en el nombre del archivo.','warn');
+    return}
+   const schema=IMPORT_SCHEMAS[modulo];const rk=recipeKeysFor(modulo);
+   const map=mapHeaders(headerRow,schema.keys,rk);
+   const missing=schema.required.filter(k=>map[k]<0);
+   if(missing.length){
+    logFile(f,size,'⚠ Columnas faltantes','Faltan: '+missing.join(', ')+' · receta de '+modulo);
+    toast('⚠ Columnas faltantes','No encontré: '+missing.join(', ')+'. Ajusta la receta de '+modulo+' en Odoo Data Center.','warn');
+    return}
+   const result=schema.apply(dataRows,map);
+   if(result.ok){
+    const now=new Date();$('#lastSync').textContent=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+    logFile(f,size,'✔ '+modulo,result.msg);
+    toast('📤 '+modulo+' actualizado',result.msg,'ok');
+    refreshAfterImport(modulo);addFeed(true);
+   }else{
+    logFile(f,size,'⚠ '+modulo,result.msg);
+    toast('⚠ No se importó',result.msg,'warn')}
+  }catch(err){
+   clearInterval(iv);bar.style.width='100%';
+   logFile(f,size,'✖ Error',err.message||'No se pudo leer el archivo.');
+   toast('✖ Error al leer archivo',err.message||'Verifica que sea un .xlsx, .xls o .csv válido.','err')}
+ };
+ reader.onerror=()=>{clearInterval(iv);toast('✖ Error al leer archivo','No se pudo abrir el archivo.','err')};
+ reader.readAsArrayBuffer(f)}
 
 /* ---------------- MAKRO AI CHAT ---------------- */
 function aiRespond(q){q=q.toLowerCase();
@@ -1549,8 +1722,9 @@ setInterval(()=>{if(Math.random()<0.7)addFeed(false)},15000);
 setInterval(()=>{const h=new Date().getHours();$('#greet').textContent=(h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches')+', Alejandro'},30000);
 
 function boot(){
+ hydrateImports();
  buildNav();renderKpis();gauge('radarGauge',84);renderInvBars();renderWatch();addFeed(true);
- $('#briefIntro').innerHTML='Agosto cerró con <b style="color:var(--teal)">$16.33M</b> en ventas, equivalente a <b>95.4%</b> del plan. El margen bruto consolidado fue <b>11.6%</b>. La principal concentración está en <b>Real Providencia</b>: $12.70M de venta, 9.1% de margen y 28 días de inventario.';
+ updateTopTags();
  $('#todayLbl').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
  renderPulse();renderDonut();renderVentas();renderRent();renderInvView();renderCompras();renderProveedores();renderComercial();
  renderTasks();renderAlerts();renderBranches();renderMyDay();renderDecisions();renderBell();renderRecipes();renderPhases();
