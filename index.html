@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAKRO Executive OS · Command Center</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230ea5a0'/><text x='16' y='22' font-size='18' font-weight='bold' text-anchor='middle' fill='%2304211d' font-family='Arial'>M</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0f16;--panel:#111a26;--panel2:#0e1621;--line:#1c2939;--line2:#27394f;
+  --txt:#e9eff7;--mut:#8ea2b8;--dim:#5b6d82;
+  --teal:#2fe6c8;--cyan:#39c6ff;--blue:#5aa9ff;--amber:#ffb350;--red:#ff5c6c;--green:#51d88a;--violet:#a78bfa;
+  --fd:'Chakra Petch',sans-serif;--fb:'IBM Plex Sans',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --pad:18px;--gap:16px;--kpi:28px;
+}
+body.dense-c{--pad:11px;--gap:10px;--kpi:23px;font-size:12.5px}
+body.dense-a{--pad:24px;--gap:22px;--kpi:33px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font:400 13.5px/1.5 var(--fb);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(900px 500px at 12% -5%,rgba(47,230,200,.07),transparent 60%),
+             radial-gradient(800px 500px at 95% 10%,rgba(90,169,255,.06),transparent 60%),
+             radial-gradient(700px 600px at 70% 110%,rgba(255,179,80,.05),transparent 60%);}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(0deg,transparent 0 34px,rgba(120,160,210,.028) 34px 35px),
+             repeating-linear-gradient(90deg,transparent 0 34px,rgba(120,160,210,.028) 34px 35px);}
+#orbA,#orbB{position:fixed;border-radius:50%;filter:blur(90px);z-index:0;pointer-events:none;opacity:.5}
+#orbA{width:420px;height:420px;background:rgba(23,160,150,.14);top:-120px;left:20%;animation:drift 26s ease-in-out infinite alternate}
+#orbB{width:380px;height:380px;background:rgba(80,120,255,.10);bottom:-140px;right:8%;animation:drift 32s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translate(90px,60px) scale(1.15)}}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#24344a;border-radius:6px}::-webkit-scrollbar-track{background:transparent}
+button{font-family:inherit;color:inherit}
+h1,h2,h3,.disp{font-family:var(--fd)}
+.num{font-family:var(--fm)}
+a{color:var(--cyan)}
+/* ============ LAYOUT ============ */
+#app{display:flex;position:relative;z-index:1;min-height:100vh}
+#sidebar{width:236px;flex-shrink:0;background:linear-gradient(180deg,#0d151f,#0a1018);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;transition:width .25s;z-index:40}
+body.sbx #sidebar{width:64px}
+#brand{display:flex;align-items:center;gap:10px;padding:16px 16px 14px;border-bottom:1px solid var(--line)}
+#brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#10b9a5,#22c3d8);display:grid;place-items:center;font:700 17px var(--fd);color:#04211d;flex-shrink:0;box-shadow:0 0 18px rgba(47,230,200,.35)}
+#brand .bt{overflow:hidden;white-space:nowrap}
+#brand .bt b{font:700 15px var(--fd);letter-spacing:1.5px;display:block}
+#brand .bt span{font:600 8.5px var(--fm);letter-spacing:2.6px;color:var(--teal)}
+body.sbx #brand .bt,body.sbx .nv-l,body.sbx #sbFoot .ftx{display:none}
+#navList{flex:1;overflow-y:auto;padding:10px 8px}
+.nv{display:flex;align-items:center;gap:11px;padding:8px 11px;border-radius:9px;color:var(--mut);font:500 12.5px var(--fb);cursor:pointer;border:1px solid transparent;transition:.15s;margin-bottom:2px;position:relative;white-space:nowrap}
+.nv svg{width:17px;height:17px;flex-shrink:0}
+.nv:hover{color:var(--txt);background:#152130}
+.nv.on{color:var(--teal);background:linear-gradient(90deg,rgba(47,230,200,.12),rgba(47,230,200,.03));border-color:rgba(47,230,200,.25)}
+.nv.on::before{content:'';position:absolute;left:-8px;top:20%;bottom:20%;width:3px;border-radius:3px;background:var(--teal)}
+.nv .bdg{margin-left:auto;background:var(--red);color:#fff;font:600 10px var(--fm);padding:1px 6px;border-radius:20px}
+.nv .bdg.w{background:var(--amber);color:#241300}
+#sbFoot{padding:12px;border-top:1px solid var(--line);font:500 10.5px var(--fm);color:var(--dim)}
+#sbFoot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px;animation:pl 2s infinite}
+@keyframes pl{0%,100%{box-shadow:0 0 0 0 rgba(81,216,138,.5)}50%{box-shadow:0 0 0 5px rgba(81,216,138,0)}}
+#main{flex:1;min-width:0;display:flex;flex-direction:column}
+/* ============ TOPBAR ============ */
+#topbar{position:sticky;top:0;z-index:30;background:rgba(10,15,22,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#topTitle{font:700 15px var(--fd);letter-spacing:.8px}
+#topTitle small{display:block;font:500 9.5px var(--fm);letter-spacing:2px;color:var(--dim)}
+.tsep{width:1px;height:26px;background:var(--line2)}
+.pills{display:flex;gap:5px;flex-wrap:wrap}
+.pill{padding:5px 11px;border-radius:20px;border:1px solid var(--line2);background:transparent;color:var(--mut);font:600 11px var(--fb);cursor:pointer;transition:.15s}
+.pill:hover{color:var(--txt);border-color:#3a5578}
+.pill.on{background:rgba(47,230,200,.14);border-color:var(--teal);color:var(--teal)}
+.pill.cmp.on{background:rgba(90,169,255,.14);border-color:var(--blue);color:var(--blue)}
+#topbar .sp{flex:1}
+.icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);background:#141e2c;display:grid;place-items:center;cursor:pointer;position:relative;transition:.15s;color:var(--mut)}
+.icon-btn:hover{color:var(--txt);border-color:#3a5578;transform:translateY(-1px)}
+.icon-btn svg{width:16px;height:16px}
+.icon-btn .bdg{position:absolute;top:-5px;right:-5px;background:var(--red);font:700 9.5px var(--fm);padding:1px 5px;border-radius:10px;color:#fff}
+#clock{font:600 11px var(--fm);color:var(--mut);text-align:right;line-height:1.35}
+#clock b{color:var(--teal)}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c5cff,#39c6ff);display:grid;place-items:center;font:700 12px var(--fd);color:#fff;cursor:pointer;border:2px solid #22314a}
+#bellDrop{position:absolute;top:46px;right:0;width:330px;background:var(--panel);border:1px solid var(--line2);border-radius:13px;box-shadow:0 18px 50px rgba(0,0,0,.55);display:none;overflow:hidden;z-index:50}
+#bellDrop.open{display:block;animation:pop .2s}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}}
+#bellDrop .bh{padding:11px 14px;border-bottom:1px solid var(--line);font:700 11px var(--fd);letter-spacing:1.5px;display:flex;justify-content:space-between;align-items:center}
+.bell-it{padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;gap:10px;transition:.12s}
+.bell-it:hover{background:#16222f}
+.bell-it .d{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.bell-it b{font-size:12px;display:block}.bell-it span{font-size:11px;color:var(--mut)}
+/* ============ CONTENT / VIEWS ============ */
+#content{padding:22px;display:flex;flex-direction:column;gap:var(--gap)}
+.view{display:none}
+.view.active{display:flex;flex-direction:column;gap:var(--gap);animation:vin .35s ease}
+@keyframes vin{from{opacity:0;transform:translateY(10px)}}
+.panel{background:linear-gradient(180deg,#121b28,#0e1622);border:1px solid var(--line);border-radius:14px;padding:var(--pad);position:relative}
+.panel.glowT::before{content:'';position:absolute;top:0;left:18px;right:18px;height:1px;background:linear-gradient(90deg,transparent,rgba(47,230,200,.5),transparent)}
+.ph{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.ph .pt{font:700 12px var(--fd);letter-spacing:2px;color:var(--txt)}
+.ph .ps{font:500 10px var(--fm);letter-spacing:1.4px;color:var(--dim);text-transform:uppercase}
+.ph .sp{flex:1}
+.tag{display:inline-flex;align-items:center;gap:5px;font:600 9.5px var(--fm);letter-spacing:1.2px;padding:3px 9px;border-radius:6px;text-transform:uppercase}
+.tag.t-teal{background:rgba(47,230,200,.12);color:var(--teal)}
+.tag.t-red{background:rgba(255,92,108,.14);color:var(--red)}
+.tag.t-amber{background:rgba(255,179,80,.13);color:var(--amber)}
+.tag.t-blue{background:rgba(90,169,255,.13);color:var(--blue)}
+.tag.t-green{background:rgba(81,216,138,.12);color:var(--green)}
+.tag.t-violet{background:rgba(167,139,250,.13);color:var(--violet)}
+.grid{display:grid;gap:var(--gap)}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.g21{grid-template-columns:2fr 1fr}.g12{grid-template-columns:1fr 2fr}
+@media(max-width:1200px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}.g2,.g21,.g12{grid-template-columns:1fr}}
+@media(max-width:760px){.g4{grid-template-columns:1fr}#sidebar{position:fixed;left:-240px}body.sbOpen #sidebar{left:0}}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:9px;border:1px solid var(--line2);background:#17222f;color:var(--txt);font:600 12px var(--fb);cursor:pointer;transition:.16s;letter-spacing:.2px;white-space:nowrap}
+.btn:hover{border-color:#3d5c85;background:#1c2a3c;transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.pri{background:linear-gradient(135deg,#0da48e,#14b8cd);border-color:transparent;color:#03211c;font-weight:700}
+.btn.pri:hover{filter:brightness(1.15);box-shadow:0 4px 18px rgba(47,230,200,.3)}
+.btn.sm{padding:5px 10px;font-size:11px;border-radius:7px}
+.btn.xs{padding:3px 8px;font-size:10px;border-radius:6px}
+.btn.danger{background:rgba(255,92,108,.12);border-color:rgba(255,92,108,.4);color:var(--red)}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+/* KPI */
+.kpi{cursor:pointer;transition:.2s;overflow:hidden}
+.kpi:hover{transform:translateY(-3px);border-color:var(--line2);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--teal));opacity:.8}
+.kpi .kl{font:600 9.5px var(--fm);letter-spacing:1.8px;color:var(--dim);text-transform:uppercase}
+.kpi .kv{font:600 var(--kpi) var(--fm);margin:6px 0 2px;letter-spacing:-.5px}
+.kpi .kd{font:500 11px var(--fb);color:var(--mut);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.up{color:var(--green)}.dn{color:var(--red)}.wr{color:var(--amber)}
+.kpi svg.spark{margin-top:8px;width:100%;height:30px}
+/* tables */
+.tblw{overflow-x:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{font:600 9.5px var(--fm);letter-spacing:1.4px;color:var(--dim);text-transform:uppercase;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line2);white-space:nowrap}
+.tbl td{padding:9px 10px;border-bottom:1px solid rgba(28,41,57,.6);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr{transition:.12s;cursor:default}
+.tbl tbody tr:hover{background:rgba(57,198,255,.05)}
+.tbl .r{text-align:right;font-family:var(--fm)}
+.tbl th.r{text-align:right}
+.scorebar{height:6px;border-radius:4px;background:#1b2836;overflow:hidden;min-width:70px}
+.scorebar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--cyan));transition:width .8s ease}
+/* forms */
+input,select,textarea{background:#0d1622;border:1px solid var(--line2);color:var(--txt);border-radius:8px;padding:8px 11px;font:500 12.5px var(--fb);outline:none;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(47,230,200,.12)}
+label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;margin:0 0 5px}
+/* charts */
+.chart{width:100%}
+.chart svg{width:100%;height:auto;display:block}
+.lg{display:flex;gap:8px;flex-wrap:wrap}
+.lgc{display:inline-flex;align-items:center;gap:6px;font:600 10.5px var(--fm);padding:4px 10px;border-radius:14px;border:1px solid var(--line2);cursor:pointer;color:var(--mut);transition:.15s;user-select:none}
+.lgc:hover{color:var(--txt)}
+.lgc.off{opacity:.4;text-decoration:line-through}
+.lgc .sw{width:9px;height:9px;border-radius:3px}
+#tip{position:fixed;z-index:200;background:#0c1420;border:1px solid var(--line2);border-radius:10px;padding:9px 12px;font:500 11.5px var(--fb);pointer-events:none;opacity:0;transition:opacity .12s;box-shadow:0 12px 30px rgba(0,0,0,.5);max-width:260px}
+#tip b{font-family:var(--fm)}
+#tip .tr{display:flex;justify-content:space-between;gap:14px;align-items:center}
+#tip .sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+/* hbars */
+.hb{margin-bottom:12px;cursor:pointer}
+.hb .hbl{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.hb .hbl b{font-family:var(--fm);font-weight:600}
+.hb .hbb{height:22px;background:#141f2d;border-radius:6px;overflow:hidden;position:relative}
+.hb .hbb i{display:block;height:100%;border-radius:6px;transition:width 1s cubic-bezier(.2,.8,.2,1);position:relative}
+.hb .hbb i::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14))}
+.hb:hover .hbb i{filter:brightness(1.25)}
+.hb .hbm{font:500 10.5px var(--fm);color:var(--dim);margin-top:3px}
+/* feed */
+.feed-it{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed rgba(28,41,57,.8);animation:fin .4s ease}
+@keyframes fin{from{opacity:0;transform:translateX(-8px)}}
+.feed-it:last-child{border:none}
+.feed-it .ft{font:600 9px var(--fm);letter-spacing:1px;color:var(--dim);width:56px;flex-shrink:0;padding-top:2px}
+.feed-it p{font-size:12px;color:var(--mut)}.feed-it p b{color:var(--txt)}
+.live{display:inline-flex;align-items:center;gap:6px;font:700 9.5px var(--fm);letter-spacing:2px;color:var(--red)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pl2 1.4s infinite}
+@keyframes pl2{0%,100%{opacity:1}50%{opacity:.25}}
+/* tasks */
+.task{display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;background:#101a26;transition:.15s}
+.task:hover{border-color:var(--line2);transform:translateX(3px)}
+.task.done{opacity:.5}
+.task.done .tt{text-decoration:line-through}
+.task .ck{width:19px;height:19px;border-radius:6px;border:2px solid var(--line2);cursor:pointer;flex-shrink:0;display:grid;place-items:center;margin-top:1px;transition:.15s;background:transparent}
+.task .ck:hover{border-color:var(--teal)}
+.task.done .ck{background:var(--teal);border-color:var(--teal)}
+.task .ck svg{width:11px;height:11px;opacity:0}
+.task.done .ck svg{opacity:1}
+.task .tt{font-weight:600;font-size:12.5px}
+.task .tm{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center}
+.task .due{font:600 10px var(--fm);color:var(--mut)}
+.task .due.ov{color:var(--red)}
+/* alerts */
+.alert-it{display:flex;gap:12px;padding:13px;border:1px solid var(--line);border-left:3px solid var(--ac,var(--amber));border-radius:11px;margin-bottom:10px;background:#101a26;align-items:flex-start}
+.alert-it.acked{opacity:.45}
+.alert-it .ab{flex:1}
+.alert-it h4{font:600 13px var(--fb)}
+.alert-it p{font-size:11.5px;color:var(--mut);margin:3px 0 7px}
+/* chat */
+#chatLog{height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
+.cmsg{max-width:82%;padding:10px 13px;border-radius:12px;font-size:12.5px;animation:fin .3s ease}
+.cmsg.ai{background:#13202e;border:1px solid var(--line2);border-top-left-radius:3px;align-self:flex-start}
+.cmsg.me{background:linear-gradient(135deg,#0da48e,#14b8cd);color:#03211c;font-weight:500;align-self:flex-end;border-bottom-right-radius:3px}
+.cmsg .who{font:700 9px var(--fm);letter-spacing:1.6px;color:var(--teal);display:block;margin-bottom:4px}
+.cmsg.me .who{color:#043d34}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:tp 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes tp{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+/* calendar */
+#calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-h{font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(--dim);text-align:center;padding:4px 0;text-transform:uppercase}
+.cal-d{min-height:86px;background:#101a26;border:1px solid var(--line);border-radius:10px;padding:7px;cursor:pointer;transition:.15s;overflow:hidden}
+.cal-d:hover{border-color:#3d5c85;transform:translateY(-2px)}
+.cal-d.om{opacity:.35}
+.cal-d.today{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal),0 0 22px rgba(47,230,200,.15)}
+.cal-d .dn{font:600 12px var(--fm)}
+.cal-d.today .dn{color:var(--teal)}
+.cal-ev{font:600 9.5px var(--fb);padding:2px 6px;border-radius:5px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.cal-ev.precio{background:rgba(255,179,80,.16);color:var(--amber)}
+.cal-ev.reunion{background:rgba(90,169,255,.15);color:var(--blue)}
+.cal-ev.tarea{background:rgba(47,230,200,.14);color:var(--teal)}
+.cal-ev.cierre{background:rgba(167,139,250,.15);color:var(--violet)}
+/* dropzone */
+#dropzone{border:2px dashed var(--line2);border-radius:14px;padding:38px 20px;text-align:center;cursor:pointer;transition:.2s;background:#0d1622}
+#dropzone:hover,#dropzone.over{border-color:var(--teal);background:rgba(47,230,200,.05);box-shadow:inset 0 0 40px rgba(47,230,200,.06)}
+#dropzone .dz-t{font:700 14px var(--fd);letter-spacing:2px;margin:10px 0 4px}
+/* modal */
+#modalRoot{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:rgba(5,9,14,.72);backdrop-filter:blur(5px)}
+#modalRoot.open{display:grid;animation:fin .18s}
+.modal{width:min(620px,94vw);max-height:88vh;overflow-y:auto;background:linear-gradient(180deg,#131e2c,#0e1622);border:1px solid var(--line2);border-radius:16px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:mpop .25s cubic-bezier(.2,.9,.3,1.2)}
+.modal.wide{width:min(860px,94vw)}
+@keyframes mpop{from{opacity:0;transform:scale(.94) translateY(14px)}}
+.modal h3{font:700 15px var(--fd);letter-spacing:1px;margin-bottom:4px}
+.modal .msub{font-size:11.5px;color:var(--mut);margin-bottom:16px}
+.modal .mfoot{display:flex;gap:9px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.mrow{display:flex;gap:12px;margin-bottom:12px}.mrow>div{flex:1}
+/* toast */
+#toasts{position:fixed;bottom:22px;right:22px;z-index:300;display:flex;flex-direction:column;gap:9px;max-width:360px}
+.toast{background:#13202e;border:1px solid var(--line2);border-left:3px solid var(--teal);border-radius:11px;padding:12px 15px;font-size:12.5px;box-shadow:0 14px 40px rgba(0,0,0,.5);animation:tin .3s cubic-bezier(.2,.9,.3,1.2)}
+.toast.err{border-left-color:var(--red)}.toast.warn{border-left-color:var(--amber)}
+.toast b{display:block;font:700 11px var(--fd);letter-spacing:1px;margin-bottom:2px}
+.toast button{margin-top:7px}
+@keyframes tin{from{opacity:0;transform:translateX(40px)}}
+/* palette */
+#palette{position:fixed;inset:0;z-index:150;display:none;background:rgba(5,9,14,.6);backdrop-filter:blur(4px)}
+#palette.open{display:block}
+#palBox{width:min(560px,92vw);margin:12vh auto 0;background:#101a27;border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.65)}
+#paletteIn{width:100%;border:none;border-radius:0;background:transparent;padding:15px 18px;font-size:14px}
+#paletteList{max-height:320px;overflow-y:auto;border-top:1px solid var(--line)}
+.pal-it{padding:11px 18px;display:flex;align-items:center;gap:11px;cursor:pointer;font-size:12.5px}
+.pal-it .pk{margin-left:auto;font:600 9.5px var(--fm);color:var(--dim);letter-spacing:1px}
+.pal-it:hover,.pal-it.sel{background:rgba(47,230,200,.09)}
+.pal-it.sel{box-shadow:inset 3px 0 0 var(--teal)}
+/* tour */
+#tourSpot{position:fixed;z-index:180;border-radius:12px;box-shadow:0 0 0 9999px rgba(4,8,13,.82);pointer-events:none;transition:all .35s ease;border:2px solid var(--teal)}
+#tourCard{position:fixed;z-index:181;width:320px;background:#13202e;border:1px solid var(--teal);border-radius:13px;padding:16px;box-shadow:0 20px 60px rgba(0,0,0,.6);transition:all .35s ease}
+#tourCard h4{font:700 13px var(--fd);letter-spacing:1px;color:var(--teal);margin-bottom:6px}
+#tourCard p{font-size:12px;color:var(--mut);margin-bottom:12px}
+/* misc */
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
+.eq i{width:3px;background:var(--teal);border-radius:2px;animation:eq 1s ease-in-out infinite}
+.eq i:nth-child(1){height:5px}.eq i:nth-child(2){height:11px;animation-delay:.2s}.eq i:nth-child(3){height:7px;animation-delay:.4s}.eq i:nth-child(4){height:10px;animation-delay:.1s}
+@keyframes eq{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.prog{height:8px;border-radius:6px;background:#182534;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--cyan));transition:width .6s ease}
+.sw2{position:relative;width:36px;height:20px;flex-shrink:0;cursor:pointer}
+.sw2 input{display:none}
+.sw2 span{position:absolute;inset:0;background:#1b2836;border-radius:20px;transition:.2s;border:1px solid var(--line2)}
+.sw2 span::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#5b6d82;top:2px;left:2px;transition:.2s}
+.sw2 input:checked+span{background:rgba(47,230,200,.25);border-color:var(--teal)}
+.sw2 input:checked+span::after{background:var(--teal);left:17px}
+.divv{height:1px;background:var(--line);margin:12px 0}
+.note{font-size:11px;color:var(--dim);font-style:italic}
+.radial{font-family:var(--fm)}
+.stepflow{display:flex;gap:0;align-items:center;font:600 10px var(--fm);letter-spacing:1px;color:var(--dim);flex-wrap:wrap}
+.stepflow b{color:var(--teal);padding:0 4px}
+.dec-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px;background:#101a26;transition:.2s}
+.dec-card.resolved{opacity:.5;border-color:var(--green)}
+.dec-card h4{font-size:12.5px;margin-bottom:4px}
+.dec-card p{font-size:11.5px;color:var(--mut);margin-bottom:9px}
+.ag-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line);align-items:center}
+.ag-item:last-child{border:none}
+.ag-item .ah{font:600 11px var(--fm);color:var(--teal);width:44px;flex-shrink:0}
+.ag-item.done .at{text-decoration:line-through;opacity:.5}
+.range{accent-color:var(--teal);width:100%}
+.wmark{display:inline-block;width:22px;height:22px;border-radius:6px;text-align:center;line-height:22px;font:700 11px var(--fd);margin-right:8px;background:#1b2836;color:var(--mut)}
+.wmark.g1{background:rgba(255,179,80,.2);color:var(--amber)}.wmark.g2{background:rgba(192,192,192,.15);color:#cfd6de}.wmark.g3{background:rgba(205,127,50,.15);color:#d99a63}
+</style>
+</head>
+<body>
+<div id="orbA"></div><div id="orbB"></div>
+<div id="app">
+<!-- ================= SIDEBAR ================= -->
+<aside id="sidebar">
+  <div id="brand"><div class="logo">M</div><div class="bt"><b>MAKRO</b><span>EXECUTIVE OS</span></div></div>
+  <nav id="navList"></nav>
+  <div id="sbFoot"><span class="dot"></span><span class="ftx">Sistema conectado<br><span id="sbSync">Odoo sync · hace 2 min</span></span></div>
+</aside>
+<!-- ================= MAIN ================= -->
+<div id="main">
+<header id="topbar">
+  <button class="icon-btn" data-act="sbToggle" title="Colapsar menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  <div id="topTitle">COMMAND CENTER<small>MAKRO EXECUTIVE OS v2.6</small></div>
+  <div class="tsep"></div>
+  <div class="pills" id="periodPills">
+    <button class="pill" data-p="7">Últimos 7 días</button>
+    <button class="pill" data-p="14">Últimos 14 días</button>
+    <button class="pill on" data-p="30">Últimos 30 días</button>
+    <button class="pill" data-p="31">Agosto completo</button>
+  </div>
+  <div class="pills" id="cmpPills">
+    <button class="pill cmp" data-c="prev">Periodo anterior</button>
+    <button class="pill cmp" data-c="yr">Año anterior</button>
+    <button class="pill cmp" data-c="budg">Presupuesto</button>
+    <button class="pill cmp on" data-c="goal">Meta</button>
+  </div>
+  <div class="sp"></div>
+  <div id="clock" class="num"></div>
+  <button class="icon-btn" data-act="refresh" title="Actualizar datos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg></button>
+  <button class="btn ghost sm" data-act="palette" title="Buscar (⌘K)">⌘K</button>
+  <div style="position:relative">
+    <button class="icon-btn" data-act="bell" title="Alertas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="bdg" id="bellBadge">7</span></button>
+    <div id="bellDrop"></div>
+  </div>
+  <button class="btn pri sm" data-act="newaction">+ Nueva acción</button>
+  <div class="avatar" data-act="profile" title="Alejandro Sandoval · Dirección">AS</div>
+</header>
+
+<main id="content">
+
+<!-- ============ VIEW: COMMAND CENTER ============ -->
+<section class="view active" id="view-command">
+  <div class="grid g21">
+    <div class="panel glowT">
+      <div class="ph"><div><h1 style="font-size:23px" id="greet">Buenas noches, Alejandro</h1><p style="color:var(--mut);font-size:12.5px">Esto es lo que requiere tu atención en MAKRO hoy · <span class="num" id="todayLbl"></span></p></div>
+      <div class="sp"></div>
+      <button class="btn" data-act="tour">◈ GUIDE ME</button>
+      <button class="btn pri" data-act="brief">⚡ Generar reporte ejecutivo</button></div>
+      <div class="grid g4" id="kpiStrip"></div>
+      <div class="divv"></div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <span class="tag t-teal">● Cierre agosto cargado</span>
+        <span class="tag t-blue">Ventas $16.33M</span>
+        <span class="tag t-amber">Margen 11.6%</span>
+        <span class="tag t-violet">Inventario 33 días</span>
+        <span class="tag t-green">Plan 95.4%</span>
+        <span class="tag t-red">5 tareas vencidas</span>
+        <div class="sp"></div>
+        <span style="font:600 9.5px var(--fm);letter-spacing:2px;color:var(--dim)">MAKRO AI · STATUS MONITORING</span>
+        <span class="eq"><i></i><i></i><i></i><i></i></span>
+        <span class="tag t-teal">24/7</span>
+      </div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center" id="radarWrap">
+      <div class="ps" style="font:600 9.5px var(--fm);letter-spacing:2px;color:var(--dim)">EXECUTIVE RADAR</div>
+      <div id="radarGauge" style="cursor:pointer" data-act="radar" title="Ver desglose del score"></div>
+      <div style="font:600 10px var(--fm);letter-spacing:1.5px;color:var(--mut)">SALUD DEL NEGOCIO</div>
+      <div class="note" style="margin-top:6px">Clic para ver componentes del score</div>
+    </div>
+  </div>
+
+  <div class="panel" id="aiBanner" style="border-color:rgba(47,230,200,.3)">
+    <div class="ph"><span class="tag t-teal">MAKRO AI AGENT</span><span class="ps">cierre agosto 2026 · detectado hace 2 min</span><div class="sp"></div><button class="btn sm" data-act="aiContinue" id="btnAiCont">▶ Continuar actualización</button></div>
+    <p style="font-size:13px;color:var(--mut)">Cierre agosto 2026 cargado: ventas, eficiencia comercial, inventario y pedidos de PdV. El dashboard ya usa <b style="color:var(--teal)">datos reales</b> en los bloques ejecutivos principales.</p>
+    <div class="prog" style="margin-top:10px"><i id="aiProg" style="width:100%"></i></div>
+  </div>
+
+  <div class="panel" id="pulseCard">
+    <div class="ph"><span class="pt">PULSO DEL NEGOCIO</span><span class="ps">venta por hora · actual vs periodo anterior vs objetivo</span><div class="sp"></div>
+      <div class="lg" id="pulseTabs">
+        <button class="lgc on" data-act="pulse-tab" data-m="sales"><span class="sw" style="background:var(--teal)"></span>Ventas</button>
+        <button class="lgc" data-act="pulse-tab" data-m="margin"><span class="sw" style="background:var(--blue)"></span>Margen</button>
+        <button class="lgc" data-act="pulse-tab" data-m="tickets"><span class="sw" style="background:var(--violet)"></span>Tickets</button>
+        <button class="lgc" data-act="pulse-tab" data-m="profit"><span class="sw" style="background:var(--amber)"></span>Utilidad</button>
+      </div></div>
+    <div id="pulseChart" class="chart"></div>
+  </div>
+
+  <div class="panel">
+    <div class="ph"><span class="pt">ATENCIÓN REQUERIDA</span><span class="ps">ordenado por priority score e impacto económico</span><div class="sp"></div><span class="tag t-red">3 críticas</span><button class="btn sm" data-act="nav" data-view="alertas">Ver todas →</button></div>
+    <div class="grid g3">
+      <div class="panel" style="border-color:rgba(81,216,138,.35)">
+        <span class="tag t-green">FORTALEZA · VILLAS +14.5%</span>
+        <h3 style="font-size:14px;margin:9px 0 5px">Villas de San Juan</h3>
+        <p style="font-size:12px;color:var(--mut)">Creció <b class="up">+14.5%</b> vs 2025 y cerró con margen bruto de <b>20.7%</b>. Mejor score operativo (92).</p>
+        <button class="btn sm" style="margin-top:10px" data-act="nav" data-view="sucursales">Ver sucursales</button>
+      </div>
+      <div class="panel" style="border-color:rgba(255,92,108,.4)">
+        <span class="tag t-red">RIESGO · HILARIO 77 DDI</span>
+        <h3 style="font-size:14px;margin:9px 0 5px">Hilario Medina</h3>
+        <p style="font-size:12px;color:var(--mut)">Combina caída de venta <b class="dn">−3.5%</b> con <b>77 días</b> de inventario y rotación anual de 4.7x.</p>
+        <button class="btn sm danger" style="margin-top:10px" data-act="inv-review" data-b="hilario">Revisar inventario</button>
+      </div>
+      <div class="panel" style="border-color:rgba(255,179,80,.4)">
+        <span class="tag t-amber">ACCIÓN · REAL 9.1% MARGEN</span>
+        <h3 style="font-size:14px;margin:9px 0 5px">Real Providencia</h3>
+        <p style="font-size:12px;color:var(--mut)">Concentra ~78% de la venta y su margen está muy por debajo de Castillos, Villas e Hilario.</p>
+        <button class="btn sm" style="margin-top:10px" data-act="task-create" data-t="Plan de recuperación de margen · Real Providencia">Crear tarea</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g21">
+    <div class="panel glowT" id="briefCard">
+      <div class="ph"><span class="tag t-teal">MAKRO AI · EXECUTIVE BRIEF</span><span class="ps">detectar → priorizar → explicar → accionar</span><div class="sp"></div><span class="tag t-blue">87% confianza</span></div>
+      <p id="briefIntro" style="font-size:13.5px;line-height:1.7"></p>
+      <div class="divv"></div>
+      <button class="btn pri" data-act="brief">📋 Ver Daily Executive Brief</button>
+      <button class="btn ghost" data-act="nav" data-view="ai">Preguntar a MAKRO AI →</button>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">INVENTARIO POR SUCURSAL</span><span class="ps">inv. final · DDI · cierre ago</span><div class="sp"></div><span class="tag t-green">Datos reales</span></div>
+      <div id="invBars"></div>
+    </div>
+  </div>
+
+  <div class="grid g21">
+    <div class="panel">
+      <div class="ph"><span class="pt">CATEGORÍAS QUE REQUIEREN ATENCIÓN</span><span class="ps">cierre inventario agosto · se sustituirá por SKU al cargar maestro</span></div>
+      <div class="tblw"><table class="tbl" id="catWatch"></table></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">LIVE ACTIVITY</span><span class="ps">últimos movimientos</span><div class="sp"></div><span class="live"><i></i>LIVE</span></div>
+      <div id="feedList" style="max-height:330px;overflow-y:auto"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW: VENTAS ============ -->
+<section class="view" id="view-ventas">
+  <div class="panel">
+    <div class="ph"><span class="pt">SALES INTELLIGENCE</span><span class="ps">datos reales · corte 31/08/2026 · fuente: cierre Odoo</span><div class="sp"></div><button class="btn sm" data-act="export-csv">⬇ Exportar CSV</button></div>
+    <div class="grid g4" style="margin-bottom:6px">
+      <div><label class="fl">Sucursal</label><select id="vBranch" style="width:100%"><option value="all">Todas</option><option>Real Providencia</option><option>Castillos</option><option>Villas de San Juan</option><option>Hilario Medina</option></select></div>
+      <div><label class="fl">Periodo</label><select id="vPeriod" style="width:100%"><option value="1">Último día</option><option value="7">7 días</option><option value="14">14 días</option><option value="30" selected>30 días</option><option value="31">Mes completo</option></select></div>
+      <div><label class="fl">Agrupar</label><select id="vGroup" style="width:100%"><option value="day">Por día</option><option value="week">Por semana</option><option value="cum">Acumulado</option></select></div>
+      <div><label class="fl">Métrica</label><select id="vMetric" style="width:100%"><option value="sales">Ventas</option><option value="profit">Utilidad bruta</option><option value="margin">Margen bruto</option><option value="tickets">Clientes / tickets</option><option value="ticket">Ticket promedio</option></select></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn ghost sm" id="vReset">↺ Restablecer</button></div>
+  </div>
+  <div class="panel glowT">
+    <div class="ph"><span class="pt" id="vChartTitle">TENDENCIA DE VENTAS</span><span class="ps" id="vChartSub">últimos 30 días · todas las sucursales</span><div class="sp"></div>
+      <button class="btn ghost sm" id="vPrev">← periodo</button><button class="btn ghost sm" id="vNext">periodo →</button></div>
+    <div id="vChart" class="chart"></div>
+    <p class="note" style="text-align:center;margin-top:6px">Toca un punto para ver el detalle del día · usa ← → para navegar periodos</p>
+  </div>
+  <div class="grid g21">
+    <div class="panel"><div class="ph"><span class="pt">LECTURA EJECUTIVA</span><span class="ps">lo más importante del periodo seleccionado</span></div><div id="vRead" style="font-size:12.5px;color:var(--mut);line-height:1.8"></div></div>
+    <div class="panel"><div class="ph"><span class="pt">MIX POR CATEGORÍA</span><span class="ps">venta mensual · agosto 2026</span></div><div id="vMix" class="chart"></div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="pt">DETALLE DIARIO</span><span class="ps">ordena mentalmente qué días requieren explicación</span></div>
+    <div class="tblw"><table class="tbl" id="vTable"></table></div>
+  </div>
+</section>
+
+<!-- ============ VIEW: RENTABILIDAD ============ -->
+<section class="view" id="view-rentabilidad">
+  <div class="grid g21">
+    <div class="panel glowT">
+      <div class="ph"><span class="pt">MARGEN BRUTO POR SUCURSAL</span><span class="ps">actual vs objetivo 12.0%</span><div class="sp"></div><span class="tag t-amber">Consolidado 11.6%</span></div>
+      <div id="mgBars"></div>
+      <p class="note">Clic en una sucursal para ver el diagnóstico. Cada punto de margen en Real Providencia vale ≈ $127K/mes.</p>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">MARGIN BRIDGE</span><span class="ps">variación vs mes previo (13.2% → 11.6%)</span></div>
+      <div id="bridgeChart" class="chart"></div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="ph"><span class="pt">EROSIÓN DE PRECIO</span><span class="ps">fugas detectadas por MAKRO AI</span></div>
+      <div id="erosionList"></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">OPORTUNIDADES DE RECUPERACIÓN</span><span class="ps">impacto mensual estimado</span></div>
+      <div id="recList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW: INVENTARIO ============ -->
+<section class="view" id="view-inventario">
+  <div class="grid g4" id="invKpis"></div>
+  <div class="panel glowT">
+    <div class="ph"><span class="pt">MAPA DE CAPITAL · VALOR vs DDI</span><span class="ps">burbuja = venta mensual estimada · cuadrante derecha = sobrestock</span></div>
+    <div id="bubbleChart" class="chart"></div>
+  </div>
+  <div class="grid g21">
+    <div class="panel">
+      <div class="ph"><span class="pt">INVENTARIO POR CATEGORÍA</span><span class="ps">valor y días · actualizado hace 18 h</span></div>
+      <div class="tblw"><table class="tbl" id="catTable"></table></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">CALIDAD DE DATOS</span><span class="ps">catálogo y consistencia</span></div>
+      <div style="text-align:center;margin:8px 0 14px"><div class="num" id="dqScore" style="font-size:44px;font-weight:600;color:var(--teal)">93</div><div class="ps" style="font:600 9.5px var(--fm);letter-spacing:2px;color:var(--dim)">DATA QUALITY SCORE</div></div>
+      <p id="dqMsg" style="font-size:12px;color:var(--mut);text-align:center;margin-bottom:12px">4 incidencias requieren validación.</p>
+      <div id="dqList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW: COMPRAS ============ -->
+<section class="view" id="view-compras">
+  <div class="panel glowT">
+    <div class="ph"><span class="pt">PURCHASING INTELLIGENCE</span><span class="ps">anticipa cambios de precio, capital requerido y ahorro potencial</span><div class="sp"></div><span class="tag t-green">Ahorro potencial $90,660</span></div>
+    <div class="tblw"><table class="tbl" id="poTable"></table></div>
+    <p class="note" style="margin-top:10px">Metodología tipo Walmart: adelantar compra cuando el ahorro por precio supera el costo financiero del inventario (~2.1% mensual sobre capital).</p>
+  </div>
+  <div class="grid g3" id="poSummary"></div>
+</section>
+
+<!-- ============ VIEW: PROVEEDORES ============ -->
+<section class="view" id="view-proveedores">
+  <div class="panel">
+    <div class="ph"><span class="pt">SCORECARD DE PROVEEDORES</span><span class="ps">condiciones, cumplimiento y pendientes de negociación · estándar Retail Link</span></div>
+    <div class="grid g3" id="supGrid"></div>
+  </div>
+  <div class="panel"><div class="ph"><span class="pt">PENDIENTES DE NEGOCIACIÓN</span></div><div id="negoList"></div></div>
+</section>
+
+<!-- ============ VIEW: COMERCIAL ============ -->
+<section class="view" id="view-comercial">
+  <div class="panel glowT">
+    <div class="ph"><span class="pt">COMMERCIAL WAR ROOM</span><span class="ps">dirección ↔ administrador ↔ compras ↔ comercial</span><div class="sp"></div>
+    <div class="stepflow">DETECTAR <b>→</b> PRIORIZAR <b>→</b> EXPLICAR <b>→</b> ACCIONAR</div></div>
+    <p style="font-size:12px;color:var(--mut)">Cadencia semanal tipo Business Review de cadena: oportunidades con tracción y margen, decisiones en 24 h.</p>
+  </div>
+  <div class="grid g21">
+    <div class="panel">
+      <div class="ph"><span class="pt">OPORTUNIDADES COMERCIALES</span><span class="ps">productos con tracción y margen</span></div>
+      <div id="opps"></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">EXECUTIVE COMMUNICATION CENTER</span><span class="ps">instrucciones y seguimiento</span></div>
+      <div id="commsThread" style="max-height:300px;overflow-y:auto;margin-bottom:10px"></div>
+      <div style="display:flex;gap:7px"><select id="commsCh" style="width:150px"><option>Dirección</option><option>Administrador</option><option>Compras</option><option>Comercial</option></select><input id="commsIn" placeholder="Escribe una instrucción…" style="flex:1"><button class="btn pri sm" data-act="send-msg">Enviar ➤</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW: TAREAS ============ -->
+<section class="view" id="view-tareas">
+  <div class="panel">
+    <div class="ph"><span class="pt">TAREAS EJECUTIVAS</span><span class="ps">task manager estilo Linear · responsabilidad clara</span><div class="sp"></div>
+      <div class="lg" id="taskFilters">
+        <button class="lgc on" data-act="task-filter" data-f="all">Todas</button>
+        <button class="lgc" data-act="task-filter" data-f="mine">Mis tareas</button>
+        <button class="lgc" data-act="task-filter" data-f="over">Vencidas</button>
+        <button class="lgc" data-act="task-filter" data-f="br">Por sucursal</button>
+      </div>
+      <select id="taskBrSel" style="display:none"><option>Real Providencia</option><option>Castillos</option><option>Villas de San Juan</option><option>Hilario Medina</option></select>
+      <button class="btn pri sm" data-act="task-modal">+ Crear tarea</button></div>
+    <div id="taskList"></div>
+  </div>
+</section>
+
+<!-- ============ VIEW: ALERTAS ============ -->
+<section class="view" id="view-alertas">
+  <div class="panel">
+    <div class="ph"><span class="pt">CENTRO DE ALERTAS</span><span class="ps">prioridad = impacto económico × urgencia × probabilidad</span><div class="sp"></div>
+      <div class="lg" id="alertChips">
+        <button class="lgc on" data-act="alert-filter" data-f="all">Todas</button>
+        <button class="lgc" data-act="alert-filter" data-f="crítica">Críticas</button>
+        <button class="lgc" data-act="alert-filter" data-f="COMPRAS">Compras</button>
+        <button class="lgc" data-act="alert-filter" data-f="INVENTARIO">Inventario</button>
+        <button class="lgc" data-act="alert-filter" data-f="MARGEN">Margen</button>
+      </div></div>
+    <div id="alertList"></div>
+  </div>
+</section>
+
+<!-- ============ VIEW: SUCURSALES ============ -->
+<section class="view" id="view-sucursales">
+  <div class="panel glowT">
+    <div class="ph"><span class="pt">RANKING DE DESEMPEÑO Y SALUD OPERATIVA</span><span class="ps">agosto 2026</span></div>
+    <div class="tblw"><table class="tbl" id="branchTable"></table></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><span class="pt">ESTÁNDARES RETAIL CLASE MUNDIAL</span><span class="ps">benchmark Walmart / Sam's Club · brechas a cerrar</span></div>
+    <div class="grid g3" id="benchList"></div>
+  </div>
+</section>
+
+<!-- ============ VIEW: MY DAY ============ -->
+<section class="view" id="view-myday">
+  <div class="panel"><div class="ph"><span class="pt">MY DAY</span><span class="ps" id="myDayLbl">tu agenda operativa diaria · priorizada por impacto y urgencia</span></div>
+    <div class="grid g2">
+      <div>
+        <div class="ps" style="font:600 10px var(--fm);letter-spacing:2px;color:var(--dim);margin-bottom:8px">AGENDA HOY</div>
+        <div id="agendaList"></div>
+      </div>
+      <div>
+        <div class="ps" style="font:600 10px var(--fm);letter-spacing:2px;color:var(--dim);margin-bottom:8px">SMART PRIORITY ENGINE · qué ve primero el sistema</div>
+        <div style="margin-bottom:10px"><label class="fl">Peso: impacto económico <span class="num" id="wIv">8</span></label><input type="range" class="range" id="wI" min="0" max="10" value="8"></div>
+        <div style="margin-bottom:10px"><label class="fl">Peso: urgencia <span class="num" id="wUv">7</span></label><input type="range" class="range" id="wU" min="0" max="10" value="7"></div>
+        <div style="margin-bottom:10px"><label class="fl">Peso: esfuerzo (penaliza) <span class="num" id="wEv">3</span></label><input type="range" class="range" id="wE" min="0" max="10" value="3"></div>
+        <div class="panel" style="background:#0d1622"><span class="ps">Score del item #1:</span> <b class="num" id="prScore" style="font-size:20px;color:var(--teal)">—</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="ph"><span class="pt">DECISION INBOX</span><span class="ps">solo asuntos que requieren tu autorización</span></div>
+      <div id="decList"></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">WAITING ON</span><span class="ps">compromisos pendientes de otras personas</span></div>
+      <div id="waitList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW: MAKRO AI ============ -->
+<section class="view" id="view-ai">
+  <div class="grid g21">
+    <div class="panel glowT">
+      <div class="ph"><span class="tag t-teal">MAKRO AI AGENT</span><span class="ps">tu chief of staff digital · datos → insight → decisión → acción → follow-up</span><div class="sp"></div><span class="eq"><i></i><i></i><i></i><i></i></span></div>
+      <div id="chatLog"></div>
+      <div class="lg" style="margin:10px 0" id="aiChips">
+        <button class="lgc" data-act="ai-chip" data-q="¿Cómo cerró agosto?">¿Cómo cerró agosto?</button>
+        <button class="lgc" data-act="ai-chip" data-q="¿Qué pasa con Hilario Medina?">¿Qué pasa con Hilario?</button>
+        <button class="lgc" data-act="ai-chip" data-q="¿Debo adelantar la compra de Coca-Cola?">¿Adelantar Coca-Cola?</button>
+        <button class="lgc" data-act="ai-chip" data-q="Oportunidades comerciales">Oportunidades</button>
+      </div>
+      <div style="display:flex;gap:8px"><input id="chatIn" placeholder="Pregúntale a MAKRO AI sobre ventas, margen, inventario…" style="flex:1"><button class="btn pri" data-act="ai-send">Enviar ➤</button></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--gap)">
+      <div class="panel">
+        <div class="ph"><span class="pt">MAKRO AI NEEDS YOU</span><span class="ps">3 preguntas para mejorar el análisis de hoy</span></div>
+        <label class="fl">1 · ¿Qué quieres entender hoy?</label>
+        <select id="q1" style="width:100%;margin-bottom:9px"><option>Caída de margen en Real Providencia</option><option>Sobrestock en Hilario Medina</option><option>Impacto del aumento Coca-Cola</option><option>Crecimiento de Villas</option></select>
+        <label class="fl">2 · ¿Formato de entrega?</label>
+        <select id="q2" style="width:100%;margin-bottom:9px"><option>Resumen ejecutivo (3 bullets)</option><option>Análisis profundo con datos</option><option>Plan de acción con tareas</option></select>
+        <label class="fl">3 · ¿Enviar seguimiento?</label>
+        <select id="q3" style="width:100%;margin-bottom:12px"><option>Sí, diario 7:30 am</option><option>Solo cuando cambie algo</option><option>No por ahora</option></select>
+        <button class="btn pri" style="width:100%" data-act="q3-send">Entrenar a MAKRO AI ✓</button>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">SYSTEM IMPROVEMENT</span><span class="ps">lo que el sistema ha aprendido</span></div>
+        <div id="learnList" style="font-size:12px;color:var(--mut)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW: ODOO DATA CENTER ============ -->
+<section class="view" id="view-odoo">
+  <div class="grid g2">
+    <div class="panel glowT">
+      <div class="ph"><span class="pt">ODOO DATA CENTER</span><span class="ps">exportaciones manuales mientras conectamos la API</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <div><div class="ps">DAILY DATA CHECK-IN</div><div class="num" style="font-size:15px;margin-top:3px">Última actualización: <b id="lastSync" style="color:var(--teal)">31 agosto 2026 · 06:12</b></div></div>
+        <span class="tag t-green"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block"></span> Pipeline activo</span>
+      </div>
+      <div class="ps" style="margin-bottom:6px">SMART FILE IMPORTER · .xlsx .xls .csv</div>
+      <div id="dropzone">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        <div class="dz-t">DROP YOUR ODOO REPORT HERE</div>
+        <p style="font-size:11.5px;color:var(--dim)">Arrastra un archivo o haz clic para seleccionarlo.</p>
+        <button class="btn sm" style="margin-top:10px" data-act="odoo-browse">Seleccionar archivo</button>
+        <input type="file" id="fileIn" hidden accept=".xlsx,.xls,.csv">
+      </div>
+      <div class="prog" style="margin-top:12px;display:none" id="upProg"><i style="width:0%"></i></div>
+      <div id="fileLog" style="margin-top:12px;font-size:11.5px;color:var(--mut)"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--gap)">
+      <div class="panel">
+        <div class="ph"><span class="pt">ODOO EXPORT RECIPES</span><span class="ps">rutas editables por módulo</span></div>
+        <div id="recipeList"></div>
+        <button class="btn sm" style="margin-top:8px" data-act="recipe-save">💾 Guardar recetas</button>
+      </div>
+      <div class="panel">
+        <div class="ph"><span class="pt">FASES DE INTEGRACIÓN</span><span class="ps">preparación Odoo / API</span></div>
+        <div id="phaseBox"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIEW: CALENDARIO ============ -->
+<section class="view" id="view-calendario">
+  <div class="panel">
+    <div class="ph"><span class="pt">MY EXECUTIVE CALENDAR</span><span class="ps">tareas · reuniones · cambios de precio · cierres</span><div class="sp"></div>
+      <div class="lg" id="calViewBtns">
+        <button class="lgc" data-act="cal-view" data-v="day">Día</button>
+        <button class="lgc" data-act="cal-view" data-v="week">Semana</button>
+        <button class="lgc on" data-act="cal-view" data-v="month">Mes</button>
+      </div>
+      <button class="btn ghost sm" data-act="cal-prev">←</button>
+      <button class="btn ghost sm" data-act="cal-today">Hoy</button>
+      <button class="btn ghost sm" data-act="cal-next">→</button>
+      <button class="btn pri sm" data-act="cal-add">+ Evento</button></div>
+    <div id="calTitle" style="font:700 15px var(--fd);letter-spacing:1px;margin-bottom:12px"></div>
+    <div id="calGrid"></div>
+  </div>
+</section>
+
+<!-- ============ VIEW: CONFIGURACIÓN ============ -->
+<section class="view" id="view-configuracion">
+  <div class="grid g2">
+    <div class="panel">
+      <div class="ph"><span class="pt">AGENT ROUTINES</span><span class="ps">rutina base editable</span></div>
+      <label class="fl">Rutina diaria de MAKRO AI</label>
+      <textarea id="routineTxt" rows="6" style="width:100%;font-family:var(--fm);font-size:11.5px">06:00 · Descargar cierre Odoo del día anterior
+06:30 · Recalcular ventas, margen, DDI y disponibilidad
+07:00 · Detectar alertas (impacto > $10K o DDI > 60)
+07:20 · Generar Daily Executive Brief
+07:30 · Publicar My Day priorizado
+18:00 · Verificar carga de archivos pendientes</textarea>
+      <button class="btn sm" style="margin-top:8px" data-act="routine-save">Guardar rutina</button>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">LAYOUT & PREFERENCIAS</span></div>
+      <label class="fl">Densidad</label>
+      <div class="lg" style="margin-bottom:12px" id="densSet">
+        <button class="lgc" data-act="set-density" data-d="dense-c">Compacto</button>
+        <button class="lgc on" data-act="set-density" data-d="">Normal</button>
+        <button class="lgc" data-act="set-density" data-d="dense-a">Amplio</button>
+      </div>
+      <label class="fl">Sucursal preferida</label>
+      <select id="setBranch" style="width:100%;margin-bottom:12px"><option>Todas</option><option>Real Providencia</option><option>Castillos</option><option>Villas de San Juan</option><option>Hilario Medina</option></select>
+      <label class="fl">Vista de ventas por defecto</label>
+      <select id="setVista" style="width:100%"><option>Por día</option><option>Por hora</option><option>Por semana</option></select>
+      <div class="divv"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><span style="font-size:12px">Alertas críticas por push</span><label class="sw2"><input type="checkbox" checked data-act2="pref"><span></span></label></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px"><span style="font-size:12px">Brief diario automático (7:30)</span><label class="sw2"><input type="checkbox" checked data-act2="pref"><span></span></label></div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px">Modo demo con datos de agosto</span><label class="sw2"><input type="checkbox" checked data-act2="pref"><span></span></label></div>
+    </div>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <div class="ph"><span class="pt">ODOO / API · FASES DE INTEGRACIÓN</span></div>
+      <div id="phaseBox2"></div>
+      <button class="btn sm" style="margin-top:10px" data-act="phase-next">Avanzar fase ▶</button>
+    </div>
+    <div class="panel">
+      <div class="ph"><span class="pt">DATOS LOCALES</span></div>
+      <p style="font-size:12px;color:var(--mut);margin-bottom:12px">Tareas, eventos, decisiones y preferencias se guardan en este navegador. Cada archivo Odoo que cargues complementa los módulos.</p>
+      <button class="btn sm" data-act="backup">⬇ Exportar respaldo (JSON)</button>
+      <button class="btn danger sm" data-act="wipe">🗑 Borrar datos locales</button>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+</div>
+
+<div id="tip"></div>
+<div id="toasts"></div>
+<div id="modalRoot"></div>
+<div id="palette"><div id="palBox"><input id="paletteIn" placeholder="Buscar módulos, acciones… (Esc para cerrar)"><div id="paletteList"></div></div></div>
+<div id="tourSpot" style="display:none"></div>
+<div id="tourCard" style="display:none"></div>
+
+<script>
+/* ============================================================
+   MAKRO EXECUTIVE OS · motor local (vanilla JS, cero dependencias)
+   ============================================================ */
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MXN=n=>'$'+Math.round(n).toLocaleString('es-MX');
+const fmtK=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+Math.round(n/1e3)+'K':MXN(n);
+const pct=n=>n.toFixed(1)+'%';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* ---------------- DATOS BASE (cierre agosto 2026) ---------------- */
+const BR=[
+ {id:'real',n:'Real Providencia',sales:12700000,mg:9.1,gr:-2.1,inv:11330000,ddi:28,tk:41200,osa:96.8,score:81,c:'#39c6ff'},
+ {id:'castillos',n:'Castillos',sales:1150000,mg:20.4,gr:6.2,inv:1990000,ddi:53,tk:5400,osa:94.2,score:86,c:'#a78bfa'},
+ {id:'villas',n:'Villas de San Juan',sales:1020000,mg:20.7,gr:14.5,inv:1580000,ddi:48,tk:4900,osa:97.5,score:92,c:'#51d88a'},
+ {id:'hilario',n:'Hilario Medina',sales:1460000,mg:19.7,gr:-3.5,inv:1480000,ddi:77,tk:6800,osa:93.1,score:74,c:'#ffb350'}];
+const TOT={sales:16330000,mg:11.6,inv:16358858,ddi:33,plan:95.4,tk:58300};
+
+const rng=mulberry32(20260831);
+const WD=[1.18,.84,.80,.86,.92,1.08,1.38]; // Dom..Sat
+const DAYS=(()=>{let raw=[],s=0;for(let d=1;d<=31;d++){const wd=new Date(2026,7,d).getDay();const v=430000*WD[wd]*(0.9+rng()*0.2);raw.push(v);s+=v}
+ const k=TOT.sales/s;return raw.map((v,i)=>{const sales=Math.round(v*k);const margin=+(9.8+rng()*3.4).toFixed(1);const tickets=Math.round(sales/(255+rng()*60));
+ return{d:i+1,date:'2026-08-'+String(i+1).padStart(2,'0'),sales,margin,tickets,profit:Math.round(sales*margin/100)}})})();
+
+const HOURLY=(()=>{const hrs=[];for(let h=8;h<=22;h++)hrs.push(h);
+ const curve=hrs.map(h=>0.25+Math.exp(-Math.pow(h-13,2)/8)*0.9+Math.exp(-Math.pow(h-19.5,2)/6));
+ const k=(TOT.sales/31)/curve.reduce((a,b)=>a+b,0);
+ const act=curve.map(c=>c*k*(0.94+rng()*0.12));
+ return{hrs,act,prev:act.map(v=>v*(0.86+rng()*0.1)),obj:curve.map(c=>c*k*1.05),
+  margin:curve.map((c,i)=>+(10.2+c*2.4+(rng()-.5)).toFixed(1)),
+  tickets:act.map(v=>Math.round(v/280)),profit:act.map((v,i)=>Math.round(v*(10.2+curve[i]*2.4)/100))}})();
+
+const MIX=[['Cerveza',24.5,'#ffb350'],['Refrescos',18.2,'#39c6ff'],['Abarrotes',16.8,'#2fe6c8'],['Vinos y licores',9.4,'#a78bfa'],['Agua',7.1,'#5aa9ff'],['Botanas',6.6,'#51d88a'],['Dulces',4.3,'#ff8fb1'],['Limpieza',3.4,'#7dd3fc'],['Conservas',3.2,'#f0abfc'],['Higiene',2.9,'#94a3b8'],['Afeitado',1.4,'#fda4af'],['Otros',2.2,'#64748b']];
+
+const CATINV=[
+ {c:'Abarrotes',inv:6840000,ddi:52},{c:'Vinos y licores',inv:2910000,ddi:61},{c:'Agua embotellada',inv:1415000,ddi:14},
+ {c:'Botanas',inv:962000,ddi:16},{c:'Cerveza',inv:746221,ddi:18},{c:'Limpieza',inv:823000,ddi:74},
+ {c:'Higiene personal',inv:688000,ddi:96},{c:'Conservas',inv:612000,ddi:83},{c:'Dulces',inv:598642,ddi:120},
+ {c:'Refresco cola',inv:271024,ddi:7},{c:'Envases',inv:259846,ddi:1108},{c:'Artículos de afeitar',inv:233125,ddi:266}];
+const catAct=ddi=>ddi<10?['Asegurar cobertura','t-red']:ddi<25?['Mantener abasto','t-green']:ddi<=45?['Optimizar pedido','t-blue']:ddi<=90?['Reducir capital','t-amber']:['Depurar inventario','t-red'];
+
+const WATCH=[
+ {p:'Envase retornable 600 ml',c:'Envases',v:7038,mg:8.0,inv:259846,d:1108,prob:'Sobrestock severo',sc:91},
+ {p:'Refresco cola 2.5 L',c:'Refresco cola',v:1161531,mg:12.4,inv:271024,d:7,prob:'Riesgo de quiebre',sc:88},
+ {p:'Rasurador desechable 3 pzas',c:'Art. de afeitar',v:26296,mg:14.0,inv:233125,d:266,prob:'Baja rotación',sc:84},
+ {p:'Chocolate barra 90 g',c:'Dulces',v:149661,mg:19.0,inv:598642,d:120,prob:'Capital inmovilizado',sc:72},
+ {p:'Cerveza clara 355 ml 6-pack',c:'Cerveza',v:1243702,mg:11.5,inv:746221,d:18,prob:'Alta rotación · vigilar stock',sc:65}];
+
+const BRIDGE=[{l:'Agosto previo',v:13.2},{l:'Mix Real Prov.',v:-0.9},{l:'Promociones',v:-0.4},{l:'Costo Coca-Cola',v:-0.3},{l:'Precio +',v:0.2},{l:'Merma',v:-0.2},{l:'Agosto actual',v:11.6}];
+
+const PO=[
+ {p:'Coca-Cola FEMSA',cat:'Refrescos',a:14.92,b:15.70,ch:5.2,vig:'05 Sep',ddi:8,rec:'+17 días',sav:51300,kind:'sim'},
+ {p:'Grupo Modelo',cat:'Cerveza',a:18.40,b:19.28,ch:4.8,vig:'06 Sep',ddi:12,rec:'+14 días',sav:39360,kind:'analiza'},
+ {p:'La Costeña',cat:'Abarrotes',a:21.10,b:21.62,ch:2.5,vig:'09 Sep',ddi:34,rec:'No adelantar',sav:0,kind:'logic'}];
+const poState=['','',''];
+
+const SUP=[
+ {n:'Coca-Cola FEMSA',cat:'Refrescos',spend:3420000,fill:98.2,lead:2,cond:'Contado 15 días',score:92,pend:'Volumen adicional sep'},
+ {n:'Grupo Modelo',cat:'Cerveza',spend:4180000,fill:97.4,lead:3,cond:'Crédito 21 días',score:90,pend:'Rebate por volumen'},
+ {n:'Bimbo',cat:'Pan / Abarrotes',spend:980000,fill:98.9,lead:1,cond:'Contado',score:94,pend:'—'},
+ {n:'Frito-Lay (PepsiCo)',cat:'Botanas',spend:2210000,fill:96.5,lead:2,cond:'Crédito 15 días',score:88,pend:'Exhibición cabeceras'},
+ {n:'La Costeña',cat:'Conservas',spend:1240000,fill:95.8,lead:4,cond:'Crédito 30 días',score:84,pend:'Descuento pronto pago'},
+ {n:'Jumex',cat:'Bebidas',spend:610000,fill:96.0,lead:3,cond:'Crédito 15 días',score:85,pend:'Mix presentaciones'},
+ {n:'P&G',cat:'Higiene / Afeitado',spend:740000,fill:94.1,lead:5,cond:'Crédito 30 días',score:80,pend:'Afeitado sobrestock'},
+ {n:'Unilever',cat:'Limpieza',spend:860000,fill:93.2,lead:5,cond:'Crédito 30 días',score:78,pend:'Fill rate bajo'}];
+
+const OPPS=[
+ {n:'Corona Extra 355 ml',s:'Ventas +31% · Stock 22 días · Margen 12.8%',d:'Incrementar exhibición en cabecera podría capturar demanda sin comprometer inventario.',imp:'+$62K/mes est.'},
+ {n:'Sabritas 170 g',s:'Venta +18% · Disponibilidad 99.1%',d:'Posible cross-sell con refrescos en zona de caja.',imp:'+$38K/mes est.'}];
+
+const BENCH=[
+ {k:'OSA · disponibilidad en anaquel',meta:'≥ 97%',now:'95.4%',ok:false},
+ {k:'Fill rate de proveedores',meta:'≥ 98%',now:'96.9%',ok:false},
+ {k:'DDI consolidado',meta:'≤ 30 días',now:'33 días',ok:false},
+ {k:'GMROI anualizado',meta:'≥ 1.5x',now:'1.39x',ok:false},
+ {k:'Merma',meta:'≤ 0.8%',now:'0.6%',ok:true},
+ {k:'Ticket promedio',meta:'≥ $290',now:'$280',ok:false}];
+
+const EROSION=[
+ {t:'7 SKUs con caída de margen',d:'Detectados en Real Providencia · sin actualización de precio desde julio.',imp:'−$48K/mes',act:'task-create',lbl:'Crear tarea'},
+ {t:'Promoción aceite 1L sin autorizar',d:'Esperando decisión de Dirección · impacto en tráfico de fin de semana.',imp:'−$31K/mes',act:'dec-open',lbl:'Ir a decisión'},
+ {t:'Cerveza premium debajo de precio guía',d:'2 sucursales con precio 4% debajo del EDLP sugerido.',imp:'−$22K/mes',act:'task-create',lbl:'Crear tarea'}];
+const RECOV=[
+ {t:'Cross-sell refresco + botana en caja',d:'Afinidad 0.61 en tickets de tarde. Activa sugerido en POS.',imp:'+$85K/mes',act:'task-create',lbl:'Crear acción'},
+ {t:'Cabecera Corona Extra fin de semana',d:'Tracción +31% con stock holgado (22 días).',imp:'+$62K/mes',act:'task-create',lbl:'Crear acción'},
+ {t:'Ajuste de precio en afeitado',d:'Rotación 1.4x anual; precio 6% arriba de competencia local.',imp:'+$19K/mes',act:'task-create',lbl:'Crear acción'}];
+
+const AGENDA=[
+ {h:'07:30',t:'Revisar Daily Executive Brief',tag:'DIRECCIÓN',i:7,u:6,e:2},
+ {h:'09:00',t:'Comité de compras: estrategia Coca-Cola',tag:'COMPRAS',i:9,u:9,e:4},
+ {h:'11:00',t:'Revisión inventario Hilario (77 DDI)',tag:'INVENTARIO',i:8,u:8,e:5},
+ {h:'13:00',t:'Validar exhibición Corona Extra',tag:'COMERCIAL',i:6,u:5,e:2},
+ {h:'16:00',t:'Seguimiento 7 SKUs con caída de margen',tag:'PRECIOS',i:8,u:7,e:3},
+ {h:'18:00',t:'Carga de archivos Odoo del día',tag:'DATOS',i:5,u:4,e:1}];
+
+const DECISIONS=[
+ {t:'Adelantar compra Grupo Modelo',d:'Ahorro estimado $39,360 ante aumento +4.8% vigente el 06 Sep.',amt:'$39,360',tag:'COMPRAS'},
+ {t:'Ajustar precio de 7 SKUs',d:'Erosión detectada en Real Providencia; recuperaría ~$48K/mes.',amt:'$48K/mes',tag:'PRECIOS'},
+ {t:'Autorizar promoción de aceite en Real Providencia',d:'Impacto en tráfico estimado $31K/mes; margen protegido por volumen.',amt:'$31K/mes',tag:'COMERCIAL'}];
+
+const WAITING=[
+ {who:'Coca-Cola FEMSA',what:'Confirmación de volumen adicional septiembre',due:'hoy'},
+ {who:'Administrador',what:'Aprobación promoción aceite Real Providencia',due:'ayer'},
+ {who:'IT / Odoo',what:'Accesos API para Fase 3 de integración',due:'05 Sep'}];
+
+const ALERTS=[
+ {id:1,lv:'crítica',tag:'MARGEN',t:'Margen Real Providencia 9.1% (meta 12%)',d:'Concentra 78% de la venta; cada punto de margen vale ~$127K/mes.',imp:'$127K/mes',view:'rentabilidad'},
+ {id:2,lv:'crítica',tag:'INVENTARIO',t:'Hilario Medina: 77 DDI y venta −3.5%',d:'Capital inmovilizado $1.48M con rotación anual 4.7x.',imp:'$1.48M',view:'inventario'},
+ {id:3,lv:'crítica',tag:'COMPRAS',t:'Aumento Coca-Cola +5.2% el 05 Sep con solo 8 días de stock',d:'Adelantar 17 días genera ahorro estimado de $51,300.',imp:'$51.3K',view:'compras'},
+ {id:4,lv:'alta',tag:'TAREAS',t:'5 tareas ejecutivas vencidas',d:'Incluye negociación Coca-Cola y 7 SKUs con caída de margen.',imp:'—',view:'tareas'},
+ {id:5,lv:'alta',tag:'INVENTARIO',t:'Envases: 1,108 días de inventario',d:'Sobrestock severo · $259,846 con rotación 0.03x mensual.',imp:'$259.8K',view:'inventario'},
+ {id:6,lv:'media',tag:'DATOS',t:'3 presentaciones pieza/caja sin validar',d:'Data Quality Score 93 · afecta el cálculo de margen por SKU.',imp:'—',view:'odoo'},
+ {id:7,lv:'media',tag:'SUCURSALES',t:'Disponibilidad Castillos 94.2% (< 96% objetivo)',d:'Quiebres en bebidas frías detectados el fin de semana.',imp:'~$18K/sem',view:'sucursales'}];
+
+const TASKS_DEF=[
+ {id:1,t:'Negociar volumen Coca-Cola antes del aumento',br:'Todas',ar:'Compras',own:'A. Sandoval',due:'2026-08-31',pr:'crítica'},
+ {id:2,t:'Revisar 7 SKUs con caída de margen',br:'Real Providencia',ar:'Comercial',own:'D. Cervantes',due:'2026-08-30',pr:'alta'},
+ {id:3,t:'Plan de depuración Envases (1,108 DDI)',br:'Todas',ar:'Inventario',own:'L. Márquez',due:'2026-08-29',pr:'alta'},
+ {id:4,t:'Enviar plan de exhibición Corona Extra',br:'Todas',ar:'Comercial',own:'D. Cervantes',due:'2026-09-01',pr:'media'},
+ {id:5,t:'Validar presentaciones pieza/caja en catálogo',br:'Todas',ar:'Datos',own:'Sistema',due:'2026-08-28',pr:'media'},
+ {id:6,t:'Autorizar pedido adelantado Grupo Modelo',br:'Todas',ar:'Compras',own:'A. Sandoval',due:'2026-09-03',pr:'crítica'},
+ {id:7,t:'Reconocer resultado Villas (+14.5%)',br:'Villas de San Juan',ar:'Dirección',own:'A. Sandoval',due:'2026-09-05',pr:'baja'},
+ {id:8,t:'Plan disponibilidad Castillos ≥96%',br:'Castillos',ar:'Operaciones',own:'R. Quintana',due:'2026-09-04',pr:'alta'},
+ {id:9,t:'Cierre semanal septiembre W1',br:'Todas',ar:'Dirección',own:'A. Sandoval',due:'2026-09-07',pr:'media'},
+ {id:10,t:'Actualizar recetas de exportación Odoo',br:'Todas',ar:'Datos',own:'Sistema',due:'2026-09-10',pr:'baja'}];
+
+const EVENTS_DEF=[
+ {date:'2026-09-02',h:'07:30',t:'Daily Executive Brief',k:'reunion'},
+ {date:'2026-09-02',h:'09:00',t:'Comité compras · Coca-Cola',k:'reunion'},
+ {date:'2026-09-03',h:'11:00',t:'Revisión inventario Hilario',k:'tarea'},
+ {date:'2026-09-04',h:'10:00',t:'Plan disponibilidad Castillos',k:'tarea'},
+ {date:'2026-09-05',h:'08:00',t:'⚠ Cambio precio Coca-Cola +5.2%',k:'precio'},
+ {date:'2026-09-06',h:'08:00',t:'⚠ Cambio precio Grupo Modelo +4.8%',k:'precio'},
+ {date:'2026-09-07',h:'09:00',t:'Cierre semanal W1',k:'cierre'},
+ {date:'2026-09-09',h:'08:00',t:'Cambio precio La Costeña +2.5%',k:'precio'},
+ {date:'2026-09-15',h:'12:00',t:'Pago proveedores quincena',k:'cierre'},
+ {date:'2026-09-30',h:'18:00',t:'Cierre mensual septiembre',k:'cierre'}];
+
+const MSGS_DEF=[
+ {from:'Dirección',to:'Administrador',t:'Priorizar pedido Coca-Cola antes del 05 Sep. Confirmar hoy el monto.',h:'07:42'},
+ {from:'Compras',to:'Dirección',t:'Simulación lista: adelantar 17 días = $51,300 de ahorro. Pendiente tu autorización.',h:'08:15'},
+ {from:'Comercial',to:'Compras',t:'Corona Extra +31% · propongo cabecera el fin de semana. ¿Hay volumen adicional?',h:'09:02'}];
+
+/* ---------------- ESTADO PERSISTENTE ---------------- */
+let state={
+ tasks:LS.get('mk_tasks',TASKS_DEF),
+ events:LS.get('mk_events',EVENTS_DEF),
+ acked:LS.get('mk_acked',[]),
+ msgs:LS.get('mk_msgs',MSGS_DEF),
+ phase:LS.get('mk_phase',1),
+ setup:LS.get('mk_setup',false),
+ dens:LS.get('mk_dens',''),
+ learn:LS.get('mk_learn',['Perfil de venta: viernes y sábado concentran 27% de la venta.','Real Providencia explica 78% de la venta consolidada.','DDI > 90 dispara alerta de capital automáticamente.']),
+ recipes:LS.get('mk_recipes',[
+  {m:'Ventas',r:'POS · Diario por sucursal',c:'fecha, sucursal, sku, qty, importe'},
+  {m:'Inventario',r:'Stock · Valuación por categoría',c:'categoria, inv_final, ddi'},
+  {m:'Compras',r:'PO · Recibos y precios',c:'proveedor, sku, costo, vigencia'}]),
+ agendaDone:LS.get('mk_agd',[]),
+ dq:{p3:3,c1:1}
+};
+const save=(k,v)=>LS.set('mk_'+k,v);
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const isOver=t=>!t.done&&t.due<todayISO();
+
+/* ---------------- UI GENÉRICA ---------------- */
+function toast(title,msg,type='ok',actionLabel,actionAct){
+ const el=document.createElement('div');el.className='toast'+(type==='ok'?'':type==='err'?' err':' warn');
+ el.innerHTML='<b>'+esc(title)+'</b><span>'+msg+'</span>'+(actionLabel?'<br><button class="btn xs pri" data-act="'+actionAct+'">'+actionLabel+'</button>':'');
+ $('#toasts').appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transition='.4s';setTimeout(()=>el.remove(),400)},4600)}
+const tip=$('#tip');
+function showTip(html,x,y){tip.innerHTML=html;tip.style.opacity='1';const r=tip.getBoundingClientRect();tip.style.left=clamp(x+14,8,innerWidth-r.width-10)+'px';tip.style.top=clamp(y-r.height-12,8,innerHeight-r.height-8)+'px'}
+function hideTip(){tip.style.opacity='0'}
+let modalOnClose=null;
+function openModal(html,wide,onClose){modalOnClose=onClose||null;const r=$('#modalRoot');r.innerHTML='<div class="modal'+(wide?' wide':'')+'">'+html+'</div>';r.classList.add('open')}
+function closeModal(){const r=$('#modalRoot');r.classList.remove('open');r.innerHTML='';if(modalOnClose){const f=modalOnClose;modalOnClose=null;f()}}
+$('#modalRoot').addEventListener('click',e=>{if(e.target.id==='modalRoot')closeModal()});
+
+/* ---------------- NAVEGACIÓN ---------------- */
+const NAV=[
+ ['command','Command Center','<rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/>'],
+ ['ventas','Ventas','<path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/>'],
+ ['rentabilidad','Rentabilidad','<circle cx="12" cy="12" r="9"/><path d="M9 15l6-6M8.5 9.5h.01M15.5 14.5h.01"/>'],
+ ['inventario','Inventario','<path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.3 8.3L12 13l8.7-4.7M12 13v8"/>'],
+ ['compras','Compras','<circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.7 12.4a1.5 1.5 0 0 0 1.5 1.1h8.9a1.5 1.5 0 0 0 1.5-1.2L21.5 7H6"/>'],
+ ['proveedores','Proveedores','<path d="M1 7h13v10H1zM14 10h5l3 3v4h-8"/><circle cx="6" cy="19" r="1.8"/><circle cx="18" cy="19" r="1.8"/>'],
+ ['comercial','Comercial','<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>'],
+ ['tareas','Tareas','<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 12l3 3 5-6"/>','task'],
+ ['alertas','Alertas','<path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>','alert'],
+ ['sucursales','Sucursales','<path d="M3 9l1.5-5h15L21 9M3 9v11h18V9M9 20v-6h6v6M3 9h18"/>'],
+ ['myday','My Day','<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/>'],
+ ['ai','MAKRO AI Agent','<rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4M9 4h6"/><circle cx="9.5" cy="13" r="1.2" fill="currentColor"/><circle cx="14.5" cy="13" r="1.2" fill="currentColor"/><path d="M9.5 16.5h5"/>'],
+ ['odoo','Odoo Data Center','<ellipse cx="12" cy="5.5" rx="8" ry="2.8"/><path d="M4 5.5v13c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8v-13M4 12c0 1.5 3.6 2.8 8 2.8s8-1.3 8-2.8"/>'],
+ ['calendario','Calendario','<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/>'],
+ ['configuracion','Configuración','<circle cx="12" cy="12" r="3.2"/><path d="M19 12a7 7 0 0 0-.15-1.4l2.1-1.6-2-3.4-2.5 1a7 7 0 0 0-2.4-1.4L13.7 2h-3.4l-.35 2.6a7 7 0 0 0-2.4 1.4l-2.5-1-2 3.4 2.1 1.6A7 7 0 0 0 5 12c0 .5.05 1 .15 1.4l-2.1 1.6 2 3.4 2.5-1a7 7 0 0 0 2.4 1.4l.35 2.6h3.4l.35-2.6a7 7 0 0 0 2.4-1.4l2.5 1 2-3.4-2.1-1.6c.1-.4.15-.9.15-1.4z"/>']];
+const TITLES={command:'COMMAND CENTER',ventas:'VENTAS · SALES INTELLIGENCE',rentabilidad:'RENTABILIDAD',inventario:'INVENTARIO',compras:'COMPRAS · PURCHASING INTELLIGENCE',proveedores:'PROVEEDORES',comercial:'COMERCIAL · WAR ROOM',tareas:'TAREAS EJECUTIVAS',alertas:'CENTRO DE ALERTAS',sucursales:'SUCURSALES',myday:'MY DAY',ai:'MAKRO AI AGENT',odoo:'ODOO DATA CENTER',calendario:'MY EXECUTIVE CALENDAR',configuracion:'CONFIGURACIÓN'};
+
+function buildNav(){
+ $('#navList').innerHTML=NAV.map(n=>'<div class="nv'+(n[0]==='command'?' on':'')+'" data-act="nav" data-view="'+n[0]+'" id="nv-'+n[0]+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">'+n[2]+'</svg><span class="nv-l">'+n[1]+'</span>'+(n[3]==='alert'?'<span class="bdg" id="navB-alert">7</span>':n[3]==='task'?'<span class="bdg w" id="navB-task">5</span>':'')+'</div>').join('')}
+function setView(v){
+ $$('.view').forEach(x=>x.classList.remove('active'));const el=$('#view-'+v);if(el)el.classList.add('active');
+ $$('.nv').forEach(n=>n.classList.toggle('on',n.dataset.view===v));
+ $('#topTitle').innerHTML=TITLES[v]+'<small>MAKRO EXECUTIVE OS v2.6</small>';
+ window.scrollTo({top:0,behavior:'smooth'});
+ if(v==='sucursales')requestAnimationFrame(renderBranchBars)}
+function updateBadges(){
+ const ov=state.tasks.filter(isOver).length;
+ const act=ALERTS.filter(a=>!state.acked.includes(a.id)).length;
+ const b1=$('#navB-alert'),b2=$('#navB-task'),b3=$('#bellBadge');
+ if(b1)b1.textContent=act;if(b2)b2.textContent=ov;if(b3)b3.textContent=act}
+
+/* ---------------- GRÁFICAS ---------------- */
+function spark(data,color,w=120,h=30){const mx=Math.max(...data),mn=Math.min(...data);const pts=data.map((v,i)=>[(i/(data.length-1))*w,h-3-((v-mn)/(mx-mn||1))*(h-6)]).map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+ return '<svg class="spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linejoin="round"/></svg>'}
+const hiddenSets={};
+function xyChart(elId,opt){
+ const el=document.getElementById(elId);if(!el)return;
+ const hid=hiddenSets[elId]=hiddenSets[elId]||new Set();
+ const W=940,H=opt.h||270,L=56,R=14,T=16,B=26,n=opt.labels.length;
+ const series=opt.series.filter(s=>!hid.has(s.n));
+ let vals=[];series.forEach(s=>vals=vals.concat(s.v));
+ if(!vals.length)vals=[0];
+ let mx=Math.max(...vals)*1.06,mn=Math.min(0,...vals);if(opt.min0)mn=0;if(mx===mn)mx=mn+1;
+ const X=i=>L+(W-L-R)*(n===1?0.5:i/(n-1)),Y=v=>T+(H-T-B)*(1-(v-mn)/(mx-mn));
+ let g='';for(let i=0;i<=4;i++){const y=T+(H-T-B)*i/4,v=mn+(mx-mn)*(1-i/4);
+  g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="#1a2836" stroke-width="1"/>'+'<text x="'+(L-8)+'" y="'+(y+3.5)+'" text-anchor="end" font-size="10" fill="#5b6d82" font-family="IBM Plex Mono">'+opt.yfmt(v)+'</text>'}
+ const lbls=opt.labels.map((lb,i)=>(n<=16||i%Math.ceil(n/14)===0)?'<text x="'+X(i)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9.5" fill="#5b6d82" font-family="IBM Plex Mono">'+lb+'</text>':'').join('');
+ let paths='';series.forEach(s=>{
+  const pts=s.v.map((v,i)=>X(i)+','+Y(v)).join(' L');
+  if(s.fill)paths+='<path d="M'+X(0)+','+Y(s.v[0])+' L'+pts+' L'+X(n-1)+','+(H-B)+' L'+X(0)+','+(H-B)+' Z" fill="'+s.c+'" opacity="0.09"/>';
+  paths+='<path d="M'+pts+'" fill="none" stroke="'+s.c+'" stroke-width="2.2" '+(s.dash?'stroke-dasharray="5 4"':'')+' stroke-linejoin="round" stroke-linecap="round" opacity="'+(s.ghost?0.45:1)+'"/>'});
+ let hover='';const step=(W-L-R)/Math.max(1,n-1);
+ for(let i=0;i<n;i++)hover+='<rect x="'+(X(i)-step/2)+'" y="'+T+'" width="'+step+'" height="'+(H-T-B)+'" fill="transparent" data-i="'+i+'"/>';
+ el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'">'+g+paths+'<line id="'+elId+'-gl" x1="0" x2="0" y1="'+T+'" y2="'+(H-B)+'" stroke="#2fe6c8" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>'+lbls+hover+'</svg>';
+ const svg=el.querySelector('svg'),gl=el.querySelector('#'+elId+'-gl');
+ svg.querySelectorAll('rect[data-i]').forEach(r=>{
+  r.addEventListener('mousemove',e=>{const i=+r.dataset.i;gl.setAttribute('x1',X(i));gl.setAttribute('x2',X(i));gl.setAttribute('opacity','0.8');
+   let rows='<div style="font:700 10px var(--fm);letter-spacing:1px;color:#8ea2b8;margin-bottom:4px">'+opt.labels[i]+'</div>';
+   opt.series.forEach(s=>{rows+='<div class="tr"><span><span class="sw" style="background:'+s.c+'"></span>'+s.n+'</span><b>'+opt.tipfmt(s.v[i],s.n)+'</b></div>'});
+   showTip(rows,e.clientX,e.clientY)});
+  r.addEventListener('mouseleave',()=>{hideTip();gl.setAttribute('opacity','0')});
+  r.addEventListener('click',()=>{hideTip();opt.onPick&&opt.onPick(+r.dataset.i)})});
+ // leyenda
+ if(opt.legend){const lg=document.getElementById(opt.legend);if(lg)lg.innerHTML=opt.series.map(s=>'<span class="lgc'+(hid.has(s.n)?' off':'')+'" data-el="'+elId+'" data-sn="'+s.n+'"><span class="sw" style="background:'+s.c+'"></span>'+s.n+'</span>').join('')}}
+document.addEventListener('click',e=>{const c=e.target.closest('.lgc[data-el]');if(!c)return;const set=hiddenSets[c.dataset.el]=hiddenSets[c.dataset.el]||new Set();set.has(c.dataset.sn)?set.delete(c.dataset.sn):set.add(c.dataset.sn);renderAllCharts()});
+function renderAllCharts(){renderPulse();renderVentas()}
+
+function gauge(elId,val){const el=document.getElementById(elId);const r=62,C=2*Math.PI*r;
+ el.innerHTML='<svg width="170" height="130" viewBox="0 0 170 140"><path d="M23 120 A 62 62 0 1 1 147 120" fill="none" stroke="#1a2836" stroke-width="13" stroke-linecap="round"/><path id="'+elId+'-arc" d="M23 120 A 62 62 0 1 1 147 120" fill="none" stroke="url(#gg-'+elId+')" stroke-width="13" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'"/><defs><linearGradient id="gg-'+elId+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2fe6c8"/><stop offset="1" stop-color="#5aa9ff"/></linearGradient></defs><text x="85" y="86" text-anchor="middle" font-size="34" font-weight="600" fill="#e9eff7" font-family="IBM Plex Mono" id="'+elId+'-num">0</text><text x="85" y="106" text-anchor="middle" font-size="9" letter-spacing="2" fill="#5b6d82" font-family="IBM Plex Mono">/ 100</text></svg>';
+ setTimeout(()=>{el.querySelector('#'+elId+'-arc').style.transition='stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)';el.querySelector('#'+elId+'-arc').style.strokeDashoffset=C*(1-val/100);
+ const num=el.querySelector('#'+elId+'-num');let t0=null;const anim=ts=>{if(!t0)t0=ts;const p=Math.min(1,(ts-t0)/1400);num.textContent=Math.round(val*(0.2*p+0.8*p*p));if(p<1)requestAnimationFrame(anim)};requestAnimationFrame(anim)},300)}
+
+function renderPulse(){
+ const m=pulseMetric;const cfg={
+  sales:{s:[{n:'Actual',c:'#2fe6c8',v:HOURLY.act,fill:true}],y:fmtK,t:v=>fmtK(v),title:'VENTA POR HOY'},
+  margin:{s:[{n:'Margen %',c:'#5aa9ff',v:HOURLY.margin,fill:true}],y:v=>v.toFixed(1)+'%',t:v=>v.toFixed(1)+'%'},
+  tickets:{s:[{n:'Tickets',c:'#a78bfa',v:HOURLY.tickets,fill:true}],y:v=>Math.round(v)+'',t:v=>Math.round(v)+' tickets'},
+  profit:{s:[{n:'Utilidad',c:'#ffb350',v:HOURLY.profit,fill:true}],y:fmtK,t:v=>fmtK(v)}}[m];
+ const series=cfg.s.slice();
+ if(cmp.goal)series.push({n:'Meta',c:'#51d88a',v:HOURLY.obj,dash:true});
+ if(cmp.prev)series.push({n:'Periodo anterior',c:'#8ea2b8',v:HOURLY.prev,dash:true,ghost:true});
+ if(cmp.yr)series.push({n:'Año anterior',c:'#a78bfa',v:HOURLY.act.map(v=>v*0.93),dash:true,ghost:true});
+ if(cmp.budg)series.push({n:'Presupuesto',c:'#ffb350',v:HOURLY.obj.map(v=>v*1.04),dash:true,ghost:true});
+ xyChart('pulseChart',{labels:HOURLY.hrs.map(h=>h+':00'),series,yfmt:cfg.y,tipfmt:cfg.t,min0:m!=='margin',h:270,legend:'pulseLegend',
+  onPick:i=>toast('Detalle hora '+HOURLY.hrs[i]+':00','Valor: <b>'+cfg.t(series[0].v[i])+'</b> · clic registrado para análisis.','ok')});
+ $$('#pulseTabs .lgc').forEach(b=>b.classList.toggle('on',b.dataset.m===m))}
+let pulseMetric='sales';const cmp={prev:false,yr:false,budg:false,goal:true};
+
+function renderDonut(){
+ const el=$('#vMix');const W=300,H=230,cx=115,cy=115,r1=92,r0=58;
+ let a=-Math.PI/2,paths='',total=MIX.reduce((s,m)=>s+m[1],0);
+ MIX.forEach((m,i)=>{const a2=a+m[1]/total*2*Math.PI;const big=(a2-a)>Math.PI?1:0;
+  const p=r=>[cx+r*Math.cos(a),cy+r*Math.sin(a)],q=r=>[cx+r*Math.cos(a2),cy+r*Math.sin(a2)];
+  const[x1,y1]=p(r1),[x2,y2]=q(r1),[x3,y3]=q(r0),[x4,y4]=p(r0);
+  paths+='<path d="M'+x1+' '+y1+'A'+r1+' '+r1+' 0 '+big+' 1 '+x2+' '+y2+'L'+x3+' '+y3+'A'+r0+' '+r0+' 0 '+big+' 0 '+x4+' '+y4+'Z" fill="'+m[2]+'" data-i="'+i+'" style="cursor:pointer;transition:.15s;transform-origin:'+cx+'px '+cy+'px"/>';a=a2});
+ el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'">'+paths+'<text id="mixC1" x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="17" font-weight="600" fill="#e9eff7" font-family="IBM Plex Mono">'+fmtK(TOT.sales)+'</text><text id="mixC2" x="'+cx+'" y="'+(cy+14)+'" text-anchor="middle" font-size="9" fill="#5b6d82" font-family="IBM Plex Mono">TOTAL AGOSTO</text></svg>'
+  +'<div class="lg" style="margin-top:10px;max-height:110px;overflow-y:auto">'+MIX.map((m,i)=>'<span class="lgc" data-mix="'+i+'" style="padding:3px 8px"><span class="sw" style="background:'+m[2]+'"></span>'+m[0]+' '+m[1]+'%</span>').join('')+'</div>';
+ el.querySelectorAll('path[data-i]').forEach(p=>{
+  p.addEventListener('mousemove',e=>{const m=MIX[+p.dataset.i];showTip('<div class="tr"><span><span class="sw" style="background:'+m[2]+'"></span><b>'+m[0]+'</b></span><b>'+m[1]+'%</b></div><div class="tr"><span>Venta estimada</span><b>'+fmtK(TOT.sales*m[1]/100)+'</b></div>',e.clientX,e.clientY);
+   p.style.transform='scale(1.045)';$('#mixC1').textContent=fmtK(TOT.sales*m[1]/100);$('#mixC2').textContent=m[0].toUpperCase()});
+  p.addEventListener('mouseleave',()=>{hideTip();p.style.transform='';$('#mixC1').textContent=fmtK(TOT.sales);$('#mixC2').textContent='TOTAL AGOSTO'});
+  p.addEventListener('click',()=>{toast(m=>MIX[+p.dataset.i][0],'Categoría seleccionada: '+MIX[+p.dataset.i][0]+' · '+MIX[+p.dataset.i][1]+'% de la venta.','ok')})})}
+
+function renderBridge(){
+ const el=$('#bridgeChart');const W=560,H=250,L=14,R=14,T=24,B=52,n=BRIDGE.length;
+ const bw=(W-L-R)/n*0.62,gap=(W-L-R)/n;const mn=10,mx=14;const Y=v=>T+(H-T-B)*(1-(v-mn)/(mx-mn));
+ let cum=0,svg='',prevTop=0;
+ BRIDGE.forEach((b,i)=>{const x=L+gap*i+(gap-bw)/2;
+  if(i===0||i===n-1){const y0=Y(b.v),y1=Y(mn);
+   svg+='<rect x="'+x+'" y="'+y0+'" width="'+bw+'" height="'+(y1-y0)+'" rx="4" fill="'+(i===0?'#5aa9ff':'#2fe6c8')+'" opacity="0.85" data-b="'+i+'"/>';cum=b.v}
+  else{const from=cum,to=cum+b.v;const yT=Y(Math.max(from,to)),h=Math.abs(Y(from)-Y(to));
+   svg+='<rect x="'+x+'" y="'+yT+'" width="'+bw+'" height="'+Math.max(2,h)+'" rx="3" fill="'+(b.v>=0?'#51d88a':'#ff5c6c')+'" opacity="0.85" data-b="'+i+'"/>';
+   svg+='<line x1="'+(x-gap+bw+(gap-bw)/2+gap*0.0)+'" x2="'+x+'" y1="'+Y(from)+'" y2="'+Y(from)+'" stroke="#33475f" stroke-dasharray="3 3"/>';cum=to}
+  svg+='<text x="'+(x+bw/2)+'" y="'+(Y(i===0||i===n-1?b.v:(cum)) -6)+'" text-anchor="middle" font-size="10" font-weight="600" fill="#e9eff7" font-family="IBM Plex Mono">'+(i===0||i===n-1?b.v.toFixed(1)+'%':(b.v>0?'+':'')+b.v.toFixed(1))+'</text>';
+  const lb=b.l.length>9?b.l.slice(0,9)+'…':b.l;
+  svg+='<text x="'+(x+bw/2)+'" y="'+(H-30)+'" text-anchor="middle" font-size="8.5" fill="#5b6d82" font-family="IBM Plex Mono">'+lb+'</text>'});
+ el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'">'+svg+'</svg>';
+ el.querySelectorAll('rect[data-b]').forEach(r=>{const b=BRIDGE[+r.dataset.b];
+  r.addEventListener('mousemove',e=>showTip('<b>'+b.l+'</b><div class="tr"><span>Contribución</span><b>'+(b.v>0?'+':'')+b.v.toFixed(1)+' pp</b></div>',e.clientX,e.clientY));
+  r.addEventListener('mouseleave',hideTip)})}
+
+function renderBubble(){
+ const el=$('#bubbleChart');const W=940,H=340,L=60,R=20,T=18,B=40;
+ const mxInv=Math.max(...CATINV.map(c=>c.inv))*1.08;
+ const X=ddi=>L+(W-L-R)*(Math.log10(ddi+1)/Math.log10(1300));
+ const Y=v=>T+(H-T-B)*(1-v/mxInv);
+ let svg='';for(let i=0;i<=4;i++){const y=T+(H-T-B)*i/4;svg+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="#1a2836"/><text x="'+(L-8)+'" y="'+(y+3)+'" text-anchor="end" font-size="9.5" fill="#5b6d82" font-family="IBM Plex Mono">'+fmtK(mxInv*(1-i/4))+'</text>'}
+ [7,30,90,365,1108].forEach(dd=>{svg+='<line x1="'+X(dd)+'" x2="'+X(dd)+'" y1="'+T+'" y2="'+(H-B)+'" stroke="'+(dd===30?'#2fe6c8':'#22334a')+'" '+(dd===30?'stroke-width="1.5" stroke-dasharray="5 4"':'stroke-dasharray="2 4"')+'/><text x="'+X(dd)+'" y="'+(H-22)+'" text-anchor="middle" font-size="9" fill="'+(dd===30?'#2fe6c8':'#5b6d82')+'" font-family="IBM Plex Mono">'+dd+' d</text>'});
+ svg+='<text x="'+(X(30)+6)+'" y="'+(T+12)+'" font-size="9" fill="#2fe6c8" font-family="IBM Plex Mono">◀ sano | sobrestock ▶</text>';
+ const cols={'Depurar inventario':'#ff5c6c','Revisar surtido':'#ff5c6c','Reducir capital':'#ffb350','Optimizar pedido':'#5aa9ff','Mantener abasto':'#51d88a','Asegurar cobertura':'#2fe6c8'};
+ CATINV.forEach((c,i)=>{const ms=c.inv*30/c.ddi;const rr=clamp(Math.sqrt(ms)/26,5,30);const col=cols[catAct(c.ddi)[0]]||'#5aa9ff';
+  svg+='<circle cx="'+X(c.ddi)+'" cy="'+Y(c.inv)+'" r="'+rr+'" fill="'+col+'" opacity="0.6" stroke="'+col+'" stroke-width="1.5" data-i="'+i+'" style="cursor:pointer;transition:.15s"/>'});
+ el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'">'+svg+'</svg>';
+ el.querySelectorAll('circle[data-i]').forEach(ci=>{const c=CATINV[+ci.dataset.i];
+  ci.addEventListener('mousemove',e=>{ci.setAttribute('opacity','0.95');const[a,tc]=catAct(c.ddi);
+   showTip('<b>'+c.c+'</b><div class="tr"><span>Inventario</span><b>'+MXN(c.inv)+'</b></div><div class="tr"><span>DDI</span><b>'+c.ddi+' días</b></div><div class="tr"><span>Rotación anual</span><b>'+(365/c.ddi).toFixed(1)+'x</b></div><div class="tr"><span>Acción</span><b style="color:'+({red:'#ff5c6c',amber:'#ffb350',blue:'#5aa9ff',green:'#51d88a',teal:'#2fe6c8'}[tc.slice(2)]||'#fff')+'">'+a+'</b></div>',e.clientX,e.clientY)});
+  ci.addEventListener('mouseleave',()=>{ci.setAttribute('opacity','0.6');hideTip()});
+  ci.addEventListener('click',()=>openCatModal(c))})}
+function openCatModal(c){const[a,tc]=catAct(c.ddi);
+ openModal('<span class="tag '+tc+'">'+a.toUpperCase()+'</span><h3 style="margin-top:10px">'+c.c+'</h3><div class="msub">Detalle de inventario · cierre agosto 2026</div>'
+ +'<div class="mrow"><div><label class="fl">Inventario final</label><div class="num" style="font-size:19px">'+MXN(c.inv)+'</div></div><div><label class="fl">DDI</label><div class="num" style="font-size:19px">'+c.ddi+' días</div></div></div>'
+ +'<div class="mrow"><div><label class="fl">Rotación mensual</label><div class="num" style="font-size:19px">'+(30/c.ddi).toFixed(2)+'x</div></div><div><label class="fl">Rotación anual</label><div class="num" style="font-size:19px">'+(365/c.ddi).toFixed(1)+'x</div></div><div><label class="fl">Venta mensual est.</label><div class="num" style="font-size:19px">'+fmtK(c.inv*30/c.ddi)+'</div></div></div>'
+ +'<p style="font-size:12px;color:var(--mut)">Recomendación MAKRO AI: <b style="color:var(--teal)">'+a+'</b>. '+(c.ddi>90?'Capital inmovilizado alto; considerar liquidación o devolución a proveedor.':c.ddi<10?'Alta rotación: asegurar cobertura y frecuencia de pedido.':'Mantener política de reposición estándar.')+'</p>'
+ +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cerrar</button><button class="btn pri" data-act="task-create" data-t="Revisar categoría '+c.c+' ('+c.ddi+' DDI)">Crear tarea</button></div>')}
+
+/* ---------------- RENDER: COMMAND ---------------- */
+function renderKpis(){
+ const d7=DAYS.slice(-7).map(d=>d.sales);
+ const items=[
+  {l:'Ventas agosto',v:'$16.33M',s:'<span class="up">▲ 95.4% del plan</span>',c:'#2fe6c8',sp:d7,act:'nav',av:'ventas'},
+  {l:'Margen bruto',v:'11.6%',s:'<span class="dn">▼ 1.6 pp vs objetivo 13.2%</span>',c:'#5aa9ff',sp:DAYS.slice(-7).map(d=>d.margin),act:'nav',av:'rentabilidad'},
+  {l:'Inventario · DDI',v:'33 d',s:'<span class="wr">● $16.36M capital · meta ≤30</span>',c:'#ffb350',sp:[41,40,38,37,35,34,33],act:'nav',av:'inventario'},
+  {l:'Plan mensual',v:'95.4%',s:'<span class="wr">▼ 4.6 pp vs presupuesto</span>',c:'#a78bfa',sp:[62,71,78,84,89,93,95.4],act:'nav',av:'ventas'},
+  {l:'Tareas vencidas',v:'5',s:'<span class="dn">▲ requiere acción hoy</span>',c:'#ff5c6c',sp:[2,3,3,4,4,5,5],act:'nav',av:'tareas'}];
+ $('#kpiStrip').innerHTML=items.map(k=>'<div class="panel kpi" style="--kc:'+k.c+'" data-act="'+k.act+'" data-view="'+k.av+'"><div class="kl">'+k.l+'</div><div class="kv num" style="color:'+k.c+'">'+k.v+'</div><div class="kd">'+k.s+'</div>'+spark(k.sp,k.c)+'</div>').join('')}
+function renderInvBars(){
+ const mx=Math.max(...BR.map(b=>b.inv));
+ $('#invBars').innerHTML=BR.map(b=>'<div class="hb" data-act="inv-review" data-b="'+b.id+'"><div class="hbl"><span>'+b.n+'</span><b>'+fmtK(b.inv)+' <span style="color:var(--dim)">· '+b.ddi+' d</span></b></div><div class="hbb"><i style="width:'+(b.inv/mx*100).toFixed(1)+'%;background:linear-gradient(90deg,'+b.c+'88,'+b.c+')"></i></div><div class="hbm">DDI '+b.ddi+' días · '+(b.ddi<=30?'✔ en meta':b.ddi<=60?'⚠ vigilar':'✖ sobrestock')+'</div></div>').join('')}
+function renderWatch(){
+ $('#catWatch').innerHTML='<thead><tr><th>Producto</th><th>Categoría</th><th class="r">Ventas/mes</th><th class="r">Margen</th><th class="r">Inventario</th><th class="r">Días</th><th>Problema</th><th class="r">Score</th><th>Acción</th></tr></thead><tbody>'
+ +WATCH.map(w=>'<tr><td><b>'+w.p+'</b></td><td>'+w.c+'</td><td class="r">'+MXN(w.v)+'</td><td class="r">'+pct(w.mg)+'</td><td class="r">'+MXN(w.inv)+'</td><td class="r num '+(w.d>90?'dn':w.d<10?'wr':'')+'">'+w.d.toLocaleString()+'</td><td><span class="tag '+(w.d>90||w.d<10?'t-red':'t-amber')+'">'+w.prob+'</span></td><td class="r"><b style="color:'+(w.sc>80?'var(--red)':w.sc>70?'var(--amber)':'var(--blue)')+'">'+w.sc+'</b></td><td><button class="btn xs" data-act="task-create" data-t="Atender '+w.c+': '+w.prob+'">Actuar</button></td></tr>').join('')+'</tbody>'}
+const FEEDT=[
+ ['VENTAS','teal','Ticket <b>{v}</b> · Real Providencia · POS {p}'],
+ ['INVENTARIO','amber','Recepción Coca-Cola: <b>{n} cajas</b> en Castillos'],
+ ['PRECIOS','red','Cambio de precio programado: <b>Coca-Cola +5.2%</b> · 05 Sep'],
+ ['MAKRO AI','violet','Alerta evaluada: {a} · priorizada por impacto'],
+ ['COMPRAS','blue','Pedido sugerido: <b>Refresco cola 2.5L × {n}</b> · Villas'],
+ ['VENTAS','teal','Ticket <b>{v}</b> · Hilario Medina · POS {p}'],
+ ['ODOO','green','Exportación validada: ventas diarias · 0 errores']];
+let feedCount=0;
+function addFeed(inst){
+ const f=FEEDT[Math.floor(Math.random()*FEEDT.length)];
+ const txt=f[2].replace('{v}','$'+(120+Math.random()*680).toFixed(2)).replace('{p}','0'+(1+Math.floor(Math.random()*6))).replace(/\{n\}/g,Math.floor(20+Math.random()*180)).replace('{a}',ALERTS[Math.floor(Math.random()*ALERTS.length)].t.slice(0,34)+'…');
+ const now=new Date();const el=document.createElement('div');el.className='feed-it';
+ el.innerHTML='<span class="ft num">'+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+'</span><p><span class="tag t-'+f[1]+'" style="margin-right:6px">'+f[0]+'</span>'+txt+'</p>';
+ const list=$('#feedList');list.prepend(el);if(inst)for(let i=0;i<6;i++)addFeed(false);
+ while(list.children.length>14)list.lastChild.remove()}
+
+/* ---------------- RENDER: VENTAS ---------------- */
+const vState={branch:'Todas',period:30,group:'day',metric:'sales',offset:0};
+function vData(){
+ const bw={'Todas':1,'Real Providencia':.7777,'Castillos':.0704,'Villas de San Juan':.0625,'Hilario Medina':.0894}[vState.branch];
+ const bmg={'Todas':0,'Real Providencia':9.1,'Castillos':20.4,'Villas de San Juan':20.7,'Hilario Medina':19.7}[vState.branch];
+ let rows=DAYS.map(d=>{const s=Math.round(d.sales*bw);const mg=vState.branch==='Todas'?d.margin:+(bmg+(d.margin-11.5)*0.3).toFixed(1);
+  return{date:d.date,sales:s,profit:Math.round(s*mg/100),margin:mg,tickets:Math.round(d.tickets*bw),tk:+(s/Math.max(1,Math.round(d.tickets*bw))).toFixed(1)}});
+ const p=vState.period,end=31-vState.offset;rows=rows.slice(Math.max(0,end-vState.period),end);
+ if(vState.group==='week'){const w=[];for(let i=0;i<rows.length;i+=7){const c=rows.slice(i,i+7);const s=c.reduce((a,r)=>a+r.sales,0);
+  w.push({date:'Sem '+(w.length+1),sales:s,profit:c.reduce((a,r)=>a+r.profit,0),margin:s?c.reduce((a,r)=>a+r.profit,0)/s*100:0,tickets:c.reduce((a,r)=>a+r.tickets,0),tk:s/Math.max(1,c.reduce((a,r)=>a+r.tickets,0))})}rows=w}
+ else if(vState.group==='cum'){let s=0,pf=0,tk=0;rows=rows.map(r=>{s+=r.sales;pf+=r.profit;tk+=r.tickets;return{date:r.date,sales:s,profit:pf,margin:pf/s*100,tickets:tk,tk:s/tk}})}
+ return rows}
+const MF={sales:['Venta',r=>r.sales,fmtK],'profit':['Utilidad',r=>r.profit,fmtK],'margin':['Margen %',r=>r.margin,v=>v.toFixed(1)+'%'],'tickets':['Clientes / tickets',r=>r.tickets,v=>Math.round(v).toLocaleString()],'ticket':['Ticket promedio',r=>r.tk,v=>'$'+v.toFixed(0)]};
+function renderVentas(){
+ const rows=vData();const[mlabel,acc,tf]=MF[vState.metric];
+ const labels=rows.map(r=>r.date==='Sem 1'?'S1':r.date==='Sem 2'?'S2':r.date==='Sem 3'?'S3':r.date==='Sem 4'?'S4':r.date==='Sem 5'?'S5':r.date.slice(8));
+ xyChart('vChart',{labels,series:[{n:mlabel,c:'#2fe6c8',v:rows.map(acc),fill:true}],yfmt:tf,tipfmt:v=>tf(v),min0:vState.metric!=='margin',h:280,
+  onPick:i=>{const r=rows[i];toast('📅 '+(r.date.includes('-')?'31 Ago 2026 · Día '+r.date.slice(8):r.date),'Venta <b>'+fmtK(r.sales)+'</b> · Margen <b>'+pct(r.margin)+'</b> · <b>'+r.tickets.toLocaleString()+'</b> tickets · Ticket <b>$'+r.tk.toFixed(0)+'</b>')}});
+ $('#vChartTitle').textContent='TENDENCIA DE '+mlabel.toUpperCase();
+ $('#vChartSub').textContent=(vState.period===1?'último día':'últimos '+vState.period+' días')+' · '+vState.branch.toLowerCase()+(vState.offset?' · −'+vState.offset+'d desplazado':'');
+ // lectura ejecutiva
+ const tot=rows.reduce((a,r)=>a+r.sales,0),pf=rows.reduce((a,r)=>a+r.profit,0);
+ let mx=rows[0],mnv=rows[0];rows.forEach(r=>{if(r.sales>mx.sales)mx=r;if(r.sales<mnv.sales)mnv=r});
+ $('#vRead').innerHTML='<p>📈 El periodo suma <b style="color:var(--teal)">'+fmtK(tot)+'</b> en ventas con utilidad de <b>'+fmtK(pf)+'</b> (margen <b>'+pct(tot?pf/tot*100:0)+'</b>). '
+ +(vState.branch==='Real Providencia'?'<span class="wr">⚠ La sucursal concentra 78% de la venta con margen 9.1%: cada punto equivale a ~$127K/mes.</span> '
+ :vState.branch==='Hilario Medina'?'<span class="dn">⚠ Venta −3.5% vs 2025 con 77 DDI: prioridad reducir capital inmovilizado.</span> '
+ :vState.branch==='Villas de San Juan'?'<span class="up">✔ Mejor desempeño del mes: +14.5% vs 2025 y margen 20.7%.</span> '
+ :'Real Providencia explica 78% del resultado consolidado.</span>')
+ +'</p><p style="margin-top:8px">🔎 Día pico: <b>'+(mx.date||'—')+'</b> con '+fmtK(mx.sales)+' · Día más bajo: <b>'+(mnv.date||'—')+'</b> con '+fmtK(mnv.sales)
+ +'. '+(vState.group==='cum'?'El acumulado muestra pendiente consistente sin caídas.':'Los fines de semana concentran ~27% de la venta; protege disponibilidad viernes y sábado.')+'</p>'
+ +'<p style="margin-top:8px">🎯 Recomendación MAKRO AI: '+(vState.metric==='margin'?'trabajar mix y promociones de Real Providencia antes del cierre semanal.':'asegurar inventario de refresco cola (7 DDI) antes del fin de semana.')+'</p>';
+ // tabla
+ $('#vTable').innerHTML='<thead><tr><th>Fecha</th><th class="r">Venta</th><th class="r">Utilidad</th><th class="r">Margen</th><th class="r">Clientes</th><th class="r">Ticket prom.</th><th class="r">Vs día anterior</th></tr></thead><tbody>'
+ +rows.map((r,i)=>{const prev=i>0?rows[i-1].sales:r.sales;const ch=prev?(r.sales/prev-1)*100:0;
+  return'<tr><td class="num">'+(r.date.includes('-')?'2026-08-'+r.date.slice(8):r.date)+'</td><td class="r"><b>'+MXN(r.sales)+'</b></td><td class="r">'+MXN(r.profit)+'</td><td class="r">'+pct(r.margin)+'</td><td class="r">'+r.tickets.toLocaleString()+'</td><td class="r">$'+r.tk.toFixed(0)+'</td><td class="r '+(ch>=0?'up':'dn')+'">'+(i===0?'—':(ch>=0?'▲ +':'▼ ')+ch.toFixed(1)+'%')+'</td></tr>'}).join('')+'</tbody>'}
+function exportCSV(){
+ const rows=vData();let csv='Fecha,Venta,Utilidad,Margen %,Clientes,Ticket promedio\n';
+ rows.forEach(r=>csv+=[r.date,r.sales,r.profit,r.margin.toFixed(1),r.tickets,r.tk.toFixed(1)].join(',')+'\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));a.download='MAKRO_ventas_'+vState.branch.replace(/\s/g,'_')+'.csv';a.click();
+ toast('Exportación lista','CSV generado con '+rows.length+' registros · '+vState.branch+'.','ok')}
+
+/* ---------------- RENDER: RENTABILIDAD ---------------- */
+function renderRent(){
+ $('#mgBars').innerHTML=BR.map(b=>{const w=clamp(b.mg/22*100,4,100),tw=12/22*100;
+  return'<div class="hb" data-act="mg-branch" data-b="'+b.id+'"><div class="hbl"><span>'+b.n+'</span><b style="color:'+(b.mg<12?'var(--red)':'var(--green)')+'">'+pct(b.mg)+'</b></div><div class="hbb" style="position:relative"><i style="width:'+w+'%;background:'+(b.mg<12?'linear-gradient(90deg,#ff5c6c,#ff8f6c)':'linear-gradient(90deg,#2fe6c8,#51d88a)')+'"></i><span style="position:absolute;left:'+tw+'%;top:-3px;bottom:-3px;width:2px;background:#fff;opacity:.6"></span></div><div class="hbm">Objetivo 12.0% · brecha '+(b.mg-12).toFixed(1)+' pp · ventas '+fmtK(b.sales)+'</div></div>'}).join('');
+ renderBridge();
+ $('#erosionList').innerHTML=EROSION.map((e,i)=>'<div class="alert-it" style="--ac:var(--red)"><div class="ab"><h4>'+e.t+' <span class="tag t-red" style="margin-left:6px">'+e.imp+'</span></h4><p>'+e.d+'</p><button class="btn xs" data-act="'+e.act+'" data-t="Resolver: '+esc(e.t)+'">'+e.lbl+'</button></div></div>').join('');
+ $('#recList').innerHTML=RECOV.map((e,i)=>'<div class="alert-it" style="--ac:var(--green)"><div class="ab"><h4>'+e.t+' <span class="tag t-green" style="margin-left:6px">'+e.imp+'</span></h4><p>'+e.d+'</p><button class="btn xs pri" data-act="'+e.act+'" data-t="'+esc(e.t)+'">'+e.lbl+'</button></div></div>').join('')}
+
+/* ---------------- RENDER: INVENTARIO ---------------- */
+function renderInvView(){
+ const over=CATINV.filter(c=>c.ddi>90).reduce((a,c)=>a+c.inv,0);
+ $('#invKpis').innerHTML=[
+  ['Inventario total','$16.36M','12 categorías · 4 sucursales','#39c6ff'],
+  ['DDI consolidado','33 días','Meta Walmart-style ≤ 30','#ffb350'],
+  ['Rotación anual','11.1x','Costo ventas / inventario','#2fe6c8'],
+  ['Capital en sobrestock',fmtK(over),'DDI > 90 · candidato a depurar','#ff5c6c']
+ ].map(k=>'<div class="panel kpi" data-act="nav" data-view="inventario" style="--kc:'+k[3]+'"><div class="kl">'+k[0]+'</div><div class="kv num" style="color:'+k[3]+'">'+k[1]+'</div><div class="kd">'+k[2]+'</div></div>').join('');
+ renderBubble();
+ $('#catTable').innerHTML='<thead><tr><th>Categoría</th><th class="r">Inv. final</th><th class="r">DDI</th><th class="r">Rot. mensual</th><th class="r">Rot. anual</th><th>Acción</th><th></th></tr></thead><tbody>'
+ +CATINV.map((c,i)=>{const[a,tc]=catAct(c.ddi);return'<tr><td><b>'+c.c+'</b></td><td class="r">'+MXN(c.inv)+'</td><td class="r num '+(c.ddi>90?'dn':c.ddi<10?'wr':'')+'">'+c.ddi.toLocaleString()+'</td><td class="r">'+(30/c.ddi).toFixed(2)+'x</td><td class="r">'+(365/c.ddi).toFixed(1)+'x</td><td><span class="tag '+tc+'">'+a+'</span></td><td><button class="btn xs" data-act="cat-task" data-i="'+i+'">Tarea</button></td></tr>'}).join('')+'</tbody>';
+ renderDQ()}
+function renderDQ(){
+ const s=state.dq;const score=Math.min(100,93+(3-s.p3)+(1-s.c1));
+ $('#dqScore').textContent=score;$('#dqScore').style.color=score>=98?'var(--green)':'var(--teal)';
+ const n=s.p3+s.c1;$('#dqMsg').textContent=n===0?'Sin incidencias pendientes. Catálogo consistente ✔':n+' incidencia'+(n>1?'s':'')+' requiere'+(n>1?'n':'')+' validación.';
+ $('#dqList').innerHTML=[['Presentaciones pieza/caja',s.p3,'p3'],['Costos en cero',s.c1,'c1'],['Inventario negativo',0,'n0']].map(x=>
+  '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)"><span style="font-size:12px">'+x[0]+' <b class="num" style="color:'+(x[1]?'var(--amber)':'var(--green)')+'">('+x[1]+')</b></span>'+(x[1]?'<button class="btn xs" data-act="dq-validate" data-k="'+x[2]+'">Validar ✓</button>':'<span class="tag t-green">OK</span>')+'</div>').join('')}
+
+/* ---------------- RENDER: COMPRAS / PROVEEDORES ---------------- */
+function renderCompras(){
+ const btns={sim:i=>poState[i]==='ok'?'<span class="tag t-green">Autorizado ✓</span>':'<button class="btn xs" data-act="po-sim" data-i="'+i+'">Simular</button> <button class="btn xs pri" data-act="po-auth" data-i="'+i+'">Autorizar</button>',
+  analiza:i=>poState[i]==='ok'?'<span class="tag t-green">Adelanto solicitado ✓</span>':'<button class="btn xs" data-act="po-analiza" data-i="'+i+'">Analizar</button>',
+  logic:i=>'<button class="btn xs ghost" data-act="po-logic" data-i="'+i+'">Ver lógica</button>'};
+ $('#poTable').innerHTML='<thead><tr><th>Proveedor</th><th>Categoría</th><th class="r">Actual</th><th class="r">Nuevo</th><th class="r">Cambio</th><th>Vigencia</th><th class="r">Días inv.</th><th>IA recomienda</th><th class="r">Ahorro</th><th>Acción</th></tr></thead><tbody>'
+ +PO.map((p,i)=>'<tr><td><b>'+p.p+'</b></td><td>'+p.cat+'</td><td class="r">$'+p.a.toFixed(2)+'</td><td class="r">$'+p.b.toFixed(2)+'</td><td class="r dn">+'+p.ch+'%</td><td class="wr">'+p.vig+'</td><td class="r num '+(p.ddi<10?'dn':'')+'">'+p.ddi+'</td><td><span class="tag '+(p.sav?'t-green':'t-blue')+'">'+p.rec+'</span></td><td class="r up">'+(p.sav?MXN(p.sav):'$0')+'</td><td>'+btns[p.kind](i)+'</td></tr>').join('')+'</tbody>';
+ $('#poSummary').innerHTML=[
+  ['AHORRO POTENCIAL TOTAL',MXN(90660),'Adelantos recomendados por MAKRO AI','#51d88a'],
+  ['CAPITAL REQUERIDO','≈ $486K','Para +31 días de cobertura combinada','#39c6ff'],
+  ['PRÓXIMO AUMENTO','05 Sep · Coca-Cola','En 3 días · 8 días de inventario actual','#ff5c6c']
+ ].map(k=>'<div class="panel kpi" style="--kc:'+k[3]+'"><div class="kl">'+k[0]+'</div><div class="kv num" style="font-size:22px;color:'+k[3]+'">'+k[1]+'</div><div class="kd">'+k[2]+'</div></div>').join('')}
+function renderProveedores(){
+ $('#supGrid').innerHTML=SUP.map((s,i)=>'<div class="panel" style="background:#101a26"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><b style="font-size:13.5px">'+s.n+'</b><div style="font-size:11px;color:var(--dim)">'+s.cat+'</div></div><span class="tag '+(s.score>=90?'t-green':s.score>=82?'t-blue':'t-amber')+'">SCORE '+s.score+'</span></div>'
+ +'<div style="display:flex;gap:14px;margin:10px 0;font-family:var(--fm);font-size:11px"><span>Fill <b style="color:'+(s.fill>=96?'var(--green)':'var(--amber)')+'">'+s.fill+'%</b></span><span>Lead <b>'+s.lead+' d</b></span><span>Gasto <b>'+fmtK(s.spend)+'/mes</b></span></div>'
+ +'<div style="font-size:11px;color:var(--mut);margin-bottom:10px">Condiciones: '+s.cond+'</div>'
+ +'<div style="display:flex;gap:7px"><button class="btn xs" data-act="sup-score" data-i="'+i+'">Ver scorecard</button><button class="btn xs ghost" data-act="sup-nego" data-i="'+i+'">Agendar negociación</button></div></div>').join('');
+ $('#negoList').innerHTML=SUP.filter(s=>s.pend!=='—').map(s=>'<div class="ag-item"><span class="ah num">PEND.</span><div style="flex:1"><b style="font-size:12.5px">'+s.n+'</b><div style="font-size:11.5px;color:var(--mut)">'+s.pend+'</div></div><button class="btn xs" data-act="sup-nego" data-i="'+SUP.indexOf(s)+'">Agendar</button></div>').join('')}
+
+/* ---------------- RENDER: COMERCIAL ---------------- */
+function renderComercial(){
+ $('#opps').innerHTML=OPPS.map((o,i)=>'<div class="panel" style="background:#101a26;margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px"><b style="font-size:14px">'+o.n+'</b><span class="tag t-green">'+o.imp+'</span></div><div style="font:600 10.5px var(--fm);color:var(--teal);margin:5px 0">'+o.s+'</div><p style="font-size:12px;color:var(--mut);margin-bottom:11px">'+o.d+'</p><div style="display:flex;gap:8px"><button class="btn sm pri" data-act="opp-admin" data-i="'+i+'">Enviar al administrador ➤</button><button class="btn sm" data-act="opp-task" data-i="'+i+'">Crear acción comercial</button></div></div>').join('');
+ renderMsgs()}
+function renderMsgs(){
+ $('#commsThread').innerHTML=state.msgs.map(m=>'<div style="padding:9px 0;border-bottom:1px dashed var(--line)"><div style="font:600 9.5px var(--fm);letter-spacing:1px;color:var(--dim);margin-bottom:3px">'+m.from.toUpperCase()+' → '+m.to.toUpperCase()+' · '+m.h+'</div><p style="font-size:12.5px">'+esc(m.t)+'</p></div>').join('')}
+
+/* ---------------- RENDER: TAREAS / ALERTAS ---------------- */
+let taskFilter='all';
+function renderTasks(){
+ let list=state.tasks.slice();
+ if(taskFilter==='mine')list=list.filter(t=>t.own==='A. Sandoval');
+ if(taskFilter==='over')list=list.filter(isOver);
+ if(taskFilter==='br'){const b=$('#taskBrSel').value;list=list.filter(t=>t.br===b)}
+ const prTag={crítica:'t-red',alta:'t-amber',media:'t-blue',baja:'t-violet'};
+ $('#taskList').innerHTML=list.length?list.map(t=>'<div class="task'+(t.done?' done':'')+'"><div class="ck" data-act="task-toggle" data-id="'+t.id+'"><svg viewBox="0 0 24 24" fill="none" stroke="#03211c" stroke-width="3.5"><path d="M4 12l5 5L20 6"/></svg></div><div style="flex:1"><div class="tt">'+esc(t.t)+'</div><div class="tm"><span class="tag '+prTag[t.pr]+'">'+t.pr+'</span><span class="tag t-blue">'+t.ar+'</span><span class="tag t-violet">'+t.br+'</span><span style="font-size:11px;color:var(--dim)">👤 '+esc(t.own)+'</span><span class="due'+(isOver(t)?' ov':'')+'">📅 '+t.due+(isOver(t)?' · VENCIDA':'')+'</span></div></div><button class="btn xs ghost" data-act="task-del" data-id="'+t.id+'" title="Eliminar">✕</button></div>').join('')
+ :'<p style="color:var(--dim);text-align:center;padding:20px">Sin tareas en este filtro.</p>';
+ updateBadges()}
+let alertFilter='all';
+function renderAlerts(){
+ const lvc={crítica:'var(--red)',alta:'var(--amber)',media:'var(--blue)'};
+ let list=ALERTS.filter(a=>alertFilter==='all'||(alertFilter==='crítica'?a.lv==='crítica':a.tag===alertFilter));
+ $('#alertList').innerHTML=list.map(a=>'<div class="alert-it'+(state.acked.includes(a.id)?' acked':'')+'" style="--ac:'+lvc[a.lv]+'"><span class="tag t-'+(a.lv==='crítica'?'red':a.lv==='alta'?'amber':'blue')+'" style="margin-top:2px">'+a.lv.toUpperCase()+'</span><div class="ab"><h4>'+a.t+'</h4><p>'+a.d+'</p><div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap"><span class="tag t-'+(a.tag==='MARGEN'?'red':a.tag==='COMPRAS'?'blue':a.tag==='INVENTARIO'?'amber':'violet')+'">'+a.tag+'</span><span style="font:600 10.5px var(--fm);color:var(--mut)">Impacto: '+a.imp+'</span><button class="btn xs" data-act="alert-goto" data-v="'+a.view+'">Ir al módulo →</button>'+(state.acked.includes(a.id)?'<span class="tag t-green">Atendida ✓</span>':'<button class="btn xs ghost" data-act="alert-ack" data-id="'+a.id+'">Marcar atendida</button>')+'</div></div></div>').join('')||'<p style="color:var(--dim);text-align:center;padding:20px">Sin alertas en este filtro.</p>';
+ updateBadges()}
+
+/* ---------------- RENDER: SUCURSALES ---------------- */
+function renderBranches(){
+ const sorted=BR.slice().sort((a,b)=>b.score-a.score);
+ $('#branchTable').innerHTML='<thead><tr><th>#</th><th>Sucursal</th><th class="r">Ventas</th><th class="r">Crecimiento</th><th class="r">Margen</th><th class="r">Tickets</th><th class="r">Ticket prom.</th><th class="r">Días inv.</th><th class="r">Disponibilidad</th><th>Score</th></tr></thead><tbody>'
+ +sorted.map((b,i)=>'<tr><td><span class="wmark '+(i===0?'g1':i===1?'g2':i===2?'g3':'')+'">'+(i+1)+'</span></td><td><b>'+b.n+'</b></td><td class="r"><b>'+fmtK(b.sales)+'</b></td><td class="r '+(b.gr>=0?'up':'dn')+'">'+(b.gr>=0?'▲ +':'▼ ')+b.gr+'%</td><td class="r '+(b.mg<12?'dn':'up')+'">'+pct(b.mg)+'</td><td class="r">'+b.tk.toLocaleString()+'</td><td class="r">$'+Math.round(b.sales/b.tk)+'</td><td class="r num '+(b.ddi>60?'dn':b.ddi>40?'wr':'')+'">'+b.ddi+'</td><td class="r '+(b.osa>=96?'up':'wr')+'">'+pct(b.osa)+'</td><td style="min-width:110px"><div style="display:flex;align-items:center;gap:8px"><div class="scorebar" style="flex:1"><i data-w="'+b.score+'" style="width:0%"></i></div><b class="num">'+b.score+'</b></div></td></tr>').join('')+'</tbody>';
+ $('#benchList').innerHTML=BENCH.map(b=>'<div class="panel" style="background:#101a26;border-color:'+(b.ok?'rgba(81,216,138,.3)':'rgba(255,92,108,.25)')+'"><div class="kl" style="font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(--dim)">'+b.k.toUpperCase()+'</div><div style="display:flex;justify-content:space-between;align-items:baseline;margin:7px 0"><b class="num" style="font-size:20px;color:'+(b.ok?'var(--green)':'var(--amber)')+'">'+b.now+'</b><span style="font:600 10.5px var(--fm);color:var(--dim)">meta '+b.meta+'</span></div><span class="tag '+(b.ok?'t-green':'t-red')+'">'+(b.ok?'✔ CUMPLE':'✖ BRECHA')+'</span></div>').join('')}
+function renderBranchBars(){$$('#branchTable .scorebar i').forEach(i=>i.style.width=i.dataset.w+'%')}
+
+/* ---------------- RENDER: MY DAY ---------------- */
+function renderMyDay(){
+ const wI=+$('#wI').value,wU=+$('#wU').value,wE=+$('#wE').value;
+ $('#wIv').textContent=wI;$('#wUv').textContent=wU;$('#wEv').textContent=wE;
+ const items=AGENDA.map((a,i)=>({...a,i,sc:wI*a.i+wU*a.u-wE*a.e})).sort((a,b)=>b.sc-a.sc);
+ $('#agendaList').innerHTML=items.map(a=>'<div class="ag-item'+(state.agendaDone.includes(a.i)?' done':'')+'"><span class="ah">'+a.h+'</span><label class="sw2"><input type="checkbox" '+(state.agendaDone.includes(a.i)?'checked':'')+' data-agd="'+a.i+'"><span></span></label><div style="flex:1"><span class="at" style="font-size:12.5px;font-weight:600">'+a.t+'</span> <span class="tag t-blue" style="margin-left:5px">'+a.tag+'</span></div><b class="num" style="color:var(--teal)">'+a.sc+'</b></div>').join('');
+ $('#prScore').textContent=items[0]?items[0].sc+' pts':'—';
+ save('agd',state.agendaDone)}
+document.addEventListener('change',e=>{const c=e.target.closest('[data-agd]');if(c){const i=+c.dataset.agd;state.agendaDone.includes(i)?state.agendaDone=state.agendaDone.filter(x=>x!==i):state.agendaDone.push(i);renderMyDay()}});
+function renderDecisions(){
+ $('#decList').innerHTML=DECISIONS.map((d,i)=>'<div class="dec-card" id="dec-'+i+'"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><h4>'+d.t+'</h4><span class="tag t-'+(d.tag==='COMPRAS'?'blue':d.tag==='PRECIOS'?'amber':'teal')+'">'+d.tag+'</span></div><p>'+d.d+'</p><div style="font:600 11px var(--fm);color:var(--green);margin-bottom:9px">Impacto: '+d.amt+'</div><div style="display:flex;gap:8px" id="decbtns-'+i+'"><button class="btn xs pri" data-act="dec-ok" data-i="'+i+'">Aprobar ✓</button><button class="btn xs danger" data-act="dec-no" data-i="'+i+'">Rechazar</button></div></div>').join('');
+ $('#waitList').innerHTML=WAITING.map((w,i)=>'<div class="ag-item"><span class="ah num" style="width:auto">'+w.due+'</span><div style="flex:1"><b style="font-size:12.5px">'+w.who+'</b><div style="font-size:11.5px;color:var(--mut)">'+w.what+'</div></div><button class="btn xs" data-act="wait-remind" data-i="'+i+'">Recordar 🔔</button></div>').join('')}
+
+/* ---------------- RENDER: ODOO / CALENDARIO / SETTINGS ---------------- */
+function renderRecipes(){
+ $('#recipeList').innerHTML=state.recipes.map((r,i)=>'<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:9px"><label class="fl">Módulo: '+r.m+'</label><input class="rec-r" data-i="'+i+'" value="'+esc(r.r)+'" style="width:100%;margin-bottom:6px"><input class="rec-c" data-i="'+i+'" value="'+esc(r.c)+'" style="width:100%;font-family:var(--fm);font-size:11px"></div>').join('')}
+const PHASES=['Fase 1 · Excel → Dashboard','Fase 2 · Carga automática','Fase 3 · API Odoo → Backend','Fase 4 · Near real-time'];
+function renderPhases(){
+ const html=PHASES.map((p,i)=>'<div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px dashed var(--line)"><span style="width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 10px var(--fm);background:'+(i<state.phase?'var(--teal)':'#1b2836')+';color:'+(i<state.phase?'#03211c':'var(--dim)')+'">'+(i<state.phase?'✓':i+1)+'</span><span style="font-size:12px;color:'+(i<state.phase?'var(--txt)':'var(--dim)')+'">'+p+'</span>'+(i===state.phase?'<span class="tag t-blue" style="margin-left:auto">EN CURSO</span>':'')+'</div>').join('');
+ $('#phaseBox').innerHTML=html+'<div class="prog" style="margin-top:10px"><i style="width:'+(state.phase/4*100)+'%"></i></div>';
+ const p2=$('#phaseBox2');if(p2)p2.innerHTML=html}
+let calMode='month',calCur=new Date();calCur.setDate(1);
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function renderCalendar(){
+ const g=$('#calGrid');const tI=iso(new Date());
+ if(calMode==='month'){
+  $('#calTitle').textContent=calCur.toLocaleDateString('es-MX',{month:'long',year:'numeric'}).toUpperCase();
+  const first=new Date(calCur);const off=(first.getDay()+6)%7;const start=new Date(first);start.setDate(1-off);
+  let h=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map(d=>'<div class="cal-h">'+d+'</div>').join('');
+  for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const di=iso(d);
+   const evs=state.events.filter(e=>e.date===di);
+   h+='<div class="cal-d'+(d.getMonth()!==calCur.getMonth()?' om':'')+(di===tI?' today':'')+'" data-act="cal-day" data-date="'+di+'"><span class="dn">'+d.getDate()+'</span>'+evs.slice(0,3).map(e=>'<span class="cal-ev '+e.k+'">'+e.h+' '+esc(e.t)+'</span>').join('')+(evs.length>3?'<span style="font-size:9px;color:var(--dim)">+'+(evs.length-3)+' más</span>':'')+'</div>'}
+  g.innerHTML=h}
+ else if(calMode==='week'){
+  const ref=new Date(calCur);const off=(ref.getDay()+6)%7;ref.setDate(ref.getDate()-off);
+  $('#calTitle').textContent='SEMANA DEL '+ref.toLocaleDateString('es-MX',{day:'numeric',month:'long'}).toUpperCase();
+  let h='';for(let i=0;i<7;i++){const d=new Date(ref);d.setDate(ref.getDate()+i);const di=iso(d);
+   const evs=state.events.filter(e=>e.date===di);
+   h+='<div style="background:#101a26;border:1px solid var(--line);border-radius:10px;padding:10px;min-height:180px;'+(di===tI?'border-color:var(--teal)':'')+'"><div style="font:600 11px var(--fm);color:'+(di===tI?'var(--teal)':'var(--mut)')+'">'+['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'][i]+' '+d.getDate()+'</div>'+evs.map(e=>'<div class="cal-ev '+e.k+'" style="margin-top:6px">'+e.h+' '+esc(e.t)+'</div>').join('')||''+'</div>'}
+  g.innerHTML='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;overflow-x:auto">'+h+'</div>'}
+ else{const di=iso(calCur);$('#calTitle').textContent=calCur.toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
+  const evs=state.events.filter(e=>e.date===di);
+  g.innerHTML='<div style="display:flex;flex-direction:column;gap:8px">'+(evs.length?evs.map(e=>'<div class="ag-item"><span class="ah">'+e.h+'</span><span class="cal-ev '+e.k+'" style="margin:0">'+e.k+'</span><b style="font-size:13px">'+esc(e.t)+'</b></div>').join(''):'<p style="color:var(--dim);padding:14px">Sin eventos este día. Usa <b>+ Evento</b> para agregar uno.</p>')+'</div>'}}
+function renderSettings(){
+ document.body.classList.remove('dense-c','dense-a');if(state.dens)document.body.classList.add(state.dens);
+ $$('#densSet .lgc').forEach(b=>b.classList.toggle('on',b.dataset.d===state.dens))}
+function renderLearn(){$('#learnList').innerHTML=state.learn.map(l=>'<div style="padding:7px 0;border-bottom:1px dashed var(--line)">🧠 '+esc(l)+'</div>').join('')}
+
+/* ---------------- MODALES ESPECÍFICOS ---------------- */
+function taskModal(prefill){
+ openModal('<h3>+ CREAR TAREA EJECUTIVA</h3><div class="msub">Responsabilidad clara · estilo Linear</div>'
+ +'<label class="fl">Título</label><input id="tm-t" style="width:100%;margin-bottom:10px" value="'+esc(prefill||'')+'" placeholder="¿Qué hay que hacer?">'
+ +'<div class="mrow"><div><label class="fl">Sucursal</label><select id="tm-br" style="width:100%"><option>Todas</option><option>Real Providencia</option><option>Castillos</option><option>Villas de San Juan</option><option>Hilario Medina</option></select></div>'
+ +'<div><label class="fl">Área</label><select id="tm-ar" style="width:100%"><option>Compras</option><option>Comercial</option><option>Inventario</option><option>Dirección</option><option>Datos</option><option>Operaciones</option></select></div></div>'
+ +'<div class="mrow"><div><label class="fl">Responsable</label><input id="tm-own" value="A. Sandoval" style="width:100%"></div>'
+ +'<div><label class="fl">Fecha límite</label><input id="tm-due" type="date" value="'+todayISO()+'" style="width:100%"></div>'
+ +'<div><label class="fl">Prioridad</label><select id="tm-pr" style="width:100%"><option>crítica</option><option selected>alta</option><option>media</option><option>baja</option></select></div></div>'
+ +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cancelar</button><button class="btn pri" data-act="task-save">Crear tarea ✓</button></div>')}
+function addTask(t,br,ar,pr){
+ const id=Date.now();state.tasks.unshift({id,t,br:br||'Todas',ar:ar||'Dirección',own:'A. Sandoval',due:todayISO(),pr:pr||'alta'});
+ save('tasks',state.tasks);renderTasks();updateBadges();
+ toast('✅ Tarea creada',esc(t)+' · asignada a A. Sandoval.','ok')}
+function eventModal(date){
+ openModal('<h3>+ NUEVO EVENTO</h3><div class="msub">Se agregará a My Executive Calendar</div>'
+ +'<div class="mrow"><div><label class="fl">Título</label><input id="ev-t" style="width:100%" placeholder="Ej. Revisión de precios"></div></div>'
+ +'<div class="mrow"><div><label class="fl">Fecha</label><input id="ev-d" type="date" value="'+(date||todayISO())+'" style="width:100%"></div><div><label class="fl">Hora</label><input id="ev-h" type="time" value="09:00" style="width:100%"></div>'
+ +'<div><label class="fl">Tipo</label><select id="ev-k" style="width:100%"><option value="reunion">Reunión</option><option value="tarea">Tarea</option><option value="precio">Cambio de precio</option><option value="cierre">Cierre</option></select></div></div>'
+ +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cancelar</button><button class="btn pri" data-act="ev-save">Guardar evento ✓</button></div>')}
+function poSimModal(i){
+ const p=PO[i];const q=1200,d=17;const costFin=q*p.a*d/30*0.021;const ahorro=q*(p.b-p.a)-costFin;
+ openModal('<h3>SIMULADOR DE ADELANTO · '+p.p.toUpperCase()+'</h3><div class="msub">Purchasing Intelligence · costo financiero 2.1% mensual</div>'
+ +'<div class="mrow"><div><label class="fl">Cantidad (cajas)</label><div class="num" style="font-size:19px">'+q.toLocaleString()+'</div></div><div><label class="fl">Días a adelantar</label><div class="num" style="font-size:19px">'+d+'</div></div><div><label class="fl">Diferencia/u</label><div class="num" style="font-size:19px">$'+(p.b-p.a).toFixed(2)+'</div></div></div>'
+ +'<div class="panel" style="background:#0d1622;margin:10px 0"><div class="tr" style="display:flex;justify-content:space-between;padding:4px 0"><span>Ahorro por precio</span><b class="num up">'+MXN(q*(p.b-p.a))+'</b></div><div style="display:flex;justify-content:space-between;padding:4px 0"><span>Costo financiero del capital</span><b class="num dn">−'+MXN(costFin)+'</b></div><div class="divv"></div><div style="display:flex;justify-content:space-between"><b>AHORRO NETO ESTIMADO</b><b class="num" style="color:var(--teal);font-size:17px">'+MXN(ahorro)+'</b></div></div>'
+ +'<p style="font-size:12px;color:var(--mut)">✔ La IA recomienda adelantar: el ahorro supera 6× el costo financiero. Cobertura pasaría de '+p.ddi+' a '+(p.ddi+d)+' días.</p>'
+ +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cerrar</button><button class="btn" data-act="po-auth" data-i="'+i+'">Autorizar adelanto ✓</button></div>')}
+function briefData(){const last=DAYS[30],prev=DAYS[29];return{s:last.sales,ch:(last.sales/prev.sales-1)*100,mg:last.margin,tk:last.tickets}}
+function briefModal(){
+ const b=briefData();
+ const html='<div id="briefPrint"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span class="tag t-teal">DAILY EXECUTIVE BRIEF</span><span class="ps num" style="font:600 10px var(--fm);color:var(--dim)">'+new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · MAKRO AI · 87% confianza</span></div>'
+ +'<h3 style="margin-top:12px">Resumen del día</h3>'
+ +'<div class="grid g3" style="margin:12px 0"><div class="panel" style="background:#0d1622"><div class="kl">Ventas</div><div class="num" style="font-size:21px;color:var(--teal)">'+fmtK(b.s)+'</div><div class="up" style="font-size:11px">'+(b.ch>=0?'▲ +':'▼ ')+Math.abs(b.ch).toFixed(1)+'% vs día previo</div></div><div class="panel" style="background:#0d1622"><div class="kl">Margen</div><div class="num" style="font-size:21px;color:var(--blue)">'+pct(b.mg)+'</div><div class="dn" style="font-size:11px">−0.3 pp vs objetivo diario</div></div><div class="panel" style="background:#0d1622"><div class="kl">Inventario</div><div class="num" style="font-size:21px;color:var(--amber)">32.6 d</div><div class="wr" style="font-size:11px">Meta ≤ 30 días</div></div></div>'
+ +'<p style="font-size:12.5px;color:var(--mut);line-height:1.7">El negocio cerró con venta superior al periodo comparable, pero hay presión de margen en bebidas y <b style="color:var(--red)">3 alertas críticas</b>. Prioridad: asegurar inventario de Coca-Cola antes del cambio de precio del 05 Sep y revisar 7 SKUs con caída de margen.</p>'
+ +'<div class="divv"></div><b style="font:700 11px var(--fd);letter-spacing:1.5px">DECISIONES REQUERIDAS</b>'
+ +'<ol style="font-size:12.5px;color:var(--mut);margin:8px 0 0 20px;line-height:1.9"><li>Adelantar compra Grupo Modelo (ahorro $39,360).</li><li>Ajustar precio de 7 SKUs (recupera ~$48K/mes).</li><li>Autorizar promoción de aceite en Real Providencia.</li></ol></div>'
+ +'<div class="mfoot"><button class="btn" data-act="brief-pdf">⬇ Descargar PDF</button><button class="btn" data-act="brief-mail">✉ Enviar correo</button><button class="btn" data-act="brief-wa">💬 WhatsApp</button><button class="btn ghost" data-act="close-modal">Cerrar</button></div>';
+ openModal(html,true)}
+function briefText(){const b=briefData();return 'MAKRO Executive Brief · Ventas '+fmtK(b.s)+' ('+(b.ch>=0?'+':'')+b.ch.toFixed(1)+'%), Margen '+pct(b.mg)+', Inventario 32.6d. Prioridades: 1) Adelantar compra Grupo Modelo 2) Ajustar precio 7 SKUs 3) Promo aceite Real Providencia.'}
+function scorecardModal(i){const s=SUP[i];
+ openModal('<h3>SCORECARD · '+s.n.toUpperCase()+'</h3><div class="msub">Estándar Retail Link · evaluación mensual</div>'
+ +[['Fill rate',s.fill+'%','≥ 98%',s.fill>=98],[
+ 'Lead time',s.lead+' días','≤ 3 días',s.lead<=3],['Score global',s.score+'/100','≥ 90',s.score>=90],['Participación en gasto',fmtK(s.spend)+'/mes','—',true]].map(r=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)"><span style="font-size:12.5px">'+r[0]+'</span><b class="num">'+r[1]+'</b><span style="font-size:10px;color:var(--dim)">meta '+r[2]+'</span><span class="tag '+(r[3]?'t-green':'t-red')+'">'+(r[3]?'✔':'✖')+'</span></div>').join('')
+ +'<p style="font-size:12px;color:var(--mut);margin-top:12px">Pendiente de negociación: <b style="color:var(--txt)">'+s.pend+'</b></p>'
+ +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cerrar</button><button class="btn pri" data-act="sup-nego" data-i="'+i+'">Agendar negociación</button></div>')}
+
+/* ---------------- ACCIONES CENTRALES ---------------- */
+const ACTIONS={
+ nav:(d)=>setView(d.view),
+ sbToggle:()=>document.body.classList.toggle('sbx'),
+ 'close-modal':()=>closeModal(),
+ palette:()=>openPalette(),
+ bell:()=>{$('#bellDrop').classList.toggle('open')},
+ refresh:()=>{toast('🔄 Sincronizando…','Consultando Odoo Data Center.','ok');setTimeout(()=>{toast('✔ Datos al día','Cierre de agosto vigente · próxima carga automática en Fase 2.','ok')},1200)},
+ profile:()=>toast('Alejandro Sandoval','Dirección General · MAKRO · perfil con acceso total a los 15 módulos.','ok'),
+ tour:()=>startTour(),
+ brief:()=>briefModal(),
+ 'brief-pdf':()=>{const w=window.open('','_blank');w.document.write('<html><head><title>MAKRO Daily Brief</title><style>body{font-family:Arial;padding:30px;color:#111}h3{margin:8px 0}.kl{font-size:10px;letter-spacing:2px;color:#666}.num{font-weight:bold;font-size:20px}.grid{display:flex;gap:14px}.panel{border:1px solid #ddd;border-radius:8px;padding:12px;flex:1}.divv{border-top:1px solid #ddd;margin:12px 0}</style></head><body>'+$('#briefPrint').innerHTML+'</body></html>');w.document.close();setTimeout(()=>w.print(),400)},
+ 'brief-mail':()=>{location.href='mailto:?subject='+encodeURIComponent('MAKRO Executive Brief · '+new Date().toLocaleDateString())+'&body='+encodeURIComponent(briefText())},
+ 'brief-wa':()=>{window.open('https://wa.me/?text='+encodeURIComponent(briefText()),'_blank')},
+ newaction:()=>openModal('<h3>+ NUEVA ACCIÓN</h3><div class="msub">¿Qué quieres crear?</div><div style="display:flex;flex-direction:column;gap:9px"><button class="btn" data-act="task-modal" data-t="">📋 Nueva tarea ejecutiva</button><button class="btn" data-act="cal-add">📅 Nuevo evento de calendario</button><button class="btn" data-act="nav" data-view="comercial">💬 Enviar instrucción al equipo</button><button class="btn" data-act="nav" data-view="odoo">📤 Cargar archivo Odoo</button></div><div class="mfoot"><button class="btn ghost" data-act="close-modal">Cancelar</button></div>'),
+ radar:()=>openModal('<h3>EXECUTIVE RADAR · 84/100</h3><div class="msub">Salud del negocio · cierre agosto 2026</div>'
+  +[['Ventas y plan',92,'95.4% del plan mensual'],['Rentabilidad',68,'Margen 11.6% presionado por Real Prov.'],['Inventario',79,'33 DDI · sobrestock en 3 categorías'],['Compras / proveedores',88,'Ahorros potenciales $90.6K identificados'],['Ejecución (tareas)',72,'5 vencidas de 10 activas'],['Calidad de datos',93,'4 incidencias pendientes']].map(r=>'<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px"><span>'+r[0]+'</span><b class="num">'+r[1]+'</b></div><div class="prog" style="margin-top:4px"><i style="width:'+r[1]+'%"></i></div><div class="note">'+r[2]+'</div></div>').join('')
+  +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cerrar</button></div>'),
+ aiContinue:()=>{const p=$('#aiProg');p.style.width='8%';const b=$('#btnAiCont');b.disabled=true;b.textContent='Actualizando…';let v=8;
+  const iv=setInterval(()=>{v+=12;p.style.width=Math.min(100,v)+'%';if(v>=100){clearInterval(iv);b.disabled=false;b.textContent='▶ Continuar actualización';toast('🤖 MAKRO AI','Carga simulada completa: los bloques ejecutivos quedaron actualizados con el cierre de agosto.','ok')}},350)},
+ 'pulse-tab':(d)=>{pulseMetric=d.m;renderPulse()},
+ 'inv-review':(d)=>{setView('inventario');toast('🔎 Inventario · '+BR.find(b=>b.id===d.b).n,'Vista enfocada en el módulo de inventario · DDI y capital por categoría.','ok')},
+ 'task-create':(d)=>{closeModal();addTask(d.t||'Nueva tarea ejecutiva')},
+ 'task-modal':(d)=>{closeModal();taskModal(d.t)},
+ 'task-save':()=>{const t=$('#tm-t').value.trim();if(!t){toast('⚠ Falta el título','Escribe el nombre de la tarea.','warn');return}
+  addTask(t,$('#tm-br').value,$('#tm-ar').value,$('#tm-pr').value);closeModal()},
+ 'task-toggle':(d)=>{const t=state.tasks.find(x=>x.id==d.id);if(t){t.done=!t.done;save('tasks',state.tasks);renderTasks();if(t.done)toast('✔ Tarea completada',esc(t.t),'ok')}},
+ 'task-del':(d)=>{state.tasks=state.tasks.filter(x=>x.id!=d.id);save('tasks',state.tasks);renderTasks();toast('🗑 Tarea eliminada','Se quitó de la lista.','warn')},
+ 'task-filter':(d,el)=>{taskFilter=d.f;$$('#taskFilters .lgc').forEach(x=>x.classList.remove('on'));el.classList.add('on');$('#taskBrSel').style.display=d.f==='br'?'inline-block':'none';renderTasks()},
+ 'alert-filter':(d,el)=>{alertFilter=d.f;$$('#alertChips .lgc').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderAlerts()},
+ 'alert-ack':(d)=>{state.acked.push(+d.id);save('acked',state.acked);renderAlerts();renderBell();toast('🔕 Alerta atendida','Queda registrada en la bitácora de MAKRO AI.','ok')},
+ 'alert-goto':(d)=>setView(d.v),
+ 'po-sim':(d)=>poSimModal(+d.i),
+ 'po-auth':(d)=>{const i=+d.i;poState[i]='ok';closeModal();renderCompras();toast('✅ Adelanto autorizado','Pedido a '+PO[i].p+' registrado · ahorro estimado '+MXN(PO[i].sav)+'. Se creó tarea de seguimiento.','ok');addTask('Ejecutar pedido adelantado · '+PO[i].p,'Todas','Compras','crítica')},
+ 'po-analiza':(d)=>{const p=PO[+d.i];openModal('<h3>ANÁLISIS · '+p.p.toUpperCase()+'</h3><div class="msub">MAKRO AI · Purchasing Intelligence</div>'
+  +'<p style="font-size:12.5px;color:var(--mut);line-height:1.8">Aumento <b class="dn">+'+p.ch+'%</b> vigente el <b>'+p.vig+'</b>. Inventario actual: <b>'+p.ddi+' días</b> · rotación anual 20.5x. Adelantar 14 días genera ahorro de <b class="up">'+MXN(p.sav)+'</b> con costo financiero menor al 18% del beneficio.</p>'
+  +'<p style="font-size:12.5px;margin-top:8px">🎯 Recomendación: <b style="color:var(--teal)">ADELANTAR</b> — cerveza es la categoría de mayor rotación y el capital requerido (~$190K) está dentro del OTB disponible.</p>'
+  +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Esperar</button><button class="btn pri" data-act="po-auth" data-i="'+d.i+'">Adelantar compra ✓</button></div>')},
+ 'po-logic':(d)=>{const p=PO[+d.i];openModal('<h3>LÓGICA IA · '+p.p.toUpperCase()+'</h3><div class="msub">¿Por qué NO adelantar?</div>'
+  +'<div style="font-size:12.5px;color:var(--mut);line-height:2">1. DDI actual = <b>'+p.ddi+' días</b> &gt; umbral de 20 días.<br>2. Aumento de solo <b>+'+p.ch+'%</b> → ahorro marginal ≈ $0 tras costo financiero.<br>3. Capital liberado puede destinarse a Coca-Cola (+5.2%, 8 DDI).<br><br>Regla MAKRO: adelantar solo si ahorro &gt; 3× costo de capital <b>y</b> DDI &lt; 20.</div>'
+  +'<div class="mfoot"><button class="btn pri" data-act="close-modal">Entendido ✓</button></div>')},
+ 'sup-score':(d)=>scorecardModal(+d.i),
+ 'sup-nego':(d)=>{closeModal();const s=SUP[+d.i];const dt=new Date();dt.setDate(dt.getDate()+3);state.events.push({date:iso(dt),h:'10:00',t:'Negociación · '+s.n,k:'reunion'});save('events',state.events);renderCalendar();toast('📅 Negociación agendada','Con '+s.n+' el '+dt.toLocaleDateString('es-MX',{day:'numeric',month:'long'})+' 10:00 · visible en Calendario.','ok')},
+ 'opp-admin':(d)=>{toast('➤ Enviado al administrador','Oportunidad "'+OPPS[+d.i].n+'" enviada con datos de tracción y margen. Quedó en WAITING ON.','ok')},
+ 'opp-task':(d)=>addTask('Ejecutar oportunidad comercial · '+OPPS[+d.i].n,'Todas','Comercial','alta'),
+ 'send-msg':()=>{const v=$('#commsIn').value.trim();if(!v){toast('⚠ Mensaje vacío','Escribe la instrucción antes de enviar.','warn');return}
+  const now=new Date();state.msgs.push({from:$('#commsCh').value,to:'Equipo',t:v,h:String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')});save('msgs',state.msgs);$('#commsIn').value='';renderMsgs();toast('💬 Instrucción enviada','Registrada en el Executive Communication Center.','ok')},
+ 'dq-validate':(d)=>{if(d.k==='p3'&&state.dq.p3>0)state.dq.p3--;if(d.k==='c1'&&state.dq.c1>0)state.dq.c1--;renderDQ();toast('✔ Incidencia validada','Data Quality Score actualizado.','ok');if(state.dq.p3+state.dq.c1===0)toast('🏆 Catálogo consistente','Score 100 · el margen por SKU ya es confiable.','ok')},
+ 'cat-task':(d)=>{const c=CATINV[+d.i];const[a]=catAct(c.ddi);addTask(a+' · '+c.c+' ('+c.ddi+' DDI)','Todas','Inventario','alta')},
+ 'export-csv':()=>exportCSV(),
+ 'mg-branch':(d)=>{const b=BR.find(x=>x.id===d.b);openModal('<h3>DIAGNÓSTICO · '+b.n.toUpperCase()+'</h3><div class="msub">Rentabilidad · agosto 2026</div>'
+  +'<div class="mrow"><div><label class="fl">Margen</label><div class="num" style="font-size:20px;color:'+(b.mg<12?'var(--red)':'var(--green)')+'">'+pct(b.mg)+'</div></div><div><label class="fl">Ventas</label><div class="num" style="font-size:20px">'+fmtK(b.sales)+'</div></div><div><label class="fl">DDI</label><div class="num" style="font-size:20px">'+b.ddi+' d</div></div></div>'
+  +'<p style="font-size:12.5px;color:var(--mut);line-height:1.8">'+(b.id==='real'?'Concentra 78% de la venta con margen 9.1%. Diagnóstico: peso excesivo de refrescos/cerveza de bajo margen y promociones sin control. Cada punto de margen = $127K/mes.':b.id==='hilario'?'Margen sano (19.7%) pero venta −3.5% y 77 DDI: el problema es de demanda y capital, no de precio.':b.id==='villas'?'Mejor mezcla del grupo: crecimiento +14.5% con margen 20.7%. Candidata a recibir inversión de exhibición.':'Margen 20.4% con oportunidad en disponibilidad (94.2%): cada quiebre pierde venta de margen alto.')+'</p>'
+  +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cerrar</button><button class="btn pri" data-act="task-create" data-t="Plan de margen · '+b.n+'">Crear plan de acción</button></div>')},
+ 'dec-ok':(d,el)=>{const card=$('#dec-'+d.i);card.classList.add('resolved');$('#decbtns-'+d.i).innerHTML='<span class="tag t-green">APROBADA ✓</span>';addTask('Ejecutar decisión: '+DECISIONS[+d.i].t,'Todas','Dirección','crítica');toast('✅ Decisión aprobada',DECISIONS[+d.i].t+' · tarea de ejecución creada.','ok')},
+ 'dec-no':(d)=>{const card=$('#dec-'+d.i);card.classList.add('resolved');$('#decbtns-'+d.i).innerHTML='<span class="tag t-red">RECHAZADA</span>';toast('⛔ Decisión rechazada','MAKRO AI recalculará alternativas y las traerá a DECISION INBOX.','warn')},
+ 'wait-remind':(d,el)=>{el.disabled=true;el.textContent='Recordado ✓';toast('🔔 Recordatorio enviado','Se notificó a '+WAITING[+d.i].who+' sobre: '+WAITING[+d.i].what,'ok')},
+ 'ai-send':()=>aiSend($('#chatIn').value),
+ 'ai-chip':(d)=>aiSend(d.q),
+ 'q3-send':()=>{state.learn.unshift('Preferencia aprendida: análisis de "'+$('#q1').value+'" en formato "'+$('#q2').value+'" ('+$('#q3').value+').');save('learn',state.learn);renderLearn();toast('🧠 MAKRO AI entrenada','Tus preferencias se aplicarán al brief de mañana 7:30.','ok')},
+ 'cal-view':(d,el)=>{calMode=d.v;$$('#calViewBtns .lgc').forEach(x=>x.classList.remove('on'));el.classList.add('on');renderCalendar()},
+ 'cal-prev':()=>{if(calMode==='month')calCur.setMonth(calCur.getMonth()-1);else calCur.setDate(calCur.getDate()-(calMode==='week'?7:1));renderCalendar()},
+ 'cal-next':()=>{if(calMode==='month')calCur.setMonth(calCur.getMonth()+1);else calCur.setDate(calCur.getDate()+(calMode==='week'?7:1));renderCalendar()},
+ 'cal-today':()=>{calCur=new Date();calCur.setDate(1);if(calMode!=='month')calCur=new Date();renderCalendar()},
+ 'cal-add':()=>eventModal(),
+ 'cal-day':(d)=>openModal('<h3>📅 '+d.date+'</h3><div class="msub">Eventos del día</div>'
+  +(state.events.filter(e=>e.date===d.date).map(e=>'<div class="ag-item"><span class="ah">'+e.h+'</span><span class="cal-ev '+e.k+'" style="margin:0">'+e.k+'</span><b style="font-size:12.5px">'+esc(e.t)+'</b></div>').join('')||'<p style="color:var(--dim)">Sin eventos.</p>')
+  +'<div class="mfoot"><button class="btn ghost" data-act="close-modal">Cerrar</button><button class="btn pri" data-act="cal-add2" data-date="'+d.date+'">+ Agregar evento aquí</button></div>'),
+ 'cal-add2':(d)=>{closeModal();eventModal(d.date)},
+ 'ev-save':()=>{const t=$('#ev-t').value.trim();if(!t){toast('⚠ Falta el título','Escribe el nombre del evento.','warn');return}
+  state.events.push({date:$('#ev-d').value,h:$('#ev-h').value,t,k:$('#ev-k').value});save('events',state.events);renderCalendar();closeModal();toast('📅 Evento creado',esc(t)+' · '+$('#ev-d').value+' '+$('#ev-h').value,'ok')},
+ 'odoo-browse':()=>$('#fileIn').click(),
+ 'recipe-save':()=>{$$('.rec-r').forEach(i=>state.recipes[+i.dataset.i].r=i.value);$$('.rec-c').forEach(i=>state.recipes[+i.dataset.i].c=i.value);save('recipes',state.recipes);toast('💾 Recetas guardadas','Las rutas de exportación Odoo quedaron actualizadas.','ok')},
+ 'phase-next':()=>{if(state.phase<4){state.phase++;save('phase',state.phase);renderPhases();toast('🚀 Fase '+state.phase+' activada',PHASES[state.phase-1]+' · MAKRO AI adaptará el pipeline.','ok')}else toast('ℹ Ya estás en Fase 4','Near real-time es la fase final de la integración Odoo.','ok')},
+ 'set-density':(d,el)=>{state.dens=d.d;save('dens',d.d);renderSettings();toast('🎚 Densidad aplicada','Layout '+(d.d==='dense-c'?'compacto':d.d==='dense-a'?'amplio':'normal')+' activo.','ok')},
+ 'routine-save':()=>toast('💾 Rutina guardada','MAKRO AI ejecutará esta secuencia diariamente.','ok'),
+ backup:()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='MAKRO_respaldo_'+todayISO()+'.json';a.click();toast('⬇ Respaldo exportado','JSON con tareas, eventos, recetas y preferencias.','ok')},
+ wipe:()=>openModal('<h3>🗑 BORRAR DATOS LOCALES</h3><div class="msub">Esta acción elimina tareas, eventos, decisiones y preferencias guardadas en este navegador.</div><div class="mfoot"><button class="btn ghost" data-act="close-modal">Cancelar</button><button class="btn danger" data-act="wipe-now">Sí, borrar todo</button></div>'),
+ 'wipe-now':()=>{try{Object.keys(localStorage).filter(k=>k.startsWith('mk_')).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()}
+};
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-act]');
+ if(!e.target.closest('#bellDrop')&&!e.target.closest('[data-act="bell"]'))$('#bellDrop').classList.remove('open');
+ if(!t)return;const a=t.dataset.act;
+ if(ACTIONS[a]){e.preventDefault();ACTIONS[a](t.dataset,t,e)}});
+document.addEventListener('change',e=>{
+ const sw=e.target.closest('[data-act2="pref"]');if(sw)toast('⚙ Preferencia guardada','El cambio aplica a partir de ahora.','ok');
+ if(e.target.id==='taskBrSel')renderTasks();
+ if(e.target.id==='setBranch')toast('🏪 Sucursal preferida','"'+e.target.value+'" será el filtro por defecto en Ventas.','ok');
+ if(e.target.id==='setVista')toast('⚙ Vista por defecto guardada','Se aplicará al módulo de Ventas.','ok');
+ ['wI','wU','wE'].forEach(id=>{if(e.target.id===id)renderMyDay()})});
+
+/* ---------------- VENTAS: filtros ---------------- */
+$('#vBranch').addEventListener('change',e=>{vState.branch=e.target.value;vState.offset=0;renderVentas()});
+$('#vPeriod').addEventListener('change',e=>{vState.period=+e.target.value;vState.offset=0;renderVentas()});
+$('#vGroup').addEventListener('change',e=>{vState.group=e.target.value;renderVentas()});
+$('#vMetric').addEventListener('change',e=>{vState.metric=e.target.value;renderVentas()});
+$('#vReset').addEventListener('click',()=>{vState.branch='Todas';vState.period=30;vState.group='day';vState.metric='sales';vState.offset=0;$('#vBranch').value='Todas';$('#vPeriod').value='30';$('#vGroup').value='day';$('#vMetric').value='sales';renderVentas();toast('↺ Filtros restablecidos','Vista de 30 días · todas las sucursales.','ok')});
+$('#vPrev').addEventListener('click',()=>{if(vState.offset<31-vState.period){vState.offset+=Math.min(7,31-vState.period);renderVentas()}});
+$('#vNext').addEventListener('click',()=>{if(vState.offset>0){vState.offset=Math.max(0,vState.offset-7);renderVentas()}});
+
+/* ---------------- PILLS GLOBALES ---------------- */
+$$('#periodPills .pill').forEach(p=>p.addEventListener('click',()=>{
+ $$('#periodPills .pill').forEach(x=>x.classList.remove('on'));p.classList.add('on');
+ vState.period=+p.dataset.p;vState.offset=0;$('#vPeriod').value=String(clamp(+p.dataset.p,1,31));renderVentas();
+ toast('📆 Periodo global','"'+p.textContent+'" aplicado · Ventas y gráficos actualizados.','ok')}));
+$$('#cmpPills .pill').forEach(p=>p.addEventListener('click',()=>{
+ p.classList.toggle('on');cmp[p.dataset.c]=p.classList.contains('on');renderPulse();
+ toast('🔀 Comparativo','Serie "'+p.textContent+'" '+(cmp[p.dataset.c]?'activada en el pulso del negocio.':'desactivada.'),'ok')}));
+
+/* ---------------- COMMAND PALETTE ---------------- */
+const COMMANDS=[
+ ['Ir a Command Center',()=>setView('command')],['Ir a Ventas',()=>setView('ventas')],['Ir a Rentabilidad',()=>setView('rentabilidad')],['Ir a Inventario',()=>setView('inventario')],['Ir a Compras',()=>setView('compras')],['Ir a Proveedores',()=>setView('proveedores')],['Ir a Comercial',()=>setView('comercial')],['Ir a Tareas',()=>setView('tareas')],['Ir a Alertas',()=>setView('alertas')],['Ir a Sucursales',()=>setView('sucursales')],['Ir a My Day',()=>setView('myday')],['Ir a MAKRO AI Agent',()=>setView('ai')],['Ir a Odoo Data Center',()=>setView('odoo')],['Ir a Calendario',()=>setView('calendario')],['Ir a Configuración',()=>setView('configuracion')],
+ ['+ Nueva tarea ejecutiva',()=>taskModal()],['+ Nuevo evento de calendario',()=>eventModal()],['Generar Daily Executive Brief',()=>briefModal()],['Exportar ventas a CSV',()=>exportCSV()],['Simular compra Coca-Cola',()=>{setView('compras');poSimModal(0)}],['Iniciar recorrido GUIDE ME',()=>startTour()],['Densidad compacta',()=>{state.dens='dense-c';save('dens','dense-c');renderSettings()}],['Densidad normal',()=>{state.dens='';save('dens','');renderSettings()}]];
+let palIdx=0,palList=COMMANDS;
+function openPalette(){$('#palette').classList.add('open');$('#paletteIn').value='';drawPal('');$('#paletteIn').focus()}
+function drawPal(q){palList=COMMANDS.filter(c=>c[0].toLowerCase().includes(q.toLowerCase()));palIdx=0;
+ $('#paletteList').innerHTML=palList.map((c,i)=>'<div class="pal-it'+(i===0?' sel':'')+'" data-pi="'+i+'">→ '+c[0]+'<span class="pk">MAKRO</span></div>').join('')||'<div class="pal-it">Sin resultados…</div>'}
+$('#paletteIn').addEventListener('input',e=>drawPal(e.target.value));
+$('#paletteIn').addEventListener('keydown',e=>{
+ if(e.key==='Enter'&&palList[palIdx]){closePalette();palList[palIdx][1]()}
+ if(e.key==='ArrowDown'){palIdx=Math.min(palList.length-1,palIdx+1);drawPalSel()}
+ if(e.key==='ArrowUp'){palIdx=Math.max(0,palIdx-1);drawPalSel()}});
+function drawPalSel(){$$('.pal-it').forEach((el,i)=>el.classList.toggle('sel',i===palIdx))}
+$('#paletteList').addEventListener('click',e=>{const it=e.target.closest('.pal-it');if(it&&it.dataset.pi){closePalette();palList[+it.dataset.pi][1]()}});
+function closePalette(){$('#palette').classList.remove('open')}
+$('#palette').addEventListener('click',e=>{if(e.target.id==='palette')closePalette()});
+document.addEventListener('keydown',e=>{
+ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openPalette()}
+ if(e.key==='Escape'){closePalette();closeModal();$('#bellDrop').classList.remove('open');endTour()}});
+
+/* ---------------- TOUR GUIDE ME ---------------- */
+const TOUR=[
+ ['#navList','Navegación ejecutiva','15 módulos conectados: ventas, inventario, compras, alertas y más. Los badges rojos indican asuntos urgentes.'],
+ ['#radarWrap','Executive Radar','Score de salud del negocio (84/100). Haz clic para ver sus 6 componentes.'],
+ ['#kpiStrip','KPIs del cierre','$16.33M en ventas (95.4% del plan), margen 11.6%, 33 días de inventario y 5 tareas vencidas. Cada tarjeta navega a su módulo.'],
+ ['#pulseCard','Pulso del negocio','Venta por hora vs objetivo y periodo anterior. Cambia entre Ventas, Margen, Tickets y Utilidad; activa comparativos arriba.'],
+ ['#briefCard','MAKRO AI Brief','El agente detecta → prioriza → explica → acciona. Genera el reporte ejecutivo diario en un clic.'],
+ ['#aiBanner','MAKRO AI Agent','Monitoreo 24/7 del cierre de agosto. Todo botón del sistema ejecuta una acción real.'],
+ ['#dropzone','Odoo Data Center','Arrastra tus exportaciones (.xlsx/.csv) para alimentar los módulos. Es la puerta de entrada de tus datos.']];
+let tourStep=0;
+function startTour(){tourStep=0;drawTour()}
+function drawTour(){
+ if(tourStep>=TOUR.length){endTour();toast('◈ Tour completado','Explora libremente: todo es interactivo.','ok');return}
+ const[sel,title,txt]=TOUR[tourStep];const el=$(sel);
+ if(!el){tourStep++;return drawTour()}
+ el.scrollIntoView({block:'center',behavior:'smooth'});
+ setTimeout(()=>{const r=el.getBoundingClientRect();const sp=$('#tourSpot');
+  sp.style.display='block';sp.style.left=(r.left-8)+'px';sp.style.top=(r.top-8)+'px';sp.style.width=(r.width+16)+'px';sp.style.height=(r.height+16)+'px';
+  const card=$('#tourCard');card.style.display='block';
+  const top=clamp(r.bottom+16,10,innerHeight-220);card.style.left=clamp(r.left,10,innerWidth-340)+'px';card.style.top=top+'px';
+  card.innerHTML='<h4>'+title+' <span style="float:right;color:var(--dim)">'+(tourStep+1)+'/'+TOUR.length+'</span></h4><p>'+txt+'</p><div style="display:flex;gap:8px"><button class="btn xs ghost" onclick="endTour()">Omitir</button><button class="btn xs" onclick="tourStep--;drawTour()" '+(tourStep===0?'disabled':'')+'>← Atrás</button><button class="btn xs pri" onclick="tourStep++;drawTour()">'+(tourStep===TOUR.length-1?'Finalizar ✓':'Siguiente →')+'</button></div>'},380)}
+window.endTour=function(){$('#tourSpot').style.display='none';$('#tourCard').style.display='none'};
+window.tourStep=0;Object.defineProperty(window,'tourStep',{get:()=>tourStep,set:v=>tourStep=v});
+
+/* ---------------- ODOO DROPZONE ---------------- */
+const dz=$('#dropzone');
+['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over')}));
+dz.addEventListener('drop',e=>{if(e.dataTransfer.files.length)handleFile(e.dataTransfer.files[0])});
+$('#fileIn').addEventListener('change',e=>{if(e.target.files.length)handleFile(e.target.files[0])});
+function handleFile(f){
+ const size=f.size>1048576?(f.size/1048576).toFixed(1)+' MB':Math.max(1,Math.round(f.size/1024))+' KB';
+ const pg=$('#upProg');pg.style.display='block';const bar=pg.querySelector('i');bar.style.width='0%';
+ const kw=/venta/i.test(f.name)?'Ventas > Diario':/inv/i.test(f.name)?'Inventario > Valuación':/compra|po/i.test(f.name)?'Compras > Recibos':'Odoo > General';
+ let v=0;const iv=setInterval(()=>{v+=18;bar.style.width=Math.min(100,v)+'%';
+  if(v>=100){clearInterval(iv);
+   const now=new Date();$('#lastSync').textContent=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+   const log=document.createElement('div');log.className='feed-it';log.innerHTML='<span class="ft num">✔ OK</span><p><b>'+esc(f.name)+'</b> ('+size+') · validado · receta sugerida: <b style="color:var(--teal)">'+kw+'</b></p>';
+   $('#fileLog').prepend(log);
+   toast('📤 Archivo procesado','<b>'+esc(f.name)+'</b> recibido. Cuando exportes más archivos, dime qué módulo alimentan y complemento los datos.','ok');
+   addFeed(true)}},220)}
+
+/* ---------------- MAKRO AI CHAT ---------------- */
+function aiRespond(q){q=q.toLowerCase();
+ if(q.includes('margen')||q.includes('rentab'))return 'El margen consolidado de agosto fue <b>11.6%</b> (meta 13.2%). El puente muestra: mix de Real Providencia −0.9 pp, promociones −0.4 pp, costo Coca-Cola −0.3 pp, precios +0.2 pp y merma −0.2 pp. Villas (20.7%) e Hilario (19.7%) compensan parcialmente. Te sugiero atacar primero los 7 SKUs con caída de margen (~$48K/mes).';
+ if(q.includes('hilario'))return 'Hilario Medina: venta −3.5%, <b>77 DDI</b> y rotación 4.7x anual. Capital inmovilizado: $1.48M. Plan sugerido: 1) liquidación de categorías >90 DDI, 2) reducir pedido 30% en septiembre, 3) activación comercial de fin de semana. ¿Creo las 3 tareas?';
+ if(q.includes('coca')||q.includes('adelant'))return 'Sí: adelanta Coca-Cola. Aumento +5.2% el 05 Sep, solo 8 días de stock. Simulación: 1,200 cajas × 17 días = <b>$51,300 de ahorro neto</b> (costo financiero 2.1% mensual ya descontado). Ve a Compras → Autorizar.';
+ if(q.includes('agosto')||q.includes('cerró')||q.includes('ventas'))return 'Agosto: <b>$16.33M</b> = 95.4% del plan. Margen 11.6%, DDI 33. Villas +14.5% 🏆, Hilario −3.5% ⚠. Real Providencia concentró 78% de la venta con margen bajo (9.1%). Los fines de semana aportaron 27% de la venta.';
+ if(q.includes('oportun')||q.includes('corona')||q.includes('sabritas'))return 'Detecté 2 oportunidades con tracción: <b>Corona Extra 355 ml</b> (+31%, stock 22 d) → cabecera de fin de semana, +$62K/mes est. <b>Sabritas 170 g</b> (+18%, disponibilidad 99.1%) → cross-sell con refrescos en caja, +$38K/mes est. Ambas están en Comercial → War Room.';
+ if(q.includes('inventario')||q.includes('ddi'))return 'Inventario total $16.36M · 33 DDI. Sobrestock crítico: Envases (1,108 d), Afeitado (266 d), Dulces (120 d) = $1.09M liberables. Quiebre potencial: Refresco cola (7 d) y Cerveza (18 d). En el mapa de burbujas puedes hacer clic en cada categoría.';
+ if(q.includes('proveedor'))return 'Scorecards activos: Bimbo 94, Coca-Cola FEMSA 92, Modelo 90. Alertas: Unilever fill rate 93.2% y P&G con sobrestock en afeitado. 5 negociaciones pendientes agendables desde Proveedores.';
+ return 'Analicé tu consulta contra el cierre de agosto. Temas que domino: <b>margen</b>, <b>inventario</b>, <b>Hilario</b>, <b>Coca-Cola</b>, <b>ventas de agosto</b>, <b>oportunidades comerciales</b> y <b>proveedores</b>. También puedes pedirme: "crea tarea para X" desde cualquier módulo.'}
+function aiSend(q){
+ q=(q||'').trim();if(!q){toast('⚠ Escribe una pregunta','MAKRO AI espera tu consulta.','warn');return}
+ const log=$('#chatLog');log.innerHTML+='<div class="cmsg me"><span class="who">TÚ · DIRECCIÓN</span>'+esc(q)+'</div>';
+ $('#chatIn').value='';log.scrollTop=log.scrollHeight;
+ const t=document.createElement('div');t.className='cmsg ai';t.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';log.appendChild(t);log.scrollTop=log.scrollHeight;
+ setTimeout(()=>{t.innerHTML='<span class="who">MAKRO AI · 87% CONF.</span>'+aiRespond(q);log.scrollTop=log.scrollHeight},900)}
+$('#chatIn').addEventListener('keydown',e=>{if(e.key==='Enter')aiSend($('#chatIn').value)});
+
+/* ---------------- CAMPANA ---------------- */
+function renderBell(){
+ const lvc={crítica:'var(--red)',alta:'var(--amber)',media:'var(--blue)'};
+ $('#bellDrop').innerHTML='<div class="bh"><span>NOTIFICACIONES</span><span class="tag t-teal">'+(ALERTS.length-state.acked.length)+' activas</span></div>'
+ +ALERTS.map(a=>'<div class="bell-it" data-act="alert-goto" data-v="'+a.view+'" style="'+(state.acked.includes(a.id)?'opacity:.4':'')+'"><span class="d" style="background:'+lvc[a.lv]+'"></span><div><b>'+a.t+'</b><span>'+a.tag+' · impacto '+a.imp+'</span></div></div>').join('')}
+
+/* ---------------- SETUP INICIAL ---------------- */
+function setupWizard(){
+ openModal('<h3>CONFIGURE MAKRO EXECUTIVE OS</h3><div class="msub">Configuración inicial de esta versión local · paso 1 de 2</div>'
+ +'<label class="fl">Tu rol</label><select id="su-rol" style="width:100%;margin-bottom:12px"><option>Dirección</option><option>Administrador</option><option>Compras</option><option>Comercial</option></select>'
+ +'<label class="fl">¿Cómo quieres que MAKRO AI te salude?</label><input id="su-n" value="Alejandro" style="width:100%;margin-bottom:12px">'
+ +'<div class="mfoot"><button class="btn ghost" data-act="su-skip">Omitir</button><button class="btn pri" data-act="su-next">Continuar →</button></div>');
+ ACTIONS['su-next']=()=>{const n=$('#su-n').value||'Alejandro';
+  openModal('<h3>CONFIGURE MAKRO EXECUTIVE OS</h3><div class="msub">Paso 2 de 2 · preferencias de visualización</div>'
+  +'<label class="fl">Sucursal preferida</label><select id="su-br" style="width:100%;margin-bottom:12px"><option>Todas</option><option>Real Providencia</option><option>Castillos</option><option>Villas de San Juan</option><option>Hilario Medina</option></select>'
+  +'<label class="fl">Densidad de pantalla</label><select id="su-d" style="width:100%;margin-bottom:12px"><option value="">Normal</option><option value="dense-c">Compacto</option><option value="dense-a">Amplio</option></select>'
+  +'<p class="note">Podrás cambiar todo después en Configuración.</p>'
+  +'<div class="mfoot"><button class="btn ghost" data-act="su-back">← Atrás</button><button class="btn pri" data-act="su-done">Entrar al Command Center ✓</button></div>');
+  ACTIONS['su-back']=()=>setupWizard();
+  ACTIONS['su-done']=()=>{state.dens=$('#su-d').value;save('dens',state.dens);save('setup',true);state.setup=true;closeModal();renderSettings();
+   toast('👋 Bienvenido, '+n,'MAKRO Executive OS listo. Prueba GUIDE ME o ⌘K.','ok');setTimeout(()=>startTour(),800)}};
+ ACTIONS['su-skip']=()=>{save('setup',true);state.setup=true;closeModal()}}
+
+/* ---------------- RELOJ / FEED / BOOT ---------------- */
+function tickClock(){const d=new Date();$('#clock').innerHTML='<b>'+d.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+'</b><br>'+d.toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'short'})}
+let syncMin=2;setInterval(()=>{syncMin++;$('#sbSync').textContent='Odoo sync · hace '+syncMin+' min'},60000);
+setInterval(()=>{if(Math.random()<0.7)addFeed(false)},15000);
+setInterval(()=>{const h=new Date().getHours();$('#greet').textContent=(h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches')+', Alejandro'},30000);
+
+function boot(){
+ buildNav();renderKpis();gauge('radarGauge',84);renderInvBars();renderWatch();addFeed(true);
+ $('#briefIntro').innerHTML='Agosto cerró con <b style="color:var(--teal)">$16.33M</b> en ventas, equivalente a <b>95.4%</b> del plan. El margen bruto consolidado fue <b>11.6%</b>. La principal concentración está en <b>Real Providencia</b>: $12.70M de venta, 9.1% de margen y 28 días de inventario.';
+ $('#todayLbl').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ renderPulse();renderDonut();renderVentas();renderRent();renderInvView();renderCompras();renderProveedores();renderComercial();
+ renderTasks();renderAlerts();renderBranches();renderMyDay();renderDecisions();renderBell();renderRecipes();renderPhases();
+ renderCalendar();renderSettings();renderLearn();tickClock();setInterval(tickClock,1000);
+ $('#chatLog').innerHTML='<div class="cmsg ai"><span class="who">MAKRO AI · CHIEF OF STAFF</span>Cierre de agosto cargado ✔ Tengo detectadas 3 alertas críticas y 2 oportunidades comerciales. Pregúntame por <b>margen</b>, <b>inventario</b>, <b>Coca-Cola</b> o <b>Hilario Medina</b>.</div>';
+ if(!state.setup)setupWizard();
+ console.log('%cMAKRO Executive OS v2.6','font-size:16px;font-weight:bold;color:#2fe6c8','· 15 módulos activos · datos: cierre agosto 2026')}
+boot();
+</script>
+</body>
+</html>
