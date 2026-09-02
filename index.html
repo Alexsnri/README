@@ -787,6 +787,8 @@ const BR=[
 const TOT={sales:16330000,mg:11.6,inv:16358858,ddi:33,plan:95.4,tk:58300};
 const MONTHLY={};
 const SKU_MONTHLY={};
+const MONTHLY_MARGIN={};
+const SKU_MARGIN_MONTHLY={};
 
 const rng=mulberry32(20260831);
 const WD=[1.18,.84,.80,.86,.92,1.08,1.38]; // Dom..Sat
@@ -1188,7 +1190,14 @@ function renderTopProducts(){
   const e=SKU_MONTHLY[m][code];
   if(!totals[code])totals[code]={name:e.name,sales:0};
   totals[code].sales+=e.sales})});
- const all=Object.entries(totals).map(([code,v])=>({code,name:v.name,sales:v.sales})).sort((a,b)=>b.sales-a.sales);
+ const marginTotals={};
+ Object.keys(SKU_MARGIN_MONTHLY).forEach(m=>{Object.keys(SKU_MARGIN_MONTHLY[m]).forEach(code=>{
+  marginTotals[code]=(marginTotals[code]||0)+SKU_MARGIN_MONTHLY[m][code].sales})});
+ const hasMargin=Object.keys(marginTotals).length>0;
+ const all=Object.entries(totals).map(([code,v])=>{
+  const mg=marginTotals[code];
+  return{code,name:v.name,sales:v.sales,margin:mg!=null?mg:null,marginPct:(mg!=null&&v.sales)?mg/v.sales*100:null}
+ }).sort((a,b)=>b.sales-a.sales);
  if(!all.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">No se identificaron productos con código SKU en el archivo importado.</p>';return}
  const grandTotal=all.reduce((a,p)=>a+p.sales,0);
  let cum=0,cutoffIdx=-1;
@@ -1197,21 +1206,36 @@ function renderTopProducts(){
  const vitalPct=(vitalCount/all.length*100).toFixed(1);
  const showCount=Math.min(all.length,Math.max(vitalCount+5,15));
  const max=all[0].sales;
+ const plausibleMg=p=>p.marginPct!=null&&p.marginPct>=-100&&p.marginPct<=100;
+ const mgBadge=p=>!plausibleMg(p)?'':' <span class="tag '+(p.marginPct<8?'t-red':p.marginPct<15?'t-amber':'t-green')+'" style="margin-left:4px">'+p.marginPct.toFixed(1)+'% margen</span>';
  let rows='';
  for(let i=0;i<showCount;i++){
   const p=all[i];const isVital=i<vitalCount;
   rows+='<div class="hb"'+(i===vitalCount?' style="border-top:2px dashed var(--amber);padding-top:12px;margin-top:6px"':'')+'>'
-  +'<div class="hbl" style="gap:10px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0"><b class="num" style="color:'+(isVital?'var(--teal)':'var(--dim)')+'">#'+(i+1)+'</b> · <span class="num">'+esc(p.code)+'</span> '+esc(p.name)+'</span><b style="flex-shrink:0">'+fmtK(p.sales)+'</b></div>'
+  +'<div class="hbl" style="gap:10px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0"><b class="num" style="color:'+(isVital?'var(--teal)':'var(--dim)')+'">#'+(i+1)+'</b> · <span class="num">'+esc(p.code)+'</span> '+esc(p.name)+mgBadge(p)+'</span><b style="flex-shrink:0">'+fmtK(p.sales)+'</b></div>'
   +'<div class="hbb"><i style="width:'+(p.sales/max*100).toFixed(1)+'%;background:'+(isVital?'linear-gradient(90deg,#2fe6c8,#39c6ff)':'linear-gradient(90deg,#3a4a5c,#556378)')+'"></i></div>'
-  +'<div class="hbm">Acumulado: '+p.cumPct.toFixed(1)+'% de la venta total'+(i===vitalCount-1?' · <b style="color:var(--amber)">← aquí se cruza el 80%</b>':'')+'</div></div>'}
+  +'<div class="hbm">Acumulado: '+p.cumPct.toFixed(1)+'% de la venta total'+(p.margin!=null?' · margen '+fmtK(p.margin):'')+(i===vitalCount-1?' · <b style="color:var(--amber)">← aquí se cruza el 80%</b>':'')+'</div></div>'}
+ let marginSection;
+ if(hasMargin){
+  const eligible=all.slice(0,Math.max(vitalCount,100)).filter(plausibleMg);
+  const best=eligible.slice().sort((a,b)=>b.marginPct-a.marginPct).slice(0,5);
+  const worst=eligible.slice().sort((a,b)=>a.marginPct-b.marginPct).slice(0,5);
+  const miniList=(list,color)=>list.map(p=>'<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-size:11.5px">'+esc(p.name)+'</span><b class="num" style="color:'+color+';flex-shrink:0;font-size:11.5px">'+p.marginPct.toFixed(1)+'%</b></div>').join('');
+  marginSection='<div class="grid g2" style="margin-top:16px">'
+   +'<div class="panel" style="background:#0d1622"><div class="ph" style="margin-bottom:8px"><span class="pt" style="font-size:11px">MEJOR MARGEN</span><span class="ps">entre tus '+Math.max(vitalCount,100)+' productos con más venta</span></div>'+miniList(best,'var(--green)')+'</div>'
+   +'<div class="panel" style="background:#0d1622"><div class="ph" style="margin-bottom:8px"><span class="pt" style="font-size:11px">PEOR MARGEN</span><span class="ps">venden bien pero dejan poco</span></div>'+miniList(worst,'var(--red)')+'</div>'
+   +'</div>'
+   +'<p class="note" style="margin-top:8px">Margen real importado de Odoo (medida "Margen" del mismo reporte de Análisis de ventas) · '+Object.keys(marginTotals).length+' productos con margen identificado · se excluyeron valores fuera de −100%/100% (probables devoluciones o ajustes de inventario) del ranking de mejor/peor margen.</p>';
+ }else{
+  marginSection='<div class="alert-it" style="--ac:var(--amber);margin-top:14px"><div class="ab"><h4>⚠ Margen por producto: no disponible todavía</h4><p>Tus archivos traen venta ("Total sin impuestos") pero no costo por SKU, así que no calculo margen por producto para no inventar cifras. En Odoo, dentro del mismo reporte de <b style="color:var(--txt)">Análisis de ventas</b>, agrega la medida <b style="color:var(--txt)">"Margen"</b> junto a "Total sin impuestos" antes de exportar y mándamelo — con eso extiendo este 80/20 a margen real, no solo venta.</p></div></div>'}
  wrap.innerHTML='<div class="grid g3" style="margin-bottom:16px">'
   +'<div class="panel" style="background:#0d1622"><div class="kl">REGLA 80/20</div><div class="num" style="font-size:24px;color:var(--teal)">'+vitalCount+' de '+all.length+'</div><div class="kd">productos ('+vitalPct+'% del catálogo) generan el 80% de tu venta real</div></div>'
   +'<div class="panel" style="background:#0d1622"><div class="kl">VENTA TOTAL ANALIZADA</div><div class="num" style="font-size:24px">'+fmtK(grandTotal)+'</div><div class="kd">'+months[0]+' a '+months[months.length-1]+' · todas las sucursales</div></div>'
   +'<div class="panel" style="background:#0d1622"><div class="kl">COLA LARGA</div><div class="num" style="font-size:24px;color:var(--dim)">'+(all.length-vitalCount)+'</div><div class="kd">productos generan solo el 20% restante de la venta</div></div>'
   +'</div>'
-  +'<p class="note" style="margin-bottom:10px">Mostrando '+showCount+' de '+all.length+' productos, ordenados de mayor a menor venta · la línea punteada marca dónde se cruza el 80% acumulado</p>'
+  +'<p class="note" style="margin-bottom:10px">Mostrando '+showCount+' de '+all.length+' productos, ordenados de mayor a menor venta · la línea punteada marca dónde se cruza el 80% acumulado'+(hasMargin?' · el color del margen: <span style="color:var(--red)">rojo &lt;8%</span>, <span style="color:var(--amber)">ámbar 8–15%</span>, <span style="color:var(--green)">verde &gt;15%</span>':'')+'</p>'
   +rows
-  +'<div class="alert-it" style="--ac:var(--amber);margin-top:14px"><div class="ab"><h4>⚠ Margen por producto: no disponible todavía</h4><p>Tus archivos traen venta ("Total sin impuestos") pero no costo por SKU, así que no calculo margen por producto para no inventar cifras. En Odoo, dentro del mismo reporte de <b style="color:var(--txt)">Análisis de ventas</b>, agrega la medida <b style="color:var(--txt)">"Margen"</b> junto a "Total sin impuestos" antes de exportar y mándamelo — con eso extiendo este 80/20 a margen real, no solo venta.</p></div></div>'}
+  +marginSection}
 
 /* ---------------- RENDER: RENTABILIDAD ---------------- */
 function renderRent(){
@@ -1622,10 +1646,15 @@ function looksLikePivot(rows){
  if(!rows||rows.length<5)return false;
  const r0=rows[0],r2=rows[2];
  const totalish=r0&&r0.some(c=>typeof c==='string'&&norm(c)==='total');
- const metricRow=r2&&r2.filter(c=>typeof c==='string'&&/total/i.test(c)).length>=2;
+ const metricRow=r2&&r2.filter(c=>typeof c==='string'&&/total|margen/i.test(c)).length>=2;
  return !!(totalish&&metricRow)}
+function detectPivotMetric(rows){
+ const r2=rows[2];
+ if(r2&&r2.some(c=>typeof c==='string'&&/margen/i.test(c)))return 'margin';
+ return 'sales'}
 function applyVentasPivotImport(rows){
  if(rows.length<5)return{ok:false,msg:'El archivo no tiene el formato esperado de tabla dinámica.'};
+ const metric=detectPivotMetric(rows);
  const colLabelsRow=rows[1];
  const lastIdx=colLabelsRow.length-1;
  const excludeLast=colLabelsRow[lastIdx]==null||colLabelsRow[lastIdx]==='';
@@ -1670,7 +1699,29 @@ function applyVentasPivotImport(rows){
    skuAcc[month][skuCode].sales+=val})
  }
  const months=Object.keys(acc);
- if(!months.length)return{ok:false,msg:'No se encontraron valores de venta dentro del archivo.'};
+ if(!months.length)return{ok:false,msg:'No se encontraron valores dentro del archivo.'};
+ const skuCount=new Set();Object.values(skuAcc).forEach(m=>Object.keys(m).forEach(c=>skuCount.add(c)));
+ if(metric==='margin'){
+  months.forEach(m=>{MONTHLY_MARGIN[m]=acc[m]});
+  Object.keys(skuAcc).forEach(m=>{SKU_MARGIN_MONTHLY[m]=skuAcc[m]});
+  save('monthly_margin_ovr',MONTHLY_MARGIN);save('sku_margin_ovr',SKU_MARGIN_MONTHLY);
+  const overlap=Object.keys(MONTHLY_MARGIN).filter(m=>MONTHLY[m]).sort();
+  let msgExtra='';
+  if(overlap.length){
+   const maxSales=Math.max(...overlap.map(m=>MONTHLY[m].sales));
+   let refMonth=overlap[overlap.length-1];
+   for(let i=overlap.length-1;i>=0;i--){if(MONTHLY[overlap[i]].sales>=maxSales*0.5){refMonth=overlap[i];break}}
+   const salesRef=MONTHLY[refMonth].sales,marginRef=MONTHLY_MARGIN[refMonth].sales;
+   if(salesRef){
+    TOT.mg=+(marginRef/salesRef*100).toFixed(1);
+    BR.forEach(b=>{const s=MONTHLY[refMonth].byBranch[b.id],mg=MONTHLY_MARGIN[refMonth].byBranch[b.id];if(s&&mg!=null)b.mg=+(mg/s*100).toFixed(1)});
+    save('tot_ovr',TOT);save('br_ovr',BR);
+    const[ry,rm]=refMonth.split('-');
+    const refLabel=new Date(+ry,+rm-1,1).toLocaleDateString('es-MX',{month:'long',year:'numeric'});
+    msgExtra=' · margen consolidado de '+refLabel+': '+TOT.mg+'%'}
+  }
+  const allM=months.slice().sort();
+  return{ok:true,msg:months.length+' mes(es) de margen procesados ('+allM[0]+' a '+allM[allM.length-1]+')'+msgExtra+(skuCount.size?(' · '+skuCount.size+' producto(s) con margen'):'')+'.'+(skippedGroups?(' · '+skippedGroups+' grupo(s) no reconocido(s)'):'')}}
  months.forEach(m=>{MONTHLY[m]=acc[m]});
  Object.keys(skuAcc).forEach(m=>{SKU_MONTHLY[m]=skuAcc[m]});
  save('monthly_ovr',MONTHLY);save('sku_ovr',SKU_MONTHLY);
@@ -1684,7 +1735,6 @@ function applyVentasPivotImport(rows){
  save('tot_ovr',TOT);save('br_ovr',BR);
  const[ry,rm]=refMonth.split('-');
  const refLabel=new Date(+ry,+rm-1,1).toLocaleDateString('es-MX',{month:'long',year:'numeric'});
- const skuCount=new Set();Object.values(skuAcc).forEach(m=>Object.keys(m).forEach(c=>skuCount.add(c)));
  return{ok:true,msg:months.length+' mes(es) procesados ('+allMonths[0]+' a '+allMonths[allMonths.length-1]+') · mes de referencia: '+refLabel+' con '+MXN(ref.sales)+' en ventas'+(skuCount.size?(' · '+skuCount.size+' producto(s) identificados'):'')+'.'+(skippedGroups?(' · '+skippedGroups+' grupo(s) no reconocido(s)'):'')}}
 function applyVentasImport(rows,map){
  const byDate={},byBranch={};
@@ -1764,7 +1814,9 @@ function hydrateImports(){
  const bOvr=LS.get('mk_br_ovr',null);if(bOvr&&bOvr.length)bOvr.forEach(o=>{const b=BR.find(x=>x.id===o.id);if(b)Object.assign(b,o)});
  const tOvr=LS.get('mk_tot_ovr',null);if(tOvr)Object.assign(TOT,tOvr);
  const mOvr=LS.get('mk_monthly_ovr',null);if(mOvr)Object.assign(MONTHLY,mOvr);
- const skuOvr=LS.get('mk_sku_ovr',null);if(skuOvr)Object.assign(SKU_MONTHLY,skuOvr)}
+ const skuOvr=LS.get('mk_sku_ovr',null);if(skuOvr)Object.assign(SKU_MONTHLY,skuOvr);
+ const mmOvr=LS.get('mk_monthly_margin_ovr',null);if(mmOvr)Object.assign(MONTHLY_MARGIN,mmOvr);
+ const smOvr=LS.get('mk_sku_margin_ovr',null);if(smOvr)Object.assign(SKU_MARGIN_MONTHLY,smOvr)}
 function resetImports(){
  DAYS.length=0;DEFAULTS_SNAPSHOT.DAYS.forEach(x=>DAYS.push(x));
  CATINV.length=0;DEFAULTS_SNAPSHOT.CATINV.forEach(x=>CATINV.push(x));
@@ -1773,7 +1825,9 @@ function resetImports(){
  Object.assign(TOT,DEFAULTS_SNAPSHOT.TOT);
  Object.keys(MONTHLY).forEach(k=>delete MONTHLY[k]);
  Object.keys(SKU_MONTHLY).forEach(k=>delete SKU_MONTHLY[k]);
- ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr','monthly_ovr','sku_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
+ Object.keys(MONTHLY_MARGIN).forEach(k=>delete MONTHLY_MARGIN[k]);
+ Object.keys(SKU_MARGIN_MONTHLY).forEach(k=>delete SKU_MARGIN_MONTHLY[k]);
+ ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr','monthly_ovr','sku_ovr','monthly_margin_ovr','sku_margin_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
  $('#fileLog').innerHTML='';$('#lastSync').textContent='31 agosto 2026 · 06:12';
  renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();renderMonthlyTrend();renderTopProducts();renderBranches();requestAnimationFrame(renderBranchBars);renderRent();updateTopTags();
  toast('↺ Datos restablecidos','Volviste a los datos de ejemplo de agosto 2026.','ok')}
@@ -1793,14 +1847,16 @@ function handleFile(f){
    if(!rowsRaw.length||rowsRaw.length<2)throw new Error('El archivo no tiene datos.');
    if(looksLikePivot(rowsRaw)){
     clearInterval(iv);bar.style.width='100%';
+    const pivotMetric=detectPivotMetric(rowsRaw);
+    const metricLbl=pivotMetric==='margin'?'Margen':'Ventas';
     const result=applyVentasPivotImport(rowsRaw);
     if(result.ok){
      const now=new Date();$('#lastSync').textContent=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-     logFile(f,size,'✔ Ventas (tabla dinámica)',result.msg);
-     toast('📤 Ventas actualizado','Detecté una tabla dinámica de Odoo · '+result.msg,'ok');
+     logFile(f,size,'✔ '+metricLbl+' (tabla dinámica)',result.msg);
+     toast('📤 '+metricLbl+' actualizado','Detecté una tabla dinámica de Odoo ('+metricLbl.toLowerCase()+') · '+result.msg,'ok');
      refreshAfterImport('Ventas');addFeed(true);
     }else{
-     logFile(f,size,'⚠ Ventas (tabla dinámica)',result.msg);
+     logFile(f,size,'⚠ '+metricLbl+' (tabla dinámica)',result.msg);
      toast('⚠ No se importó',result.msg,'warn')}
     return}
    const headerRow=rowsRaw[0];
