@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAKRO Executive OS · Command Center</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230ea5a0'/><text x='16' y='22' font-size='18' font-weight='bold' text-anchor='middle' fill='%2304211d' font-family='Arial'>M</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%20role%3D%22img%22%20aria-label%3D%22Makro%20Abasto%20master%20icon%22%3E%20%3Cg%20fill%3D%22%23ff1026%22%3E%20%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M72%20162a105%20105%200%201%201%20210%200v91h-58v-25a105%20105%200%200%201-152-66Zm58%200a47%2047%200%201%200%2094%200%2047%2047%200%200%200-94%200Z%22%2F%3E%20%3Cpath%20d%3D%22M300%2058h59v72l67-72h77l-96%20101%20101%20102h-79l-70-74v74h-59Z%22%2F%3E%20%3C%2Fg%3E%20%3Cpath%20d%3D%22M91%20306c31%2094%20105%20140%20173%20140s142-46%20173-140%22%20fill%3D%22none%22%20stroke%3D%22%23ff1026%22%20stroke-width%3D%2258%22%20stroke-linecap%3D%22round%22%2F%3E%20%3C%2Fsvg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -43,7 +43,8 @@ a{color:var(--cyan)}
 #sidebar{width:236px;flex-shrink:0;background:linear-gradient(180deg,#0d151f,#0a1018);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;transition:width .25s;z-index:40}
 body.sbx #sidebar{width:64px}
 #brand{display:flex;align-items:center;gap:10px;padding:16px 16px 14px;border-bottom:1px solid var(--line)}
-#brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#10b9a5,#22c3d8);display:grid;place-items:center;font:700 17px var(--fd);color:#04211d;flex-shrink:0;box-shadow:0 0 18px rgba(47,230,200,.35)}
+.brand-ico svg{width:100%;height:100%;display:block}
+#brand .logo{width:34px;height:34px;display:grid;place-items:center;flex-shrink:0;filter:drop-shadow(0 0 10px rgba(255,16,38,.45))}
 #brand .bt{overflow:hidden;white-space:nowrap}
 #brand .bt b{font:700 15px var(--fd);letter-spacing:1.5px;display:block}
 #brand .bt span{font:600 8.5px var(--fm);letter-spacing:2.6px;color:var(--teal)}
@@ -291,7 +292,7 @@ label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(-
 <div id="app">
 <!-- ================= SIDEBAR ================= -->
 <aside id="sidebar">
-  <div id="brand"><div class="logo">M</div><div class="bt"><b>MAKRO</b><span>EXECUTIVE OS</span></div></div>
+  <div id="brand"><div class="logo brand-ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Makro Abasto"><g fill="#ff1026"><path fill-rule="evenodd" d="M72 162a105 105 0 1 1 210 0v91h-58v-25a105 105 0 0 1-152-66Zm58 0a47 47 0 1 0 94 0 47 47 0 0 0-94 0Z"/><path d="M300 58h59v72l67-72h77l-96 101 101 102h-79l-70-74v74h-59Z"/></g><path d="M91 306c31 94 105 140 173 140s142-46 173-140" fill="none" stroke="#ff1026" stroke-width="58" stroke-linecap="round"/></svg></div><div class="bt"><b>MAKRO</b><span>EXECUTIVE OS</span></div></div>
   <nav id="navList"></nav>
   <div id="sbFoot"><span class="dot"></span><span class="ftx">Sistema conectado<br><span id="sbSync">Odoo sync · hace 2 min</span></span></div>
 </aside>
@@ -767,6 +768,7 @@ const pct=n=>n.toFixed(1)+'%';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const BRAND_ICON='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Makro Abasto"><g fill="#ff1026"><path fill-rule="evenodd" d="M72 162a105 105 0 1 1 210 0v91h-58v-25a105 105 0 0 1-152-66Zm58 0a47 47 0 1 0 94 0 47 47 0 0 0-94 0Z"/><path d="M300 58h59v72l67-72h77l-96 101 101 102h-79l-70-74v74h-59Z"/></g><path d="M91 306c31 94 105 140 173 140s142-46 173-140" fill="none" stroke="#ff1026" stroke-width="58" stroke-linecap="round"/></svg>';
 
 /* ---------------- DATOS BASE (cierre agosto 2026) ---------------- */
 const BR=[
@@ -1343,7 +1345,7 @@ const ACTIONS={
  profile:()=>toast('Alejandro Sandoval','Dirección General · MAKRO · perfil con acceso total a los 15 módulos.','ok'),
  tour:()=>startTour(),
  brief:()=>briefModal(),
- 'brief-pdf':()=>{const w=window.open('','_blank');w.document.write('<html><head><title>MAKRO Daily Brief</title><style>body{font-family:Arial;padding:30px;color:#111}h3{margin:8px 0}.kl{font-size:10px;letter-spacing:2px;color:#666}.num{font-weight:bold;font-size:20px}.grid{display:flex;gap:14px}.panel{border:1px solid #ddd;border-radius:8px;padding:12px;flex:1}.divv{border-top:1px solid #ddd;margin:12px 0}</style></head><body>'+$('#briefPrint').innerHTML+'</body></html>');w.document.close();setTimeout(()=>w.print(),400)},
+ 'brief-pdf':()=>{const w=window.open('','_blank');const logo='<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><span style="width:30px;height:30px;display:inline-block">'+BRAND_ICON+'</span><span style="font-size:19px;font-weight:800"><span style="color:#ff1026">makro</span> <span style="color:#16233c">abasto</span></span></div>';w.document.write('<html><head><title>MAKRO Daily Brief</title><style>body{font-family:Arial;padding:30px;color:#111}h3{margin:8px 0}.kl{font-size:10px;letter-spacing:2px;color:#666}.num{font-weight:bold;font-size:20px}.grid{display:flex;gap:14px}.panel{border:1px solid #ddd;border-radius:8px;padding:12px;flex:1}.divv{border-top:1px solid #ddd;margin:12px 0}svg{width:30px;height:30px}</style></head><body>'+logo+$('#briefPrint').innerHTML+'</body></html>');w.document.close();setTimeout(()=>w.print(),400)},
  'brief-mail':()=>{location.href='mailto:?subject='+encodeURIComponent('MAKRO Executive Brief · '+new Date().toLocaleDateString())+'&body='+encodeURIComponent(briefText())},
  'brief-wa':()=>{window.open('https://wa.me/?text='+encodeURIComponent(briefText()),'_blank')},
  newaction:()=>openModal('<h3>+ NUEVA ACCIÓN</h3><div class="msub">¿Qué quieres crear?</div><div style="display:flex;flex-direction:column;gap:9px"><button class="btn" data-act="task-modal" data-t="">📋 Nueva tarea ejecutiva</button><button class="btn" data-act="cal-add">📅 Nuevo evento de calendario</button><button class="btn" data-act="nav" data-view="comercial">💬 Enviar instrucción al equipo</button><button class="btn" data-act="nav" data-view="odoo">📤 Cargar archivo Odoo</button></div><div class="mfoot"><button class="btn ghost" data-act="close-modal">Cancelar</button></div>'),
@@ -1700,12 +1702,12 @@ function renderBell(){
 
 /* ---------------- SETUP INICIAL ---------------- */
 function setupWizard(){
- openModal('<h3>CONFIGURE MAKRO EXECUTIVE OS</h3><div class="msub">Configuración inicial de esta versión local · paso 1 de 2</div>'
+ openModal('<div class="brand-ico" style="width:52px;height:52px;margin:0 auto 12px;filter:drop-shadow(0 0 12px rgba(255,16,38,.4))">'+BRAND_ICON+'</div><h3 style="text-align:center">CONFIGURE MAKRO EXECUTIVE OS</h3><div class="msub" style="text-align:center">Configuración inicial de esta versión local · paso 1 de 2</div>'
  +'<label class="fl">Tu rol</label><select id="su-rol" style="width:100%;margin-bottom:12px"><option>Dirección</option><option>Administrador</option><option>Compras</option><option>Comercial</option></select>'
  +'<label class="fl">¿Cómo quieres que MAKRO AI te salude?</label><input id="su-n" value="Alejandro" style="width:100%;margin-bottom:12px">'
  +'<div class="mfoot"><button class="btn ghost" data-act="su-skip">Omitir</button><button class="btn pri" data-act="su-next">Continuar →</button></div>');
  ACTIONS['su-next']=()=>{const n=$('#su-n').value||'Alejandro';
-  openModal('<h3>CONFIGURE MAKRO EXECUTIVE OS</h3><div class="msub">Paso 2 de 2 · preferencias de visualización</div>'
+  openModal('<div class="brand-ico" style="width:44px;height:44px;margin:0 auto 10px;filter:drop-shadow(0 0 10px rgba(255,16,38,.4))">'+BRAND_ICON+'</div><h3 style="text-align:center">CONFIGURE MAKRO EXECUTIVE OS</h3><div class="msub" style="text-align:center">Paso 2 de 2 · preferencias de visualización</div>'
   +'<label class="fl">Sucursal preferida</label><select id="su-br" style="width:100%;margin-bottom:12px"><option>Todas</option><option>Real Providencia</option><option>Castillos</option><option>Villas de San Juan</option><option>Hilario Medina</option></select>'
   +'<label class="fl">Densidad de pantalla</label><select id="su-d" style="width:100%;margin-bottom:12px"><option value="">Normal</option><option value="dense-c">Compacto</option><option value="dense-a">Amplio</option></select>'
   +'<p class="note">Podrás cambiar todo después en Configuración.</p>'
