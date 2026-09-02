@@ -1092,12 +1092,15 @@ function openCatModal(c){const[a,tc]=catAct(c.ddi);
 /* ---------------- RENDER: COMMAND ---------------- */
 function renderKpis(){
  const d7=DAYS.slice(-7).map(d=>d.sales);
+ const overdue=state.tasks.filter(isOver).length;
+ const mgGap=(TOT.mg-13.2).toFixed(1);
+ const planGap=(TOT.plan-100).toFixed(1);
  const items=[
-  {l:'Ventas agosto',v:'$16.33M',s:'<span class="up">▲ 95.4% del plan</span>',c:'#2fe6c8',sp:d7,act:'nav',av:'ventas'},
-  {l:'Margen bruto',v:'11.6%',s:'<span class="dn">▼ 1.6 pp vs objetivo 13.2%</span>',c:'#5aa9ff',sp:DAYS.slice(-7).map(d=>d.margin),act:'nav',av:'rentabilidad'},
-  {l:'Inventario · DDI',v:'33 d',s:'<span class="wr">● $16.36M capital · meta ≤30</span>',c:'#ffb350',sp:[41,40,38,37,35,34,33],act:'nav',av:'inventario'},
-  {l:'Plan mensual',v:'95.4%',s:'<span class="wr">▼ 4.6 pp vs presupuesto</span>',c:'#a78bfa',sp:[62,71,78,84,89,93,95.4],act:'nav',av:'ventas'},
-  {l:'Tareas vencidas',v:'5',s:'<span class="dn">▲ requiere acción hoy</span>',c:'#ff5c6c',sp:[2,3,3,4,4,5,5],act:'nav',av:'tareas'}];
+  {l:'Ventas',v:fmtK(TOT.sales),s:'<span class="'+(TOT.plan>=100?'up':'wr')+'">▲ '+TOT.plan+'% del plan</span>',c:'#2fe6c8',sp:d7,act:'nav',av:'ventas'},
+  {l:'Margen bruto',v:TOT.mg+'%',s:'<span class="'+(mgGap<0?'dn':'up')+'">'+(mgGap<0?'▼ ':'▲ ')+Math.abs(mgGap)+' pp vs objetivo 13.2%</span>',c:'#5aa9ff',sp:DAYS.slice(-7).map(d=>d.margin),act:'nav',av:'rentabilidad'},
+  {l:'Inventario · DDI',v:TOT.ddi+' d',s:'<span class="wr">● '+fmtK(TOT.inv)+' capital · meta ≤30</span>',c:'#ffb350',sp:[41,40,38,37,35,34,33],act:'nav',av:'inventario'},
+  {l:'Plan mensual',v:TOT.plan+'%',s:'<span class="'+(planGap<0?'wr':'up')+'">'+(planGap<0?'▼ ':'▲ ')+Math.abs(planGap)+' pp vs presupuesto</span>',c:'#a78bfa',sp:[62,71,78,84,89,93,TOT.plan],act:'nav',av:'ventas'},
+  {l:'Tareas vencidas',v:String(overdue),s:'<span class="'+(overdue?'dn':'up')+'">'+(overdue?'▲ requiere acción hoy':'✔ al día')+'</span>',c:'#ff5c6c',sp:[2,3,3,4,4,5,overdue],act:'nav',av:'tareas'}];
  $('#kpiStrip').innerHTML=items.map(k=>'<div class="panel kpi" style="--kc:'+k.c+'" data-act="'+k.act+'" data-view="'+k.av+'"><div class="kl">'+k.l+'</div><div class="kv num" style="color:'+k.c+'">'+k.v+'</div><div class="kd">'+k.s+'</div>'+spark(k.sp,k.c)+'</div>').join('')}
 function renderInvBars(){
  const mx=Math.max(...BR.map(b=>b.inv));
@@ -1697,7 +1700,7 @@ function updateTopTags(){
  const top=BR.slice().sort((a,b)=>b.sales-a.sales)[0];
  $('#briefIntro').innerHTML='El cierre de '+cierreLbl+' suma <b style="color:var(--teal)">'+fmtK(TOT.sales)+'</b> en ventas, equivalente a <b>'+TOT.plan+'%</b> del plan. El margen bruto consolidado fue <b>'+TOT.mg+'%</b>. La principal concentración está en <b>'+top.n+'</b>: '+fmtK(top.sales)+' de venta, '+top.mg+'% de margen y '+top.ddi+' días de inventario.'}
 function refreshAfterImport(modulo){
- if(modulo==='Ventas'){renderKpis();renderVentas();renderMonthlyTrend()}
+ if(modulo==='Ventas'){renderKpis();renderVentas();renderMonthlyTrend();renderDonut();renderBranches();requestAnimationFrame(renderBranchBars);renderRent()}
  if(modulo==='Inventario'){renderInvView()}
  if(modulo==='Compras'){renderCompras()}
  updateTopTags()}
@@ -1718,7 +1721,7 @@ function resetImports(){
  Object.keys(MONTHLY).forEach(k=>delete MONTHLY[k]);
  ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr','monthly_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
  $('#fileLog').innerHTML='';$('#lastSync').textContent='31 agosto 2026 · 06:12';
- renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();renderMonthlyTrend();updateTopTags();
+ renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();renderMonthlyTrend();renderBranches();requestAnimationFrame(renderBranchBars);renderRent();updateTopTags();
  toast('↺ Datos restablecidos','Volviste a los datos de ejemplo de agosto 2026.','ok')}
 function handleFile(f){
  const size=f.size>1048576?(f.size/1048576).toFixed(1)+' MB':Math.max(1,Math.round(f.size/1024))+' KB';
