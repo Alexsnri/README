@@ -448,6 +448,10 @@ label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(-
     <div class="ph"><span class="pt">TENDENCIA MENSUAL REAL</span><span class="ps">datos reales importados de Odoo · por sucursal</span><div class="sp"></div><span class="tag t-green">Fuente: tabla dinámica Odoo</span></div>
     <div id="monthlyTrendWrap"></div>
   </div>
+  <div class="panel">
+    <div class="ph"><span class="pt">TOP PRODUCTOS REALES</span><span class="ps">acumulado del periodo importado · todas las sucursales</span><div class="sp"></div><span class="tag t-green">Fuente: tabla dinámica Odoo</span></div>
+    <div id="topProductsWrap"></div>
+  </div>
   <div class="grid g21">
     <div class="panel"><div class="ph"><span class="pt">LECTURA EJECUTIVA</span><span class="ps">lo más importante del periodo seleccionado</span></div><div id="vRead" style="font-size:12.5px;color:var(--mut);line-height:1.8"></div></div>
     <div class="panel"><div class="ph"><span class="pt">MIX POR CATEGORÍA</span><span class="ps">venta mensual · agosto 2026</span></div><div id="vMix" class="chart"></div></div>
@@ -782,6 +786,7 @@ const BR=[
  {id:'hilario',n:'Hilario Medina',sales:1460000,mg:19.7,gr:-3.5,inv:1480000,ddi:77,tk:6800,osa:93.1,score:74,c:'#ffb350'}];
 const TOT={sales:16330000,mg:11.6,inv:16358858,ddi:33,plan:95.4,tk:58300};
 const MONTHLY={};
+const SKU_MONTHLY={};
 
 const rng=mulberry32(20260831);
 const WD=[1.18,.84,.80,.86,.92,1.08,1.38]; // Dom..Sat
@@ -1174,6 +1179,20 @@ function renderMonthlyTrend(){
  const series=BR.map(b=>({n:b.n,c:b.c,v:months.map(m=>Math.round(MONTHLY[m].byBranch[b.id]||0))}));
  xyChart('monthlyTrendChart',{labels,series,yfmt:fmtK,tipfmt:v=>fmtK(v),min0:true,h:260,legend:'monthlyTrendLegend',
   onPick:i=>{const m=months[i];toast('📅 '+labels[i],'Total del mes: <b>'+fmtK(MONTHLY[m].sales)+'</b>')}})}
+function renderTopProducts(){
+ const wrap=$('#topProductsWrap');if(!wrap)return;
+ const months=Object.keys(SKU_MONTHLY).sort();
+ if(!months.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">Aún no hay detalle de productos importado. Se genera automáticamente al subir una tabla dinámica de Ventas con detalle de SKU.</p>';return}
+ const totals={};
+ months.forEach(m=>{Object.keys(SKU_MONTHLY[m]).forEach(code=>{
+  const e=SKU_MONTHLY[m][code];
+  if(!totals[code])totals[code]={name:e.name,sales:0};
+  totals[code].sales+=e.sales})});
+ const ranked=Object.entries(totals).map(([code,v])=>({code,name:v.name,sales:v.sales})).sort((a,b)=>b.sales-a.sales).slice(0,10);
+ if(!ranked.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">No se identificaron productos con código SKU en el archivo importado.</p>';return}
+ const max=ranked[0].sales;
+ wrap.innerHTML='<p class="note" style="margin-bottom:10px">Acumulado '+months[0]+' a '+months[months.length-1]+' · todas las sucursales · '+Object.keys(totals).length+' productos identificados</p>'
+ +ranked.map((p,i)=>'<div class="hb"><div class="hbl" style="gap:10px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">#'+(i+1)+' · <span class="num">'+esc(p.code)+'</span> '+esc(p.name)+'</span><b style="flex-shrink:0">'+fmtK(p.sales)+'</b></div><div class="hbb"><i style="width:'+(p.sales/max*100).toFixed(1)+'%;background:linear-gradient(90deg,#2fe6c8,#39c6ff)"></i></div></div>').join('')}
 
 /* ---------------- RENDER: RENTABILIDAD ---------------- */
 function renderRent(){
@@ -1599,30 +1618,43 @@ function applyVentasPivotImport(rows){
  const colKind=votesMonth>=votesBranch?'month':'branch';
  const colMeta={};
  dataIdx.forEach(i=>{colMeta[i]=colKind==='month'?monthLabelToISO(colLabelsRow[i]):odooBranchToId(colLabelsRow[i])});
- const acc={};
- let skippedGroups=0;
+ const acc={};const skuAcc={};
+ let skippedGroups=0,currentKey=null;
+ const SKU_RE=/^\[([^\]]+)\]\s*(.+)$/;
  for(let r=4;r<rows.length;r++){
   const row=rows[r];const label=row[0];
   if(typeof label!=='string')continue;
   const indent=label.length-label.replace(/^ +/,'').length;
   const trimmed=label.trim();
   if(indent<=2)continue;
-  if(indent>7)continue;
-  const key=colKind==='month'?odooBranchToId(trimmed):monthLabelToISO(trimmed);
-  if(!key){skippedGroups++;continue}
+  if(indent<=7){
+   currentKey=colKind==='month'?odooBranchToId(trimmed):monthLabelToISO(trimmed);
+   if(!currentKey){skippedGroups++;continue}
+   dataIdx.forEach(i=>{
+    const key2=colMeta[i];if(!key2)return;
+    const val=toNum(row[i]);if(!val)return;
+    let month,branchId;
+    if(colKind==='month'){month=key2;branchId=currentKey}else{month=currentKey;branchId=key2}
+    if(!acc[month])acc[month]={sales:0,byBranch:{}};
+    acc[month].sales+=val;
+    acc[month].byBranch[branchId]=(acc[month].byBranch[branchId]||0)+val});
+   continue}
+  const skuMatch=trimmed.match(SKU_RE);
+  if(!skuMatch||!currentKey)continue;
+  const skuCode=skuMatch[1],skuName=skuMatch[2];
   dataIdx.forEach(i=>{
    const key2=colMeta[i];if(!key2)return;
    const val=toNum(row[i]);if(!val)return;
-   let month,branchId;
-   if(colKind==='month'){month=key2;branchId=key}else{month=key;branchId=key2}
-   if(!acc[month])acc[month]={sales:0,byBranch:{}};
-   acc[month].sales+=val;
-   acc[month].byBranch[branchId]=(acc[month].byBranch[branchId]||0)+val})
+   const month=colKind==='month'?key2:currentKey;
+   if(!skuAcc[month])skuAcc[month]={};
+   if(!skuAcc[month][skuCode])skuAcc[month][skuCode]={name:skuName,sales:0};
+   skuAcc[month][skuCode].sales+=val})
  }
  const months=Object.keys(acc);
  if(!months.length)return{ok:false,msg:'No se encontraron valores de venta dentro del archivo.'};
  months.forEach(m=>{MONTHLY[m]=acc[m]});
- save('monthly_ovr',MONTHLY);
+ Object.keys(skuAcc).forEach(m=>{SKU_MONTHLY[m]=skuAcc[m]});
+ save('monthly_ovr',MONTHLY);save('sku_ovr',SKU_MONTHLY);
  const allMonths=Object.keys(MONTHLY).sort();
  const maxSales=Math.max(...allMonths.map(m=>MONTHLY[m].sales));
  let refMonth=allMonths[allMonths.length-1];
@@ -1633,7 +1665,8 @@ function applyVentasPivotImport(rows){
  save('tot_ovr',TOT);save('br_ovr',BR);
  const[ry,rm]=refMonth.split('-');
  const refLabel=new Date(+ry,+rm-1,1).toLocaleDateString('es-MX',{month:'long',year:'numeric'});
- return{ok:true,msg:months.length+' mes(es) procesados ('+allMonths[0]+' a '+allMonths[allMonths.length-1]+') · mes de referencia: '+refLabel+' con '+MXN(ref.sales)+' en ventas.'+(skippedGroups?(' · '+skippedGroups+' grupo(s) no reconocido(s)'):'')}}
+ const skuCount=new Set();Object.values(skuAcc).forEach(m=>Object.keys(m).forEach(c=>skuCount.add(c)));
+ return{ok:true,msg:months.length+' mes(es) procesados ('+allMonths[0]+' a '+allMonths[allMonths.length-1]+') · mes de referencia: '+refLabel+' con '+MXN(ref.sales)+' en ventas'+(skuCount.size?(' · '+skuCount.size+' producto(s) identificados'):'')+'.'+(skippedGroups?(' · '+skippedGroups+' grupo(s) no reconocido(s)'):'')}}
 function applyVentasImport(rows,map){
  const byDate={},byBranch={};
  rows.forEach(r=>{
@@ -1700,7 +1733,7 @@ function updateTopTags(){
  const top=BR.slice().sort((a,b)=>b.sales-a.sales)[0];
  $('#briefIntro').innerHTML='El cierre de '+cierreLbl+' suma <b style="color:var(--teal)">'+fmtK(TOT.sales)+'</b> en ventas, equivalente a <b>'+TOT.plan+'%</b> del plan. El margen bruto consolidado fue <b>'+TOT.mg+'%</b>. La principal concentración está en <b>'+top.n+'</b>: '+fmtK(top.sales)+' de venta, '+top.mg+'% de margen y '+top.ddi+' días de inventario.'}
 function refreshAfterImport(modulo){
- if(modulo==='Ventas'){renderKpis();renderVentas();renderMonthlyTrend();renderDonut();renderBranches();requestAnimationFrame(renderBranchBars);renderRent()}
+ if(modulo==='Ventas'){renderKpis();renderVentas();renderMonthlyTrend();renderTopProducts();renderDonut();renderBranches();requestAnimationFrame(renderBranchBars);renderRent()}
  if(modulo==='Inventario'){renderInvView()}
  if(modulo==='Compras'){renderCompras()}
  updateTopTags()}
@@ -1711,7 +1744,8 @@ function hydrateImports(){
  const pOvr=LS.get('mk_po_ovr',null);if(pOvr&&pOvr.length){PO.length=0;pOvr.forEach(x=>PO.push(x));poState.length=0;PO.forEach(()=>poState.push(''))}
  const bOvr=LS.get('mk_br_ovr',null);if(bOvr&&bOvr.length)bOvr.forEach(o=>{const b=BR.find(x=>x.id===o.id);if(b)Object.assign(b,o)});
  const tOvr=LS.get('mk_tot_ovr',null);if(tOvr)Object.assign(TOT,tOvr);
- const mOvr=LS.get('mk_monthly_ovr',null);if(mOvr)Object.assign(MONTHLY,mOvr)}
+ const mOvr=LS.get('mk_monthly_ovr',null);if(mOvr)Object.assign(MONTHLY,mOvr);
+ const skuOvr=LS.get('mk_sku_ovr',null);if(skuOvr)Object.assign(SKU_MONTHLY,skuOvr)}
 function resetImports(){
  DAYS.length=0;DEFAULTS_SNAPSHOT.DAYS.forEach(x=>DAYS.push(x));
  CATINV.length=0;DEFAULTS_SNAPSHOT.CATINV.forEach(x=>CATINV.push(x));
@@ -1719,9 +1753,10 @@ function resetImports(){
  BR.forEach((b,i)=>Object.assign(b,DEFAULTS_SNAPSHOT.BR[i]));
  Object.assign(TOT,DEFAULTS_SNAPSHOT.TOT);
  Object.keys(MONTHLY).forEach(k=>delete MONTHLY[k]);
- ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr','monthly_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
+ Object.keys(SKU_MONTHLY).forEach(k=>delete SKU_MONTHLY[k]);
+ ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr','monthly_ovr','sku_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
  $('#fileLog').innerHTML='';$('#lastSync').textContent='31 agosto 2026 · 06:12';
- renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();renderMonthlyTrend();renderBranches();requestAnimationFrame(renderBranchBars);renderRent();updateTopTags();
+ renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();renderMonthlyTrend();renderTopProducts();renderBranches();requestAnimationFrame(renderBranchBars);renderRent();updateTopTags();
  toast('↺ Datos restablecidos','Volviste a los datos de ejemplo de agosto 2026.','ok')}
 function handleFile(f){
  const size=f.size>1048576?(f.size/1048576).toFixed(1)+' MB':Math.max(1,Math.round(f.size/1024))+' KB';
@@ -1838,7 +1873,7 @@ function boot(){
  buildNav();renderKpis();gauge('radarGauge',84);renderInvBars();renderWatch();addFeed(true);
  updateTopTags();
  $('#todayLbl').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
- renderPulse();renderDonut();renderVentas();renderMonthlyTrend();renderRent();renderInvView();renderCompras();renderProveedores();renderComercial();
+ renderPulse();renderDonut();renderVentas();renderMonthlyTrend();renderTopProducts();renderRent();renderInvView();renderCompras();renderProveedores();renderComercial();
  renderTasks();renderAlerts();renderBranches();renderMyDay();renderDecisions();renderBell();renderRecipes();renderPhases();
  renderCalendar();renderSettings();renderLearn();tickClock();setInterval(tickClock,1000);
  $('#chatLog').innerHTML='<div class="cmsg ai"><span class="who">MAKRO AI · CHIEF OF STAFF</span>Cierre de agosto cargado ✔ Tengo detectadas 3 alertas críticas y 2 oportunidades comerciales. Pregúntame por <b>margen</b>, <b>inventario</b>, <b>Coca-Cola</b> o <b>Hilario Medina</b>.</div>';
