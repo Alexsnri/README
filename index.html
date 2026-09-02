@@ -444,6 +444,10 @@ label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(-
     <div id="vChart" class="chart"></div>
     <p class="note" style="text-align:center;margin-top:6px">Toca un punto para ver el detalle del día · usa ← → para navegar periodos</p>
   </div>
+  <div class="panel glowT">
+    <div class="ph"><span class="pt">TENDENCIA MENSUAL REAL</span><span class="ps">datos reales importados de Odoo · por sucursal</span><div class="sp"></div><span class="tag t-green">Fuente: tabla dinámica Odoo</span></div>
+    <div id="monthlyTrendWrap"></div>
+  </div>
   <div class="grid g21">
     <div class="panel"><div class="ph"><span class="pt">LECTURA EJECUTIVA</span><span class="ps">lo más importante del periodo seleccionado</span></div><div id="vRead" style="font-size:12.5px;color:var(--mut);line-height:1.8"></div></div>
     <div class="panel"><div class="ph"><span class="pt">MIX POR CATEGORÍA</span><span class="ps">venta mensual · agosto 2026</span></div><div id="vMix" class="chart"></div></div>
@@ -777,6 +781,7 @@ const BR=[
  {id:'villas',n:'Villas de San Juan',sales:1020000,mg:20.7,gr:14.5,inv:1580000,ddi:48,tk:4900,osa:97.5,score:92,c:'#51d88a'},
  {id:'hilario',n:'Hilario Medina',sales:1460000,mg:19.7,gr:-3.5,inv:1480000,ddi:77,tk:6800,osa:93.1,score:74,c:'#ffb350'}];
 const TOT={sales:16330000,mg:11.6,inv:16358858,ddi:33,plan:95.4,tk:58300};
+const MONTHLY={};
 
 const rng=mulberry32(20260831);
 const WD=[1.18,.84,.80,.86,.92,1.08,1.38]; // Dom..Sat
@@ -1157,6 +1162,15 @@ function exportCSV(){
  rows.forEach(r=>csv+=[r.date,r.sales,r.profit,r.margin.toFixed(1),r.tickets,r.tk.toFixed(1)].join(',')+'\n');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));a.download='MAKRO_ventas_'+vState.branch.replace(/\s/g,'_')+'.csv';a.click();
  toast('Exportación lista','CSV generado con '+rows.length+' registros · '+vState.branch+'.','ok')}
+function renderMonthlyTrend(){
+ const wrap=$('#monthlyTrendWrap');if(!wrap)return;
+ const months=Object.keys(MONTHLY).sort();
+ if(!months.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">Aún no has importado historial mensual. Sube una tabla dinámica de Odoo (Análisis de ventas) en <b style="color:var(--txt)">Odoo Data Center</b> para verlo aquí.</p>';return}
+ wrap.innerHTML='<div id="monthlyTrendChart" class="chart"></div><div class="lg" id="monthlyTrendLegend" style="margin-top:8px"></div>';
+ const labels=months.map(m=>{const[y,mm]=m.split('-');return new Date(+y,+mm-1,1).toLocaleDateString('es-MX',{month:'short',year:'2-digit'})});
+ const series=BR.map(b=>({n:b.n,c:b.c,v:months.map(m=>Math.round(MONTHLY[m].byBranch[b.id]||0))}));
+ xyChart('monthlyTrendChart',{labels,series,yfmt:fmtK,tipfmt:v=>fmtK(v),min0:true,h:260,legend:'monthlyTrendLegend',
+  onPick:i=>{const m=months[i];toast('📅 '+labels[i],'Total del mes: <b>'+fmtK(MONTHLY[m].sales)+'</b>')}})}
 
 /* ---------------- RENDER: RENTABILIDAD ---------------- */
 function renderRent(){
@@ -1538,6 +1552,85 @@ function detectModule(headerRow){
   const score=schema.required.filter(k=>map[k]>=0).length;
   if(score===schema.required.length&&score>bestScore){bestScore=score;best=mod}});
  return best}
+
+/* ---------------- IMPORTADOR: TABLA DINÁMICA DE ODOO (Ventas) ---------------- */
+const MESES_ES={enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
+const ODOO_BRANCH_ALIASES={supermakrohm:'hilario',supermakrovsj:'villas',supermakrocas:'castillos',makroabastorpr:'real'};
+function monthLabelToISO(label){
+ const s=String(label||'').trim().toLowerCase();
+ const m=s.match(/^([a-záéíóúñ]+)\s+(\d{4})$/i);
+ if(!m)return null;
+ const monKey=m[1].normalize('NFD').replace(/[̀-ͯ]/g,'');
+ const num=MESES_ES[monKey];
+ if(!num)return null;
+ return m[2]+'-'+String(num).padStart(2,'0')}
+function odooBranchToId(label){
+ const n=norm(label);
+ if(ODOO_BRANCH_ALIASES[n])return ODOO_BRANCH_ALIASES[n];
+ if(n.includes('hm'))return 'hilario';
+ if(n.includes('vsj'))return 'villas';
+ if(n.includes('cas'))return 'castillos';
+ if(n.includes('rpr'))return 'real';
+ const b=matchBranch(label);return b?b.id:null}
+function classifyColLabel(label){
+ if(label==null||label==='')return null;
+ if(monthLabelToISO(label))return 'month';
+ if(odooBranchToId(label))return 'branch';
+ return null}
+function looksLikePivot(rows){
+ if(!rows||rows.length<5)return false;
+ const r0=rows[0],r2=rows[2];
+ const totalish=r0&&r0.some(c=>typeof c==='string'&&norm(c)==='total');
+ const metricRow=r2&&r2.filter(c=>typeof c==='string'&&/total/i.test(c)).length>=2;
+ return !!(totalish&&metricRow)}
+function applyVentasPivotImport(rows){
+ if(rows.length<5)return{ok:false,msg:'El archivo no tiene el formato esperado de tabla dinámica.'};
+ const colLabelsRow=rows[1];
+ const lastIdx=colLabelsRow.length-1;
+ const excludeLast=colLabelsRow[lastIdx]==null||colLabelsRow[lastIdx]==='';
+ const dataIdx=[];
+ for(let i=1;i<colLabelsRow.length;i++){if(excludeLast&&i===lastIdx)continue;dataIdx.push(i)}
+ let votesMonth=0,votesBranch=0;
+ dataIdx.forEach(i=>{const k=classifyColLabel(colLabelsRow[i]);if(k==='month')votesMonth++;else if(k==='branch')votesBranch++});
+ if(votesMonth===0&&votesBranch===0)return{ok:false,msg:'No reconocí las columnas del archivo (ni meses ni sucursales). Revisa que sea un export de Análisis de ventas.'};
+ const colKind=votesMonth>=votesBranch?'month':'branch';
+ const colMeta={};
+ dataIdx.forEach(i=>{colMeta[i]=colKind==='month'?monthLabelToISO(colLabelsRow[i]):odooBranchToId(colLabelsRow[i])});
+ const acc={};
+ let skippedGroups=0;
+ for(let r=4;r<rows.length;r++){
+  const row=rows[r];const label=row[0];
+  if(typeof label!=='string')continue;
+  const indent=label.length-label.replace(/^ +/,'').length;
+  const trimmed=label.trim();
+  if(indent<=2)continue;
+  if(indent>7)continue;
+  const key=colKind==='month'?odooBranchToId(trimmed):monthLabelToISO(trimmed);
+  if(!key){skippedGroups++;continue}
+  dataIdx.forEach(i=>{
+   const key2=colMeta[i];if(!key2)return;
+   const val=toNum(row[i]);if(!val)return;
+   let month,branchId;
+   if(colKind==='month'){month=key2;branchId=key}else{month=key;branchId=key2}
+   if(!acc[month])acc[month]={sales:0,byBranch:{}};
+   acc[month].sales+=val;
+   acc[month].byBranch[branchId]=(acc[month].byBranch[branchId]||0)+val})
+ }
+ const months=Object.keys(acc);
+ if(!months.length)return{ok:false,msg:'No se encontraron valores de venta dentro del archivo.'};
+ months.forEach(m=>{MONTHLY[m]=acc[m]});
+ save('monthly_ovr',MONTHLY);
+ const allMonths=Object.keys(MONTHLY).sort();
+ const maxSales=Math.max(...allMonths.map(m=>MONTHLY[m].sales));
+ let refMonth=allMonths[allMonths.length-1];
+ for(let i=allMonths.length-1;i>=0;i--){if(MONTHLY[allMonths[i]].sales>=maxSales*0.5){refMonth=allMonths[i];break}}
+ const ref=MONTHLY[refMonth];
+ TOT.sales=Math.round(ref.sales);
+ BR.forEach(b=>{if(ref.byBranch[b.id]!=null)b.sales=Math.round(ref.byBranch[b.id])});
+ save('tot_ovr',TOT);save('br_ovr',BR);
+ const[ry,rm]=refMonth.split('-');
+ const refLabel=new Date(+ry,+rm-1,1).toLocaleDateString('es-MX',{month:'long',year:'numeric'});
+ return{ok:true,msg:months.length+' mes(es) procesados ('+allMonths[0]+' a '+allMonths[allMonths.length-1]+') · mes de referencia: '+refLabel+' con '+MXN(ref.sales)+' en ventas.'+(skippedGroups?(' · '+skippedGroups+' grupo(s) no reconocido(s)'):'')}}
 function applyVentasImport(rows,map){
  const byDate={},byBranch={};
  rows.forEach(r=>{
@@ -1604,7 +1697,7 @@ function updateTopTags(){
  const top=BR.slice().sort((a,b)=>b.sales-a.sales)[0];
  $('#briefIntro').innerHTML='El cierre de '+cierreLbl+' suma <b style="color:var(--teal)">'+fmtK(TOT.sales)+'</b> en ventas, equivalente a <b>'+TOT.plan+'%</b> del plan. El margen bruto consolidado fue <b>'+TOT.mg+'%</b>. La principal concentración está en <b>'+top.n+'</b>: '+fmtK(top.sales)+' de venta, '+top.mg+'% de margen y '+top.ddi+' días de inventario.'}
 function refreshAfterImport(modulo){
- if(modulo==='Ventas'){renderKpis();renderVentas()}
+ if(modulo==='Ventas'){renderKpis();renderVentas();renderMonthlyTrend()}
  if(modulo==='Inventario'){renderInvView()}
  if(modulo==='Compras'){renderCompras()}
  updateTopTags()}
@@ -1614,16 +1707,18 @@ function hydrateImports(){
  const cOvr=LS.get('mk_catinv_ovr',null);if(cOvr&&cOvr.length){CATINV.length=0;cOvr.forEach(x=>CATINV.push(x))}
  const pOvr=LS.get('mk_po_ovr',null);if(pOvr&&pOvr.length){PO.length=0;pOvr.forEach(x=>PO.push(x));poState.length=0;PO.forEach(()=>poState.push(''))}
  const bOvr=LS.get('mk_br_ovr',null);if(bOvr&&bOvr.length)bOvr.forEach(o=>{const b=BR.find(x=>x.id===o.id);if(b)Object.assign(b,o)});
- const tOvr=LS.get('mk_tot_ovr',null);if(tOvr)Object.assign(TOT,tOvr)}
+ const tOvr=LS.get('mk_tot_ovr',null);if(tOvr)Object.assign(TOT,tOvr);
+ const mOvr=LS.get('mk_monthly_ovr',null);if(mOvr)Object.assign(MONTHLY,mOvr)}
 function resetImports(){
  DAYS.length=0;DEFAULTS_SNAPSHOT.DAYS.forEach(x=>DAYS.push(x));
  CATINV.length=0;DEFAULTS_SNAPSHOT.CATINV.forEach(x=>CATINV.push(x));
  PO.length=0;DEFAULTS_SNAPSHOT.PO.forEach(x=>PO.push(x));poState.length=0;PO.forEach(()=>poState.push(''));
  BR.forEach((b,i)=>Object.assign(b,DEFAULTS_SNAPSHOT.BR[i]));
  Object.assign(TOT,DEFAULTS_SNAPSHOT.TOT);
- ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
+ Object.keys(MONTHLY).forEach(k=>delete MONTHLY[k]);
+ ['days_ovr','catinv_ovr','po_ovr','br_ovr','tot_ovr','monthly_ovr'].forEach(k=>{try{localStorage.removeItem('mk_'+k)}catch(e){}});
  $('#fileLog').innerHTML='';$('#lastSync').textContent='31 agosto 2026 · 06:12';
- renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();updateTopTags();
+ renderKpis();renderVentas();renderInvView();renderCompras();renderDonut();renderMonthlyTrend();updateTopTags();
  toast('↺ Datos restablecidos','Volviste a los datos de ejemplo de agosto 2026.','ok')}
 function handleFile(f){
  const size=f.size>1048576?(f.size/1048576).toFixed(1)+' MB':Math.max(1,Math.round(f.size/1024))+' KB';
@@ -1639,6 +1734,18 @@ function handleFile(f){
    else wb=XLSX.read(e.target.result,{type:'array'});
    const rowsRaw=sheetToRows(wb);
    if(!rowsRaw.length||rowsRaw.length<2)throw new Error('El archivo no tiene datos.');
+   if(looksLikePivot(rowsRaw)){
+    clearInterval(iv);bar.style.width='100%';
+    const result=applyVentasPivotImport(rowsRaw);
+    if(result.ok){
+     const now=new Date();$('#lastSync').textContent=now.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+' · '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+     logFile(f,size,'✔ Ventas (tabla dinámica)',result.msg);
+     toast('📤 Ventas actualizado','Detecté una tabla dinámica de Odoo · '+result.msg,'ok');
+     refreshAfterImport('Ventas');addFeed(true);
+    }else{
+     logFile(f,size,'⚠ Ventas (tabla dinámica)',result.msg);
+     toast('⚠ No se importó',result.msg,'warn')}
+    return}
    const headerRow=rowsRaw[0];
    const dataRows=rowsRaw.slice(1).filter(r=>r.some(c=>String(c).trim()!==''));
    let modulo=detectModule(headerRow);
@@ -1728,7 +1835,7 @@ function boot(){
  buildNav();renderKpis();gauge('radarGauge',84);renderInvBars();renderWatch();addFeed(true);
  updateTopTags();
  $('#todayLbl').textContent=new Date().toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
- renderPulse();renderDonut();renderVentas();renderRent();renderInvView();renderCompras();renderProveedores();renderComercial();
+ renderPulse();renderDonut();renderVentas();renderMonthlyTrend();renderRent();renderInvView();renderCompras();renderProveedores();renderComercial();
  renderTasks();renderAlerts();renderBranches();renderMyDay();renderDecisions();renderBell();renderRecipes();renderPhases();
  renderCalendar();renderSettings();renderLearn();tickClock();setInterval(tickClock,1000);
  $('#chatLog').innerHTML='<div class="cmsg ai"><span class="who">MAKRO AI · CHIEF OF STAFF</span>Cierre de agosto cargado ✔ Tengo detectadas 3 alertas críticas y 2 oportunidades comerciales. Pregúntame por <b>margen</b>, <b>inventario</b>, <b>Coca-Cola</b> o <b>Hilario Medina</b>.</div>';
