@@ -449,7 +449,7 @@ label.fl{display:block;font:600 9.5px var(--fm);letter-spacing:1.5px;color:var(-
     <div id="monthlyTrendWrap"></div>
   </div>
   <div class="panel">
-    <div class="ph"><span class="pt">TOP PRODUCTOS REALES</span><span class="ps">acumulado del periodo importado · todas las sucursales</span><div class="sp"></div><span class="tag t-green">Fuente: tabla dinámica Odoo</span></div>
+    <div class="ph"><span class="pt">ANÁLISIS 80/20 · PRODUCTOS REALES</span><span class="ps">qué productos concentran tu venta · acumulado del periodo importado</span><div class="sp"></div><span class="tag t-green">Fuente: tabla dinámica Odoo</span></div>
     <div id="topProductsWrap"></div>
   </div>
   <div class="grid g21">
@@ -1188,11 +1188,30 @@ function renderTopProducts(){
   const e=SKU_MONTHLY[m][code];
   if(!totals[code])totals[code]={name:e.name,sales:0};
   totals[code].sales+=e.sales})});
- const ranked=Object.entries(totals).map(([code,v])=>({code,name:v.name,sales:v.sales})).sort((a,b)=>b.sales-a.sales).slice(0,10);
- if(!ranked.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">No se identificaron productos con código SKU en el archivo importado.</p>';return}
- const max=ranked[0].sales;
- wrap.innerHTML='<p class="note" style="margin-bottom:10px">Acumulado '+months[0]+' a '+months[months.length-1]+' · todas las sucursales · '+Object.keys(totals).length+' productos identificados</p>'
- +ranked.map((p,i)=>'<div class="hb"><div class="hbl" style="gap:10px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">#'+(i+1)+' · <span class="num">'+esc(p.code)+'</span> '+esc(p.name)+'</span><b style="flex-shrink:0">'+fmtK(p.sales)+'</b></div><div class="hbb"><i style="width:'+(p.sales/max*100).toFixed(1)+'%;background:linear-gradient(90deg,#2fe6c8,#39c6ff)"></i></div></div>').join('')}
+ const all=Object.entries(totals).map(([code,v])=>({code,name:v.name,sales:v.sales})).sort((a,b)=>b.sales-a.sales);
+ if(!all.length){wrap.innerHTML='<p style="color:var(--dim);text-align:center;padding:24px">No se identificaron productos con código SKU en el archivo importado.</p>';return}
+ const grandTotal=all.reduce((a,p)=>a+p.sales,0);
+ let cum=0,cutoffIdx=-1;
+ all.forEach((p,i)=>{cum+=p.sales;p.cumPct=grandTotal?cum/grandTotal*100:0;if(cutoffIdx<0&&p.cumPct>=80)cutoffIdx=i});
+ const vitalCount=cutoffIdx>=0?cutoffIdx+1:all.length;
+ const vitalPct=(vitalCount/all.length*100).toFixed(1);
+ const showCount=Math.min(all.length,Math.max(vitalCount+5,15));
+ const max=all[0].sales;
+ let rows='';
+ for(let i=0;i<showCount;i++){
+  const p=all[i];const isVital=i<vitalCount;
+  rows+='<div class="hb"'+(i===vitalCount?' style="border-top:2px dashed var(--amber);padding-top:12px;margin-top:6px"':'')+'>'
+  +'<div class="hbl" style="gap:10px"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0"><b class="num" style="color:'+(isVital?'var(--teal)':'var(--dim)')+'">#'+(i+1)+'</b> · <span class="num">'+esc(p.code)+'</span> '+esc(p.name)+'</span><b style="flex-shrink:0">'+fmtK(p.sales)+'</b></div>'
+  +'<div class="hbb"><i style="width:'+(p.sales/max*100).toFixed(1)+'%;background:'+(isVital?'linear-gradient(90deg,#2fe6c8,#39c6ff)':'linear-gradient(90deg,#3a4a5c,#556378)')+'"></i></div>'
+  +'<div class="hbm">Acumulado: '+p.cumPct.toFixed(1)+'% de la venta total'+(i===vitalCount-1?' · <b style="color:var(--amber)">← aquí se cruza el 80%</b>':'')+'</div></div>'}
+ wrap.innerHTML='<div class="grid g3" style="margin-bottom:16px">'
+  +'<div class="panel" style="background:#0d1622"><div class="kl">REGLA 80/20</div><div class="num" style="font-size:24px;color:var(--teal)">'+vitalCount+' de '+all.length+'</div><div class="kd">productos ('+vitalPct+'% del catálogo) generan el 80% de tu venta real</div></div>'
+  +'<div class="panel" style="background:#0d1622"><div class="kl">VENTA TOTAL ANALIZADA</div><div class="num" style="font-size:24px">'+fmtK(grandTotal)+'</div><div class="kd">'+months[0]+' a '+months[months.length-1]+' · todas las sucursales</div></div>'
+  +'<div class="panel" style="background:#0d1622"><div class="kl">COLA LARGA</div><div class="num" style="font-size:24px;color:var(--dim)">'+(all.length-vitalCount)+'</div><div class="kd">productos generan solo el 20% restante de la venta</div></div>'
+  +'</div>'
+  +'<p class="note" style="margin-bottom:10px">Mostrando '+showCount+' de '+all.length+' productos, ordenados de mayor a menor venta · la línea punteada marca dónde se cruza el 80% acumulado</p>'
+  +rows
+  +'<div class="alert-it" style="--ac:var(--amber);margin-top:14px"><div class="ab"><h4>⚠ Margen por producto: no disponible todavía</h4><p>Tus archivos traen venta ("Total sin impuestos") pero no costo por SKU, así que no calculo margen por producto para no inventar cifras. En Odoo, dentro del mismo reporte de <b style="color:var(--txt)">Análisis de ventas</b>, agrega la medida <b style="color:var(--txt)">"Margen"</b> junto a "Total sin impuestos" antes de exportar y mándamelo — con eso extiendo este 80/20 a margen real, no solo venta.</p></div></div>'}
 
 /* ---------------- RENDER: RENTABILIDAD ---------------- */
 function renderRent(){
