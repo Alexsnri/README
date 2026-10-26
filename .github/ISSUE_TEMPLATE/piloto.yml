@@ -1,0 +1,33 @@
+name: Solicitud de piloto · Futuro Yo
+description: Para Afores, bancos, empresas y universidades que quieren probar Futuro Yo con su marca.
+title: "Piloto: [nombre de la institución]"
+labels: ["piloto"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tu interés. Esta solicitud es pública: no compartas datos confidenciales. Te contactamos para continuar por un canal privado.
+  - type: input
+    id: institucion
+    attributes:
+      label: Institución
+    validations:
+      required: true
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo
+      options: [Afore, Banco, SOFIPO o fintech, Empresa (RH), Universidad, Gobierno u organismo, Otro]
+    validations:
+      required: true
+  - type: input
+    id: contacto
+    attributes:
+      label: ¿Cómo te contactamos? (correo de trabajo o LinkedIn)
+    validations:
+      required: true
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: ¿Qué te gustaría lograr?
+      placeholder: "Ej.: que más colaboradores se inscriban a la caja de ahorro."

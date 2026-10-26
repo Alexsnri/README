@@ -14,7 +14,7 @@
 
 ## Mensaje para creadores
 
-> Hola, [nombre]. Hice Futuro Yo, una herramienta gratis donde ves tu cara a los 65 y cuánto vas a tener según lo que ahorres hoy. Usa CETES e inflación reales y te escribe una carta de tu yo del futuro. No pide datos ni registro.
+> Hola, [nombre]. Hice Futuro Yo, una app web gratis donde una IA envejece tu foto a los 65 sin subirla a ningún lado (corre en el teléfono) y te dice cuánto vas a tener según lo que ahorres hoy, con CETES e inflación reales. Tiene un reto diario de 5 preguntas, igual para todo México, que se comparte como Wordle.
 > Creo que le queda perfecto a tu contenido: puedes simular en vivo con tu audiencia. No te pido nada a cambio; si te sirve, úsala.
 > https://alexsnri.github.io/README/futuro/
 
@@ -26,13 +26,17 @@ Asunto: Una herramienta mexicana te muestra tu cara a los 65 para que ahorres m�
 >
 > Según la ENIF 2024 del INEGI y la CNBV, solo 42.2% de los adultos tiene una cuenta para el retiro, y apenas 7.9% de ellos hace aportaciones voluntarias.
 >
-> Futuro Yo es una herramienta gratuita que usa un hallazgo de Stanford: cuando ves una versión envejecida de ti mismo, ahorras más. La persona mueve unos controles, ve su avatar envejecer y recibe una "carta de su yo del futuro" con el monto exacto que le falta ahorrar al mes, con las tasas de CETES y la inflación más recientes.
+> Futuro Yo es una herramienta gratuita que usa un hallazgo de Stanford: cuando ves una versión envejecida de ti mismo, ahorras más. Una IA dentro del teléfono envejece la foto de la persona (sin subirla a ningún servidor, a diferencia de FaceApp) y le dice cuánto tendrá a los 65 con las tasas de CETES y la inflación más recientes. Luego la trae de vuelta cada día con una racha de ahorro y un reto de 5 preguntas.
 >
 > No recolecta datos y no vende productos financieros. Puedo compartir datos de uso y casos para tu nota.
 >
 > https://alexsnri.github.io/README/futuro/
 
-## Propuesta para empresas (versión RH)
+## Propuesta para instituciones
+
+La página de ventas está en https://alexsnri.github.io/README/futuro/empresas.html, con una demo con marca y la solicitud de piloto.
+
+### Versión RH
 
 - **Qué es:** Futuro Yo con la marca de la empresa, como prestación para colaboradores.
 - **Qué logra:** que más personas se inscriban al plan de ahorro o caja de la empresa.

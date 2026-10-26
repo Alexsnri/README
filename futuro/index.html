@@ -7,7 +7,7 @@
 <!--/repo-only-->
 <title>Futuro Yo</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Conoce a la persona que serás a los 65. Simula cuánto tendrás para tu retiro con CETES e inflación reales de México, mira cómo envejece tu avatar y recibe una carta de tu yo del futuro. Gratis, sin registro.">
+<meta name="description" content="Mira tu cara a los 65 con IA que corre en tu teléfono, descubre cuánto tendrás para tu retiro y gana tu racha diaria. Gratis, sin registro y sin subir tu foto.">
 <!--repo-only-->
 <meta name="theme-color" content="#07121a">
 <link rel="manifest" href="manifest.webmanifest">
@@ -16,17 +16,17 @@
 <link rel="canonical" href="https://alexsnri.github.io/README/futuro/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_MX">
-<meta property="og:title" content="Conoce a tu yo de 65 · Futuro Yo">
-<meta property="og:description" content="¿Tu yo del futuro estará en paz o en apuros? Descúbrelo en 30 segundos. Gratis.">
+<meta property="og:title" content="Mira tu cara a los 65 · Futuro Yo">
+<meta property="og:description" content="IA en tu teléfono que te envejece, te dice cuánto tendrás para tu retiro y te reta cada día. Gratis y sin subir tu foto.">
 <meta property="og:image" content="https://alexsnri.github.io/README/futuro/img/og.png">
 <meta property="og:url" content="https://alexsnri.github.io/README/futuro/">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"WebApplication","name":"Futuro Yo","url":"https://alexsnri.github.io/README/futuro/","applicationCategory":"FinanceApplication","operatingSystem":"Web, Android, iOS","inLanguage":"es-MX","offers":{"@type":"Offer","price":"0","priceCurrency":"MXN"},"description":"Simulador de retiro con avatar que envejece, CETES e inflación de México."},
+{"@type":"WebApplication","name":"Futuro Yo","url":"https://alexsnri.github.io/README/futuro/","applicationCategory":"FinanceApplication","operatingSystem":"Web, Android, iOS","inLanguage":"es-MX","offers":{"@type":"Offer","price":"0","priceCurrency":"MXN"},"description":"Envejece tu foto con IA en tu teléfono, simula tu retiro con CETES e inflación de México y mantén tu racha diaria de ahorro."},
 {"@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"¿Cuánto necesito ahorrar al mes para mi retiro en México?","acceptedAnswer":{"@type":"Answer","text":"Depende de tu edad, de cuánto quieres recibir al mes y de dónde guardas tu dinero. Futuro Yo calcula el monto exacto con la tasa de CETES y la inflación más recientes."}},
-{"@type":"Question","name":"¿Futuro Yo guarda mis datos?","acceptedAnswer":{"@type":"Answer","text":"No. Todo el cálculo ocurre en tu teléfono. No hay registro, ni servidores, ni cookies de rastreo."}},
+{"@type":"Question","name":"¿Futuro Yo sube mi foto a internet?","acceptedAnswer":{"@type":"Answer","text":"No. La inteligencia artificial corre dentro de tu teléfono. Tu foto nunca sale de tu dispositivo y puedes borrarla cuando quieras."}},
 {"@type":"Question","name":"¿Esto incluye mi Afore?","acceptedAnswer":{"@type":"Answer","text":"No. Futuro Yo mide tu ahorro propio. Tu Afore es aparte y puedes consultarla en la app AforeMóvil de CONSAR."}}
 ]}]}
 </script>
@@ -34,834 +34,436 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
-<style>
-/* Layout: a "portal" (your aging future self) beside the time machine controls; below it, the trajectory, the letter, missions and sources. Deliberately one dark night-sky look. */
-:root{
-  --night:#07121a; --deep:#0b1b25; --panel:#102431; --line:#1e3a4a; --line-hi:#2c5468;
-  --fg:#eaf3f4; --mut:#93adb7; --dim:#5f7d89;
-  --sun:#ffb547; --sun-soft:rgba(255,181,71,.14); --tide:#5ad6c8; --tide-soft:rgba(90,214,200,.12);
-  --ok:#86e3a8; --warn:#ffd36b; --bad:#ff8574;
-  --f-display:"Unbounded", "Arial Black", system-ui, sans-serif;
-  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --f-data:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --r:18px;
-  color-scheme:dark;
-}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--night);color:var(--fg);font:400 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--night)}
-a{color:var(--tide)}
-:focus-visible{outline:2px solid var(--sun);outline-offset:3px;border-radius:6px}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-h1,h2,h3{font-family:var(--f-display);font-weight:600;text-wrap:balance;margin:0;letter-spacing:-.01em}
-h2{font-size:clamp(1.5rem,3.2vw,2.2rem);line-height:1.15}
-h3{font-size:1.05rem}
-p{margin:0}
-.eyebrow{font:600 .72rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--tide)}
-.mono{font-family:var(--f-data);font-variant-numeric:tabular-nums}
-
-/* top bar */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(7,18,26,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px}
-.logo{display:flex;align-items:center;gap:10px;font:800 1.02rem/1 var(--f-display);color:var(--fg);text-decoration:none;letter-spacing:-.02em}
-.logo i{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(--sun),#e2702e 60%,transparent 62%),var(--night);box-shadow:0 0 18px rgba(255,181,71,.55);display:block}
-.logo b{color:var(--sun);font-weight:800}
-.top nav{display:flex;gap:18px;margin-left:auto}
-.top nav a{color:var(--mut);text-decoration:none;font-weight:500;font-size:.92rem}
-.top nav a:hover{color:var(--fg)}
-.btn{appearance:none;border:0;cursor:pointer;font:600 .95rem/1 var(--f-body);border-radius:999px;padding:13px 20px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:transform .15s ease,box-shadow .2s ease}
-.btn:active{transform:translateY(1px)}
-.btn-sun{background:var(--sun);color:#2a1700;box-shadow:0 8px 28px -8px rgba(255,181,71,.7)}
-.btn-sun:hover{box-shadow:0 10px 36px -6px rgba(255,181,71,.9)}
-.btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--line-hi)}
-.btn-ghost:hover{border-color:var(--tide);color:var(--tide)}
-.btn-sm{padding:9px 14px;font-size:.85rem}
-@media (max-width:720px){.top nav{display:none}.top .btn{margin-left:auto}}
-
-/* hero: portal + machine */
-.hero{position:relative;padding-block:36px 28px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:36px;align-items:start}
-@media (max-width:900px){.hero-grid{grid-template-columns:minmax(0,1fr)}}
-.headline{font-size:clamp(2.1rem,5.4vw,3.9rem);line-height:1.02;font-weight:800;letter-spacing:-.03em}
-.headline em{font-style:normal;color:var(--sun);text-shadow:0 0 34px rgba(255,181,71,.45)}
-.lede{color:var(--mut);font-size:1.08rem;max-width:34rem;margin-top:14px}
-
-.portal{position:relative;margin-top:26px;aspect-ratio:1/1;max-width:440px;width:100%;border-radius:50%;overflow:hidden;border:1px solid var(--line-hi);background:radial-gradient(circle at 50% 55%,#13394a 0%,#0a1e29 55%,var(--night) 100%);box-shadow:0 0 0 10px rgba(90,214,200,.04),0 0 80px -10px rgba(90,214,200,.35)}
-.portal canvas{position:absolute;inset:0;width:100%;height:100%}
-.portal svg{position:absolute;left:50%;bottom:-2%;width:74%;transform:translateX(-50%);filter:drop-shadow(0 10px 30px rgba(0,0,0,.45))}
-.portal-tag{position:absolute;left:50%;top:9%;transform:translateX(-50%);background:rgba(7,18,26,.75);border:1px solid var(--line-hi);border-radius:999px;padding:7px 14px;font:600 .78rem/1 var(--f-data);white-space:nowrap;color:var(--fg)}
-.portal-tag span{color:var(--sun)}
-.timebar{max-width:440px;margin-top:16px;display:grid;gap:8px}
-.timebar-row{display:flex;justify-content:space-between;font:500 .78rem/1 var(--f-data);color:var(--dim)}
-.looks{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;max-width:440px}
-.swatches{display:flex;gap:6px}
-.sw{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
-.sw[aria-pressed="true"]{border-color:var(--sun);box-shadow:0 0 0 2px var(--night) inset}
-.seg{display:inline-flex;border:1px solid var(--line-hi);border-radius:999px;padding:3px}
-.seg button{appearance:none;border:0;background:transparent;color:var(--mut);font:600 .8rem/1 var(--f-body);padding:7px 12px;border-radius:999px;cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--tide-soft);color:var(--tide)}
-
-.machine{background:linear-gradient(180deg,var(--panel),var(--deep));border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:18px}
-.machine-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.field{display:grid;gap:8px}
-.field-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.field label{font-weight:600;font-size:.93rem}
-.field output{font:600 1rem/1 var(--f-data);color:var(--sun);font-variant-numeric:tabular-nums}
-.field small{color:var(--dim);font-size:.8rem}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media (max-width:480px){.two{grid-template-columns:1fr}}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;margin:0}
-input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--sun) var(--p,50%),var(--line) var(--p,50%))}
-input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:linear-gradient(90deg,var(--sun) var(--p,50%),var(--line) var(--p,50%))}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--fg);border:4px solid var(--sun);margin-top:-8px;box-shadow:0 0 16px rgba(255,181,71,.6)}
-input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--fg);border:4px solid var(--sun);box-shadow:0 0 16px rgba(255,181,71,.6)}
-#age-scrub::-webkit-slider-runnable-track{background:linear-gradient(90deg,var(--tide) var(--p,50%),var(--line) var(--p,50%))}
-#age-scrub::-moz-range-track{background:linear-gradient(90deg,var(--tide) var(--p,50%),var(--line) var(--p,50%))}
-#age-scrub::-webkit-slider-thumb{border-color:var(--tide);box-shadow:0 0 16px rgba(90,214,200,.6)}
-#age-scrub::-moz-range-thumb{border-color:var(--tide)}
-.vehicles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-@media (max-width:480px){.vehicles{grid-template-columns:1fr}}
-.veh{appearance:none;text-align:left;cursor:pointer;background:transparent;border:1px solid var(--line-hi);border-radius:12px;padding:11px 12px;color:var(--fg);font:inherit;display:grid;gap:3px;min-width:0}
-.veh b{font-size:.88rem}
-.veh span{font:500 .78rem/1.2 var(--f-data);color:var(--mut)}
-.veh[aria-pressed="true"]{border-color:var(--sun);background:var(--sun-soft)}
-.veh[aria-pressed="true"] span{color:var(--sun)}
-
-.result{border-top:1px dashed var(--line-hi);padding-top:18px;display:grid;gap:12px}
-.result-big{font:800 clamp(2rem,5vw,2.9rem)/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.result-sub{color:var(--mut);font-size:.92rem}
-.result-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.chip{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 12px;font:600 .8rem/1 var(--f-body);border:1px solid}
-.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
-.chip.ok{color:var(--ok);border-color:rgba(134,227,168,.4);background:rgba(134,227,168,.08)}
-.chip.mid{color:var(--warn);border-color:rgba(255,211,107,.4);background:rgba(255,211,107,.08)}
-.chip.bad{color:var(--bad);border-color:rgba(255,133,116,.4);background:rgba(255,133,116,.08)}
-.meter{height:10px;border-radius:10px;background:var(--line);overflow:hidden}
-.meter i{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,var(--bad),var(--warn) 55%,var(--ok));transition:width .5s ease}
-
-/* sections */
-section{padding-block:44px}
-.sec-head{display:grid;gap:10px;margin-bottom:22px;max-width:44rem}
-.sec-head p{color:var(--mut)}
-.grid-2{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px}
-@media (max-width:900px){.grid-2{grid-template-columns:minmax(0,1fr)}}
-.card{background:var(--deep);border:1px solid var(--line);border-radius:var(--r);padding:20px;min-width:0}
-.chart-wrap{position:relative}
-.chart-wrap svg{width:100%;height:auto;display:block}
-.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.84rem;color:var(--mut);margin-top:8px}
-.legend span{display:inline-flex;align-items:center;gap:7px}
-.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
-.tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line-hi);border-radius:10px;padding:8px 10px;font:500 .8rem/1.4 var(--f-data);white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .12s}
-
-.letter{position:relative;background:linear-gradient(180deg,#132c3a,#0d212c);border:1px solid var(--line-hi);border-radius:var(--r);padding:24px 22px;display:grid;gap:14px}
-.letter-meta{font:500 .78rem/1.4 var(--f-data);color:var(--dim)}
-.letter-body{font-size:1.04rem;line-height:1.7;white-space:pre-line}
-.letter-body strong{color:var(--sun);font-weight:700}
-.letter-sign{font-family:var(--f-display);font-weight:600;color:var(--tide)}
-.actions{display:flex;flex-wrap:wrap;gap:10px}
-
-.cafe{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;margin-top:22px}
-.cafe-num{font:800 clamp(1.6rem,4vw,2.4rem)/1 var(--f-display);color:var(--tide);font-variant-numeric:tabular-nums}
-@media (max-width:560px){.cafe{grid-template-columns:1fr}}
-
-.missions{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
-.mission{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;transition:border-color .2s}
-.mission:hover{border-color:var(--line-hi)}
-.mission input{appearance:none;width:22px;height:22px;border-radius:7px;border:2px solid var(--line-hi);margin:2px 0 0;cursor:pointer;display:grid;place-content:center}
-.mission input:checked{background:var(--tide);border-color:var(--tide)}
-.mission input:checked::after{content:"";width:6px;height:11px;border:solid var(--night);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
-.mission b{display:block;font-size:.95rem}
-.mission p{color:var(--mut);font-size:.86rem;margin-top:3px}
-.mission em{font:600 .74rem/1 var(--f-data);font-style:normal;color:var(--sun)}
-.mission:has(input:checked){border-color:rgba(90,214,200,.45)}
-.xp{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap}
-.xp .meter{flex:1;min-width:160px}
-.xp .meter i{background:linear-gradient(90deg,var(--tide),var(--sun))}
-
-.science{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-@media (max-width:820px){.science{grid-template-columns:1fr}}
-.fact{padding:18px;border-left:2px solid var(--line-hi);display:grid;gap:6px}
-.fact b{font:800 1.9rem/1 var(--f-display);color:var(--sun);font-variant-numeric:tabular-nums}
-.fact p{color:var(--mut);font-size:.92rem}
-.fact a{font-size:.8rem}
-
-details{border-bottom:1px solid var(--line);padding-block:14px}
-summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
-summary::after{content:"+";color:var(--sun);font-family:var(--f-data)}
-details[open] summary::after{content:"–"}
-details p{color:var(--mut);margin-top:8px;max-width:62ch}
-
-.sources ol{margin:0;padding-left:20px;display:grid;gap:8px;color:var(--mut);font-size:.88rem}
-footer{border-top:1px solid var(--line);padding-block:28px 40px;color:var(--dim);font-size:.82rem}
-footer p+p{margin-top:8px}
-
-/* share modal */
-.modal{position:fixed;inset:0;z-index:50;background:rgba(3,9,13,.82);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.modal-box{background:var(--deep);border:1px solid var(--line-hi);border-radius:var(--r);padding:18px;display:grid;gap:14px;width:min(420px,100%);max-height:100%;overflow:auto}
-.modal-box img{width:100%;border-radius:12px;display:block}
-.modal-box p{color:var(--mut);font-size:.85rem}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--night);font-weight:600;padding:10px 16px;border-radius:999px;z-index:60;font-size:.9rem}
-
-@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-</style>
+<link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#inicio" aria-label="Futuro Yo, inicio"><i></i>futuro<b>·</b>yo</a>
-    <nav aria-label="Secciones">
-      <a href="#trayectoria">Tu trayectoria</a>
-      <a href="#misiones">Misiones</a>
-      <a href="#ciencia">La ciencia</a>
-      <a href="#fuentes">Fuentes</a>
+    <a class="logo" href="#futuro" data-go="futuro" aria-label="Futuro Yo, inicio"><i></i>futuro<b>·</b>yo<span class="brand-x" id="brand-x" hidden></span></a>
+    <nav class="tabs-top" aria-label="Secciones">
+      <button type="button" data-go="futuro">Mi futuro</button>
+      <button type="button" data-go="hoy">Hoy<span class="dot" data-dot="hoy" hidden></span></button>
+      <button type="button" data-go="reto">Reto diario<span class="dot" data-dot="reto" hidden></span></button>
+      <button type="button" data-go="mas">Más</button>
     </nav>
-    <button class="btn btn-sun btn-sm" id="install" hidden>Instalar app</button>
+    <button type="button" class="streak-pill" id="streak-pill" data-go="hoy" aria-label="Tu racha de días">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z"/></svg>
+      <span id="streak-num">0</span>
+    </button>
+    <button class="btn btn-sun btn-sm" id="install" hidden>Instalar</button>
   </div>
 </header>
 
-<main id="inicio">
-  <div class="hero wrap">
-    <div class="hero-grid">
-      <div>
-        <p class="eyebrow">Máquina del tiempo financiera · México</p>
-        <h1 class="headline" style="margin-top:12px">Conoce a tu yo de <em id="h-age">65</em>.</h1>
-        <p class="lede">Cada peso que guardas hoy es un mensaje para la persona que serás. Mueve los controles y mira cómo vive tu yo del futuro: en paz, a medias o en apuros.</p>
-
-        <div class="portal" id="portal">
-          <canvas id="warp" aria-hidden="true"></canvas>
-          <div class="portal-tag mono" id="portal-tag">Tú · <span>65 años</span> · 2066</div>
-          <svg id="avatar" viewBox="0 0 200 220" role="img" aria-label="Tu avatar a futuro"></svg>
-        </div>
-        <div class="timebar">
-          <label class="field-top" for="age-scrub"><b style="font-size:.9rem">Viaja en el tiempo</b><output class="mono" id="scrub-out" style="color:var(--tide)">65 años</output></label>
-          <input type="range" id="age-scrub" min="28" max="65" value="65" step="1">
-          <div class="timebar-row"><span id="scrub-min">Hoy</span><span id="scrub-max">Retiro</span></div>
-        </div>
-        <div class="looks" aria-label="Personaliza tu avatar">
-          <div class="swatches" id="skins" role="group" aria-label="Tono de piel"></div>
-          <div class="seg" role="group" aria-label="Cabello">
-            <button type="button" data-hair="short" aria-pressed="true">Corto</button>
-            <button type="button" data-hair="long" aria-pressed="false">Largo</button>
-          </div>
-        </div>
-      </div>
-
-      <form class="machine" id="machine" aria-labelledby="machine-title" onsubmit="return false">
-        <div class="machine-head">
-          <h2 id="machine-title" style="font-size:1.15rem">Tu máquina del tiempo</h2>
-          <span class="eyebrow" id="rates-stamp" style="color:var(--dim)">CETES 6.23% · Inflación 3.45%</span>
-        </div>
-        <div class="two">
-          <div class="field">
-            <div class="field-top"><label for="age">Tu edad hoy</label><output for="age" id="age-out">28</output></div>
-            <input type="range" id="age" min="18" max="60" value="28">
-          </div>
-          <div class="field">
-            <div class="field-top"><label for="retire">Edad de retiro</label><output for="retire" id="retire-out">65</output></div>
-            <input type="range" id="retire" min="50" max="75" value="65">
-          </div>
-        </div>
-        <div class="field">
-          <div class="field-top"><label for="monthly">Ahorro al mes</label><output for="monthly" id="monthly-out">$1,500</output></div>
-          <input type="range" id="monthly" min="0" max="20000" step="100" value="1500">
-          <small>Lo subes cada año con la inflación, así que el cálculo va en pesos de hoy.</small>
-        </div>
-        <div class="two">
-          <div class="field">
-            <div class="field-top"><label for="saved">Ya tengo ahorrado</label><output for="saved" id="saved-out">$10,000</output></div>
-            <input type="range" id="saved" min="0" max="1000000" step="5000" value="10000">
-          </div>
-          <div class="field">
-            <div class="field-top"><label for="need">Quiero recibir al mes</label><output for="need" id="need-out">$15,000</output></div>
-            <input type="range" id="need" min="3000" max="80000" step="500" value="15000">
-          </div>
-        </div>
-        <div class="field">
-          <span style="font-weight:600;font-size:.93rem" id="veh-label">¿Dónde lo guardas?</span>
-          <div class="vehicles" role="group" aria-labelledby="veh-label">
-            <button type="button" class="veh" data-veh="colchon" aria-pressed="false"><b>Bajo el colchón</b><span>0% nominal</span></button>
-            <button type="button" class="veh" data-veh="cetes" aria-pressed="true"><b>CETES</b><span id="veh-cetes">6.23% nominal</span></button>
-            <button type="button" class="veh" data-veh="optimista" aria-pressed="false"><b>Diversificado</b><span id="veh-opt">9.0% supuesto</span></button>
-          </div>
-        </div>
-        <div class="result" aria-live="polite">
-          <div class="result-row" style="justify-content:space-between">
-            <span class="eyebrow" style="color:var(--mut)" id="res-label">A tus 65 tendrás</span>
-            <span class="chip mid" id="mood-chip">A medias</span>
-          </div>
-          <div class="result-big" id="res-big">$0</div>
-          <p class="result-sub" id="res-sub">en pesos de hoy</p>
-          <div class="meter" aria-hidden="true"><i id="meter" style="width:40%"></i></div>
-          <p class="result-sub" id="res-income"></p>
-        </div>
-      </form>
-    </div>
+<div class="banner" id="challenge" hidden>
+  <div class="wrap banner-in">
+    <p id="challenge-text"></p>
+    <button type="button" class="btn btn-sun btn-sm" data-go="reto">Aceptar reto</button>
+    <button type="button" class="btn btn-ghost btn-sm" id="challenge-x">Cerrar</button>
   </div>
+</div>
 
-  <section id="trayectoria">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Tu trayectoria</p>
-        <h2>El mismo esfuerzo, dos futuros distintos</h2>
-        <p>La línea punteada es tu dinero bajo el colchón: con inflación de 3.45% al año pierde valor solo. El área dorada es tu plan actual. Todo está en pesos de hoy.</p>
+<main>
+  <!-- ============ MI FUTURO ============ -->
+  <section class="view" id="v-futuro" data-view="futuro" aria-labelledby="h-futuro">
+    <div class="hero wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Máquina del tiempo financiera · México</p>
+          <h1 class="headline" id="h-futuro">Mira tu cara a los <em id="h-age">65</em>.</h1>
+          <p class="lede">Una IA dentro de tu teléfono te envejece. Tú decides si tu yo del futuro vive en paz o en apuros.</p>
+
+          <div class="portal" id="portal">
+            <canvas id="warp" aria-hidden="true"></canvas>
+            <svg id="avatar" viewBox="0 0 200 220" role="img" aria-label="Tu avatar a futuro"></svg>
+            <canvas id="face" hidden role="img" aria-label="Tu foto envejecida"></canvas>
+            <div class="portal-tag mono" id="portal-tag">Tú · <span>65 años</span></div>
+            <div class="portal-busy" id="portal-busy" hidden><span class="spinner" aria-hidden="true"></span><p id="busy-text">Preparando…</p></div>
+            <button type="button" class="hold" id="hold" hidden>Mantén para ver tu cara de hoy</button>
+            <label class="btn btn-sun portal-cta" for="photo-input" id="portal-cta">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              Envejece tu foto
+            </label>
+          </div>
+
+          <input type="file" id="photo-input" accept="image/*" class="sr" tabindex="-1" aria-hidden="true">
+          <div class="photo-bar" id="photo-bar">
+            <label class="btn btn-sun" for="photo-input" id="photo-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              <span id="photo-btn-text">Usa tu foto</span>
+            </label>
+            <div class="seg" role="group" aria-label="Qué mostrar">
+              <button type="button" data-look="photo" aria-pressed="false" id="look-photo" hidden>Mi foto</button>
+              <button type="button" data-look="avatar" aria-pressed="true">Avatar</button>
+            </div>
+          </div>
+          <p class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Tu foto no se sube a ningún lado. La IA corre dentro de tu teléfono.</p>
+
+          <div class="timebar">
+            <label class="field-top" for="age-scrub"><b>Viaja en el tiempo</b><output class="mono" id="scrub-out">65 años</output></label>
+            <input type="range" id="age-scrub" min="28" max="65" value="65" step="1">
+            <div class="timebar-row"><span id="scrub-min">Hoy</span><span id="scrub-max">Retiro</span></div>
+          </div>
+          <div class="looks" id="looks" aria-label="Personaliza tu avatar">
+            <div class="swatches" id="skins" role="group" aria-label="Tono de piel"></div>
+            <div class="seg" role="group" aria-label="Cabello">
+              <button type="button" data-hair="short" aria-pressed="true">Corto</button>
+              <button type="button" data-hair="long" aria-pressed="false">Largo</button>
+            </div>
+          </div>
+        </div>
+
+        <form class="machine" id="machine" aria-labelledby="machine-title" onsubmit="return false">
+          <div class="machine-head">
+            <h2 id="machine-title">Tu máquina del tiempo</h2>
+            <span class="eyebrow dim" id="rates-stamp">CETES 6.23% · Inflación 3.45%</span>
+          </div>
+          <div class="two">
+            <div class="field">
+              <div class="field-top"><label for="age">Tu edad hoy</label><output for="age" id="age-out">28</output></div>
+              <input type="range" id="age" min="18" max="60" value="28">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="retire">Edad de retiro</label><output for="retire" id="retire-out">65</output></div>
+              <input type="range" id="retire" min="50" max="75" value="65">
+            </div>
+          </div>
+          <div class="field">
+            <div class="field-top"><label for="monthly">Ahorro al mes</label><output for="monthly" id="monthly-out">$1,500</output></div>
+            <input type="range" id="monthly" min="0" max="20000" step="100" value="1500">
+            <small>Lo subes cada año con la inflación, así que el cálculo va en pesos de hoy.</small>
+          </div>
+          <div class="two">
+            <div class="field">
+              <div class="field-top"><label for="saved">Ya tengo ahorrado</label><output for="saved" id="saved-out">$10,000</output></div>
+              <input type="range" id="saved" min="0" max="1000000" step="5000" value="10000">
+            </div>
+            <div class="field">
+              <div class="field-top"><label for="need">Quiero recibir al mes</label><output for="need" id="need-out">$15,000</output></div>
+              <input type="range" id="need" min="3000" max="80000" step="500" value="15000">
+            </div>
+          </div>
+          <div class="field">
+            <span class="label" id="veh-label">¿Dónde lo guardas?</span>
+            <div class="vehicles" role="group" aria-labelledby="veh-label">
+              <button type="button" class="veh" data-veh="colchon" aria-pressed="false"><b>Bajo el colchón</b><span>0% nominal</span></button>
+              <button type="button" class="veh" data-veh="cetes" aria-pressed="true"><b>CETES</b><span id="veh-cetes">6.23% nominal</span></button>
+              <button type="button" class="veh" data-veh="optimista" aria-pressed="false"><b>Diversificado</b><span id="veh-opt">9.0% supuesto</span></button>
+            </div>
+          </div>
+          <div class="result" aria-live="polite">
+            <div class="result-row between">
+              <span class="eyebrow mut" id="res-label">A tus 65 tendrás</span>
+              <span class="chip mid" id="mood-chip">A medias</span>
+            </div>
+            <div class="result-big" id="res-big">$0</div>
+            <p class="result-sub" id="res-sub">en pesos de hoy</p>
+            <div class="meter" aria-hidden="true"><i id="meter" style="width:40%"></i></div>
+            <p class="result-sub" id="res-income"></p>
+          </div>
+          <button type="button" class="btn btn-sun wide" data-share="antes">Compartir mi antes y después</button>
+        </form>
       </div>
+    </div>
+
+    <div class="wrap block">
       <div class="grid-2">
         <div class="card">
+          <div class="sec-head tight">
+            <p class="eyebrow">Tu trayectoria</p>
+            <h2>El mismo esfuerzo, dos futuros</h2>
+          </div>
           <div class="chart-wrap" id="chart-wrap">
             <svg id="chart" viewBox="0 0 640 340" role="img" aria-label="Gráfica de tu ahorro por edad"></svg>
             <div class="tip" id="tip"></div>
           </div>
           <div class="legend">
-            <span><i style="background:var(--sun)"></i><b id="lg-plan">CETES</b></span>
-            <span><i style="background:var(--bad)"></i>Bajo el colchón</span>
-            <span><i style="background:var(--tide)"></i>Meta para recibir lo que quieres</span>
-          </div>
-          <div class="cafe">
-            <div class="cafe-num" id="cafe-num">+$0</div>
-            <p style="color:var(--mut)"><b style="color:var(--fg)">El precio de dos cafés.</b> Si apartas <span class="mono">$120</span> más al mes (dos cafés de <span class="mono">$60</span>), tu yo de <span id="cafe-age">65</span> tendrá esa cantidad extra.</p>
+            <span><i class="lg-sun"></i><b id="lg-plan">CETES</b></span>
+            <span><i class="lg-bad"></i>Bajo el colchón</span>
+            <span><i class="lg-tide"></i>Meta para recibir lo que quieres</span>
           </div>
         </div>
-
         <article class="letter" aria-labelledby="letter-title">
           <div>
             <p class="eyebrow" id="letter-title">Carta de tu yo del futuro</p>
-            <p class="letter-meta" id="letter-meta">Ciudad de México, 2066</p>
+            <p class="letter-meta" id="letter-meta">México</p>
           </div>
           <p class="letter-body" id="letter-body"></p>
           <p class="letter-sign">— Tú, más adelante</p>
           <div class="actions">
-            <button class="btn btn-sun" type="button" id="share">Crear mi tarjeta para compartir</button>
-            <button class="btn btn-ghost" type="button" id="copy">Copiar mensaje</button>
+            <button class="btn btn-sun" type="button" data-share="resultado">Crear mi tarjeta</button>
+            <button class="btn btn-ghost" type="button" id="copy-letter">Copiar mensaje</button>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section id="misiones">
-    <div class="wrap">
-      <div class="sec-head">
+  <!-- ============ HOY ============ -->
+  <section class="view" id="v-hoy" data-view="hoy" hidden aria-labelledby="h-hoy">
+    <div class="wrap block">
+      <div class="today-head">
+        <div>
+          <p class="eyebrow" id="today-date">Hoy</p>
+          <h1 class="h1-sm" id="h-hoy">¿Qué hiciste hoy por tu yo del futuro?</h1>
+        </div>
+        <div class="flame-box" aria-live="polite">
+          <svg class="flame" id="flame" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z"/></svg>
+          <div><b class="mono" id="streak-big">0</b><span id="streak-label">días seguidos</span></div>
+          <span class="shield" id="shields">0 escudos</span>
+        </div>
+      </div>
+
+      <div class="hoy-grid">
+        <div class="card checkin" id="checkin">
+          <h2 class="h2-sm">Registro rápido</h2>
+          <p class="mut small" id="checkin-status">Un toque mantiene viva tu racha.</p>
+          <div class="quick">
+            <button type="button" class="quick-btn" data-quick="ahorro">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11a7 6 0 0 1 14 0v4l2 1v2h-3l-1 2h-2l-1-2H9l-1 2H6l-1-3a6 6 0 0 1-1-4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              <b>Guardé dinero</b><span>Cualquier cantidad cuenta</span>
+            </button>
+            <button type="button" class="quick-btn" data-quick="antojo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h14l-1.5 11h-11zM8 9l4-6 4 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              <b>Me aguanté un antojo</b><span>Usa el antojómetro</span>
+            </button>
+            <button type="button" class="quick-btn" data-go="reto">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 10h16M10 4v16" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+              <b>Hice el reto diario</b><span>5 preguntas, 1 minuto</span>
+            </button>
+          </div>
+          <div class="amount" id="amount-box" hidden>
+            <p class="small mut">¿Cuánto guardaste hoy?</p>
+            <div class="chips" id="amount-chips"></div>
+            <div class="row">
+              <label class="sr" for="amount-input">Otra cantidad</label>
+              <input type="number" inputmode="numeric" min="1" max="1000000" id="amount-input" placeholder="Otra cantidad">
+              <button type="button" class="btn btn-sun btn-sm" id="amount-save">Registrar</button>
+            </div>
+          </div>
+          <div class="totals">
+            <div><span class="mut small">Le has mandado</span><b class="mono" id="tot-today">$0</b></div>
+            <div><span class="mut small">A tus <span id="tot-age">65</span> valdrá</span><b class="mono sun" id="tot-future">$0</b></div>
+            <div><span class="mut small">Días de retiro</span><b class="mono tide" id="tot-days">0</b></div>
+          </div>
+        </div>
+
+        <div class="card" id="antojometro">
+          <h2 class="h2-sm">Antojómetro</h2>
+          <p class="mut small">Antes de comprar, mira lo que le cuesta a tu yo del futuro. Precios de ejemplo: ajústalos.</p>
+          <div class="chips" id="antojo-chips"></div>
+          <div class="two compact">
+            <div class="field">
+              <label for="antojo-price">Precio</label>
+              <input type="number" inputmode="numeric" min="1" max="1000000" id="antojo-price" value="120">
+            </div>
+            <div class="field">
+              <label for="antojo-freq">¿Cada cuándo?</label>
+              <select id="antojo-freq">
+                <option value="once">Una vez</option>
+                <option value="day">Diario</option>
+                <option value="week" selected>Cada semana</option>
+                <option value="month">Cada mes</option>
+              </select>
+            </div>
+          </div>
+          <div class="antojo-out" aria-live="polite">
+            <p class="mut small" id="antojo-what">Tacos cada semana, a tus 65:</p>
+            <b class="antojo-big" id="antojo-future">$0</b>
+            <p id="antojo-days" class="small"></p>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-sun" id="antojo-save">Me lo aguanto</button>
+            <button type="button" class="btn btn-ghost" id="antojo-buy">Lo compro igual</button>
+          </div>
+        </div>
+
+        <div class="card" id="world">
+          <div class="between">
+            <h2 class="h2-sm">Dónde vive tu yo del futuro</h2>
+            <span class="chip ok" id="level-chip">Nivel 1</span>
+          </div>
+          <svg id="world-svg" viewBox="0 0 320 170" role="img" aria-label="Casa de tu yo del futuro"></svg>
+          <p class="small"><b id="level-name">Cuarto rentado</b> · <span class="mut" id="level-next"></span></p>
+          <div class="meter" aria-hidden="true"><i id="level-bar" style="width:0%"></i></div>
+        </div>
+
+        <div class="card">
+          <h2 class="h2-sm">Tus últimas 5 semanas</h2>
+          <div class="heat" id="heat" role="img" aria-label="Días con registro"></div>
+          <div class="between small mut"><span id="heat-count">0 días activos</span><span>Mejor racha: <b class="mono" id="best-streak">0</b></span></div>
+          <div class="quincena" id="quincena"></div>
+          <div class="actions">
+            <a class="btn btn-ghost btn-sm" id="remind-google" target="_blank" rel="noopener" href="#">Recordatorio en Google Calendar</a>
+            <button type="button" class="btn btn-ghost btn-sm" id="remind-ics">Recordatorio para iPhone y otros</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-share="racha">Compartir mi racha</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-head" id="misiones">
         <p class="eyebrow">Misiones</p>
         <h2>Ocho pasos que tu yo del futuro te va a agradecer</h2>
-        <p>Pequeños, concretos y casi todos se hacen desde el celular. Tu progreso se guarda solo en este dispositivo.</p>
       </div>
       <div class="xp">
-        <span class="mono" id="xp-label" style="color:var(--tide);font-weight:600">0 / 800 XP</span>
+        <span class="mono tide" id="xp-label">0 / 800 XP</span>
         <div class="meter" aria-hidden="true"><i id="xp-bar" style="width:0%"></i></div>
-        <span class="mono" id="xp-rank" style="color:var(--mut)">Rango: Viajero novato</span>
+        <span class="mono mut" id="xp-rank">Rango: Viajero novato</span>
       </div>
       <div class="missions" id="mission-list"></div>
+      <a class="partner" id="partner-cta" hidden target="_blank" rel="noopener" href="#"></a>
     </div>
   </section>
 
-  <section id="ciencia">
-    <div class="wrap">
+  <!-- ============ RETO ============ -->
+  <section class="view" id="v-reto" data-view="reto" hidden aria-labelledby="h-reto">
+    <div class="wrap block narrow">
+      <div class="reto-head">
+        <div>
+          <p class="eyebrow" id="reto-num">Reto #1</p>
+          <h1 class="h1-sm" id="h-reto">¿Le ganas al interés compuesto?</h1>
+          <p class="mut">5 preguntas, las mismas para todo México. Un intento al día.</p>
+        </div>
+        <div class="reto-dots" id="reto-dots" aria-hidden="true"></div>
+      </div>
+      <div class="card q-card" id="q-card" aria-live="polite">
+        <p class="eyebrow mut" id="q-kind"></p>
+        <h2 class="q-text" id="q-text"></h2>
+        <div class="q-opts" id="q-opts"></div>
+        <div class="q-explain" id="q-explain" hidden></div>
+        <button type="button" class="btn btn-sun" id="q-next" hidden>Siguiente</button>
+      </div>
+      <div class="card done" id="reto-done" hidden>
+        <p class="eyebrow">Resultado de hoy</p>
+        <div class="score" id="reto-score">0/5</div>
+        <p class="grid-emoji mono" id="reto-grid"></p>
+        <div class="stats">
+          <div><b class="mono" id="st-played">0</b><span>Jugados</span></div>
+          <div><b class="mono" id="st-avg">0</b><span>Promedio</span></div>
+          <div><b class="mono" id="st-streak">0</b><span>Racha</span></div>
+          <div><b class="mono" id="st-best">0</b><span>Mejor</span></div>
+        </div>
+        <div class="dist" id="reto-dist"></div>
+        <div class="actions">
+          <button type="button" class="btn btn-sun" id="reto-share">Retar a alguien</button>
+          <a class="btn btn-ghost" id="reto-wa" target="_blank" rel="noopener" href="#">WhatsApp</a>
+          <button type="button" class="btn btn-ghost" id="reto-copy">Copiar resultado</button>
+        </div>
+        <p class="mut small">Siguiente reto en <b class="mono" id="reto-next">--:--:--</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MÁS ============ -->
+  <section class="view" id="v-mas" data-view="mas" hidden aria-labelledby="h-mas">
+    <div class="wrap block">
       <div class="sec-head">
         <p class="eyebrow">La ciencia detrás</p>
-        <h2>Por qué ver tu cara a los 65 cambia lo que haces hoy</h2>
-        <p>Nuestro cerebro trata a nuestro yo del futuro casi como a un desconocido. Ponerle cara rompe esa distancia.</p>
+        <h1 class="h1-sm" id="h-mas">Por qué ver tu cara a los 65 cambia lo que haces hoy</h1>
+        <p class="mut">Nuestro cerebro trata a nuestro yo del futuro casi como a un desconocido. Ponerle cara rompe esa distancia.</p>
       </div>
       <div class="science">
-        <div class="fact">
-          <b>+33%</b>
-          <p>más de su sueldo estuvieron dispuestos a destinar al retiro los adultos que vieron una versión envejecida de su propia cara.</p>
-          <a href="https://vhil.stanford.edu/publications/increasing-saving-behavior-through-age-progressed-renderings-future-self" target="_blank" rel="noopener">Hershfield et al., Stanford, 2011</a>
-        </div>
-        <div class="fact">
-          <b>42.2%</b>
-          <p>de las personas de 18 a 70 años en México tiene una cuenta de ahorro para el retiro. Solo 7.9% de ellas hace aportaciones voluntarias.</p>
-          <a href="https://mexicocomovamos.mx/mexico-como-vamos-con-el-ahorro-para-el-retiro/" target="_blank" rel="noopener">ENIF 2024, INEGI y CNBV</a>
-        </div>
-        <div class="fact">
-          <b>97.2%</b>
-          <p>de quienes usan internet en México se conecta desde un celular. Por eso Futuro Yo está hecho primero para tu teléfono.</p>
-          <a href="https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2025/endutih/ENDUTIH_24_RR.pdf" target="_blank" rel="noopener">ENDUTIH 2024, INEGI</a>
-        </div>
+        <div class="fact"><b>+33%</b><p>más de su sueldo destinaron al retiro los adultos que vieron una versión envejecida de su propia cara.</p><a href="https://vhil.stanford.edu/publications/increasing-saving-behavior-through-age-progressed-renderings-future-self" target="_blank" rel="noopener">Hershfield et al., Stanford, 2011</a></div>
+        <div class="fact"><b>2.4×</b><p>más probable que alguien siga usando una app al día siguiente cuando ya lleva una racha de 7 días.</p><a href="https://blog.duolingo.com/improving-the-streak" target="_blank" rel="noopener">Duolingo</a></div>
+        <div class="fact"><b>7.9%</b><p>de quienes tienen cuenta para el retiro hace aportaciones voluntarias. Ese es el número que queremos mover.</p><a href="https://mexicocomovamos.mx/mexico-como-vamos-con-el-ahorro-para-el-retiro/" target="_blank" rel="noopener">ENIF 2024, INEGI y CNBV</a></div>
       </div>
-    </div>
-  </section>
 
-  <section id="preguntas">
-    <div class="wrap" style="max-width:820px">
-      <div class="sec-head">
-        <p class="eyebrow">Preguntas</p>
-        <h2>Lo que la gente pregunta</h2>
-      </div>
-      <details><summary>¿Cuánto necesito ahorrar al mes para mi retiro?</summary><p>Depende de tu edad, de cuánto quieres recibir al mes y de dónde guardas tu dinero. Mueve "Quiero recibir al mes" y la carta de tu yo del futuro te dice el monto mensual exacto que te falta.</p></details>
-      <details><summary>¿Guardan mis datos?</summary><p>No. Todo el cálculo ocurre en tu teléfono. No hay registro, ni servidores, ni cookies de rastreo. Tus misiones se guardan solo en este navegador.</p></details>
-      <details><summary>¿Esto incluye mi Afore?</summary><p>No. Futuro Yo mide tu ahorro propio, que es lo que tú controlas. Tu Afore es aparte: consúltala gratis en la app AforeMóvil de CONSAR. Si tu Afore te da algo, mejor: es un colchón extra.</p></details>
-      <details><summary>¿Por qué "en pesos de hoy"?</summary><p>Porque un millón de pesos en 2066 no compra lo mismo que hoy. Descontamos la inflación (3.45% anual, el último dato del INEGI) para que veas cuánto vale de verdad lo que tendrás.</p></details>
-      <details><summary>¿De dónde sale el ingreso mensual de mi retiro?</summary><p>Usamos la regla del 4%: retirar cada año el 4% de lo ahorrado. Es una referencia muy usada en planeación financiera (Bengen, 1994), no una garantía. Si te retiras antes o vives más, conviene retirar menos.</p></details>
-      <details><summary>¿Es asesoría de inversión?</summary><p>No. Es una herramienta educativa con supuestos públicos. Los rendimientos pasados no garantizan rendimientos futuros. Antes de invertir, revisa la información oficial del instrumento.</p></details>
-    </div>
-  </section>
+      <a class="inst-card" href="empresas.html">
+        <div>
+          <p class="eyebrow">Para instituciones</p>
+          <h2>Afores, bancos, empresas y universidades</h2>
+          <p class="mut">Futuro Yo con tu marca, sin manejar datos personales. Mira la propuesta.</p>
+        </div>
+        <span class="btn btn-ghost">Ver propuesta</span>
+      </a>
 
-  <section id="fuentes" class="sources">
-    <div class="wrap" style="max-width:820px">
-      <div class="sec-head">
-        <p class="eyebrow">Fuentes</p>
-        <h2>Cada número tiene de dónde salir</h2>
+      <div class="faq">
+        <div class="sec-head"><p class="eyebrow">Preguntas</p><h2>Lo que la gente pregunta</h2></div>
+        <details><summary>¿Suben mi foto a internet?</summary><p>No. La inteligencia artificial (MediaPipe de Google) se descarga a tu teléfono y ahí analiza tu cara. La foto se queda en tu navegador y puedes borrarla con un toque.</p></details>
+        <details><summary>¿Qué tan real es el envejecimiento?</summary><p>La IA encuentra 478 puntos de tu cara y separa tu cabello. Con eso pintamos canas, arrugas, ojeras y flacidez donde aparecen con la edad. Es una aproximación divertida, no una predicción médica.</p></details>
+        <details><summary>¿Cuánto necesito ahorrar al mes para mi retiro?</summary><p>Mueve "Quiero recibir al mes" y la carta de tu yo del futuro te dice el monto mensual exacto que te falta.</p></details>
+        <details><summary>¿Esto incluye mi Afore?</summary><p>No. Futuro Yo mide tu ahorro propio. Tu Afore es aparte: consúltala gratis en la app AforeMóvil de CONSAR.</p></details>
+        <details><summary>¿Por qué "en pesos de hoy"?</summary><p>Porque un millón de pesos dentro de 30 años no compra lo mismo que hoy. Descontamos la inflación más reciente del INEGI para que veas cuánto vale de verdad lo que tendrás.</p></details>
+        <details><summary>¿De dónde sale el ingreso mensual de mi retiro?</summary><p>Usamos la regla del 4%: retirar cada año el 4% de lo ahorrado. Es una referencia de planeación (Bengen, 1994), no una garantía.</p></details>
+        <details><summary>¿Es asesoría de inversión?</summary><p>No. Es una herramienta educativa con supuestos públicos. Los rendimientos pasados no garantizan rendimientos futuros.</p></details>
       </div>
-      <ol>
-        <li>Tasa de CETES a 28 días: <span id="src-cetes">6.23%, subasta del 22 de octubre de 2026</span>. <a href="https://www.cetesdirecto.com" target="_blank" rel="noopener">CetesDirecto</a> y <a href="https://www.banxico.org.mx" target="_blank" rel="noopener">Banco de México</a>.</li>
-        <li>Inflación anual: <span id="src-inf">3.45%, INPC de septiembre de 2026</span>. <a href="https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2026/inpc/inpc_2q2026_10.pdf" target="_blank" rel="noopener">INEGI, boletín del INPC</a>.</li>
-        <li>Ahorro para el retiro en México: <a href="https://mexicocomovamos.mx/mexico-como-vamos-con-el-ahorro-para-el-retiro/" target="_blank" rel="noopener">Encuesta Nacional de Inclusión Financiera 2024 (INEGI y CNBV)</a>.</li>
-        <li>Efecto de ver tu yo del futuro: Hershfield, H. E., Goldstein, D. G., Sharpe, W. F., et al. (2011). <a href="https://vhil.stanford.edu/publications/increasing-saving-behavior-through-age-progressed-renderings-future-self" target="_blank" rel="noopener">Increasing saving behavior through age-progressed renderings of the future self</a>. Journal of Marketing Research, 48, S23–S37.</li>
-        <li>Uso de internet y celular: <a href="https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2025/endutih/ENDUTIH_24_RR.pdf" target="_blank" rel="noopener">ENDUTIH 2024, INEGI</a>.</li>
-        <li>Consulta de tu Afore: <a href="https://www.gob.mx/consar" target="_blank" rel="noopener">CONSAR</a>. Dudas y quejas con instituciones financieras: <a href="https://www.condusef.gob.mx" target="_blank" rel="noopener">CONDUSEF</a>.</li>
-      </ol>
+
+      <div class="sources" id="fuentes">
+        <div class="sec-head"><p class="eyebrow">Fuentes</p><h2>Cada número tiene de dónde salir</h2></div>
+        <ol>
+          <li>Tasa de CETES a 28 días: <span id="src-cetes">6.23%, subasta del 22 de octubre de 2026</span>. <a href="https://www.cetesdirecto.com" target="_blank" rel="noopener">CetesDirecto</a> y <a href="https://www.banxico.org.mx" target="_blank" rel="noopener">Banco de México</a>.</li>
+          <li>Inflación anual: <span id="src-inf">3.45%, INPC de septiembre de 2026</span>. <a href="https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2026/inpc/inpc_2q2026_10.pdf" target="_blank" rel="noopener">INEGI</a>.</li>
+          <li>Ahorro para el retiro, tandas y ahorro en casa: <a href="https://mexicocomovamos.mx/mexico-como-vamos-con-el-ahorro-para-el-retiro/" target="_blank" rel="noopener">ENIF 2024 (INEGI y CNBV)</a> y <a href="https://www.eluniversal.com.mx/cartera/tandas-y-guardaditos-viejos-trucos-que-aun-dominan-el-ahorro-mexicano-encuesta-41-de-la-poblacion-guarda-dinero-en-casa/" target="_blank" rel="noopener">El Universal</a>.</li>
+          <li>Hershfield, H. E., et al. (2011). <a href="https://vhil.stanford.edu/publications/increasing-saving-behavior-through-age-progressed-renderings-future-self" target="_blank" rel="noopener">Increasing saving behavior through age-progressed renderings of the future self</a>. Journal of Marketing Research, 48.</li>
+          <li>Rachas y retención: <a href="https://blog.duolingo.com/improving-the-streak" target="_blank" rel="noopener">Duolingo</a>.</li>
+          <li>IA de rostro y cabello: <a href="https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker" target="_blank" rel="noopener">Google MediaPipe</a> (Apache 2.0).</li>
+          <li>Tu Afore: <a href="https://www.gob.mx/consar" target="_blank" rel="noopener">CONSAR</a>. Dudas con instituciones financieras: <a href="https://www.condusef.gob.mx" target="_blank" rel="noopener">CONDUSEF</a>.</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h2 class="h2-sm">Tus datos</h2>
+        <p class="mut small">Todo vive en este navegador: tu plan, tu racha, tus retos y tu foto. Nadie más los ve.</p>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="wipe-ask">Borrar todo</button>
+          <span id="wipe-confirm" hidden class="confirm">¿Seguro? Se borran tu racha y tu foto. <button type="button" class="btn btn-sm btn-danger" id="wipe-yes">Sí, borrar</button> <button type="button" class="btn btn-ghost btn-sm" id="wipe-no">Cancelar</button></span>
+        </div>
+      </div>
     </div>
+    <footer>
+      <div class="wrap">
+        <p><b>Futuro Yo</b> es una herramienta educativa gratuita. No es asesoría de inversión ni una institución financiera. Los cálculos usan supuestos públicos y van antes de impuestos y comisiones.</p>
+        <p>Hecho en México para el celular. Sin registro, sin rastreo, sin subir tu foto.</p>
+      </div>
+    </footer>
   </section>
 </main>
 
-<footer>
-  <div class="wrap">
-    <p><b style="color:var(--mut)">Futuro Yo</b> es una herramienta educativa gratuita. No es asesoría de inversión ni una institución financiera. Los cálculos usan supuestos públicos y van antes de impuestos y comisiones.</p>
-    <p>Hecho en México para el celular. Sin registro, sin rastreo.</p>
-  </div>
-</footer>
+<nav class="tabbar" aria-label="Secciones">
+  <button type="button" data-go="futuro"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Mi futuro</button>
+  <button type="button" data-go="hoy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Hoy<span class="dot" data-dot="hoy" hidden></span></button>
+  <button type="button" data-go="reto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Reto<span class="dot" data-dot="reto" hidden></span></button>
+  <button type="button" data-go="mas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>Más</button>
+</nav>
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-box">
-    <h3 id="modal-title">Tu tarjeta está lista</h3>
-    <img id="card-img" alt="Tarjeta para compartir con tu resultado">
-    <p>En el celular, mantén presionada la imagen para guardarla. Después compártela en tu historia.</p>
+    <div class="between">
+      <h3 id="modal-title">Tu tarjeta</h3>
+      <button type="button" class="btn btn-ghost btn-sm" id="close">Cerrar</button>
+    </div>
+    <div class="seg full" role="group" aria-label="Tipo de tarjeta" id="card-kinds">
+      <button type="button" data-kind="antes" aria-pressed="true">Antes y después</button>
+      <button type="button" data-kind="resultado" aria-pressed="false">Mi futuro</button>
+      <button type="button" data-kind="nosotros" aria-pressed="false">Nosotros</button>
+      <button type="button" data-kind="racha" aria-pressed="false">Mi racha</button>
+    </div>
+    <div class="partner-box" id="partner-box" hidden>
+      <p class="small">Agrega a tu pareja, amiga o mamá. Su foto tampoco sale de tu teléfono.</p>
+      <div class="row">
+        <label class="btn btn-sun btn-sm" for="photo2-input">Agregar su foto</label>
+        <input type="file" id="photo2-input" accept="image/*" class="sr" tabindex="-1" aria-hidden="true">
+        <label class="small" for="age2">Su edad</label>
+        <input type="number" id="age2" min="18" max="70" value="28" inputmode="numeric">
+      </div>
+    </div>
+    <div class="card-stage"><img id="card-img" alt="Tarjeta para compartir"><div class="portal-busy" id="card-busy" hidden><span class="spinner" aria-hidden="true"></span><p>Creando tu tarjeta…</p></div></div>
+    <p class="small mut">En el celular, mantén presionada la imagen para guardarla y súbela a tu historia.</p>
     <div class="actions">
-      <a class="btn btn-sun btn-sm" id="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+      <button class="btn btn-sun btn-sm" type="button" id="card-share">Compartir</button>
+      <a class="btn btn-ghost btn-sm" id="wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
       <button class="btn btn-ghost btn-sm" type="button" id="dl">Descargar</button>
-      <button class="btn btn-ghost btn-sm" type="button" id="close">Cerrar</button>
     </div>
   </div>
 </div>
 
-<script>
-(() => {
-  const SITE = "https://alexsnri.github.io/README/futuro/";
-  const YEAR = 2026;
-  const R = { cetes: 6.23, inflacion: 3.45, optimista: 9.0 };
-  const $ = (id) => document.getElementById(id);
-  const mxn = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
-  const fmt = (v) => mxn.format(Math.round(v));
-  const short = (v) => v >= 1e6 ? "$" + (v / 1e6).toLocaleString("es-MX", { maximumFractionDigits: 1 }) + " M" : v >= 1e3 ? "$" + Math.round(v / 1e3) + " mil" : fmt(v);
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const store = {
-    get(k, d) { try { const v = localStorage.getItem("fy:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-    set(k, v) { try { localStorage.setItem("fy:" + k, JSON.stringify(v)); } catch (e) {} }
-  };
-
-  const state = Object.assign({ age: 28, retire: 65, monthly: 1500, saved: 10000, need: 15000, veh: "cetes", skin: 2, hair: "short" }, store.get("state", {}));
-  let scrubAge = state.retire;
-
-  const VEH = {
-    colchon: { name: "bajo el colchón", label: "Bajo el colchón", rate: () => 0 },
-    cetes: { name: "CETES", label: "CETES", rate: () => R.cetes },
-    optimista: { name: "un portafolio diversificado", label: "Diversificado (supuesto)", rate: () => R.optimista }
-  };
-
-  // ---------- math ----------
-  const monthlyReal = (nominalPct) => Math.pow((1 + nominalPct / 100) / (1 + R.inflacion / 100), 1 / 12) - 1;
-  function balanceAt(months, nominalPct, monthly, saved) {
-    const i = monthlyReal(nominalPct);
-    const g = Math.pow(1 + i, months);
-    return saved * g + (Math.abs(i) < 1e-9 ? monthly * months : monthly * (g - 1) / i);
-  }
-  function requiredMonthly(target, months, nominalPct, saved) {
-    const i = monthlyReal(nominalPct);
-    const g = Math.pow(1 + i, months);
-    const left = target - saved * g;
-    if (left <= 0) return 0;
-    return Math.abs(i) < 1e-9 ? left / months : left * i / (g - 1);
-  }
-  const targetFor = (need) => need * 12 / 0.04;
-
-  function compute() {
-    const months = Math.max(1, (state.retire - state.age) * 12);
-    const rate = VEH[state.veh].rate();
-    const bal = balanceAt(months, rate, state.monthly, state.saved);
-    const income = bal * 0.04 / 12;
-    const ratio = income / state.need;
-    const mood = ratio >= 1 ? "ok" : ratio >= 0.5 ? "mid" : "bad";
-    const req = requiredMonthly(targetFor(state.need), months, rate, state.saved);
-    const reqCetes = requiredMonthly(targetFor(state.need), months, R.cetes, state.saved);
-    const cafe = balanceAt(months, rate, state.monthly + 120, state.saved) - bal;
-    return { months, rate, bal, income, ratio, mood, req, reqCetes, cafe };
-  }
-
-  // ---------- avatar ----------
-  const SKINS = ["#f6d2b8", "#e6b48f", "#c98e62", "#9b6542", "#6b4329"];
-  const lerp = (a, b, t) => a + (b - a) * t;
-  function mix(h1, h2, t) {
-    const p = (h) => [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16));
-    const a = p(h1), b = p(h2);
-    return "#" + a.map((v, k) => Math.round(lerp(v, b[k], t)).toString(16).padStart(2, "0")).join("");
-  }
-  function avatarSVG(age, mood, skin, hair) {
-    const t = Math.min(1, Math.max(0, (age - 30) / 45));
-    const hairCol = mix("#2b1a12", "#d9dde0", Math.min(1, Math.max(0, (age - 38) / 32)));
-    const wr = Math.min(0.75, Math.max(0, (age - 40) / 35));
-    const sk = SKINS[skin];
-    const shade = mix(sk, "#3a2418", 0.28);
-    const brow = mood === "ok" ? 0 : mood === "mid" ? 3 : 7;
-    const mouth = mood === "ok" ? 12 : mood === "mid" ? 2 : -9;
-    const hl = lerp(46, 54, t);
-    const longHair = hair === "long" ? `<path d="M46 ${hl + 10} C40 120 40 170 52 196 L74 196 C64 160 62 130 64 100 Z M154 ${hl + 10} C160 120 160 170 148 196 L126 196 C136 160 138 130 136 100 Z" fill="${hairCol}"/>` : "";
-    const glasses = age >= 55 ? `<g fill="none" stroke="#1d2b33" stroke-width="2.6" opacity=".9"><rect x="64" y="94" width="28" height="20" rx="8"/><rect x="108" y="94" width="28" height="20" rx="8"/><path d="M92 102 h16"/></g>` : "";
-    return `
-      <defs><radialGradient id="glow" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="${mix(sk, "#ffffff", .18)}"/><stop offset="1" stop-color="${sk}"/></radialGradient></defs>
-      ${longHair}
-      <path d="M30 220 C34 182 62 166 100 166 C138 166 166 182 170 220 Z" fill="#1f4a5c"/>
-      <path d="M78 168 L100 196 L122 168" fill="none" stroke="#5ad6c8" stroke-width="3" opacity=".7"/>
-      <rect x="86" y="138" width="28" height="34" rx="10" fill="${shade}"/>
-      <circle cx="47" cy="104" r="10" fill="${shade}"/><circle cx="153" cy="104" r="10" fill="${shade}"/>
-      <ellipse cx="100" cy="100" rx="52" ry="60" fill="url(#glow)"/>
-      <path d="M46 ${hl + 44} C42 18 158 18 154 ${hl + 44} C146 ${hl + 16} 122 ${hl + 4} 100 ${hl + 10} C78 ${hl + 4} 54 ${hl + 16} 46 ${hl + 44} Z" fill="${hairCol}"/>
-      <g fill="none" stroke="${mix(sk, "#2a1810", .45)}" stroke-linecap="round" stroke-width="1.6" opacity="${wr}">
-        <path d="M80 ${hl + 26} Q100 ${hl + 21} 120 ${hl + 26}"/><path d="M84 ${hl + 33} Q100 ${hl + 29} 116 ${hl + 33}"/>
-        <path d="M60 104 l-6 -3 M60 108 l-7 0 M60 112 l-6 3"/><path d="M140 104 l6 -3 M140 108 l7 0 M140 112 l6 3"/>
-        <path d="M82 124 Q78 134 84 144"/><path d="M118 124 Q122 134 116 144"/>
-      </g>
-      <g stroke="${mix(hairCol, "#000000", .2)}" stroke-width="3.4" stroke-linecap="round" fill="none">
-        <path d="M68 ${88 + brow / 2} L90 ${86 - brow / 2}"/><path d="M132 ${88 + brow / 2} L110 ${86 - brow / 2}"/>
-      </g>
-      <g fill="#14202a"><ellipse cx="78" cy="104" rx="5" ry="${mood === "ok" ? 4.2 : 5.4}"/><ellipse cx="122" cy="104" rx="5" ry="${mood === "ok" ? 4.2 : 5.4}"/></g>
-      <circle cx="80" cy="102" r="1.5" fill="#fff"/><circle cx="124" cy="102" r="1.5" fill="#fff"/>
-      ${glasses}
-      <path d="M100 108 Q96 120 100 124" fill="none" stroke="${shade}" stroke-width="2.2" stroke-linecap="round"/>
-      <path d="M84 136 Q100 ${136 + mouth} 116 136" fill="none" stroke="#7a2e2a" stroke-width="3.6" stroke-linecap="round"/>
-      ${mood === "ok" ? `<circle cx="70" cy="124" r="7" fill="#ff8a7a" opacity=".22"/><circle cx="130" cy="124" r="7" fill="#ff8a7a" opacity=".22"/>` : ""}`;
-  }
-
-  // ---------- chart ----------
-  let W = 640, H = 340;
-  const P = { l: 58, r: 16, t: 16, b: 36 };
-  function niceStep(max) {
-    const raw = max / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
-    const n = raw / mag;
-    return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * mag;
-  }
-  let series = [];
-  function drawChart(c) {
-    W = Math.round(Math.min(640, Math.max(300, $("chart-wrap").clientWidth || 640)));
-    H = W < 500 ? 260 : 340;
-    $("chart").setAttribute("viewBox", `0 0 ${W} ${H}`);
-    const ages = [];
-    for (let a = state.age; a <= state.retire; a++) ages.push(a);
-    const target = targetFor(state.need);
-    series = ages.map((a) => {
-      const m = (a - state.age) * 12;
-      return { a, plan: balanceAt(m, c.rate, state.monthly, state.saved), cash: balanceAt(m, 0, state.monthly, state.saved) };
-    });
-    const peak = Math.max(target * 1.05, ...series.map((s) => s.plan), 1000);
-    const step = niceStep(peak);
-    const yMax = Math.ceil(peak / step) * step;
-    const x = (a) => P.l + (a - state.age) / Math.max(1, state.retire - state.age) * (W - P.l - P.r);
-    const y = (v) => H - P.b - Math.max(0, v) / yMax * (H - P.t - P.b);
-    let g = "";
-    for (let v = 0; v <= yMax + 1; v += step) {
-      g += `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="#1e3a4a" stroke-width="1"/>`;
-      g += `<text x="${P.l - 8}" y="${y(v) + 4}" text-anchor="end" fill="#93adb7" font-size="11" font-family="JetBrains Mono, monospace">${v === 0 ? "$0" : short(v)}</text>`;
-    }
-    const span = state.retire - state.age;
-    const xs = span <= 12 ? 2 : span <= 25 ? 5 : 10;
-    for (let a = state.age; a <= state.retire; a++) {
-      if ((a - state.age) % xs === 0 || a === state.retire) {
-        if (a !== state.retire && state.retire - a < xs * 0.5) continue;
-        g += `<text x="${x(a)}" y="${H - 12}" text-anchor="middle" fill="#93adb7" font-size="11" font-family="JetBrains Mono, monospace">${a}</text>`;
-      }
-    }
-    const line = (k) => series.map((s, j) => `${j ? "L" : "M"}${x(s.a).toFixed(1)} ${y(s[k]).toFixed(1)}`).join(" ");
-    const area = line("plan") + ` L${x(state.retire)} ${y(0)} L${x(state.age)} ${y(0)} Z`;
-    const ty = y(target);
-    const last = series[series.length - 1];
-    $("chart").innerHTML = `
-      <defs><linearGradient id="gsun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb547" stop-opacity=".45"/><stop offset="1" stop-color="#ffb547" stop-opacity="0"/></linearGradient></defs>
-      ${g}
-      ${target <= yMax ? `<line x1="${P.l}" x2="${W - P.r}" y1="${ty}" y2="${ty}" stroke="#5ad6c8" stroke-dasharray="2 5" stroke-width="2"/><text x="${W - P.r}" y="${ty - 7}" text-anchor="end" fill="#5ad6c8" font-size="11" font-family="JetBrains Mono, monospace">meta ${short(target)}</text>` : ""}
-      <path d="${area}" fill="url(#gsun)"/>
-      <path d="${line("cash")}" fill="none" stroke="#ff8574" stroke-width="2" stroke-dasharray="6 5"/>
-      <path d="${line("plan")}" fill="none" stroke="#ffb547" stroke-width="3" stroke-linejoin="round"/>
-      <circle cx="${x(last.a)}" cy="${y(last.plan)}" r="6" fill="#ffb547" stroke="#07121a" stroke-width="3"/>
-      <line id="cursor" x1="0" x2="0" y1="${P.t}" y2="${H - P.b}" stroke="#5ad6c8" stroke-width="1.5" opacity="0"/>
-      <circle id="cursor-dot" r="5" fill="#5ad6c8" opacity="0"/>`;
-    drawChart.x = x; drawChart.y = y;
-    $("lg-plan").textContent = VEH[state.veh].label;
-    markScrub();
-  }
-  function markScrub() {
-    const s = series.find((r) => r.a === scrubAge);
-    const cur = $("cursor"), dot = $("cursor-dot");
-    if (!s || !cur) return;
-    const on = scrubAge !== state.retire;
-    cur.setAttribute("x1", drawChart.x(s.a)); cur.setAttribute("x2", drawChart.x(s.a));
-    dot.setAttribute("cx", drawChart.x(s.a)); dot.setAttribute("cy", drawChart.y(s.plan));
-    cur.setAttribute("opacity", on ? .8 : 0); dot.setAttribute("opacity", on ? 1 : 0);
-  }
-  const wrapEl = $("chart-wrap"), tip = $("tip");
-  wrapEl.addEventListener("pointermove", (e) => {
-    const r = $("chart").getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width * W;
-    let best = series[0];
-    for (const s of series) if (Math.abs(drawChart.x(s.a) - px) < Math.abs(drawChart.x(best.a) - px)) best = s;
-    if (!best) return;
-    tip.style.left = (drawChart.x(best.a) / W * r.width) + "px";
-    tip.style.top = (drawChart.y(best.plan) / H * r.height) + "px";
-    tip.innerHTML = `<b style="color:var(--fg)">${best.a} años · ${YEAR + best.a - state.age}</b><br><span style="color:var(--sun)">${fmt(best.plan)}</span> plan<br><span style="color:var(--bad)">${fmt(best.cash)}</span> colchón`;
-    tip.style.opacity = 1;
-  });
-  wrapEl.addEventListener("pointerleave", () => { tip.style.opacity = 0; });
-
-  // ---------- letter ----------
-  function letter(c) {
-    const yr = YEAR + state.retire - state.age;
-    const yrs = state.retire - state.age;
-    const b = (s) => `<strong>${s}</strong>`;
-    const where = VEH[state.veh].name;
-    const gap = Math.max(0, state.need - c.income);
-    let txt;
-    if (c.mood === "ok") {
-      txt = `Hola. Soy tú, en ${yr}. Tengo ${state.retire} años y te escribo para darte las gracias.\n\nEsos ${b(fmt(state.monthly))} al mes que guardaste en ${where} hoy valen ${b(fmt(c.bal))} en pesos de tu época. Me dan unos ${b(fmt(c.income))} al mes, justo lo que querías.\n\nNo fue suerte. Fueron ${yrs} años de no rendirte. Sigue así, y de vez en cuando date un gusto: también me acuerdo de eso.`;
-    } else if (c.mood === "mid") {
-      txt = `Hola. Soy tú, en ${yr}. Tengo ${state.retire} años.\n\nLo que guardaste me da unos ${b(fmt(c.income))} al mes. Necesito ${b(fmt(state.need))}, así que me faltan ${b(fmt(gap))} cada mes. Vivo bien, pero con cuidado.\n\nTú todavía puedes cambiarlo. Si subes tu ahorro a ${b(fmt(c.req))} al mes, llego completo. Yo ya no puedo hacer nada. Tú sí.`;
-    } else {
-      txt = `Hola. Soy tú, en ${yr}. Tengo ${state.retire} años y necesito pedirte algo.\n\nCon lo que guardamos tengo ${b(fmt(c.income))} al mes. Necesito ${b(fmt(state.need))}. Todavía trabajo, y no siempre porque quiera.\n\nNo te escribo para regañarte. Te escribo porque aún hay tiempo: ${b(fmt(c.req))} al mes desde hoy lo arregla. Empieza este mes, aunque sea con poquito.`;
-    }
-    if (state.veh === "colchon" && c.reqCetes < c.req) txt += `\n\nPD: bajo el colchón la inflación me come. En CETES me bastaría con ${b(fmt(c.reqCetes))} al mes.`;
-    $("letter-body").innerHTML = txt;
-    $("letter-meta").textContent = `México, ${yr} · enviada hace ${yrs} años`;
-  }
-
-  // ---------- render ----------
-  function setP(el) { const p = (el.value - el.min) / (el.max - el.min) * 100; el.style.setProperty("--p", p + "%"); }
-  function render() {
-    state.retire = Math.max(state.retire, state.age + 2);
-    $("retire").value = state.retire;
-    const c = compute();
-    $("age-out").textContent = state.age;
-    $("retire-out").textContent = state.retire;
-    $("monthly-out").textContent = fmt(state.monthly);
-    $("saved-out").textContent = fmt(state.saved);
-    $("need-out").textContent = fmt(state.need);
-    ["age", "retire", "monthly", "saved", "need", "age-scrub"].forEach((k) => setP($(k)));
-    $("h-age").textContent = state.retire;
-    $("res-label").textContent = `A tus ${state.retire} tendrás`;
-    $("res-big").textContent = fmt(c.bal);
-    $("res-sub").textContent = `en pesos de hoy, guardando ${fmt(state.monthly)} al mes durante ${state.retire - state.age} años`;
-    $("res-income").innerHTML = `Eso te da unos <b style="color:var(--fg)">${fmt(c.income)} al mes</b> (regla del 4%). Querías ${fmt(state.need)}.`;
-    const chip = $("mood-chip");
-    chip.className = "chip " + c.mood;
-    chip.textContent = c.mood === "ok" ? "Tu yo del futuro está en paz" : c.mood === "mid" ? "A medias" : "En apuros";
-    $("meter").style.width = Math.min(100, c.ratio * 100).toFixed(1) + "%";
-    document.querySelectorAll(".veh").forEach((b) => b.setAttribute("aria-pressed", b.dataset.veh === state.veh));
-    const sc = $("age-scrub");
-    sc.min = state.age; sc.max = state.retire;
-    scrubAge = Math.min(Math.max(scrubAge, state.age), state.retire);
-    if (render.lastRetire !== state.retire) scrubAge = state.retire;
-    render.lastRetire = state.retire;
-    sc.value = scrubAge; setP(sc);
-    $("scrub-min").textContent = `Hoy · ${state.age}`;
-    $("scrub-max").textContent = `Retiro · ${state.retire}`;
-    $("cafe-num").textContent = "+" + fmt(c.cafe);
-    $("cafe-age").textContent = state.retire;
-    drawChart(c);
-    renderAvatar(c);
-    letter(c);
-    render.c = c;
-    store.set("state", state);
-  }
-  function renderAvatar(c) {
-    c = c || render.c;
-    const s = series.find((r) => r.a === scrubAge) || series[series.length - 1];
-    $("avatar").innerHTML = avatarSVG(scrubAge, scrubAge === state.age ? "mid" : c.mood, state.skin, state.hair);
-    $("avatar").setAttribute("aria-label", `Tu avatar a los ${scrubAge} años`);
-    $("portal-tag").innerHTML = scrubAge === state.age
-      ? `Tú hoy · <span>${scrubAge} años</span> · ${fmt(s.plan)}`
-      : `Tú · <span>${scrubAge} años</span> · ${YEAR + scrubAge - state.age} · ${short(s.plan)}`;
-    $("scrub-out").textContent = `${scrubAge} años`;
-    markScrub();
-  }
-
-  // ---------- inputs ----------
-  ["age", "retire", "monthly", "saved", "need"].forEach((k) => {
-    const el = $(k);
-    el.value = state[k];
-    el.addEventListener("input", () => { state[k] = +el.value; if (k === "retire" || k === "age") boost(); render(); });
-  });
-  document.querySelectorAll(".veh").forEach((b) => b.addEventListener("click", () => { state.veh = b.dataset.veh; boost(); render(); }));
-  $("age-scrub").addEventListener("input", (e) => { scrubAge = +e.target.value; setP(e.target); boost(.5); renderAvatar(); });
-  const skins = $("skins");
-  SKINS.forEach((col, k) => {
-    const b = document.createElement("button");
-    b.type = "button"; b.className = "sw"; b.style.background = col;
-    b.setAttribute("aria-label", `Tono de piel ${k + 1}`);
-    b.setAttribute("aria-pressed", k === state.skin);
-    b.addEventListener("click", () => { state.skin = k; skins.querySelectorAll(".sw").forEach((x, j) => x.setAttribute("aria-pressed", j === k)); renderAvatar(); store.set("state", state); });
-    skins.appendChild(b);
-  });
-  document.querySelectorAll("[data-hair]").forEach((b) => {
-    b.setAttribute("aria-pressed", b.dataset.hair === state.hair);
-    b.addEventListener("click", () => { state.hair = b.dataset.hair; document.querySelectorAll("[data-hair]").forEach((x) => x.setAttribute("aria-pressed", x === b)); renderAvatar(); store.set("state", state); });
-  });
-
-  // ---------- warp tunnel ----------
-  const cv = $("warp"), ctx = cv.getContext("2d");
-  let stars = [], speed = 0.6, target = 0.6;
-  function sizeCanvas() {
-    const r = cv.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
-    cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d);
-    stars = Array.from({ length: 140 }, () => ({ a: Math.random() * Math.PI * 2, r: Math.random() * cv.width * .5, z: Math.random() * .8 + .2 }));
-  }
-  function boost(v) { target = Math.max(target, v || 4); }
-  function tick() {
-    speed += (target - speed) * .08; target += (0.6 - target) * .03;
-    ctx.fillStyle = "rgba(7,18,26,.28)"; ctx.fillRect(0, 0, cv.width, cv.height);
-    const cx = cv.width / 2, cy = cv.height * .46, max = Math.hypot(cx, cy);
-    for (const s of stars) {
-      const r0 = s.r;
-      s.r += (s.r * .012 + .4) * speed * s.z;
-      if (s.r > max) { s.r = Math.random() * 20; s.a = Math.random() * Math.PI * 2; }
-      const k = s.r / max;
-      ctx.strokeStyle = k > .55 ? `rgba(255,181,71,${k * .8})` : `rgba(90,214,200,${.25 + k})`;
-      ctx.lineWidth = 1 + k * 2;
-      ctx.beginPath();
-      ctx.moveTo(cx + Math.cos(s.a) * r0, cy + Math.sin(s.a) * r0);
-      ctx.lineTo(cx + Math.cos(s.a) * s.r, cy + Math.sin(s.a) * s.r);
-      ctx.stroke();
-    }
-    if (!reduced) requestAnimationFrame(tick);
-  }
-  sizeCanvas(); tick();
-  addEventListener("resize", () => { sizeCanvas(); if (render.c) drawChart(render.c); });
-
-  // ---------- missions ----------
-  const MISSIONS = [
-    { id: "afore", t: "Encuentra tu Afore", d: "Descarga AforeMóvil (CONSAR) y mira cuánto llevas.", xp: 100, url: "https://www.gob.mx/consar" },
-    { id: "cetes", t: "Abre tu cuenta de CETES", d: "Desde $100 en CetesDirecto, sin comisiones.", xp: 150, url: "https://www.cetesdirecto.com" },
-    { id: "auto", t: "Automatiza tu ahorro", d: "Programa un traspaso el día de quincena. Lo que no ves, no lo gastas.", xp: 150 },
-    { id: "fondo", t: "Arma tu fondo de emergencia", d: "Meta: 3 meses de gastos en un lugar líquido.", xp: 100 },
-    { id: "deuda", t: "Liquida la tarjeta más cara", d: "Revisa el CAT de cada tarjeta y ataca la de mayor costo primero.", xp: 100, url: "https://www.condusef.gob.mx" },
-    { id: "volunt", t: "Haz una aportación voluntaria", d: "Aunque sean $100 a tu Afore. Solo 7.9% lo hace.", xp: 100 },
-    { id: "carta", t: "Comparte tu carta", d: "Manda tu tarjeta a alguien a quien quieras ver bien a los 65.", xp: 50 },
-    { id: "revisa", t: "Pon una cita contigo", d: "Agenda revisar este plan cada 6 meses.", xp: 50 }
-  ];
-  const done = new Set(store.get("missions", []));
-  const ml = $("mission-list");
-  MISSIONS.forEach((m) => {
-    const el = document.createElement("label");
-    el.className = "mission";
-    el.innerHTML = `<input type="checkbox" id="m-${m.id}"><div><b>${m.t}</b><p>${m.d}${m.url ? ` <a href="${m.url}" target="_blank" rel="noopener">Ir</a>` : ""}</p><em>+${m.xp} XP</em></div>`;
-    const cb = el.querySelector("input");
-    cb.checked = done.has(m.id);
-    cb.addEventListener("change", () => { cb.checked ? done.add(m.id) : done.delete(m.id); store.set("missions", [...done]); xp(); if (cb.checked) toast(`+${m.xp} XP. Tu yo del futuro lo notó.`); });
-    ml.appendChild(el);
-  });
-  function xp() {
-    const total = MISSIONS.reduce((s, m) => s + m.xp, 0);
-    const got = MISSIONS.filter((m) => done.has(m.id)).reduce((s, m) => s + m.xp, 0);
-    $("xp-label").textContent = `${got} / ${total} XP`;
-    $("xp-bar").style.width = (got / total * 100) + "%";
-    $("xp-rank").textContent = "Rango: " + (got >= total ? "Arquitecto del tiempo" : got >= 500 ? "Navegante" : got >= 200 ? "Explorador" : "Viajero novato");
-  }
-  xp();
-
-  // ---------- share ----------
-  function shareText() {
-    const c = render.c;
-    return `Conocí a mi yo de ${state.retire}: si guardo ${fmt(state.monthly)} al mes, tendrá ${fmt(c.bal)} en pesos de hoy. ¿Y el tuyo? ${SITE}`;
-  }
-  function toast(msg) {
-    const t = document.createElement("div");
-    t.className = "toast"; t.textContent = msg; t.setAttribute("role", "status");
-    document.body.appendChild(t); setTimeout(() => t.remove(), 2400);
-  }
-  $("copy").addEventListener("click", () => {
-    const txt = shareText();
-    const fallback = () => { const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} ta.remove(); toast("Mensaje copiado"); };
-    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => toast("Mensaje copiado"), fallback); else fallback();
-  });
-  function buildCard() {
-    return new Promise((resolve) => {
-      const c = render.c, cw = 1080, ch = 1350;
-      const cvs = document.createElement("canvas"); cvs.width = cw; cvs.height = ch;
-      const x = cvs.getContext("2d");
-      const bg = x.createRadialGradient(cw / 2, 520, 40, cw / 2, 520, 900);
-      bg.addColorStop(0, "#15404f"); bg.addColorStop(.55, "#0b1f2a"); bg.addColorStop(1, "#07121a");
-      x.fillStyle = bg; x.fillRect(0, 0, cw, ch);
-      for (let k = 0; k < 90; k++) {
-        const a = Math.random() * Math.PI * 2, r1 = 120 + Math.random() * 520, r2 = r1 + 30 + Math.random() * 80;
-        x.strokeStyle = r1 > 380 ? "rgba(255,181,71,.35)" : "rgba(90,214,200,.3)"; x.lineWidth = 2;
-        x.beginPath(); x.moveTo(cw / 2 + Math.cos(a) * r1, 520 + Math.sin(a) * r1); x.lineTo(cw / 2 + Math.cos(a) * r2, 520 + Math.sin(a) * r2); x.stroke();
-      }
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" width="600" height="660">${avatarSVG(state.retire, c.mood, state.skin, state.hair)}</svg>`;
-      const img = new Image();
-      img.onload = () => {
-        x.save(); x.beginPath(); x.arc(cw / 2, 520, 330, 0, Math.PI * 2); x.clip();
-        x.drawImage(img, cw / 2 - 300, 260, 600, 660); x.restore();
-        x.strokeStyle = "rgba(90,214,200,.6)"; x.lineWidth = 3; x.beginPath(); x.arc(cw / 2, 520, 330, 0, Math.PI * 2); x.stroke();
-        x.textAlign = "center";
-        x.fillStyle = "#93adb7"; x.font = "600 30px 'JetBrains Mono', monospace";
-        x.fillText(`MI YO DE ${state.retire} · AÑO ${YEAR + state.retire - state.age}`, cw / 2, 120);
-        x.fillStyle = "#eaf3f4"; x.font = "800 58px Unbounded, 'Arial Black', sans-serif";
-        x.fillText(c.mood === "ok" ? "Está en paz." : c.mood === "mid" ? "Está a medias." : "Necesita mi ayuda.", cw / 2, 196);
-        x.fillStyle = "#ffb547"; x.font = "800 96px Unbounded, 'Arial Black', sans-serif";
-        x.fillText(fmt(c.bal), cw / 2, 990);
-        x.fillStyle = "#eaf3f4"; x.font = "500 36px Figtree, sans-serif";
-        x.fillText(`en pesos de hoy, guardando ${fmt(state.monthly)} al mes`, cw / 2, 1052);
-        x.fillStyle = "#93adb7"; x.font = "500 32px Figtree, sans-serif";
-        x.fillText(`≈ ${fmt(c.income)} al mes en mi retiro`, cw / 2, 1104);
-        x.fillStyle = "#5ad6c8"; x.font = "600 36px Unbounded, sans-serif";
-        x.fillText("¿Y tu yo del futuro? → futuro·yo", cw / 2, 1240);
-        resolve(cvs.toDataURL("image/png"));
-      };
-      img.onerror = () => resolve(cvs.toDataURL("image/png"));
-      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-    });
-  }
-  let cardURL = "";
-  $("share").addEventListener("click", async () => {
-    cardURL = await buildCard();
-    $("card-img").src = cardURL;
-    $("wa").href = "https://wa.me/?text=" + encodeURIComponent(shareText());
-    $("modal").hidden = false;
-    $("close").focus();
-    if (!done.has("carta")) { done.add("carta"); store.set("missions", [...done]); const cb = $("m-carta"); if (cb) cb.checked = true; xp(); }
-  });
-  $("close").addEventListener("click", () => { $("modal").hidden = true; $("share").focus(); });
-  $("modal").addEventListener("click", (e) => { if (e.target.id === "modal") $("modal").hidden = true; });
-  addEventListener("keydown", (e) => { if (e.key === "Escape") $("modal").hidden = true; });
-  $("dl").addEventListener("click", async () => {
-    try {
-      const blob = await (await fetch(cardURL)).blob();
-      const file = new File([blob], "mi-yo-del-futuro.png", { type: "image/png" });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: shareText() }); return; }
-      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "mi-yo-del-futuro.png"; a.click();
-    } catch (e) { toast("Mantén presionada la imagen para guardarla"); }
-  });
-
-  // ---------- live rates (updated weekly by GitHub Actions) ----------
-  function applyRates(d) {
-    if (!d || typeof d.cetes28 !== "number" || typeof d.inflacion !== "number") return;
-    R.cetes = d.cetes28; R.inflacion = d.inflacion; if (typeof d.optimista === "number") R.optimista = d.optimista;
-    $("rates-stamp").textContent = `CETES ${R.cetes.toFixed(2)}% · Inflación ${R.inflacion.toFixed(2)}%`;
-    $("veh-cetes").textContent = `${R.cetes.toFixed(2)}% nominal`;
-    $("veh-opt").textContent = `${R.optimista.toFixed(1)}% supuesto`;
-    if (d.cetes28_fuente) $("src-cetes").textContent = `${R.cetes.toFixed(2)}%. ${d.cetes28_fuente}`;
-    if (d.inflacion_fuente) $("src-inf").textContent = `${R.inflacion.toFixed(2)}%. ${d.inflacion_fuente}`;
-    render();
-  }
-  render();
-  fetch("data/rates.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : null).then(applyRates).catch(() => {});
-
-  // ---------- installable app ----------
-  let deferred = null;
-  addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); deferred = e; $("install").hidden = false; });
-  $("install").addEventListener("click", async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; $("install").hidden = true; });
-  if ("serviceWorker" in navigator && isSecureContext && !/claude/.test(location.hostname)) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  }
-})();
-</script>
+<script src="js/core.js"></script>
+<script src="js/avatar.js"></script>
+<script src="js/aging.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/habits.js"></script>
+<script src="js/reto.js"></script>
+<script src="js/share.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
