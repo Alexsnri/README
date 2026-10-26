@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<!--repo-only-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="img/icon.svg" type="image/svg+xml">
+<meta name="robots" content="noindex">
+<!--/repo-only-->
+<title>Futuro Yo Plan Maestro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a CEO memo. One reading column, a sticky table of contents on wide screens, tables for numbers. Same night palette as the product. */
+:root{
+  --night:#07121a; --deep:#0b1b25; --panel:#102431; --line:#1e3a4a; --line-hi:#2c5468;
+  --fg:#eaf3f4; --mut:#93adb7; --dim:#5f7d89;
+  --sun:#ffb547; --tide:#5ad6c8; --ok:#86e3a8; --warn:#ffd36b; --bad:#ff8574;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--night);color:var(--fg);font:400 16.5px/1.7 var(--f-body)}
+a{color:var(--tide)}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.shell{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px}
+@media (max-width:900px){.shell{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:24px;align-self:start;display:grid;gap:6px;font-size:.88rem}
+.toc a{color:var(--mut);text-decoration:none}
+.toc a:hover{color:var(--fg)}
+.toc b{font:600 .7rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+article{min-width:0;max-width:720px}
+.eyebrow{font:600 .72rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--tide)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(2rem,5vw,3rem);line-height:1.05;font-weight:800;margin-top:12px}
+h1 em{font-style:normal;color:var(--sun)}
+h2{font-size:1.45rem;font-weight:600;margin-top:56px;padding-top:20px;border-top:1px solid var(--line)}
+h3{font-size:1rem;font-weight:600;margin-top:26px;color:var(--sun)}
+p,ul,ol{margin:14px 0 0}
+li+li{margin-top:6px}
+.lede{color:var(--mut);font-size:1.12rem}
+.meta{font:500 .8rem/1.5 var(--f-data);color:var(--dim);margin-top:16px}
+.callout{margin-top:22px;background:var(--deep);border:1px solid var(--line-hi);border-left:3px solid var(--sun);border-radius:12px;padding:16px 18px}
+.callout p:first-child{margin-top:0}
+.table{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:520px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 .72rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--mut);background:var(--deep)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-data);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font:600 .72rem/1 var(--f-body);padding:5px 9px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill.ok{color:var(--ok);border-color:rgba(134,227,168,.4)}
+.pill.mid{color:var(--warn);border-color:rgba(255,211,107,.4)}
+.pill.bad{color:var(--bad);border-color:rgba(255,133,116,.4)}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}
+@media (max-width:640px){.flow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.flow div{background:var(--deep);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:.88rem;color:var(--mut)}
+.flow b{display:block;color:var(--fg);font-size:.95rem}
+.todo{list-style:none;padding:0}
+.todo li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+.todo li span:first-child{font:600 .8rem/1 var(--f-data);color:var(--sun)}
+.todo li span:last-child{font:500 .78rem/1 var(--f-data);color:var(--dim);white-space:nowrap}
+.sources{font-size:.88rem;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="Contenido">
+    <b>Plan maestro</b>
+    <a href="#tesis">La tesis</a>
+    <a href="#ahora">Por qué ahora</a>
+    <a href="#producto">Lo que ya está construido</a>
+    <a href="#dinero">Cómo gana dinero</a>
+    <a href="#costos">Costos</a>
+    <a href="#motor">Motor de crecimiento</a>
+    <a href="#fallas">Fallas y riesgos</a>
+    <a href="#oportunidades">Oportunidades</a>
+    <a href="#90dias">Los próximos 90 días</a>
+    <a href="#tu">Lo que solo tú puedes hacer</a>
+    <a href="#fuentes">Fuentes</a>
+  </nav>
+
+  <article>
+    <p class="eyebrow">Memo del CEO</p>
+    <h1>Futuro Yo: el primer producto que hace que un mexicano <em>quiera</em> ahorrar para su retiro</h1>
+    <p class="meta">26 de octubre de 2026 · Versión 1 · Producto en vivo, costo de operación $0</p>
+
+    <h2 id="tesis">La tesis</h2>
+    <p class="lede">Nadie ahorra para un desconocido. Y eso es nuestro yo de 65 años: un desconocido. Futuro Yo le pone cara, voz y números a esa persona, en 30 segundos y desde el celular.</p>
+    <p>Las calculadoras de retiro ya existen y son aburridas: piden datos, escupen una cifra y se olvidan. Futuro Yo convierte la misma cuenta en una experiencia emocional que la gente quiere compartir: un avatar que envejece frente a ti, que sonríe o se preocupa según tus decisiones, y que te escribe una carta. El resultado se convierte en una tarjeta lista para historias de Instagram, TikTok y WhatsApp. Cada usuario que comparte trae al siguiente.</p>
+    <div class="callout">
+      <p><b>En una frase:</b> Spotify Wrapped, pero para tu retiro. Gratis, sin registro, sin recolectar datos, hecho en México y para el celular.</p>
+    </div>
+
+    <h2 id="ahora">Por qué ahora</h2>
+    <div class="table"><table>
+      <thead><tr><th>Dato</th><th>Cifra</th><th>Qué significa para nosotros</th></tr></thead>
+      <tbody>
+        <tr><td>Adultos de 18 a 70 años con cuenta de ahorro para el retiro</td><td class="num">42.2%</td><td>Más de la mitad del país no tiene ni siquiera la cuenta. Mercado enorme sin atender.</td></tr>
+        <tr><td>De quienes tienen cuenta, los que hacen aportaciones voluntarias</td><td class="num">7.9%</td><td>El hábito casi no existe. Ahí está el cambio de conducta que vendemos.</td></tr>
+        <tr><td>Brecha de género en cuentas de retiro</td><td class="num">51.4% vs 34.2%</td><td>Segmento desatendido y con historia para prensa.</td></tr>
+        <tr><td>Usuarios de internet en México</td><td class="num">100.2 M</td><td>83.1% de la población de 6 años o más.</td></tr>
+        <tr><td>De ellos, se conectan por celular</td><td class="num">97.2%</td><td>Producto móvil primero. Sin app store, sin fricción.</td></tr>
+        <tr><td>Más ahorro al ver tu cara envejecida (Stanford)</td><td class="num">≈ +33%</td><td>La mecánica central tiene respaldo científico publicado.</td></tr>
+        <tr><td>CETES a 28 días / inflación anual</td><td class="num">6.23% / 3.45%</td><td>Hoy el ahorro seguro le gana a la inflación. El mensaje "sácalo del colchón" es verdadero y urgente.</td></tr>
+      </tbody>
+    </table></div>
+    <p>La ventana: la reforma de pensiones de 2020 está subiendo poco a poco las aportaciones obligatorias hacia 15% del salario, y el tema del retiro está en la conversación pública. La gente busca respuestas y recibe hojas de cálculo.</p>
+
+    <h2 id="producto">Lo que ya está construido</h2>
+    <ul>
+      <li><b>Simulador en vivo</b> con tasas reales de CETES e inflación del INEGI, todo en pesos de hoy, con la regla del 4% para el ingreso mensual.</li>
+      <li><b>Avatar que envejece</b> con un control para viajar en el tiempo: canas, arrugas, lentes y una expresión que depende de tu plan. Cinco tonos de piel y dos estilos de cabello.</li>
+      <li><b>Carta de tu yo del futuro</b>, escrita con tus números, que te dice exactamente cuánto ahorrar al mes para llegar a tu meta.</li>
+      <li><b>Tarjeta para compartir</b> de 1080×1350 generada en el teléfono, con botón directo a WhatsApp.</li>
+      <li><b>Misiones con XP</b>: ocho acciones reales (abrir CETES, encontrar tu Afore, automatizar el ahorro) que convierten la emoción en conducta.</li>
+      <li><b>App instalable</b> (PWA): se instala desde el navegador, funciona sin internet, sin pasar por tiendas de apps ni pagar sus cuotas.</li>
+      <li><b>SEO listo</b>: datos estructurados de aplicación y preguntas frecuentes, sitemap, robots y vista previa para redes.</li>
+      <li><b>Tasas que se actualizan solas</b> cada semana desde la API oficial de Banxico, con validación para no publicar un dato equivocado.</li>
+      <li><b>Publicación automática</b> en GitHub Pages cada vez que cambia algo.</li>
+    </ul>
+
+    <h2 id="dinero">Cómo gana dinero</h2>
+    <p>Regla de oro: <b>nunca vendemos datos</b>. No los recolectamos. Esa es nuestra ventaja frente a cualquier banco y lo que nos permite crecer rápido sin miedo. El dinero llega por fases.</p>
+    <div class="table"><table>
+      <thead><tr><th>Fase</th><th>Fuente de ingreso</th><th>Cómo funciona</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>1 · Meses 0–3</td><td>Ninguna, a propósito</td><td>Todo el foco en uso y en compartidos. Primero demostrar que el ciclo viral funciona.</td><td><span class="pill ok">En marcha</span></td></tr>
+        <tr><td>2 · Meses 3–6</td><td>Referidos de instituciones reguladas</td><td>Las misiones ya llevan a abrir cuentas. Con programas de referidos de casas de bolsa y SOFIPOs autorizadas por la CNBV, cada cuenta abierta paga una comisión. Siempre con aviso visible.</td><td><span class="pill mid">Requiere tu alta</span></td></tr>
+        <tr><td>3 · Meses 6–18</td><td>Futuro Yo para empresas</td><td>Versión con la marca de la empresa para áreas de RH, como prestación. El empleado ve a su yo de 65 y se le invita a la caja o plan de ahorro de su empresa. Licencia mensual.</td><td><span class="pill mid">Hipótesis</span></td></tr>
+        <tr><td>4 · Meses 12–36</td><td>Licencia para Afores</td><td>Las Afores ganan cuando crecen las aportaciones voluntarias (hoy 7.9%). Futuro Yo es exactamente la herramienta para mover ese número. Este es el camino a una empresa grande.</td><td><span class="pill mid">Hipótesis</span></td></tr>
+        <tr><td>5 · Año 2+</td><td>Expansión a Latinoamérica</td><td>Colombia, Perú y Chile tienen sistemas de cuentas individuales parecidos. El producto solo cambia tasas, moneda y textos.</td><td><span class="pill mid">Hipótesis</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><p><b>Sobre la palabra "unicornio".</b> Nadie serio puede prometer que algo "pega sí o sí". Lo que sí puedo prometer es esto: costo casi cero, riesgo casi cero y un producto que ya funciona. Si el ciclo viral prende, el valor grande está en las fases 3 y 4, vendiendo a empresas y Afores, no en anuncios. Si no prende, perdiste cero pesos.</p></div>
+
+    <h2 id="costos">Costos</h2>
+    <div class="table"><table>
+      <thead><tr><th>Concepto</th><th>Herramienta</th><th>Costo</th></tr></thead>
+      <tbody>
+        <tr><td>Hospedaje y certificado HTTPS</td><td>GitHub Pages (repositorio público)</td><td class="num">$0</td></tr>
+        <tr><td>Automatizaciones (tasas, publicación)</td><td>GitHub Actions (gratis en repos públicos)</td><td class="num">$0</td></tr>
+        <tr><td>Datos de tasas</td><td>API del SIE de Banxico</td><td class="num">$0</td></tr>
+        <tr><td>Servidores y base de datos</td><td>No hay: todo corre en el teléfono del usuario</td><td class="num">$0</td></tr>
+        <tr><td>Tiendas de apps</td><td>No se usan: es una app web instalable</td><td class="num">$0</td></tr>
+        <tr><td>Dominio propio (opcional, recomendado)</td><td>Cualquier registrador</td><td class="num">≈ $200–400 MXN al año</td></tr>
+      </tbody>
+    </table></div>
+    <p>Como no hay servidores, el costo no sube con los usuarios. Un millón de visitas cuesta lo mismo que diez.</p>
+
+    <h2 id="motor">Motor de crecimiento</h2>
+    <p>El marketing más barato es el que hacen los usuarios. Todo el producto está diseñado alrededor de un ciclo:</p>
+    <div class="flow">
+      <div><b>1. Ve un post</b>"Mi yo de 65 está en apuros" con su tarjeta.</div>
+      <div><b>2. Entra y juega</b>30 segundos, sin registro.</div>
+      <div><b>3. Se impacta</b>Ve su cara envejecer y lee su carta.</div>
+      <div><b>4. Comparte</b>Su propia tarjeta en historias o WhatsApp.</div>
+    </div>
+    <h3>Lo que corre solo</h3>
+    <ul>
+      <li>Las tarjetas que comparten los usuarios, cada una con la invitación "¿Y tu yo del futuro?".</li>
+      <li>El SEO: Google recibe la aplicación y sus preguntas frecuentes en datos estructurados.</li>
+      <li>La frescura: las tasas se actualizan cada semana sin que nadie toque nada.</li>
+    </ul>
+    <h3>Lo que está listo para usar</h3>
+    <ul>
+      <li>Calendario de 30 días con guiones de TikTok y Reels, textos y horarios, en <code>marketing/calendario-30-dias.md</code>.</li>
+      <li>Plan de lanzamiento por canal, correo para periodistas y propuesta para RH, en <code>marketing/lanzamiento.md</code>.</li>
+    </ul>
+
+    <h2 id="fallas">Fallas y riesgos, sin maquillaje</h2>
+    <div class="table"><table>
+      <thead><tr><th>Falla</th><th>Gravedad</th><th>Qué hacemos</th></tr></thead>
+      <tbody>
+        <tr><td>El ciclo viral no está probado. No sabemos cuántas personas comparten.</td><td><span class="pill bad">Alta</span></td><td>Medir desde el día 1 con analítica sin cookies (por ejemplo Cloudflare Web Analytics, gratis). Probar distintas frases en la tarjeta.</td></tr>
+        <tr><td>Hoy no hay forma de medir visitas.</td><td><span class="pill bad">Alta</span></td><td>Se agrega en cuanto tengas cuenta de analítica: una línea de código.</td></tr>
+        <tr><td>No incluye la Afore, que es el ahorro más grande de la mayoría.</td><td><span class="pill mid">Media</span></td><td>Versión 2: estimador de Afore con las reglas de la reforma 2020. Lo dejamos fuera para no dar una cifra mal calculada.</td></tr>
+        <tr><td>El avatar es una caricatura. El estudio de Stanford usó la foto real de cada persona.</td><td><span class="pill mid">Media</span></td><td>Versión 3: envejecer la foto dentro del teléfono, sin subirla a ningún lado. Es la función estrella para prensa.</td></tr>
+        <tr><td>La regla del 4% viene de datos de Estados Unidos.</td><td><span class="pill mid">Media</span></td><td>Está explicada en la página. Agregar un modo conservador del 3.5%.</td></tr>
+        <tr><td>Regulación: CONDUSEF y CNBV vigilan la publicidad financiera.</td><td><span class="pill mid">Media</span></td><td>Somos educativos, no recomendamos productos específicos y todo referido lleva aviso. Revisión legal antes de la fase 2.</td></tr>
+        <tr><td>Competencia: calculadoras de CETES y de Afores ya existen.</td><td><span class="pill ok">Baja</span></td><td>Ellos calculan. Nosotros hacemos sentir y compartir. Nuestra marca es emocional.</td></tr>
+        <tr><td>El nombre no está registrado.</td><td><span class="pill mid">Media</span></td><td>Buscar "Futuro Yo" en el IMPI y registrar la marca antes de invertir en publicidad.</td></tr>
+        <tr><td>Todo depende de una sola persona.</td><td><span class="pill mid">Media</span></td><td>El producto no necesita mantenimiento diario. El código está documentado.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="oportunidades">Oportunidades</h2>
+    <ul>
+      <li><b>Temporada de aguinaldos (diciembre)</b>: "¿Qué pasa si guardas 10% de tu aguinaldo?" es el gancho perfecto para el primer pico.</li>
+      <li><b>Mujeres y retiro</b>: la brecha de 51.4% contra 34.2% es una historia lista para prensa y para alianzas con organizaciones.</li>
+      <li><b>Creadores de finanzas personales</b>: les damos una herramienta gratis para sus videos. Ellos ganan contenido, nosotros alcance.</li>
+      <li><b>Escuelas y universidades</b>: una clase de 20 minutos con Futuro Yo. Gratis para ellos, credibilidad para nosotros.</li>
+      <li><b>Parejas</b>: "conoce a tu pareja de 65" duplica los compartidos.</li>
+    </ul>
+
+    <h2 id="90dias">Los próximos 90 días</h2>
+    <div class="table"><table>
+      <thead><tr><th>Cuándo</th><th>Qué</th><th>Meta</th></tr></thead>
+      <tbody>
+        <tr><td class="num">Semana 1</td><td>Activar el sitio, publicar los primeros 7 videos, compartir en grupos de finanzas.</td><td class="num">1,000 simulaciones</td></tr>
+        <tr><td class="num">Semanas 2–4</td><td>Calendario completo, contacto con 20 creadores, nota para prensa.</td><td class="num">10,000 simulaciones</td></tr>
+        <tr><td class="num">Mes 2</td><td>Analítica, prueba de frases en la tarjeta, campaña de aguinaldos.</td><td class="num">10% de usuarios comparte</td></tr>
+        <tr><td class="num">Mes 3</td><td>Primeros referidos y 3 empresas piloto para la versión de RH.</td><td class="num">Primer ingreso</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="tu">Lo que solo tú puedes hacer</h2>
+    <p>Todo lo demás está hecho. Estas tareas necesitan a una persona porque requieren tus cuentas, tu identidad o tu firma.</p>
+    <ol class="todo">
+      <li><span>1</span><span>Activar GitHub Pages: Settings → Pages → Source: GitHub Actions. Después unir la rama al main.</span><span>2 min</span></li>
+      <li><span>2</span><span>Pedir el token gratuito de Banxico y guardarlo como secreto BANXICO_TOKEN.</span><span>5 min</span></li>
+      <li><span>3</span><span>Crear las cuentas @futuroyo en TikTok, Instagram y X.</span><span>15 min</span></li>
+      <li><span>4</span><span>Programar los primeros 7 posts con los programadores gratuitos de Meta y TikTok.</span><span>30 min</span></li>
+      <li><span>5</span><span>Buscar la marca en el IMPI antes de gastar en publicidad.</span><span>10 min</span></li>
+    </ol>
+
+    <h2 id="fuentes">Fuentes</h2>
+    <ol class="sources">
+      <li>INEGI y CNBV, Encuesta Nacional de Inclusión Financiera (ENIF) 2024, citada por <a href="https://mexicocomovamos.mx/mexico-como-vamos-con-el-ahorro-para-el-retiro/" target="_blank" rel="noopener">México, ¿cómo vamos?</a> y <a href="https://www.xataka.com.mx/empresas-y-economia/mexico-gente-ahorra-que-hace-14-anos-sigue-confiarle-su-dinero-a-bancos" target="_blank" rel="noopener">Xataka</a>.</li>
+      <li>INEGI, <a href="https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2025/endutih/ENDUTIH_24_RR.pdf" target="_blank" rel="noopener">ENDUTIH 2024</a>.</li>
+      <li>INEGI, <a href="https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2026/inpc/inpc_2q2026_10.pdf" target="_blank" rel="noopener">INPC, septiembre de 2026</a>.</li>
+      <li>CETES a 28 días, subasta del 22 de octubre de 2026, reportada por <a href="https://cetes.app/cetes-hoy" target="_blank" rel="noopener">cetes.app</a> e <a href="https://www.imagenradio.com.mx/finanzas/cetes-quedaron-tasas-semana-20-27-octubre-2026" target="_blank" rel="noopener">Imagen Radio</a>. Verificar en CetesDirecto y Banxico.</li>
+      <li>Hershfield, H. E., et al. (2011). <a href="https://vhil.stanford.edu/publications/increasing-saving-behavior-through-age-progressed-renderings-future-self" target="_blank" rel="noopener">Increasing saving behavior through age-progressed renderings of the future self</a>. Journal of Marketing Research, 48. Resumen de efectos: <a href="https://longevity.stanford.edu/hey-stranger-the-power-of-investing-in-the-older-you/" target="_blank" rel="noopener">Stanford Center on Longevity</a>.</li>
+      <li>Reforma de pensiones 2020 y aportaciones: <a href="https://www.cefp.gob.mx/publicaciones/nota/2020/notacefp0902020.pdf" target="_blank" rel="noopener">Centro de Estudios de las Finanzas Públicas</a>.</li>
+      <li>Tasa de reemplazo Ley 97: <a href="https://idconline.mx/seguridad-social/2026/06/24/que-es-la-tasa-de-reemplazo-y-que-revela-sobre-el-futuro-de-tu-pension" target="_blank" rel="noopener">IDC con datos de CONSAR</a>.</li>
+    </ol>
+  </article>
+</div>
+</body>
+</html>

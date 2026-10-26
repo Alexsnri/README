@@ -1,0 +1,43 @@
+# Futuro Yo: actualiza cada semana la tasa de CETES y la inflación desde Banxico.
+# Para activarlo agrega el secreto BANXICO_TOKEN (gratis) en Settings > Secrets and variables > Actions.
+name: Futuro Yo · tasas
+
+on:
+  schedule:
+    - cron: "17 15 * * 3"   # miércoles 15:17 UTC, después de la subasta semanal de CETES
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: futuro-rates
+  cancel-in-progress: false
+
+jobs:
+  rates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Pedir tasas a Banxico
+        env:
+          BANXICO_TOKEN: ${{ secrets.BANXICO_TOKEN }}
+        run: python futuro/scripts/update_rates.py
+
+      - name: Guardar si cambiaron
+        run: |
+          if git diff --quiet futuro/data/rates.json; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          git config user.name "futuro-yo-bot"
+          git config user.email "futuro-yo-bot@users.noreply.github.com"
+          git add futuro/data/rates.json
+          git commit -m "Futuro Yo: tasas de la semana"
+          git push
