@@ -35,6 +35,8 @@ MARKETS = [
 # código -> (función de señal, multiplicador ATR del stop inicial, multiplicador ATR del trailing)
 STRATS = {"D": (s_donchian, 2.5, 2.5), "T": (s_tsmom, 3.0, 3.0), "M": (s_meanrev, 2.5, 0.0)}
 LEARN_WINDOW, LEARN_MIN, DD_BRAKE = 30, 8, 0.20
+# lo aprendido en el backtest de 20 años (make_seed.py); los trades reales lo van reemplazando
+SEED = json.load(open(os.path.join(HERE, "seed_learning.json"))) if os.path.exists(os.path.join(HERE, "seed_learning.json")) else {}
 
 
 def log(*a):
@@ -96,7 +98,7 @@ class State:
         json.dump(self.d, open(self.path, "w"), indent=1)
 
     def mult(self, arm):
-        rs = [r for a, r in self.d["learning"] if a == arm][-LEARN_WINDOW:]
+        rs = (SEED.get(arm, []) + [r for a, r in self.d["learning"] if a == arm])[-LEARN_WINDOW:]
         if len(rs) < LEARN_MIN:
             return 1.0
         return max(0.25, min(1.5, 1 + sum(rs) / len(rs)))
@@ -355,6 +357,14 @@ def write_status(st, equity, goal, mode, demo, paused):
          "## Posiciones abiertas", "", "| Mercado | Estrategia | Dirección | Entrada | Stop | Tamaño |", "|---|---|---|---|---|---|"]
     for t in st.d["positions"].values():
         L.append(f"| {t['name']} | {names[t['strat']]} | {'compra' if t['dir'] == 1 else 'venta'} | {t['entry']} | {t['stop']} | {t['size']} |")
+    L += ["", "## Lo que sabe (multiplicador de riesgo por estrategia y mercado)", "",
+          "Arranca con lo aprendido en 20 años de historia y cada trade real lo va ajustando. "
+          "Más de 1.00 = le está yendo bien y le asigna más riesgo; menos de 1.00 = le asigna menos.", "",
+          "| Mercado | Donchian | Momentum | RSI(2) | Trades reales |", "|---|---|---|---|---|"]
+    for name, _, cls in MARKETS:
+        cells = [f"x{st.mult(f'{name}_{c}'):.2f}" if (c != "M" or cls in ("index", "metal")) else "-" for c in "DTM"]
+        live = sum(1 for a, _ in st.d["learning"] if a.startswith(name + "_"))
+        L.append(f"| {name} | {' | '.join(cells)} | {live} |")
     p = os.path.join(st.folder, "journal.csv")
     if os.path.exists(p):
         rows = list(csv.reader(open(p)))[1:][-15:]
