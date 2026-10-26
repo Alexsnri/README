@@ -1,0 +1,67 @@
+# Corre Hydra en Capital.com una vez al día, gratis, sin necesidad de tener una PC prendida.
+# El estado (aprendizaje, diario de trades y STATUS.md) se guarda en la rama "hydra-state".
+name: Hydra bot
+
+on:
+  schedule:
+    - cron: "15 6 * * *"   # todos los días 06:15 UTC (00:15 en Ciudad de México)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Sólo simular (no mandar órdenes)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hydra
+  cancel-in-progress: false
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install --quiet pandas numpy requests
+
+      - name: Cargar estado anterior
+        run: |
+          mkdir -p state
+          if git fetch --quiet origin hydra-state 2>/dev/null; then
+            git archive FETCH_HEAD | tar -x -C state
+          fi
+
+      - name: Operar
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD }}
+          CAPITAL_ENV: ${{ vars.CAPITAL_ENV || 'demo' }}
+          HYDRA_MODE: ${{ vars.HYDRA_MODE || 'turbo' }}
+          HYDRA_START: ${{ vars.HYDRA_START || '5000' }}
+          HYDRA_DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+          STATE_DIR: ${{ github.workspace }}/state
+        run: python trading-bot/capital/hydra_capital.py
+
+      - name: Guardar estado
+        if: always() && !inputs.dry_run
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd state
+          [ -f state.json ] || exit 0
+          git init --quiet -b hydra-state
+          git config user.name "hydra-bot"
+          git config user.email "hydra-bot@users.noreply.github.com"
+          git add -A
+          git commit --quiet -m "Hydra: estado $(date -u +%F)"
+          git push --quiet --force "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}" hydra-state
