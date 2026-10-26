@@ -15,7 +15,7 @@ CODES = {"donchian": "D", "tsmom": "T", "meanrev": "M"}
 
 folder = sys.argv[1]
 data = {f[:-5]: indicators(load(os.path.join(folder, f))) for f in os.listdir(folder) if f[:-5] in UNIVERSE}
-_, trades = run(data, risk=0.04, max_heat=0.25, lev=40)
+_, trades = run(data, risk=0.03, max_heat=0.25, lev=40, opts={"pyramid": (2.0, 3)})
 trades = trades.sort_values("exit_date")
 seed = {}
 for (sym, strat), g in trades.groupby(["sym", "strat"]):

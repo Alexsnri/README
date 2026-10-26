@@ -22,8 +22,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "backtest"))
 from backtest import indicators, s_donchian, s_tsmom, s_meanrev  # noqa: E402
 
-# modo -> (% riesgo por trade, % riesgo abierto máx., % drawdown que pausa, apalancamiento nocional)
-MODES = {"conservador": (0.5, 6, 25, 10), "normal": (1, 10, 35, 20), "reto": (3, 20, 60, 30), "turbo": (4, 25, 85, 40)}
+# modo -> (% riesgo por unidad, % riesgo abierto máx., % drawdown que pausa, apalancamiento nocional, pirámide)
+MODES = {"conservador": (0.5, 6, 25, 10, False), "normal": (1, 10, 35, 20, False),
+         "reto": (3, 20, 60, 30, False), "turbo": (3, 25, 85, 40, True)}
+# pirámide de las Tortugas: sumar una unidad a una ganadora de tendencia cada 2 ATR a favor, hasta 3 unidades
+PYR_STEP, PYR_MAX = 2.0, 3
 # (nombre, epic en Capital.com, clase)
 MARKETS = [
     ("EURUSD", "EURUSD", "fx"), ("GBPUSD", "GBPUSD", "fx"), ("USDJPY", "USDJPY", "fx"),
@@ -169,7 +172,7 @@ def fx_converter(api):
 def run():
     demo = os.environ.get("CAPITAL_ENV", "demo").lower() != "live"
     mode = os.environ.get("HYDRA_MODE", "turbo").lower()
-    risk_pct, heat_pct, kill_pct, lev = MODES[mode]
+    risk_pct, heat_pct, kill_pct, lev, pyramid = MODES[mode]
     start = float(os.environ.get("HYDRA_START", 5000))
     goal = float(os.environ.get("HYDRA_GOAL", 1_000_000))
     dry = os.environ.get("HYDRA_DRY_RUN", "0") == "1"
@@ -235,6 +238,9 @@ def run():
         for deal_id, t in list(st.d["positions"].items()):
             if t["epic"] != epic or not tradeable:
                 continue
+            t.setdefault("group", deal_id)
+            t.setdefault("atr0", float(r.atr))
+            t.setdefault("last_add", t["entry"])
             code, d = t["strat"], t["dir"]
             close = False
             if code == "D":
@@ -267,55 +273,32 @@ def run():
                         except ApiError as e:
                             log(f"{name}: no pude mover stop: {e}")
 
-        # 3) entradas nuevas
         if paused or not tradeable:
             continue
-        for code, (fn, k_stop, _) in STRATS.items():
+        ctx = dict(api=api, st=st, info=info, r=r, df=df, name=name, epic=epic, equity=equity,
+                   risk_pct=risk_pct, heat_pct=heat_pct, lev=lev, brake=brake, n_mk=n_mk, dry=dry)
+
+        # 3) pirámide: sumar a las ganadoras de tendencia (Tortugas / Livermore)
+        if pyramid:
+            for code in ("D", "T"):
+                group = [t for t in st.d["positions"].values() if t["epic"] == epic and t["strat"] == code]
+                if not group or len(group) >= PYR_MAX:
+                    continue
+                first = group[0]
+                d = first["dir"]
+                if d * (r.c - first["last_add"]) < PYR_STEP * first["atr0"]:
+                    continue
+                if open_position(ctx, code, d, group=first["group"], unit=len(group) + 1):
+                    for t in group:
+                        t["last_add"] = float(r.c)
+
+        # 4) entradas nuevas
+        for code, (fn, _, _) in STRATS.items():
             if any(t["epic"] == epic and t["strat"] == code for t in st.d["positions"].values()):
                 continue
             sig = fn(r, cls)
-            if not sig:
-                continue
-            d = sig[0]
-            arm = f"{name}_{code}"
-            m = st.mult(arm)
-            risk_usd = equity * risk_pct / 100 * m * brake
-            heat = open_risk(st)
-            if heat + risk_usd > equity * heat_pct / 100:
-                log(f"{name} {code}: señal ignorada, riesgo abierto al límite")
-                continue
-            price = info.offer if d == 1 else info.bid
-            dist = k_stop * r.atr
-            size = risk_usd / (dist * info.vpp)
-            size = min(size, equity * lev / max(1, n_mk / 4) / (price * info.vpp))
-            size = info.round_size(size)
-            if size < info.min_size:
-                if info.min_size * dist * info.vpp <= risk_usd * 1.5:
-                    size = info.min_size
-                else:
-                    log(f"{name} {code}: el tamaño mínimo arriesga demasiado, se omite")
-                    continue
-            stop = round(price - d * dist, info.decimals)
-            real_risk = size * dist * info.vpp
-            txt = f"{name} {code} {'COMPRA' if d == 1 else 'VENTA'} tamaño {size} a ~{price} stop {stop} riesgo ${real_risk:,.2f} (x{m:.2f})"
-            if dry:
-                log("[sim]", txt)
-                continue
-            try:
-                ref = api.req("POST", "/positions", json={"epic": epic, "direction": "BUY" if d == 1 else "SELL",
-                                                          "size": size, "stopLevel": stop})["dealReference"]
-                c = api.confirm(ref)
-                if c.get("dealStatus") != "ACCEPTED":
-                    log(f"{name} {code}: orden rechazada {c.get('reason') or c}")
-                    continue
-                deal_id = (c.get("affectedDeals") or [{}])[0].get("dealId") or c.get("dealId")
-                entry = c.get("level") or price
-                st.d["positions"][deal_id] = dict(epic=epic, name=name, strat=code, dir=d, entry=entry,
-                                                  stop=stop, size=size, vpp=info.vpp, risk=real_risk,
-                                                  opened=str(df.index[-1].date()))
-                log("Abierta:", txt)
-            except ApiError as e:
-                log(f"{name} {code}: error al abrir: {e}")
+            if sig:
+                open_position(ctx, code, sig[0])
 
     acc = account(api)
     equity = acc["balance"] + acc["profitLoss"]
@@ -332,17 +315,76 @@ def account(api):
     return a["balance"]
 
 
+def open_position(ctx, code, d, group=None, unit=1):
+    """Abre una unidad (entrada nueva o pirámide) con stop en el servidor. Devuelve True si abrió."""
+    api, st, info, r, name = ctx["api"], ctx["st"], ctx["info"], ctx["r"], ctx["name"]
+    equity = ctx["equity"]
+    m = st.mult(f"{name}_{code}")
+    risk_usd = equity * ctx["risk_pct"] / 100 * m * ctx["brake"]
+    what = f"{name} {code}" + (f" pirámide unidad {unit}" if unit > 1 else "")
+    if open_risk(st) + risk_usd > equity * ctx["heat_pct"] / 100:
+        log(f"{what}: señal ignorada, riesgo abierto al límite")
+        return False
+    price = info.offer if d == 1 else info.bid
+    dist = STRATS[code][1] * r.atr
+    size = risk_usd / (dist * info.vpp)
+    size = min(size, equity * ctx["lev"] / max(1, ctx["n_mk"] / 4) / (price * info.vpp))
+    size = info.round_size(size)
+    if size < info.min_size:
+        if info.min_size * dist * info.vpp <= risk_usd * 1.5:
+            size = info.min_size
+        else:
+            log(f"{what}: el tamaño mínimo arriesga demasiado, se omite")
+            return False
+    stop = round(price - d * dist, info.decimals)
+    real_risk = size * dist * info.vpp
+    txt = f"{what} {'COMPRA' if d == 1 else 'VENTA'} tamaño {size} a ~{price} stop {stop} riesgo ${real_risk:,.2f} (x{m:.2f})"
+    if ctx["dry"]:
+        log("[sim]", txt)
+        return False
+    try:
+        ref = api.req("POST", "/positions", json={"epic": ctx["epic"], "direction": "BUY" if d == 1 else "SELL",
+                                                  "size": size, "stopLevel": stop})["dealReference"]
+        c = api.confirm(ref)
+        if c.get("dealStatus") != "ACCEPTED":
+            log(f"{what}: orden rechazada {c.get('reason') or c}")
+            return False
+        deal_id = (c.get("affectedDeals") or [{}])[0].get("dealId") or c.get("dealId")
+        entry = c.get("level") or price
+        st.d["positions"][deal_id] = dict(epic=ctx["epic"], name=name, strat=code, dir=d, entry=entry,
+                                          stop=stop, size=size, vpp=info.vpp, risk=real_risk,
+                                          opened=str(ctx["df"].index[-1].date()), group=group or deal_id,
+                                          unit=unit, atr0=float(r.atr), last_add=float(r.c))
+        log("Abierta:", txt)
+        return True
+    except ApiError as e:
+        log(f"{what}: error al abrir: {e}")
+        return False
+
+
 def open_risk(st):
-    return sum(max(0.0, t["dir"] * (t["entry"] - t["stop"])) * t["size"] * t["vpp"] for t in st.d["positions"].values())
+    # riesgo inicial de cada unidad abierta, igual que en el backtest: una ganadora no libera riesgo
+    return sum(t["risk"] for t in st.d["positions"].values())
 
 
 def record_close(st, deal_id, t, px, pnl, why):
     R = pnl / t["risk"] if t["risk"] else 0
-    st.d["learning"].append([f"{t['name']}_{t['strat']}", round(R, 4)])
     st.journal([datetime.now(timezone.utc).strftime("%Y-%m-%d"), t["name"], t["strat"],
                 "compra" if t["dir"] == 1 else "venta", t["entry"], px, t["size"], round(pnl, 2), round(R, 2), why])
-    log(f"Cerrada {t['name']} {t['strat']}: {pnl:+,.2f} USD ({R:+.2f}R, {why}). Nuevo multiplicador x{st.mult(t['name'] + '_' + t['strat']):.2f}")
     del st.d["positions"][deal_id]
+    # el aprendizaje cuenta la pirámide completa como un solo trade, igual que el backtest
+    group = t.get("group", deal_id)
+    g = st.d.setdefault("groups", {}).setdefault(group, {"pnl": 0.0, "risk": 0.0})
+    g["pnl"] += pnl
+    g["risk"] += t["risk"]
+    if any(x.get("group") == group for x in st.d["positions"].values()):
+        log(f"Cerrada {t['name']} {t['strat']} (unidad): {pnl:+,.2f} USD ({why})")
+        return
+    del st.d["groups"][group]
+    gR = g["pnl"] / g["risk"] if g["risk"] else 0
+    arm = f"{t['name']}_{t['strat']}"
+    st.d["learning"].append([arm, round(gR, 4)])
+    log(f"Cerrada {t['name']} {t['strat']}: {g['pnl']:+,.2f} USD ({gR:+.2f}R, {why}). Nuevo multiplicador x{st.mult(arm):.2f}")
 
 
 def write_status(st, equity, goal, mode, demo, paused):

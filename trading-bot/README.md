@@ -53,9 +53,10 @@ Es una mejora modesta y real, no una IA que adivina el mercado.
 | Conservador | 0.5% | 6% | 25% |
 | Normal | 1% | 10% | 35% |
 | Reto $1M | 3% | 20% | 60% |
-| **Turbo** (por defecto) | 4% | 25% | 85% |
+| **Turbo** (por defecto) | 4% (3% por unidad + pirámide en Capital.com) | 25% | 85% |
 
-Turbo es el modo que históricamente llegó más rápido a la meta (ver `RESULTADOS.md`). Arriesgar más que
+En el bot de Capital.com, Turbo además suma unidades a las ganadoras (pirámide de las Tortugas): 3% por unidad,
+una más cada 2 ATR a favor, hasta 3. El EA de MT5 todavía no tiene la pirámide. Turbo es el modo que históricamente llegó más rápido a la meta (ver `RESULTADOS.md`). Arriesgar más que
 eso no aceleró el crecimiento y sí hizo mucho más profundas las caídas. Los modos Reto y Turbo quedan
 bloqueados en cuentas reales salvo que actives `InpAllowRetoOnReal` a propósito.
 

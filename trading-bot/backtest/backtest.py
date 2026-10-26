@@ -90,8 +90,22 @@ class Learner:
     def update(self, arm, r_mult):
         self.hist.setdefault(arm, []).append(r_mult)
 
-def run(data, risk=0.01, start_eq=5000.0, learn=True, max_heat=0.06, dd_brake=0.20, lev=10):
+def run(data, risk=0.01, start_eq=5000.0, learn=True, max_heat=0.06, dd_brake=0.20, lev=10, opts=None):
+    """opts (todas apagadas por defecto):
+      heat_current  el riesgo abierto cuenta lo que se perdería HOY si salta el stop (una posición con
+                    el stop ya en ganancia libera su riesgo y deja entrar señales nuevas)
+      breakeven_R   al ir X R a favor, el stop se mueve al precio de entrada (Paul Tudor Jones: defensa primero)
+      partial_R     al ir X R a favor, cierra la mitad y deja correr el resto
+      pyramid       (cada_ATR, max_unidades): agrega unidades a las ganadoras como las Tortugas / Livermore
+      rs_filter     sólo compra lo más fuerte y vende lo más débil del universo (fuerza relativa, Antonacci)
+    """
+    o = dict(heat_current=False, breakeven_R=None, partial_R=None, pyramid=None, rs_filter=False)
+    o.update(opts or {})
     dates = sorted(set().union(*[d.index for d in data.values()]))
+    rank = {}
+    if o["rs_filter"]:
+        sc = pd.DataFrame({s: (d.c / d.c.shift(126) - 1) / (d.c.pct_change().rolling(126).std() * math.sqrt(126)) for s, d in data.items()})
+        rank = sc.rank(axis=1, pct=True).stack().to_dict()
     rows = {sym: {t: r for t, r in zip(df.index, df.itertuples(index=False))} for sym, df in data.items()}
     eq, peak = start_eq, start_eq
     pos = {}       # (sym, strat) -> dict
@@ -110,6 +124,15 @@ def run(data, risk=0.01, start_eq=5000.0, learn=True, max_heat=0.06, dd_brake=0.
             # stop intradía
             if p["dir"] == 1 and r.l <= p["stop"]: exit_px = min(r.o, p["stop"])
             if p["dir"] == -1 and r.h >= p["stop"]: exit_px = max(r.o, p["stop"])
+            if exit_px is None and o["partial_R"] and not p.get("partial") and st != "meanrev":
+                if p["dir"] * (r.h if p["dir"] == 1 else r.l) >= p["dir"] * (p["entry"] + p["dir"] * o["partial_R"] * p["dist0"]):
+                    px = p["entry"] + p["dir"] * o["partial_R"] * p["dist0"]
+                    half = p["size"] / 2
+                    gain = p["dir"] * (px - p["entry"]) * half - p["cost"] * px * half
+                    eq += gain; p["realized"] += gain; p["size"] -= half; p["partial"] = True
+            if exit_px is None and o["breakeven_R"] and st != "meanrev":
+                if p["dir"] * (r.c - p["entry"]) >= o["breakeven_R"] * p["dist0"]:
+                    p["stop"] = max(p["stop"], p["entry"]) if p["dir"] == 1 else min(p["stop"], p["entry"])
             if exit_px is None:
                 # salidas al cierre
                 if st == "meanrev" and (r.c > r.sma5 or p["bars"] >= 10): exit_px = r.c
@@ -124,6 +147,7 @@ def run(data, risk=0.01, start_eq=5000.0, learn=True, max_heat=0.06, dd_brake=0.
                 cost = p["cost"] * exit_px * p["size"]
                 pnl = p["dir"] * (exit_px - p["entry"]) * p["size"] - cost
                 eq += pnl
+                pnl += p["realized"]
                 rm = pnl / p["risk_usd"]
                 learner.update(key, rm)
                 trades.append(dict(sym=sym, strat=st, dir=p["dir"], entry_date=p["entry_date"], exit_date=t, pnl=pnl, R=rm))
@@ -139,8 +163,28 @@ def run(data, risk=0.01, start_eq=5000.0, learn=True, max_heat=0.06, dd_brake=0.
         curve.append((t, mtm))
         if mtm <= start_eq * 0.02: break  # cuenta quemada
         # 3) nuevas señales al cierre de hoy; entrada en la apertura siguiente (aprox. al cierre + costo)
-        heat = sum(p["risk_usd"] for p in pos.values()) / max(mtm, 1)
+        def open_risk(p):
+            if o["heat_current"]:
+                return max(0.0, p["dir"] * (p["entry"] - p["stop"])) * p["size"]
+            return p["risk_usd"]
+        heat = sum(open_risk(p) for p in pos.values()) / max(mtm, 1)
         brake = 0.5 if dd > dd_brake else 1.0   # freno de drawdown: mitad de riesgo
+        # pirámide: agregar a las ganadoras de tendencia
+        if o["pyramid"]:
+            step, max_u = o["pyramid"]
+            for (sym, st), p in pos.items():
+                r = rows[sym].get(t)
+                if st == "meanrev" or r is None or p["units"] >= max_u or p["entry_date"] == t: continue
+                if p["dir"] * (r.c - p["last_add"]) < step * p["atr0"]: continue
+                k = 2.5 if st != "tsmom" else 3.0
+                add_risk = mtm * risk * (learner.mult((sym, st)) if learn else 1.0) * brake
+                if heat + add_risk / mtm > max_heat: continue
+                add = add_risk / (k * r.atr)
+                p["entry"] = (p["entry"] * p["size"] + r.c * add) / (p["size"] + add)
+                p["size"] += add; p["risk_usd"] += add_risk; p["units"] += 1; p["last_add"] = r.c
+                ns = r.c - p["dir"] * k * r.atr
+                p["stop"] = max(p["stop"], ns) if p["dir"] == 1 else min(p["stop"], ns)
+                heat += add_risk / mtm
         for sym in data:
             r = rows[sym].get(t)
             if r is None or any(math.isnan(v) for v in r): continue
@@ -151,6 +195,9 @@ def run(data, risk=0.01, start_eq=5000.0, learn=True, max_heat=0.06, dd_brake=0.
                 sig = fn(r, cls)
                 if not sig: continue
                 d, stop = sig
+                if o["rs_filter"] and st != "meanrev":
+                    q = rank.get((t, sym))
+                    if q is None or (d == 1 and q < 0.5) or (d == -1 and q > 0.5): continue
                 dist = abs(r.c - stop)
                 if dist <= 0: continue
                 m = learner.mult(key) if learn else 1.0
@@ -162,7 +209,8 @@ def run(data, risk=0.01, start_eq=5000.0, learn=True, max_heat=0.06, dd_brake=0.
                 risk_usd = size * dist
                 entry = r.c
                 pos[key] = dict(dir=d, entry=entry, stop=stop, size=size, risk_usd=risk_usd,
-                                entry_date=t, bars=0, cost=cst, last=entry)
+                                entry_date=t, bars=0, cost=cst, last=entry, dist0=dist, atr0=r.atr,
+                                realized=0.0, units=1, last_add=entry)
                 heat += risk_usd / mtm
     s = pd.Series(dict(curve))
     return s, pd.DataFrame(trades)

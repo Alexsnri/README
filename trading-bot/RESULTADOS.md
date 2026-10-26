@@ -59,6 +59,24 @@ Sharpe), no el apalancamiento. Por eso Turbo usa 4%.
 Agregar 11 mercados más (cruces de yen, NZD, CHF, Japón, Reino Unido, ETH, gas natural y Brent) **empeoró**
 los resultados, así que el bot se queda con los 13 originales.
 
+## Técnicas de grandes traders: cuáles sirven y cuáles no
+
+Cada técnica se probó sobre el modo Turbo, arrancando en 2006, 2009, 2012, 2015 y 2018:
+
+| Técnica (de quién viene) | Rend. anual mediano | Peor arranque | Caída típica | ¿Se adoptó? |
+|---|---|---|---|---|
+| Turbo base (4%) | 35.8% | 18.9% | −59% | — |
+| Tomar la mitad de la ganancia a 2R ("asegurar ganancias") | 23.0% | 11.1% | −71% | No: corta a las ganadoras |
+| Tomar la mitad a 3R | 26.0% | 15.9% | −72% | No |
+| Stop a la entrada al ir 1R a favor (Paul Tudor Jones) | 31.6% | 18.1% | −63% | No |
+| Fuerza relativa: sólo lo más fuerte (Antonacci) | 35.6% | 14.3% | −64% | No: no mejora |
+| Liberar el riesgo de las ganadoras para abrir otras | 29.6% | 20.3% | −75% | No: más caídas, menos ganancia |
+| **Pirámide: sumar a las ganadoras cada 2 ATR, hasta 3 unidades, 3% por unidad (Tortugas / Livermore)** | **45.2%** | **24.5%** | **−58%** | **Sí** |
+
+La pirámide ganó en todo y en ambas mitades de la historia (30.7% y 47.4% anual contra 27.4% y 32.3%), con la
+misma caída máxima (−59%) y mejor Sharpe (0.75 contra 0.66). Con ella, la mediana a $1M pasa de 17 a 14 años.
+El modo Turbo del bot de Capital.com ya la usa.
+
 ## Conclusión
 
 - El sistema tiene ventaja real y consistente: es rentable en 21 años y en ambas mitades del periodo.
