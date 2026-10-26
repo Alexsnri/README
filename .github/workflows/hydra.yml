@@ -24,9 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -44,7 +44,7 @@ jobs:
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
-          CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD }}
+          CAPITAL_API_PASSWORD: ${{ secrets.CAPITAL_API_PASSWORD || secrets.CENTRAL_API_PASSWORD }}
           CAPITAL_ENV: ${{ vars.CAPITAL_ENV || 'demo' }}
           HYDRA_MODE: ${{ vars.HYDRA_MODE || 'turbo' }}
           HYDRA_START: ${{ vars.HYDRA_START || '5000' }}
