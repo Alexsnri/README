@@ -6,6 +6,7 @@ el riesgo de forma automática y va ajustando cuánto arriesga en cada estrategi
 | Carpeta | Qué es |
 |---|---|
 | `mt5/Hydra.mq5` | El bot (Expert Advisor). Corre en MT5 conectado a tu cuenta Exness y abre/cierra operaciones solo. |
+| `capital/hydra_capital.py` | El mismo bot para Capital.com. Corre gratis en GitHub Actions, sin PC, y se ve en TradingView. Guía: `capital/GUIA.md`. |
 | `tradingview/Hydra.pine` | La misma lógica para TradingView: ves en el gráfico cada entrada, salida y stop. |
 | `backtest/backtest.py` | El backtest de 21 años con el que se validó el sistema. |
 | `RESULTADOS.md` | Resultados completos y el análisis del reto de $5,000 → $1,000,000. |
