@@ -26,10 +26,11 @@ enum ENUM_HYDRA_MODE
   {
    MODO_CONSERVADOR = 0, // Conservador: 0.5% por trade, 6% total
    MODO_NORMAL      = 1, // Normal: 1% por trade, 10% total
-   MODO_RETO        = 2  // Reto $1M: 3% por trade, 20% total (sólo demo por defecto)
+   MODO_RETO        = 2, // Reto $1M: 3% por trade, 20% total (sólo demo por defecto)
+   MODO_TURBO       = 3  // Turbo: 4% por trade, 25% total. El más rápido probado (sólo demo por defecto)
   };
 
-input ENUM_HYDRA_MODE InpMode        = MODO_RETO;   // Modo de riesgo
+input ENUM_HYDRA_MODE InpMode        = MODO_TURBO;   // Modo de riesgo
 input string InpSymbols              = "EURUSD,GBPUSD,USDJPY,AUDUSD,USDCAD,XAUUSD,XAGUSD,USOIL,US500,USTEC,US30,DE30,BTCUSD"; // Símbolos (se detecta el sufijo de Exness: m, c, etc.)
 input double InpRiskOverride         = 0;     // % de riesgo por trade (0 = el del modo)
 input double InpHeatOverride         = 0;     // % de riesgo total abierto (0 = el del modo)
@@ -39,7 +40,7 @@ input double InpGoal                 = 1000000; // Meta en dinero de la cuenta
 input int    InpDelayMinutes         = 60;    // Minutos tras la apertura diaria antes de operar (evita spreads del rollover)
 input bool   InpResetPeak            = false; // Reiniciar el máximo de capital guardado (úsalo si reinicias la demo)
 input bool   InpLearning             = true;  // Aprendizaje adaptativo activado
-input bool   InpAllowRetoOnReal      = false; // Permitir modo Reto en cuenta REAL
+input bool   InpAllowRetoOnReal      = false; // Permitir modos Reto/Turbo en cuenta REAL
 input bool   InpUseDonchian          = true;  // Estrategia D: Breakout Donchian
 input bool   InpUseMomentum          = true;  // Estrategia T: Momentum
 input bool   InpUseMeanRev           = true;  // Estrategia M: RSI(2)
@@ -86,16 +87,17 @@ int OnInit()
      {
       case MODO_CONSERVADOR: g_risk = 0.5; g_heat = 6;  g_killDD = 25; g_lev = 10; break;
       case MODO_NORMAL:      g_risk = 1.0; g_heat = 10; g_killDD = 35; g_lev = 20; break;
-      default:               g_risk = 3.0; g_heat = 20; g_killDD = 60; g_lev = 30; break;
+      case MODO_RETO:        g_risk = 3.0; g_heat = 20; g_killDD = 60; g_lev = 30; break;
+      default:               g_risk = 4.0; g_heat = 25; g_killDD = 85; g_lev = 40; break;
      }
    if(InpRiskOverride > 0)   g_risk = InpRiskOverride;
    if(InpHeatOverride > 0)   g_heat = InpHeatOverride;
    if(InpKillDDOverride > 0) g_killDD = InpKillDDOverride;
 
    bool isReal = (AccountInfoInteger(ACCOUNT_TRADE_MODE) == ACCOUNT_TRADE_MODE_REAL);
-   if(isReal && InpMode == MODO_RETO && !InpAllowRetoOnReal)
+   if(isReal && InpMode >= MODO_RETO && !InpAllowRetoOnReal)
      {
-      Alert("Hydra: el modo Reto está bloqueado en cuenta REAL. Usa Normal/Conservador o activa InpAllowRetoOnReal.");
+      Alert("Hydra: los modos Reto y Turbo están bloqueados en cuenta REAL. Usa Normal/Conservador o activa InpAllowRetoOnReal.");
       return(INIT_PARAMETERS_INCORRECT);
      }
    if(AccountInfoInteger(ACCOUNT_MARGIN_MODE) != ACCOUNT_MARGIN_MODE_RETAIL_HEDGING)
@@ -655,7 +657,7 @@ void DrawDashboard(double eq, double peak, double dd)
          if(st >= 0 && st < N_STRATS)
             mine++;
         }
-   string modes[3] = {"Conservador", "Normal", "Reto $1M"};
+   string modes[4] = {"Conservador", "Normal", "Reto $1M", "Turbo"};
    string s = StringFormat("HYDRA  |  modo %s  |  %s\n", modes[InpMode], g_paused ? "PAUSADO por drawdown" : "operando");
    s += StringFormat("Capital: %.2f   Máximo: %.2f   Drawdown: %.1f%%\n", eq, peak, dd * 100);
    s += StringFormat("Meta: %.0f   Progreso (escala log): %.1f%%\n", InpGoal, progress);

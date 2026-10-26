@@ -37,6 +37,28 @@ deterioró con el tiempo, lo cual es buena señal de que no está sobreajustado.
 El Monte Carlo trata los trades como independientes, así que es **optimista**: en la vida real los trades
 se agrupan en rachas y las caídas son mayores, como muestra el backtest completo de arriba.
 
+## ¿Cuál es la forma más rápida de llegar? (modo Turbo)
+
+Probé distintos niveles de riesgo arrancando en 5 fechas distintas (2006, 2009, 2012, 2015 y 2018), para que
+el resultado no dependa de un solo buen año de inicio:
+
+| Riesgo/trade | Rend. anual mediano | Rend. anual en el peor arranque | Caída máx. mediana | Años a $1M (mediana) |
+|---|---|---|---|---|
+| 2% | 22.8% | 15.8% | −40% | 26 |
+| 3% (Reto) | 28.4% | 25.1% | −52% | 21 |
+| **4% (Turbo)** | **35.8%** | **18.9%** | **−59%** | **17** |
+| 5% | 35.7% | 21.1% | −69% | 17 |
+| 6% | 38.8% | 18.7% | −76% | 16 |
+| 8% | 38.5% | 17.4% | −86% | 16 |
+
+Hay un **límite de velocidad**. Pasando de 4%, el crecimiento casi no mejora (a lo mucho un año menos), pero
+las caídas pasan de −59% a −86%. Es el criterio de Kelly en acción: más allá del punto óptimo, cada pérdida
+cuesta más de lo que suma cada ganancia. La velocidad máxima de un sistema la pone su calidad (el ratio de
+Sharpe), no el apalancamiento. Por eso Turbo usa 4%.
+
+Agregar 11 mercados más (cruces de yen, NZD, CHF, Japón, Reino Unido, ETH, gas natural y Brent) **empeoró**
+los resultados, así que el bot se queda con los 13 originales.
+
 ## Conclusión
 
 - El sistema tiene ventaja real y consistente: es rentable en 21 años y en ambas mitades del periodo.

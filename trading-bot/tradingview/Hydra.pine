@@ -8,7 +8,7 @@ strategy("Hydra", overlay = true, pyramiding = 3, initial_capital = 5000,
      commission_type = strategy.commission.percent, commission_value = 0.01, slippage = 2,
      margin_long = 3, margin_short = 3)
 
-riskPct = input.float(3.0, "Riesgo % por trade (Reto=3, Normal=1, Conservador=0.5)", minval = 0.1, step = 0.1)
+riskPct = input.float(4.0, "Riesgo % por trade (Turbo=4, Reto=3, Normal=1, Conservador=0.5)", minval = 0.1, step = 0.1)
 goal    = input.float(1000000, "Meta")
 useD    = input.bool(true, "D: Breakout Donchian")
 useT    = input.bool(true, "T: Momentum")

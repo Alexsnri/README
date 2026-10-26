@@ -51,9 +51,12 @@ Es una mejora modesta y real, no una IA que adivina el mercado.
 |---|---|---|---|
 | Conservador | 0.5% | 6% | 25% |
 | Normal | 1% | 10% | 35% |
-| **Reto $1M** (por defecto) | 3% | 20% | 60% |
+| Reto $1M | 3% | 20% | 60% |
+| **Turbo** (por defecto) | 4% | 25% | 85% |
 
-El modo Reto queda bloqueado en cuentas reales salvo que actives `InpAllowRetoOnReal` a propósito.
+Turbo es el modo que históricamente llegó más rápido a la meta (ver `RESULTADOS.md`). Arriesgar más que
+eso no aceleró el crecimiento y sí hizo mucho más profundas las caídas. Los modos Reto y Turbo quedan
+bloqueados en cuentas reales salvo que actives `InpAllowRetoOnReal` a propósito.
 
 ---
 
@@ -75,7 +78,7 @@ El modo Reto queda bloqueado en cuentas reales salvo que actives `InpAllowRetoOn
    El bot detecta solo el sufijo de Exness (`EURUSDm`, etc.).
 6. **Actívalo.** Abre **un solo** gráfico cualquiera (por ejemplo EURUSDm, D1) y arrastra *Hydra* desde el
    Navegador. En la pestaña *Común* marca *Permitir trading algorítmico*; en *Parámetros* deja
-   `Modo = Reto $1M`. Presiona también el botón **Trading algorítmico** de la barra superior para que
+   `Modo = Turbo`. Presiona también el botón **Trading algorítmico** de la barra superior para que
    quede en verde.
 7. **Listo.** En el gráfico aparece un panel con capital, drawdown, progreso a la meta y riesgo abierto. El
    bot revisa cada 30 segundos y opera una vez al día por símbolo, 60 minutos después de la apertura
