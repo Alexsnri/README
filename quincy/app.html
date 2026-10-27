@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<!--repo-only-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--/repo-only-->
+<title>Quincy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Cuánto puedes gastar hoy para llegar a la quincena, cuánto te toca de aguinaldo, vacaciones, PTU y finiquito, y cómo vivirá tu yo del futuro. Gratis y sin registro.">
+<!--repo-only-->
+<meta name="theme-color" content="#07121a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="img/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<link rel="canonical" href="https://alexsnri.github.io/README/quincy/app.html">
+<meta property="og:title" content="Quincy · ¿Cuánto te toca?">
+<meta property="og:description" content="Tu límite de gasto de hoy, tu aguinaldo, tus vacaciones y tu finiquito, con la ley de 2026. Gratis y sin registro.">
+<meta property="og:image" content="https://alexsnri.github.io/README/quincy/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<!--/repo-only-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Quincy, portada"><i></i><span>quincy<b>.</b></span><span class="brand-x" id="brand-x" hidden></span></a>
+    <nav class="tabs-top" aria-label="Secciones">
+      <button type="button" data-go="hoy">Hoy<span class="dot" data-dot="hoy" hidden></span></button>
+      <button type="button" data-go="derechos">Me toca</button>
+      <button type="button" data-go="tanda">Tanda</button>
+      <button type="button" data-go="futuro">Futuro</button>
+      <button type="button" data-go="reto">Reto<span class="dot" data-dot="reto" hidden></span></button>
+      <button type="button" data-go="mas">Más</button>
+    </nav>
+    <button type="button" class="streak-pill" id="streak-pill" data-go="hoy" aria-label="Días seguidos sin pasarte de tu límite">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="streak-num">0</span>
+    </button>
+    <button type="button" class="more-btn" data-go="mas" aria-label="Más: preguntas, fuentes y tus datos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
+    <button class="btn btn-sun btn-sm" id="install" hidden>Instalar</button>
+  </div>
+</header>
+
+<div class="banner" id="challenge" hidden>
+  <div class="wrap banner-in">
+    <p id="challenge-text"></p>
+    <button type="button" class="btn btn-sun btn-sm" data-go="reto">Aceptar reto</button>
+    <button type="button" class="btn btn-ghost btn-sm" id="challenge-x">Cerrar</button>
+  </div>
+</div>
+
+<main>
+  <!-- ============ HOY ============ -->
+  <section class="view" id="v-hoy" data-view="hoy" aria-labelledby="h-hoy">
+    <div class="wrap block">
+      <div class="view-head">
+        <div>
+          <p class="eyebrow" id="q-date">Hoy</p>
+          <h1 class="h1-sm" id="h-hoy">¿Cuánto puedes gastar hoy?</h1>
+        </div>
+        <span class="chip mid" id="q-example">Ejemplo: pon tus números abajo</span>
+      </div>
+
+      <div class="hoy-top">
+        <div class="card q-hero">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+              <circle cx="60" cy="60" r="52" class="ring-bg"/>
+              <circle cx="60" cy="60" r="52" class="ring-arc ok" id="q-ring-arc" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="ring-in">
+              <span class="small mut" id="q-big-label">Hoy todavía puedes gastar</span>
+              <b class="q-big mono ok" id="q-big">$0</b>
+            </div>
+          </div>
+          <p class="mut small" id="q-sub" aria-live="polite"></p>
+        </div>
+
+        <div class="card">
+          <h2 class="h2-sm">Registra un gasto</h2>
+          <div class="add-row">
+            <label class="sr" for="q-amount">Monto del gasto</label>
+            <span class="peso" aria-hidden="true">$</span>
+            <input type="number" inputmode="decimal" min="1" max="1000000" id="q-amount" placeholder="0">
+            <button type="button" class="btn btn-sun" id="q-add">Agregar</button>
+          </div>
+          <div class="chips" id="q-cats" role="group" aria-label="Categoría"></div>
+          <ul class="spend-list" id="q-today-list"></ul>
+          <p class="mut small" id="q-today-empty">Todavía no registras gastos hoy.</p>
+        </div>
+      </div>
+
+      <div class="hoy-grid">
+        <div class="card">
+          <h2 class="h2-sm">¿Me alcanza?</h2>
+          <p class="mut small">Antes de comprar algo, escribe el precio.</p>
+          <div class="add-row">
+            <label class="sr" for="alc-price">Precio</label>
+            <span class="peso" aria-hidden="true">$</span>
+            <input type="number" inputmode="decimal" min="1" max="1000000" id="alc-price" placeholder="Precio">
+          </div>
+          <p id="alc-out" aria-live="polite"></p>
+          <p class="small mut" id="alc-future"></p>
+          <div class="actions">
+            <button type="button" class="btn btn-ghost btn-sm" id="alc-buy">Lo compro</button>
+            <button type="button" class="btn btn-sun btn-sm" id="alc-save">Me lo aguanto</button>
+          </div>
+          <p class="small" id="q-aguante"></p>
+        </div>
+
+        <div class="card">
+          <h2 class="h2-sm" id="q-period-title">Tu quincena</h2>
+          <div class="meter period"><i id="q-period-bar" style="width:0%"></i></div>
+          <p class="small mut" id="q-period-text"></p>
+          <div class="days" id="q-days" aria-label="Días de tu periodo"></div>
+          <div class="legend small"><span><i class="dot-ok"></i>En tu límite</span><span><i class="dot-bad"></i>Te pasaste</span><span><i class="dot-fut"></i>Por venir</span></div>
+          <div class="cat-bars" id="q-cat-bars"></div>
+        </div>
+      </div>
+
+      <details class="card setup" id="q-setup">
+        <summary><span><b>Tus números</b> <span class="mut small">· solo se guardan en tu teléfono</span></span></summary>
+        <div class="setup-grid">
+          <div class="field"><label for="q-freq">¿Cada cuándo te pagan?</label>
+            <select id="q-freq"><option value="quincenal">Cada quincena (15 y fin de mes)</option><option value="semanal">Cada semana (viernes)</option><option value="mensual">Cada mes (fin de mes)</option></select></div>
+          <div class="field"><label for="q-income">Lo que te llega cada pago</label><input type="number" inputmode="numeric" id="q-income" min="0"></div>
+          <div class="field"><label for="q-fixed">Pagos fijos de ese periodo</label><input type="number" inputmode="numeric" id="q-fixed" min="0"><small>Renta, servicios, deudas, escuela…</small></div>
+          <div class="field"><label for="q-saving">Lo que apartas para ahorrar</label><input type="number" inputmode="numeric" id="q-saving" min="0"><small>Págate primero, aunque sea poquito.</small></div>
+        </div>
+      </details>
+
+      <div class="actions spaced">
+        <a class="btn btn-ghost btn-sm" id="remind-google" target="_blank" rel="noopener" href="#">Recordatorio diario en Google Calendar</a>
+        <button type="button" class="btn btn-ghost btn-sm" id="remind-ics">Recordatorio para iPhone y otros</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-share="verde">Compartir mis días en verde</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-share="recibo">Ticket de mi quincena</button>
+      </div>
+      <a class="partner" id="partner-cta" hidden target="_blank" rel="noopener" href="#"></a>
+    </div>
+  </section>
+
+  <!-- ============ ME TOCA ============ -->
+  <section class="view" id="v-derechos" data-view="derechos" hidden aria-labelledby="h-derechos">
+    <div class="wrap block">
+      <div class="view-head">
+        <div>
+          <p class="eyebrow">Ley Federal del Trabajo · valores 2026</p>
+          <h1 class="h1-sm" id="h-derechos">Lo que te toca por ley</h1>
+        </div>
+        <span class="chip mid" id="mt-example">Ejemplo: pon tu sueldo y tu fecha de ingreso</span>
+      </div>
+
+      <div class="mt-grid">
+        <form class="card mt-form" onsubmit="return false" aria-label="Tus datos de trabajo">
+          <h2 class="h2-sm">Tus datos</h2>
+          <div class="field"><label for="mt-salary">Sueldo mensual (antes de impuestos)</label><input type="number" inputmode="numeric" id="mt-salary" min="0"><small id="mt-sd"></small></div>
+          <div class="field"><label for="mt-start">¿Cuándo entraste a trabajar ahí?</label><input type="date" id="mt-start"></div>
+          <div class="field"><label for="mt-zone">Zona</label><select id="mt-zone"><option value="general">Resto del país</option><option value="frontera">Zona Libre de la Frontera Norte</option></select></div>
+          <div class="two compact">
+            <div class="field"><label for="mt-agdias">Días de aguinaldo</label><input type="number" inputmode="numeric" id="mt-agdias" min="15" max="120"></div>
+            <div class="field"><label for="mt-prima">Prima vacacional %</label><input type="number" inputmode="numeric" id="mt-prima" min="25" max="200"></div>
+          </div>
+          <small class="mut">Si tu contrato te da más que la ley, cámbialo aquí. Nada sale de tu teléfono.</small>
+        </form>
+
+        <div class="mt-cards">
+          <div class="card mt-card">
+            <p class="eyebrow">Aguinaldo</p>
+            <b class="mt-num mono" id="mt-ag">$0</b>
+            <p class="small" id="mt-ag-note"></p>
+            <p class="small mut" id="mt-ag-tax"></p>
+            <button type="button" class="btn btn-ghost btn-sm" data-share="aguinaldo">Compartir cuenta regresiva</button>
+          </div>
+          <div class="card mt-card">
+            <p class="eyebrow">Vacaciones</p>
+            <b class="mt-num mono" id="mt-vac">0 días</b>
+            <p class="small" id="mt-vac-note"></p>
+            <p class="small mut" id="mt-vac-next"></p>
+          </div>
+          <div class="card mt-card">
+            <p class="eyebrow">Reparto de utilidades (PTU) · máximo</p>
+            <b class="mt-num mono" id="mt-ptu">$0</b>
+            <p class="small mut" id="mt-ptu-note"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2 spaced">
+        <div class="card" id="mt-salida-card">
+          <div class="between">
+            <h2 class="h2-sm">Si hoy dejaras tu trabajo</h2>
+            <div class="seg" role="group" aria-label="Motivo">
+              <button type="button" data-motivo="renuncia" aria-pressed="false">Renuncio</button>
+              <button type="button" data-motivo="despido" aria-pressed="true">Me despiden sin causa</button>
+            </div>
+          </div>
+          <div class="three">
+            <div class="field"><label for="mt-end">Fecha de salida</label><input type="date" id="mt-end"></div>
+            <div class="field"><label for="mt-pend">Vacaciones sin tomar</label><input type="number" inputmode="numeric" id="mt-pend" min="0" max="365"></div>
+            <div class="field"><label for="mt-sinpago">Días sin pagar</label><input type="number" inputmode="numeric" id="mt-sinpago" min="0" max="365"></div>
+          </div>
+          <div class="tbl"><table><tbody id="mt-lines"></tbody></table></div>
+          <div class="total"><span id="mt-total-label">Tu liquidación</span><b class="mono" id="mt-total">$0</b></div>
+          <p class="small" id="mt-veinte"></p>
+          <p class="small mut" id="mt-salida-note"></p>
+        </div>
+        <div class="card">
+          <h2 class="h2-sm">Cuándo te toca</h2>
+          <ol class="timeline" id="mt-timeline"></ol>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <p class="eyebrow">Checklist</p>
+        <h2>Ocho cosas que todo trabajador debería tener en orden</h2>
+      </div>
+      <div class="xp">
+        <span class="mono tide" id="mt-check-label">0 de 8</span>
+        <div class="meter" aria-hidden="true"><i id="mt-check-bar" style="width:0%"></i></div>
+      </div>
+      <div class="missions" id="mt-check"></div>
+      <p class="small mut spaced">Cálculos de referencia con el mínimo de ley. Tu caso puede tener más prestaciones. Para una disputa, la asesoría de <a href="https://www.gob.mx/profedet" target="_blank" rel="noopener">PROFEDET</a> es gratuita.</p>
+    </div>
+  </section>
+
+  <!-- ============ TANDA ============ -->
+  <section class="view" id="v-tanda" data-view="tanda" hidden aria-labelledby="h-tanda">
+    <div class="wrap block">
+      <div class="view-head">
+        <div>
+          <p class="eyebrow">Tandas</p>
+          <h1 class="h1-sm" id="h-tanda">Organiza tu tanda y sabe cuándo te toca</h1>
+          <p class="mut">Sortea los turnos con la ruleta, mándala al grupo de WhatsApp y descubre qué número te conviene. Quincy nunca toca el dinero: solo sortea, calcula y avisa.</p>
+        </div>
+        <span class="chip mid" id="tn-example">Ejemplo: cambia los datos por los de tu tanda</span>
+      </div>
+
+      <div class="tn-grid">
+        <form class="card" onsubmit="return false" aria-label="Datos de la tanda">
+          <div class="between">
+            <h2 class="h2-sm">Tu tanda</h2>
+            <div class="row">
+              <label class="sr" for="tn-pick">Elegir tanda</label>
+              <select id="tn-pick" hidden></select>
+              <button type="button" class="btn btn-ghost btn-sm" id="tn-new">Nueva tanda</button>
+            </div>
+          </div>
+          <div class="field"><label for="tn-name">Nombre</label><input type="text" id="tn-name" maxlength="40"></div>
+          <div class="two compact">
+            <div class="field"><label for="tn-amount">Cada quien pone</label><input type="number" inputmode="numeric" id="tn-amount" min="1"></div>
+            <div class="field"><label for="tn-freq">¿Cada cuándo?</label><select id="tn-freq"><option value="semanal">Cada semana</option><option value="quincenal">Cada quincena</option><option value="mensual">Cada mes</option></select></div>
+          </div>
+          <div class="field"><label for="tn-start">Primer pago</label><input type="date" id="tn-start"></div>
+          <div class="field"><label for="tn-people">Participantes, en orden (uno por renglón)</label><textarea id="tn-people" rows="7"></textarea><small>Hasta 30. El enlace incluye los nombres: compártelo solo con tu grupo.</small></div>
+          <p class="small" id="tn-summary"></p>
+        </form>
+
+        <div class="card wheel-card">
+          <h2 class="h2-sm">Ruleta de turnos</h2>
+          <div class="wheel-wrap">
+            <span class="pointer" aria-hidden="true"></span>
+            <canvas id="tn-wheel" width="320" height="320" role="img" aria-label="Ruleta con los nombres de la tanda"></canvas>
+          </div>
+          <p class="mono sun" id="tn-result" aria-live="polite">Gira para sortear el turno 1</p>
+          <div class="actions">
+            <button type="button" class="btn btn-sun" id="tn-spin">Girar</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="tn-draw-all">Sortear todos de una vez</button>
+          </div>
+          <ol class="tn-order" id="tn-order"></ol>
+        </div>
+      </div>
+
+      <div class="grid-2 spaced">
+        <div class="card">
+          <div class="between">
+            <h2 class="h2-sm">Calendario de turnos</h2>
+            <label class="sr" for="tn-me">¿Quién eres tú?</label>
+            <select id="tn-me" class="tn-me"></select>
+          </div>
+          <div class="tn-mine" id="tn-mine" hidden></div>
+          <div class="tbl"><table class="tn-table"><thead><tr><th>#</th><th>Recibe</th><th>Fecha</th><th>vs. CETES</th></tr></thead><tbody id="tn-table"></tbody></table></div>
+          <div class="actions">
+            <a class="btn btn-sun btn-sm" id="tn-wa" href="#" target="_blank" rel="noopener">Mandar al grupo de WhatsApp</a>
+            <button type="button" class="btn btn-ghost btn-sm" id="tn-copy">Copiar enlace</button>
+            <a class="btn btn-ghost btn-sm" id="tn-cal" href="#" target="_blank" rel="noopener" hidden>Mi fecha en Google Calendar</a>
+            <a class="btn btn-ghost btn-sm" id="tn-pay-cal" href="#" target="_blank" rel="noopener">Recordatorios de pago</a>
+            <button type="button" class="btn btn-ghost btn-sm" id="tn-share-card">Tarjeta de mi turno</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2 class="h2-sm">¿Qué número te conviene?</h2>
+          <svg id="tn-chart" viewBox="0 0 600 204" role="img" aria-label="Ganancia o pérdida de cada turno contra CETES"></svg>
+          <p class="small" id="tn-insight"></p>
+          <p class="small mut">En verde, los turnos que ganan; en rojo, los que pierden, comparados con invertir cada aportación en CETES hasta que termine la tanda. Una tanda depende de la confianza: si alguien no paga, nadie lo cubre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FUTURO ============ -->
+  <section class="view" id="v-futuro" data-view="futuro" hidden aria-labelledby="h-futuro">
+    <div class="hero wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Tu yo del futuro</p>
+          <h1 class="headline" id="h-futuro">Así vas a vivir a los <em id="h-age">65</em>.</h1>
+          <p class="lede">Mueve tu plan y mira cómo cambia la cara de tu yo del futuro: en paz, a medias o en apuros.</p>
+          <div class="portal" id="portal">
+            <canvas id="warp" aria-hidden="true"></canvas>
+            <svg id="avatar" viewBox="0 0 200 220" role="img" aria-label="Tu avatar a futuro"></svg>
+            <div class="portal-tag mono" id="portal-tag">Tú · <span>65 años</span></div>
+          </div>
+          <div class="timebar">
+            <label class="field-top" for="age-scrub"><b>Viaja en el tiempo</b><output class="mono" id="scrub-out">65 años</output></label>
+            <input type="range" id="age-scrub" min="28" max="65" value="65" step="1">
+            <div class="timebar-row"><span id="scrub-min">Hoy</span><span id="scrub-max">Retiro</span></div>
+          </div>
+          <div class="looks" id="looks" aria-label="Personaliza tu avatar">
+            <div class="swatches" id="skins" role="group" aria-label="Tono de piel"></div>
+            <div class="seg" role="group" aria-label="Cabello">
+              <button type="button" data-hair="short" aria-pressed="true">Corto</button>
+              <button type="button" data-hair="long" aria-pressed="false">Largo</button>
+            </div>
+          </div>
+        </div>
+
+        <form class="machine" id="machine" aria-labelledby="machine-title" onsubmit="return false">
+          <div class="machine-head">
+            <h2 id="machine-title">Tu máquina del tiempo</h2>
+            <span class="eyebrow dim" id="rates-stamp">CETES 6.23% · Inflación 3.45%</span>
+          </div>
+          <div class="two">
+            <div class="field"><div class="field-top"><label for="age">Tu edad hoy</label><output for="age" id="age-out">28</output></div><input type="range" id="age" min="18" max="60" value="28"></div>
+            <div class="field"><div class="field-top"><label for="retire">Edad de retiro</label><output for="retire" id="retire-out">65</output></div><input type="range" id="retire" min="50" max="75" value="65"></div>
+          </div>
+          <div class="field">
+            <div class="field-top"><label for="monthly">Ahorro al mes</label><output for="monthly" id="monthly-out">$1,500</output></div>
+            <input type="range" id="monthly" min="0" max="20000" step="100" value="1500">
+            <small>Lo subes cada año con la inflación, así que el cálculo va en pesos de hoy.</small>
+          </div>
+          <div class="two">
+            <div class="field"><div class="field-top"><label for="saved">Ya tengo ahorrado</label><output for="saved" id="saved-out">$10,000</output></div><input type="range" id="saved" min="0" max="1000000" step="5000" value="10000"></div>
+            <div class="field"><div class="field-top"><label for="need">Quiero recibir al mes</label><output for="need" id="need-out">$15,000</output></div><input type="range" id="need" min="3000" max="80000" step="500" value="15000"></div>
+          </div>
+          <div class="field">
+            <span class="label" id="veh-label">¿Dónde lo guardas?</span>
+            <div class="vehicles" role="group" aria-labelledby="veh-label">
+              <button type="button" class="veh" data-veh="colchon" aria-pressed="false"><b>Bajo el colchón</b><span>0% nominal</span></button>
+              <button type="button" class="veh" data-veh="cetes" aria-pressed="true"><b>CETES</b><span id="veh-cetes">6.23% nominal</span></button>
+              <button type="button" class="veh" data-veh="optimista" aria-pressed="false"><b>Diversificado</b><span id="veh-opt">9.0% supuesto</span></button>
+            </div>
+          </div>
+          <div class="result" aria-live="polite">
+            <div class="result-row between"><span class="eyebrow mut" id="res-label">A tus 65 tendrás</span><span class="chip mid" id="mood-chip">A medias</span></div>
+            <div class="result-big" id="res-big">$0</div>
+            <p class="result-sub" id="res-sub">en pesos de hoy</p>
+            <div class="meter" aria-hidden="true"><i id="meter" style="width:40%"></i></div>
+            <p class="result-sub" id="res-income"></p>
+          </div>
+          <button type="button" class="btn btn-sun wide" data-share="futuro">Compartir mi yo del futuro</button>
+        </form>
+      </div>
+    </div>
+    <div class="wrap block">
+      <div class="grid-2">
+        <div class="card">
+          <div class="sec-head tight"><p class="eyebrow">Tu trayectoria</p><h2>El mismo esfuerzo, dos futuros</h2></div>
+          <div class="chart-wrap" id="chart-wrap"><svg id="chart" viewBox="0 0 640 340" role="img" aria-label="Gráfica de tu ahorro por edad"></svg><div class="tip" id="tip"></div></div>
+          <div class="legend"><span><i class="lg-sun"></i><b id="lg-plan">CETES</b></span><span><i class="lg-bad"></i>Bajo el colchón</span><span><i class="lg-tide"></i>Meta para recibir lo que quieres</span></div>
+        </div>
+        <article class="letter" aria-labelledby="letter-title">
+          <div><p class="eyebrow" id="letter-title">Carta de tu yo del futuro</p><p class="letter-meta" id="letter-meta">México</p></div>
+          <p class="letter-body" id="letter-body"></p>
+          <p class="letter-sign">— Tú, más adelante</p>
+          <div class="actions"><button class="btn btn-ghost" type="button" id="copy-letter">Copiar mensaje</button></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RETO ============ -->
+  <section class="view" id="v-reto" data-view="reto" hidden aria-labelledby="h-reto">
+    <div class="wrap block narrow">
+      <div class="reto-head">
+        <div>
+          <p class="eyebrow" id="reto-num">Reto #1</p>
+          <h1 class="h1-sm" id="h-reto">¿Cuánto sabes de tu dinero?</h1>
+          <p class="mut">5 preguntas, las mismas para todo México. Un intento al día.</p>
+        </div>
+        <div class="reto-dots" id="reto-dots" aria-hidden="true"></div>
+      </div>
+      <div class="card q-card" id="q-card" aria-live="polite">
+        <p class="eyebrow mut" id="q-kind"></p>
+        <h2 class="q-text" id="q-text"></h2>
+        <div class="q-opts" id="q-opts"></div>
+        <div class="q-explain" id="q-explain" hidden></div>
+        <button type="button" class="btn btn-sun" id="q-next" hidden>Siguiente</button>
+      </div>
+      <div class="card done" id="reto-done" hidden>
+        <p class="eyebrow">Resultado de hoy</p>
+        <div class="score" id="reto-score">0/5</div>
+        <p class="grid-emoji mono" id="reto-grid"></p>
+        <div class="stats">
+          <div><b class="mono" id="st-played">0</b><span>Jugados</span></div>
+          <div><b class="mono" id="st-avg">0</b><span>Promedio</span></div>
+          <div><b class="mono" id="st-streak">0</b><span>Racha</span></div>
+          <div><b class="mono" id="st-best">0</b><span>Mejor</span></div>
+        </div>
+        <div class="dist" id="reto-dist"></div>
+        <div class="actions">
+          <button type="button" class="btn btn-sun" id="reto-share">Retar a alguien</button>
+          <a class="btn btn-ghost" id="reto-wa" target="_blank" rel="noopener" href="#">WhatsApp</a>
+          <button type="button" class="btn btn-ghost" id="reto-copy">Copiar resultado</button>
+        </div>
+        <p class="mut small">Siguiente reto en <b class="mono" id="reto-next">--:--:--</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MÁS ============ -->
+  <section class="view" id="v-mas" data-view="mas" hidden aria-labelledby="h-mas">
+    <div class="wrap block">
+      <div class="sec-head">
+        <p class="eyebrow">Por qué existe Quincy</p>
+        <h1 class="h1-sm" id="h-mas">Del lado del trabajador</h1>
+        <p class="mut">Los bancos te venden productos. Quincy no vende nada: te dice cuánto te toca, cuándo te toca y cuánto te queda.</p>
+      </div>
+      <div class="science">
+        <div class="fact"><b>22.9 M</b><p>de puestos de trabajo registrados en el IMSS a septiembre de 2026. Cada uno tiene derecho a aguinaldo, vacaciones y prima.</p><a href="https://mexicocomovamos.mx/?p=41406" target="_blank" rel="noopener">IMSS, vía México, ¿cómo vamos?</a></div>
+        <div class="fact"><b>$315.04</b><p>es el salario mínimo diario de 2026 en casi todo el país ($440.87 en la frontera norte).</p><a href="https://www.ey.com/es_mx/technical/tax/boletines-fiscales/incremento-salarios-minimos-2026" target="_blank" rel="noopener">CONASAMI, vía EY</a></div>
+        <div class="fact"><b>41%</b><p>de la gente guarda su dinero en casa. Saber cuánto te queda cada día es el primer paso para ahorrar.</p><a href="https://www.eluniversal.com.mx/cartera/tandas-y-guardaditos-viejos-trucos-que-aun-dominan-el-ahorro-mexicano-encuesta-41-de-la-poblacion-guarda-dinero-en-casa/" target="_blank" rel="noopener">ENIF 2024, INEGI y CNBV</a></div>
+      </div>
+
+      <div class="sec-head"><p class="eyebrow">Calculadoras</p><h2>Comparte la que necesite alguien</h2></div>
+      <nav class="chips" aria-label="Calculadoras"><a class="chip-btn" href="aguinaldo/">Aguinaldo 2026</a> <a class="chip-btn" href="finiquito/">Finiquito y liquidación</a> <a class="chip-btn" href="vacaciones/">Vacaciones dignas</a> <a class="chip-btn" href="ptu/">PTU</a> <a class="chip-btn" href="tanda/">Tandas</a> <a class="chip-btn" href="quincena/">Cuánto gastar al día</a></nav>
+
+      <a class="inst-card" href="empresas.html">
+        <div><p class="eyebrow">Para empresas e instituciones</p><h2>Bienestar financiero para tu gente</h2><p class="mut">Quincy con tu marca, sin manejar datos personales.</p></div>
+        <span class="btn btn-ghost">Ver propuesta</span>
+      </a>
+
+      <div class="faq">
+        <div class="sec-head"><p class="eyebrow">Preguntas</p><h2>Lo que la gente pregunta</h2></div>
+        <details><summary>¿Cómo calcula cuánto puedo gastar hoy?</summary><p>Toma lo que te llega cada pago, le resta tus pagos fijos y tu ahorro, le resta lo que ya gastaste y lo divide entre los días que faltan para tu siguiente pago. Si hoy gastas menos, mañana tienes un poco más.</p></details>
+        <details><summary>¿Cuánto me toca de aguinaldo?</summary><p>Mínimo 15 días de salario, pagados antes del 20 de diciembre (art. 87 de la Ley Federal del Trabajo). Si entraste este año, te toca la parte proporcional. Está exento de ISR hasta 30 UMA.</p></details>
+        <details><summary>¿Cuántos días de vacaciones me tocan?</summary><p>12 días al cumplir un año, 14 al segundo, 16 al tercero, 18 al cuarto, 20 al quinto y después 2 días más cada 5 años (art. 76 LFT, reforma de 2023). Más una prima vacacional de al menos 25%.</p></details>
+        <details><summary>¿El cálculo de liquidación es exacto?</summary><p>Es el mínimo de ley: 3 meses de salario integrado, prima de antigüedad de 12 días por año con tope de 2 salarios mínimos, y tu finiquito. En algunos casos aplican además 20 días por año. Cada caso es distinto: confírmalo gratis con PROFEDET.</p></details>
+        <details><summary>¿Guardan mis datos?</summary><p>No. Todo se calcula y se guarda en tu teléfono. No hay registro, ni servidores, ni cookies de rastreo.</p></details>
+        <details><summary>¿Es asesoría legal o de inversión?</summary><p>No. Es una herramienta educativa con la ley y los datos públicos de 2026.</p></details>
+      </div>
+
+      <div class="sources" id="fuentes">
+        <div class="sec-head"><p class="eyebrow">Fuentes</p><h2>Cada número tiene de dónde salir</h2></div>
+        <ol>
+          <li>Ley Federal del Trabajo: artículos 48, 50, 76, 79, 80, 87, 117, 127, 162 y 518. <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFT.pdf" target="_blank" rel="noopener">Cámara de Diputados</a>.</li>
+          <li>Salario mínimo 2026: $315.04 general y $440.87 en la Zona Libre de la Frontera Norte. <a href="https://www.ey.com/es_mx/technical/tax/boletines-fiscales/incremento-salarios-minimos-2026" target="_blank" rel="noopener">CONASAMI, vía EY</a>.</li>
+          <li>UMA 2026: $117.31 diarios, vigente desde el 1 de febrero de 2026. <a href="https://idconline.mx/laboral/2026/01/09/valor-uma-2026-inegi-publica-nuevos-montos" target="_blank" rel="noopener">INEGI, vía IDC</a>.</li>
+          <li>Tasa de CETES a 28 días: <span id="src-cetes">6.23%, subasta del 22 de octubre de 2026</span>. <a href="https://www.cetesdirecto.com" target="_blank" rel="noopener">CetesDirecto</a>.</li>
+          <li>Inflación anual: <span id="src-inf">3.45%, INPC de septiembre de 2026</span>. <a href="https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2026/inpc/inpc_2q2026_10.pdf" target="_blank" rel="noopener">INEGI</a>.</li>
+          <li>Empleo formal: 22,927,276 puestos al 30 de septiembre de 2026. <a href="https://mexicocomovamos.mx/?p=41406" target="_blank" rel="noopener">IMSS, vía México, ¿cómo vamos?</a></li>
+          <li>Ahorro en casa y tandas: <a href="https://www.eluniversal.com.mx/cartera/tandas-y-guardaditos-viejos-trucos-que-aun-dominan-el-ahorro-mexicano-encuesta-41-de-la-poblacion-guarda-dinero-en-casa/" target="_blank" rel="noopener">ENIF 2024 (INEGI y CNBV)</a>.</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <h2 class="h2-sm">Tus datos</h2>
+        <p class="mut small">Todo vive en este navegador: tus números, tus gastos, tus datos de trabajo y tus retos.</p>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="wipe-ask">Borrar todo</button>
+          <span id="wipe-confirm" hidden class="confirm">¿Seguro? Se borra todo lo que registraste. <button type="button" class="btn btn-sm btn-danger" id="wipe-yes">Sí, borrar</button> <button type="button" class="btn btn-ghost btn-sm" id="wipe-no">Cancelar</button></span>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="wrap">
+        <p><b>Quincy</b> es una herramienta educativa gratuita. No es asesoría legal, fiscal ni de inversión, ni una institución financiera.</p>
+        <p>Hecho en México. Sin registro y sin rastreo.</p>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Secciones">
+  <button type="button" data-go="hoy"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hoy<span class="dot" data-dot="hoy" hidden></span></button>
+  <button type="button" data-go="derechos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4zM8 7V5h8v2M4 12h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Me toca</button>
+  <button type="button" data-go="tanda"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="4" r="2.2" fill="currentColor"/><circle cx="19" cy="15" r="2.2" fill="currentColor"/><circle cx="5" cy="15" r="2.2" fill="currentColor"/></svg>Tanda</button>
+  <button type="button" data-go="futuro"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Futuro</button>
+  <button type="button" data-go="reto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Reto<span class="dot" data-dot="reto" hidden></span></button>
+</nav>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <div class="between"><h3 id="modal-title">Tu tarjeta</h3><button type="button" class="btn btn-ghost btn-sm" id="close">Cerrar</button></div>
+    <div class="seg full" role="group" aria-label="Tipo de tarjeta">
+      <button type="button" data-kind="futuro" aria-pressed="true">Mi futuro</button>
+      <button type="button" data-kind="verde" aria-pressed="false">Días en verde</button>
+      <button type="button" data-kind="aguinaldo" aria-pressed="false">Aguinaldo</button>
+      <button type="button" data-kind="recibo" aria-pressed="false">Ticket</button>
+      <button type="button" data-kind="tanda" aria-pressed="false">Tanda</button>
+    </div>
+    <label class="check small"><input type="checkbox" id="hide-amounts"> Ocultar montos</label>
+    <div class="card-stage"><img id="card-img" alt="Tarjeta para compartir"><div class="portal-busy" id="card-busy" hidden><span class="spinner" aria-hidden="true"></span><p>Creando tu tarjeta…</p></div></div>
+    <p class="small mut">En el celular, mantén presionada la imagen para guardarla y súbela a tu historia.</p>
+    <div class="actions">
+      <button class="btn btn-sun btn-sm" type="button" id="card-share">Compartir</button>
+      <a class="btn btn-ghost btn-sm" id="wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="btn btn-ghost btn-sm" type="button" id="dl">Descargar</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/ley.js"></script>
+<script src="js/avatar.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/quincena.js"></script>
+<script src="js/derechos.js"></script>
+<script src="js/tanda.js"></script>
+<script src="js/reto.js"></script>
+<script src="js/share.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

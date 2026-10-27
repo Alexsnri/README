@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<!--repo-only-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="img/icon.svg" type="image/svg+xml">
+<meta name="robots" content="noindex">
+<!--/repo-only-->
+<title>Quincy Plan Maestro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a CEO memo. One reading column, a sticky table of contents on wide screens, tables for numbers. Same night palette as the product. */
+:root{
+  --night:#07121a; --deep:#0b1b25; --line:#1e3a4a; --line-hi:#2c5468;
+  --fg:#eaf3f4; --mut:#93adb7; --dim:#5f7d89;
+  --sun:#ffb547; --tide:#5ad6c8; --ok:#86e3a8; --warn:#ffd36b; --bad:#ff8574;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--night);color:var(--fg);font:400 16.5px/1.7 var(--f-body)}
+a{color:var(--tide)}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.shell{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:48px}
+@media (max-width:900px){.shell{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:24px;align-self:start;display:grid;gap:6px;font-size:.88rem}
+.toc a{color:var(--mut);text-decoration:none}
+.toc a:hover{color:var(--fg)}
+.toc b{font:600 .7rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+article{min-width:0;max-width:740px}
+.eyebrow{font:600 .72rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--tide)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(2rem,5vw,2.9rem);line-height:1.05;font-weight:800;margin-top:12px}
+h1 em{font-style:normal;color:var(--sun)}
+h2{font-size:1.4rem;font-weight:600;margin-top:56px;padding-top:20px;border-top:1px solid var(--line)}
+h3{font-size:1rem;font-weight:600;margin-top:26px;color:var(--sun)}
+p,ul,ol{margin:14px 0 0}
+li+li{margin-top:6px}
+.lede{color:var(--mut);font-size:1.12rem}
+.meta{font:500 .8rem/1.5 var(--f-data);color:var(--dim);margin-top:16px}
+.callout{margin-top:22px;background:var(--deep);border:1px solid var(--line-hi);border-left:3px solid var(--sun);border-radius:12px;padding:16px 18px}
+.callout p:first-child{margin-top:0}
+.table{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:560px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 .72rem/1.3 var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--mut);background:var(--deep)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-data);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font:600 .72rem/1 var(--f-body);padding:5px 9px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill.ok{color:var(--ok);border-color:rgba(134,227,168,.4)}
+.pill.mid{color:var(--warn);border-color:rgba(255,211,107,.4)}
+.pill.bad{color:var(--bad);border-color:rgba(255,133,116,.4)}
+.loop{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
+@media (max-width:640px){.loop{grid-template-columns:minmax(0,1fr)}}
+.loop div{background:var(--deep);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:.9rem;color:var(--mut)}
+.loop b{display:block;color:var(--fg);font-size:.98rem;margin-bottom:4px}
+.loop span{font:600 .7rem/1 var(--f-data);letter-spacing:.1em;color:var(--sun)}
+.todo{list-style:none;padding:0}
+.todo li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+.todo li span:first-child{font:600 .8rem/1 var(--f-data);color:var(--sun)}
+.todo li span:last-child{font:500 .78rem/1 var(--f-data);color:var(--dim);white-space:nowrap}
+.sources{font-size:.88rem;color:var(--mut)}
+code{font-family:var(--f-data);font-size:.88em;color:var(--fg)}
+</style>
+</head>
+<body>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="Contenido">
+    <b>Plan maestro · v4</b>
+    <a href="#resumen">Resumen</a>
+    <a href="#nombre">El nombre</a>
+    <a href="#investigacion">La investigación</a>
+    <a href="#tesis">La tesis</a>
+    <a href="#ganchos">Ganchos únicos</a>
+    <a href="#uso">Por qué vuelven</a>
+    <a href="#crecimiento">Cómo crece solo</a>
+    <a href="#dinero">Cómo gana dinero</a>
+    <a href="#numeros">Los números</a>
+    <a href="#riesgos">Riesgos</a>
+    <a href="#metricas">Métricas</a>
+    <a href="#costos">Costos</a>
+    <a href="#tu">Lo que solo tú puedes hacer</a>
+    <a href="#fuentes">Fuentes</a>
+  </nav>
+
+  <article>
+    <p class="eyebrow">Memo del CEO · Versión 4</p>
+    <h1>Quincy: <em>lo que te toca</em>, cuándo te toca y cuánto te queda</h1>
+    <p class="meta">27 de octubre de 2026 · Producto en vivo · Lanzamiento: 2 de noviembre · Costo de operación: $0</p>
+
+    <h2 id="resumen">Resumen</h2>
+    <p class="lede">Quincy es la app gratuita del trabajador que cobra por quincena. Responde tres preguntas que se hacen millones de personas: ¿cuánto puedo gastar hoy?, ¿cuánto me toca por ley? y ¿en qué número de la tanda me conviene estar? No pide registro, no conecta el banco y los datos no salen del teléfono.</p>
+    <div class="table"><table>
+      <thead><tr><th>Versión 3</th><th>Versión 4 (hoy)</th></tr></thead>
+      <tbody>
+        <tr><td>Nombre "me toca", solo en español y con una app homónima en España</td><td><b>Quincy</b>: corto, global y con raíz en "quincena".</td></tr>
+        <tr><td>Hoy, Me toca, Futuro y Reto</td><td>Se suma <b>Tandas</b>: ruleta de turnos, calendario para el grupo y cuánto gana o pierde cada número frente a CETES.</td></tr>
+        <tr><td>Tarjetas para compartir</td><td>Se suma el <b>ticket de la quincena</b>, inspirado en el formato viral de Receiptify.</td></tr>
+        <tr><td>Una calculadora por sección dentro de la app</td><td><b>6 páginas de búsqueda</b> (aguinaldo, finiquito, vacaciones, PTU, tanda y quincena), con preguntas frecuentes y datos estructurados.</td></tr>
+        <tr><td>Publicación pendiente</td><td>Publicado en GitHub Pages, con aviso automático a buscadores (IndexNow) y kit de marketing de 30 días.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="nombre">El nombre</h2>
+    <p><b>Quincy</b> viene de "quincena", el ritmo con el que cobra la mayoría de los trabajadores formales en México. Funciona en inglés y en español, se pronuncia igual en ambos y suena a empresa global, como Klarna, Nubank o Revolut.</p>
+    <ul>
+      <li><b>Descartados:</b> "MeToca" (app pública de tareas del hogar en España, solo funciona en español) y "Dayo" (ya existe una empresa registrada con ese nombre).</li>
+      <li><b>Pendiente:</b> buscar "Quincy" en la clase 9 (software) y 36 (servicios financieros) del IMPI y de la USPTO antes de invertir en la marca. Es un nombre propio común, así que es probable que convenga registrar el logotipo con un segundo elemento, como "Quincy Money".</li>
+    </ul>
+
+    <h2 id="investigacion">La investigación</h2>
+    <h3>1. El trabajador mexicano vive en quincenas y en WhatsApp</h3>
+    <ul>
+      <li>Hay 22.9 millones de puestos de trabajo formales en el IMSS (septiembre de 2026), y todos tienen derecho a aguinaldo, vacaciones, prima vacacional y, en su caso, PTU.</li>
+      <li>WhatsApp tiene alrededor de 78 millones de usuarios en México. Es el canal donde se organizan las tandas, la familia y el trabajo. Por eso cada función de Quincy termina en un mensaje de WhatsApp.</li>
+      <li>El ahorro informal domina: según la ENIF 2024, 41% de la población guarda dinero en casa, y las tandas siguen siendo la herramienta de ahorro más conocida. Nadie le ha dado a la tanda una herramienta digital que no pida manejar el dinero.</li>
+    </ul>
+    <h3>2. Las empresas ya pagan por bienestar financiero</h3>
+    <ul>
+      <li>En EE. UU., las plataformas de bienestar financiero para empleados cobran entre 8 y 15 dólares por empleado al mes. En México el mercado casi no existe; el adelanto de nómina (Minu) ya demostró que recursos humanos compra beneficios financieros.</li>
+      <li>Implicación: el usuario no paga; paga el empleador, que gana colaboradores menos estresados por dinero y menos preguntas a recursos humanos cada noviembre.</li>
+    </ul>
+    <h3>3. Lo que ya funcionó en otros lados</h3>
+    <ul>
+      <li><b>Credit Karma</b> regaló una información que la gente quería (su historial de crédito), juntó más de 100 millones de usuarios y la compró Intuit por 7,100 millones de dólares. El modelo: confianza primero, recomendaciones después.</li>
+      <li><b>Receiptify</b> se volvió viral convirtiendo tus canciones más escuchadas en un ticket de compra. El ticket de la quincena de Quincy usa ese mismo formato con dinero.</li>
+      <li><b>Ahorro con premio:</b> los estudios sobre cuentas de ahorro con sorteos encuentran que motivan a ahorrar a personas que no ahorraban, sobre todo de ingresos bajos. Es una línea futura con una institución regulada.</li>
+      <li><b>IndexNow:</b> Bing y Yandex comparten las URL que se les avisan. Cada publicación de Quincy se avisa sola.</li>
+    </ul>
+
+    <h2 id="tesis">La tesis</h2>
+    <p>Los bancos venden productos; Quincy está del lado del trabajador. Le decimos lo que le toca por ley, cuánto puede gastar hoy y cómo armar su tanda sin pleitos. Esa confianza es el activo: primero millones de usuarios gratis, después empresas que pagan por darlo como prestación y, al final, recomendaciones cuidadas en el momento justo.</p>
+    <div class="callout"><p><b>En una frase:</b> lo que te toca, cuándo te toca y cuánto te queda. Gratis, sin registro y sin bancos.</p></div>
+
+    <h2 id="ganchos">Ganchos únicos</h2>
+    <div class="loop">
+      <div><span>TANDA</span><b>¿Qué número te conviene?</b>Calcula cuánto gana el número 1 (un préstamo sin intereses) y cuánto pierde el último frente a CETES. Nadie más lo enseña.</div>
+      <div><span>TANDA</span><b>Ruleta y calendario</b>Sorteo justo de turnos, calendario para el grupo y un enlace: cada miembro abre Quincy y ve cuándo paga y cuándo le toca.</div>
+      <div><span>CADA QUINCENA</span><b>Ticket de la quincena</b>Tu quincena como ticket de compra: lo que llegó, lo que pagaste, lo que gastaste y lo que te queda. Se comparte con las cantidades ocultas.</div>
+      <div><span>DIARIO</span><b>Hoy puedes gastar $X</b>Un solo número al día. Si gastas menos, mañana tienes más. Los días en verde forman una racha.</div>
+      <div><span>CADA DÍA</span><b>Reto diario</b>5 preguntas de dinero y derechos laborales, iguales para todo México, con una cuadrícula para presumir en el grupo.</div>
+      <div><span>UNA VEZ</span><b>Tu yo de 65</b>Un avatar que cambia de ánimo según tu ahorro. Sirve como "momento wow" para compartir.</div>
+      <div><span>CADA AÑO</span><b>Cuenta regresiva del aguinaldo</b>Una tarjeta con los días que faltan y cuánto te toca.</div>
+      <div><span>PORTADA</span><b>Scroll en 3D</b>Miles de partículas que se convierten en un 15, un medidor, barras, un calendario, un círculo de tanda y un reloj de arena mientras bajas.</div>
+    </div>
+
+    <h2 id="uso">Por qué vuelven</h2>
+    <div class="table"><table>
+      <thead><tr><th>Frecuencia</th><th>Razón para abrir Quincy</th></tr></thead>
+      <tbody>
+        <tr><td>Diario</td><td>Límite de gasto, registrar un gasto, reto diario.</td></tr>
+        <tr><td>Antes de comprar</td><td>"¿Me alcanza?": cómo queda tu límite si lo compras.</td></tr>
+        <tr><td>Cada quincena</td><td>El límite se reinicia; ticket de la quincena; pago de la tanda.</td></tr>
+        <tr><td>Cada año</td><td>Aguinaldo en diciembre, salario mínimo en enero, PTU en mayo, más vacaciones en tu aniversario.</td></tr>
+        <tr><td>Cuando cambia la vida</td><td>Renuncia o despido: finiquito y liquidación, con plazo para reclamar.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="crecimiento">Cómo crece solo</h2>
+    <div class="table"><table>
+      <thead><tr><th>Motor</th><th>Cómo funciona</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>Búsqueda por temporada</td><td>6 páginas con calculadora para "aguinaldo", "finiquito", "vacaciones", "PTU", "tanda" y "cuánto puedo gastar al día". Sitemap, datos estructurados e IndexNow.</td><td><span class="pill ok">Listo</span></td></tr>
+        <tr><td>Tandas (viral por diseño)</td><td>Una persona arma la tanda y la manda al grupo: 5 a 20 personas abren Quincy con un enlace.</td><td><span class="pill ok">Listo</span></td></tr>
+        <tr><td>Tarjetas para historias</td><td>Aguinaldo, ticket, tanda, días en verde y tu yo de 65, con el enlace en el texto.</td><td><span class="pill ok">Listo</span></td></tr>
+        <tr><td>Reto diario</td><td>Cuadrícula para compartir, igual a la de Wordle.</td><td><span class="pill ok">Listo</span></td></tr>
+        <tr><td>Contenido en redes</td><td>12 posts, 5 historias, 1 video y calendario de 30 días. Requiere que una persona publique.</td><td><span class="pill mid">Requiere publicar</span></td></tr>
+        <tr><td>Empresas</td><td>Versión con marca para recursos humanos: un cliente lleva Quincy a cientos de empleados.</td><td><span class="pill mid">Hipótesis</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="dinero">Cómo gana dinero</h2>
+    <p>La persona nunca paga y nunca vendemos datos. El dinero llega por fases:</p>
+    <div class="table"><table>
+      <thead><tr><th>Fase</th><th>Ingreso</th><th>Cómo</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>1 · nov 2026–ene 2027</td><td>Ninguno</td><td>Juntar audiencia con aguinaldo, cuesta de enero y tandas.</td><td><span class="pill ok">Listo</span></td></tr>
+        <tr><td>2 · 2027</td><td>Empresas (prestación de bienestar financiero)</td><td>Versión con marca, precio por empleado al mes (abajo). Piloto gratis de 90 días.</td><td><span class="pill mid">Hipótesis</span></td></tr>
+        <tr><td>3 · 2027–2028</td><td>Recomendaciones en el momento justo</td><td>Con instituciones reguladas y siempre con aviso: aportación voluntaria a la Afore cuando llega el aguinaldo, CETES para quien ahorra en tanda, adelanto de nómina sin intereses cuando "hoy no te alcanza", ahorro con premio.</td><td><span class="pill mid">Hipótesis</span></td></tr>
+        <tr><td>4 · 2028+</td><td>Latinoamérica</td><td>Cada país tiene su "lo que te toca" y su tanda: cesantías en Colombia, gratificaciones en Perú, "panderos" y "juntas" en la región.</td><td><span class="pill mid">Hipótesis</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="numeros">Los números (hipótesis)</h2>
+    <p>Todo lo de esta sección es una hipótesis para validar con los primeros pilotos.</p>
+    <div class="table"><table>
+      <thead><tr><th>Supuesto</th><th>Valor</th><th>Razón</th></tr></thead>
+      <tbody>
+        <tr><td>Precio para empresas</td><td class="num">$50 MXN por empleado al mes</td><td>Alrededor de una cuarta parte del rango de EE. UU. (8 a 15 dólares).</td></tr>
+        <tr><td>Empresa típica del piloto</td><td class="num">200 empleados</td><td>PyME mediana con recursos humanos propio.</td></tr>
+        <tr><td>Ingreso por empresa</td><td class="num">$10,000 MXN al mes</td><td>200 × $50.</td></tr>
+        <tr><td>Costo de servir</td><td class="num">≈ $0</td><td>Todo corre en el teléfono; no hay servidores por usuario.</td></tr>
+        <tr><td>Meta del año 1</td><td class="num">100 empresas</td><td>≈ $1 millón de MXN al mes; ≈ $12 millones al año.</td></tr>
+        <tr><td>Costo de adquisición de usuarios</td><td class="num">≈ $0</td><td>Búsqueda, tandas y tarjetas compartidas.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><p><b>Sobre "unicornio" y "pega sí o sí".</b> Nadie serio puede prometerlo. Lo que sí tenemos: costo cero, un beneficio real que se usa cada día, temporada de búsqueda empezando ya, un mecanismo viral natural (la tanda) y un comprador claro (las empresas). Es el camino de Credit Karma: ser la herramienta en la que la gente confía y monetizar esa confianza con cuidado.</p></div>
+
+    <h2 id="riesgos">Riesgos, con su estado</h2>
+    <div class="table"><table>
+      <thead><tr><th>Riesgo</th><th>Estado</th><th>Qué hicimos o qué falta</th></tr></thead>
+      <tbody>
+        <tr><td>La ven una vez y ya</td><td><span class="pill ok">Mitigado</span></td><td>Límite diario, quincena, tanda, calendario anual y reto diario.</td></tr>
+        <tr><td>Que parezca que manejamos el dinero de la tanda</td><td><span class="pill ok">Mitigado</span></td><td>Quincy nunca toca dinero: solo sortea, calcula y avisa. Lo dice en la pantalla.</td></tr>
+        <tr><td>Error en un cálculo de ley</td><td><span class="pill mid">Parcial</span></td><td>35 pruebas automáticas, fuentes en cada número y aviso de "mínimo de ley". Falta la revisión de un abogado laboral antes de vender a empresas.</td></tr>
+        <tr><td>Salario mínimo, UMA y CETES cambian</td><td><span class="pill mid">Parcial</span></td><td>CETES se actualiza cada semana. Salario mínimo y UMA están en <code>js/ley.js</code> con su fecha; hay que cambiarlos cada enero y febrero.</td></tr>
+        <tr><td>Marca "Quincy"</td><td><span class="pill bad">Abierto</span></td><td>Búsqueda en IMPI y USPTO (clases 9 y 36) antes de invertir en la marca.</td></tr>
+        <tr><td>Nadie publica en redes</td><td><span class="pill bad">Abierto</span></td><td>Las redes no permiten publicar sin una cuenta. El kit está listo; requiere 15 minutos al día.</td></tr>
+        <tr><td>No calcula el sueldo neto (ISR e IMSS)</td><td><span class="pill bad">Abierto</span></td><td>Siguiente función: "sueldo neto" es una de las búsquedas más grandes. Requiere las tablas de ISR de 2026.</td></tr>
+        <tr><td>No sabemos cuánta gente vuelve</td><td><span class="pill bad">Abierto</span></td><td>Pegar un token gratuito de Cloudflare Web Analytics en <code>js/core.js</code>.</td></tr>
+        <tr><td>Si borran el navegador, pierden sus datos</td><td><span class="pill mid">Parcial</span></td><td>Se instala como app. Siguiente paso: respaldo con un código.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="metricas">Métricas que deciden si funciona</h2>
+    <div class="table"><table>
+      <thead><tr><th>Métrica</th><th>Meta a 90 días</th><th>Por qué importa</th></tr></thead>
+      <tbody>
+        <tr><td>Usan la calculadora de aguinaldo</td><td class="num">50,000</td><td>Es la puerta de entrada</td></tr>
+        <tr><td>Ponen sus números en "Hoy"</td><td class="num">35% de visitas</td><td>Sin eso no hay hábito</td></tr>
+        <tr><td>Tandas enviadas a un grupo</td><td class="num">3,000</td><td>Es el motor viral</td></tr>
+        <tr><td>Regresan a los 7 días (D7)</td><td class="num">20%</td><td>Mide si el hábito prende</td></tr>
+        <tr><td>Pilotos con empresas</td><td class="num">3</td><td>Primer ingreso</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="costos">Costos</h2>
+    <div class="table"><table>
+      <thead><tr><th>Concepto</th><th>Herramienta</th><th>Costo</th></tr></thead>
+      <tbody>
+        <tr><td>Hospedaje, HTTPS y publicación automática</td><td>GitHub Pages y Actions</td><td class="num">$0</td></tr>
+        <tr><td>Aviso a buscadores</td><td>IndexNow y sitemap</td><td class="num">$0</td></tr>
+        <tr><td>Motor 3D de la portada</td><td>three.js (licencia MIT) desde cdnjs</td><td class="num">$0</td></tr>
+        <tr><td>Tasas de CETES</td><td>API de Banxico</td><td class="num">$0</td></tr>
+        <tr><td>Servidores y base de datos</td><td>No hay: todo corre en el teléfono</td><td class="num">$0</td></tr>
+        <tr><td>Dominio propio (opcional)</td><td>Cualquier registrador</td><td class="num">≈ $200–400 MXN al año</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="tu">Lo que solo tú puedes hacer</h2>
+    <ol class="todo">
+      <li><span>1</span><span>Si el sitio no abre: Settings → Pages → Deploy from a branch → <code>gh-pages</code>.</span><span>1 min</span></li>
+      <li><span>2</span><span>Dar de alta el sitio en Google Search Console y enviar <code>sitemap.xml</code>.</span><span>5 min</span></li>
+      <li><span>3</span><span>Crear las cuentas @quincy en TikTok, Instagram y Facebook y seguir <code>marketing/calendario-30-dias.md</code>.</span><span>15 min al día</span></li>
+      <li><span>4</span><span>Crear la cuenta gratis de Cloudflare Web Analytics y pegar el token en <code>js/core.js</code>.</span><span>5 min</span></li>
+      <li><span>5</span><span>Agregar el secreto <code>BANXICO_TOKEN</code> en GitHub para actualizar CETES cada semana.</span><span>5 min</span></li>
+      <li><span>6</span><span>Buscar "Quincy" en el IMPI y en la USPTO.</span><span>15 min</span></li>
+      <li><span>7</span><span>Pedir a un abogado laboral que revise los cálculos antes de vender a empresas.</span><span>1 reunión</span></li>
+    </ol>
+
+    <h2 id="fuentes">Fuentes</h2>
+    <ol class="sources">
+      <li>Credit Karma: <a href="https://www.businesswire.com/news/home/20200224005884/en/Intuit-Acquire-Credit-Karma" target="_blank" rel="noopener">anuncio de Intuit</a> y <a href="https://edition.cnn.com/2020/02/24/tech/intuit-acquires-credit-karma" target="_blank" rel="noopener">CNN</a>.</li>
+      <li>Precio de bienestar financiero para empleados: <a href="https://www.selectsoftwarereviews.com/buyer-guide/employee-financial-wellness-platforms" target="_blank" rel="noopener">SelectSoftware Reviews</a>. Mercado: <a href="https://growthmarketreports.com/report/financial-wellness-benefit-market" target="_blank" rel="noopener">Growth Market Reports</a>.</li>
+      <li>WhatsApp en México: <a href="https://dplnews.com/?p=153178" target="_blank" rel="noopener">DPL News</a>.</li>
+      <li>Ahorro en casa y tandas: <a href="https://www.eluniversal.com.mx/cartera/tandas-y-guardaditos-viejos-trucos-que-aun-dominan-el-ahorro-mexicano-encuesta-41-de-la-poblacion-guarda-dinero-en-casa/" target="_blank" rel="noopener">ENIF 2024, vía El Universal</a>.</li>
+      <li>Ahorro con premio: <a href="https://rpc.cfainstitute.org/research/cfa-digest/2015/03/savings-and-prize-linked-savings-accounts-digest-summary" target="_blank" rel="noopener">CFA Institute</a> y <a href="https://evidence-hub.maps.org.uk/en/research-library/review/how-effective-are-reward-based-and-prize-linked-savings-schemes" target="_blank" rel="noopener">Money and Pensions Service</a>.</li>
+      <li>Receiptify: <a href="https://www.yorkshirepost.co.uk/read-this/heres-how-people-are-making-receipts-of-their-top-spotify-tracks-2981151" target="_blank" rel="noopener">Yorkshire Post</a>.</li>
+      <li>IndexNow: <a href="https://searchengineland.com/indexnow-now-officially-co-sharing-urls-between-microsoft-bing-and-yandex-378562" target="_blank" rel="noopener">Search Engine Land</a>.</li>
+      <li>Nombre descartado "Dayo": <a href="https://app.dealroom.co/companies/dayo" target="_blank" rel="noopener">Dealroom</a>.</li>
+      <li>Ley Federal del Trabajo: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFT.pdf" target="_blank" rel="noopener">Cámara de Diputados</a>. Vacaciones dignas: <a href="https://stps.jalisco.gob.mx/sites/stps.jalisco.gob.mx/files/2023_preguntas_frecuentes_vacaciones_dignas.pdf" target="_blank" rel="noopener">STPS Jalisco</a>.</li>
+      <li>Salario mínimo 2026: <a href="https://www.ey.com/es_mx/technical/tax/boletines-fiscales/incremento-salarios-minimos-2026" target="_blank" rel="noopener">EY</a> y <a href="https://mexicocomovamos.mx/wp-content/uploads/2025/12/InfografiaMCV_SalarioMinimo_2026.pdf" target="_blank" rel="noopener">México, ¿cómo vamos?</a></li>
+      <li>UMA 2026: <a href="https://idconline.mx/laboral/2026/01/09/valor-uma-2026-inegi-publica-nuevos-montos" target="_blank" rel="noopener">IDC con datos del INEGI</a>.</li>
+      <li>Tope de PTU: <a href="https://idconline.mx/laboral/2021/03/24/acuerdo-de-tope-a-ptu-a-quien-beneficia" target="_blank" rel="noopener">IDC</a>. Liquidación: <a href="https://factorial.mx/blog/liquidacion-despido-injustificado/" target="_blank" rel="noopener">Factorial</a>.</li>
+      <li>Empleo formal: <a href="https://mexicocomovamos.mx/?p=41406" target="_blank" rel="noopener">IMSS, vía México, ¿cómo vamos?</a></li>
+      <li>Adelanto de nómina en México: <a href="https://www.finextra.com/newsarticle/37604" target="_blank" rel="noopener">Finextra sobre Minu</a>.</li>
+    </ol>
+  </article>
+</div>
+</body>
+</html>

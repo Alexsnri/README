@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<!--repo-only-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--/repo-only-->
+<title>Quincy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="¿Cuánto te toca? Cuánto puedes gastar hoy para llegar a la quincena, tu aguinaldo, vacaciones, PTU y finiquito con la ley de 2026, y tu yo del futuro. Gratis y sin registro.">
+<!--repo-only-->
+<meta name="theme-color" content="#05101a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="img/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<link rel="canonical" href="https://alexsnri.github.io/README/quincy/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:title" content="Quincy · ¿Cuánto te toca?">
+<meta property="og:description" content="Tu límite de gasto de hoy, tu aguinaldo, tus vacaciones y tu finiquito con la ley de 2026. Gratis y sin registro.">
+<meta property="og:image" content="https://alexsnri.github.io/README/quincy/img/og.png">
+<meta property="og:url" content="https://alexsnri.github.io/README/quincy/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","name":"Quincy","url":"https://alexsnri.github.io/README/quincy/","applicationCategory":"FinanceApplication","operatingSystem":"Web, Android, iOS","inLanguage":"es-MX","offers":{"@type":"Offer","price":"0","priceCurrency":"MXN"},"description":"Calculadora de aguinaldo, vacaciones, prima vacacional, PTU, finiquito y liquidación 2026, y límite de gasto diario para llegar a la quincena."},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"¿Cuánto me toca de aguinaldo en 2026?","acceptedAnswer":{"@type":"Answer","text":"Mínimo 15 días de salario, pagados antes del 20 de diciembre (artículo 87 de la Ley Federal del Trabajo). Si entraste este año, te toca la parte proporcional."}},
+{"@type":"Question","name":"¿Cuántos días de vacaciones me tocan?","acceptedAnswer":{"@type":"Answer","text":"12 días al cumplir un año, 14 al segundo, 16 al tercero, 18 al cuarto, 20 al quinto y después 2 días más cada 5 años, más una prima vacacional de al menos 25%."}},
+{"@type":"Question","name":"¿Cómo se calcula una liquidación por despido injustificado?","acceptedAnswer":{"@type":"Answer","text":"Tres meses de salario integrado, prima de antigüedad de 12 días por año con tope de dos salarios mínimos, más tu finiquito. En algunos casos aplican además 20 días por año."}}
+]}]}
+</script>
+<!--/repo-only-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/landing.css">
+</head>
+<body class="landing">
+
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+
+<header class="lnav">
+  <div class="wrap">
+    <a class="logo" href="#ch0"><i></i><span>quincy<b>.</b></span></a>
+    <a class="btn btn-sun btn-sm" href="app.html">Abrir la app</a>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Capítulos" id="rail">
+  <a href="#ch0" data-i="0"><span>Inicio</span></a>
+  <a href="#ch1" data-i="1"><span>Quincena</span></a>
+  <a href="#ch2" data-i="2"><span>Hoy</span></a>
+  <a href="#ch3" data-i="3"><span>Me toca</span></a>
+  <a href="#ch4" data-i="4"><span>Cuándo</span></a>
+  <a href="#ch5" data-i="5"><span>Tandas</span></a>
+  <a href="#ch6" data-i="6"><span>Futuro</span></a>
+  <a href="#ch7" data-i="7"><span>Gratis</span></a>
+</nav>
+
+<main class="story">
+  <section class="ch" id="ch0">
+    <div class="stick">
+      <div class="wrap panel hero-panel">
+        <p class="eyebrow" data-in="0">México · 2026</p>
+        <h1 class="kinetic" data-in="0">¿Cuánto te <span class="swap" id="swap"><em>toca</em></span>?</h1>
+        <p class="lede-l" data-in="0">La app que te dice cuánto puedes gastar hoy, cuánto te debe tu trabajo y cómo vas a vivir mañana. Gratis, sin registro y sin bancos.</p>
+        <div class="actions" data-in="0">
+          <a class="btn btn-sun" href="app.html">Abrir Quincy</a>
+          <a class="btn btn-ghost" href="#ch1">Ver cómo funciona</a>
+        </div>
+        <p class="scroll-hint" data-in="0"><span></span>Desliza</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch1">
+    <div class="stick">
+      <div class="wrap panel">
+        <p class="eyebrow" data-in="0">La quincena</p>
+        <h2 class="big" data-in="0">Cada 15 días, todo vuelve a empezar.</h2>
+        <p class="stat" data-in=".22"><b class="mono" id="count-imss" data-to="22927276">0</b><span>trabajos formales en México, a septiembre de 2026. Casi todos cobran por quincena.</span></p>
+        <p class="lede-l" data-in=".42">Quincy está hecha para ese ritmo: lo que te llega, lo que te queda y lo que te deben.</p>
+        <p class="src" data-in=".42">Fuente: IMSS, vía México, ¿cómo vamos?</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch2">
+    <div class="stick">
+      <div class="wrap panel">
+        <div class="stack">
+          <p class="eyebrow" data-in="0">Hoy</p>
+          <h2 class="big" data-in="0">Un solo número: lo que puedes gastar hoy.</h2>
+          <p class="lede-l opt-l" data-in=".15">Pones lo que te llega y tus pagos fijos. Cada mañana te dice tu límite para llegar completo a tu siguiente pago. Si hoy gastas menos, mañana tienes más.</p>
+        </div>
+        <div class="demo glass" data-in=".25">
+          <p class="eyebrow mut">Pruébalo</p>
+          <div class="field"><div class="field-top"><label for="d-income">Te llega cada quincena</label><output id="d-income-out" class="mono"></output></div><input type="range" id="d-income" min="2000" max="40000" step="250" value="8000"></div>
+          <div class="field"><div class="field-top"><label for="d-fixed">Tus pagos fijos</label><output id="d-fixed-out" class="mono"></output></div><input type="range" id="d-fixed" min="0" max="30000" step="250" value="3500"></div>
+          <div class="demo-out"><span class="mut small">Hoy puedes gastar</span><b class="mono ok-t" id="d-daily">$0</b><span class="small mut" id="d-days"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch3">
+    <div class="stick">
+      <div class="wrap panel">
+        <div class="stack">
+          <p class="eyebrow" data-in="0">Me toca</p>
+          <h2 class="big" data-in="0">Lo que la ley te da, en pesos.</h2>
+          <p class="lede-l opt-l" data-in=".15">Aguinaldo, vacaciones, prima vacacional, reparto de utilidades, finiquito y liquidación. Con la Ley Federal del Trabajo y los valores de 2026.</p>
+        </div>
+        <div class="demo glass" data-in=".25">
+          <div class="field"><div class="field-top"><label for="d-salary">Tu sueldo mensual</label><output id="d-salary-out" class="mono"></output></div><input type="range" id="d-salary" min="9600" max="80000" step="200" value="15000"></div>
+          <div class="field"><div class="field-top"><label for="d-years">Años en tu trabajo</label><output id="d-years-out" class="mono"></output></div><input type="range" id="d-years" min="1" max="30" step="1" value="3"></div>
+          <div class="tiles">
+            <div><span>Aguinaldo</span><b class="mono" id="d-ag">$0</b></div>
+            <div><span>Vacaciones</span><b class="mono" id="d-vac">0</b></div>
+            <div><span>Prima vacacional</span><b class="mono" id="d-prima">$0</b></div>
+            <div><span>PTU, hasta</span><b class="mono" id="d-ptu">$0</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch4">
+    <div class="stick">
+      <div class="wrap panel">
+        <p class="eyebrow" data-in="0">Cuándo te toca</p>
+        <h2 class="big" data-in="0">Tu dinero tiene calendario.</h2>
+        <ol class="dates" id="dates"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch5">
+    <div class="stick">
+      <div class="wrap panel">
+        <div class="stack">
+          <p class="eyebrow" data-in="0">Tandas</p>
+          <h2 class="big" data-in="0">La tanda, sin pleitos.</h2>
+          <p class="lede-l opt-l" data-in=".12">Sortea los turnos con la ruleta, manda el calendario al grupo de WhatsApp y cada quien ve cuándo le toca. 1 de cada 5 adultos en México participa en tandas.</p>
+        </div>
+        <div class="demo glass" data-in=".22">
+          <p class="eyebrow mut">Tanda de 10 personas, $1,000 cada quincena</p>
+          <div class="field"><div class="field-top"><label for="d-turn">¿Qué número te tocó?</label><output id="d-turn-out" class="mono"></output></div><input type="range" id="d-turn" min="1" max="10" step="1" value="1"></div>
+          <div class="demo-out"><span class="mut small" id="d-turn-label">Comparado con invertir en CETES</span><b class="mono" id="d-turn-val">$0</b><span class="small mut" id="d-turn-note"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="ch6">
+    <div class="stick">
+      <div class="wrap panel split">
+        <div>
+          <p class="eyebrow" data-in="0">Futuro</p>
+          <h2 class="big" data-in="0">Tu yo de 65 ya existe.</h2>
+          <p class="lede-l" data-in=".15">Mueve tu plan de ahorro y mira cómo cambia su cara: en paz, a medias o en apuros. Con CETES e inflación reales de México.</p>
+        </div>
+        <div class="future glass" data-in=".2">
+          <svg id="l-avatar" viewBox="0 0 200 220" role="img" aria-label="Tu avatar envejeciendo"></svg>
+          <p class="mono age-tag"><span id="l-age">28</span> años · <span id="l-year">2026</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch last" id="ch7">
+    <div class="stick">
+      <div class="wrap panel">
+        <p class="eyebrow" data-in="0">Gratis para siempre</p>
+        <h2 class="big" data-in="0">Sin registro. Sin bancos. Tus datos no salen de tu teléfono.</h2>
+        <div class="feats" data-in=".15">
+          <div class="glass"><b>Reto diario</b><span>5 preguntas de dinero y derechos, iguales para todo México.</span></div>
+          <div class="glass"><b>Tu tanda, en orden</b><span>Ruleta, calendario y recordatorios para todo el grupo.</span></div>
+          <div class="glass"><b>Funciona sin internet</b><span>Se instala como app desde el navegador.</span></div>
+          <a class="glass" href="empresas.html"><b>Para empresas</b><span>Bienestar financiero para tu gente, con tu marca.</span></a>
+        </div>
+        <div class="actions" data-in=".25"><a class="btn btn-sun big-cta" href="app.html">Abrir Quincy</a></div>
+        <nav class="chips" data-in=".3" aria-label="Calculadoras"><a class="chip-btn" href="aguinaldo/">Aguinaldo 2026</a> <a class="chip-btn" href="finiquito/">Finiquito y liquidación</a> <a class="chip-btn" href="vacaciones/">Vacaciones dignas</a> <a class="chip-btn" href="ptu/">PTU</a> <a class="chip-btn" href="tanda/">Tandas</a> <a class="chip-btn" href="quincena/">Cuánto gastar al día</a></nav>
+        <p class="src" data-in=".3">Herramienta educativa. No es asesoría legal, fiscal ni de inversión.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/core.js"></script>
+<script src="js/ley.js"></script>
+<script src="js/avatar.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>

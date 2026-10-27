@@ -1,0 +1,55 @@
+# Quincy: publica la carpeta quincy/ en GitHub Pages desde la rama gh-pages y avisa a los buscadores.
+# Sitio: https://alexsnri.github.io/README/quincy/
+name: Quincy · publicar
+
+on:
+  push:
+    branches: [main]
+    paths: ["quincy/**", ".github/workflows/quincy-pages.yml"]
+  workflow_run:
+    workflows: ["Quincy · tasas"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quincy-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Armar el sitio (solo quincy/)
+        run: |
+          mkdir -p _site
+          cp -r quincy _site/quincy
+          rm -rf _site/quincy/scripts
+          printf '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=quincy/"><link rel="canonical" href="quincy/"><title>Quincy</title><a href="quincy/">Quincy</a>\n' > _site/index.html
+          touch _site/.nojekyll
+
+      - name: Publicar en la rama gh-pages
+        run: |
+          cd _site
+          git init -q -b gh-pages
+          git config user.name "quincy-bot"
+          git config user.email "quincy-bot@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Publicar Quincy (${GITHUB_SHA::7})"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+
+      - name: Avisar a los buscadores (IndexNow)
+        continue-on-error: true
+        run: |
+          sleep 60
+          URLS=$(grep -o '<loc>[^<]*</loc>' quincy/sitemap.xml | sed 's#</\?loc>##g' | python3 -c "import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
+          curl -sS -o /dev/null -w "IndexNow: %{http_code}\n" -X POST https://api.indexnow.org/indexnow \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{\"host\":\"alexsnri.github.io\",\"key\":\"a47e56b41e4abf5e6d43f62e3de33615\",\"keyLocation\":\"https://alexsnri.github.io/README/quincy/a47e56b41e4abf5e6d43f62e3de33615.txt\",\"urlList\":$URLS}"

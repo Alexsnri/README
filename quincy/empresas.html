@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<!--repo-only-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07121a">
+<link rel="icon" href="img/icon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://alexsnri.github.io/README/quincy/empresas.html">
+<meta property="og:title" content="Quincy para empresas">
+<meta property="og:description" content="Bienestar financiero para tu gente: cuánto les queda cada día y cuánto les toca por ley, con tu marca y sin manejar datos personales.">
+<meta property="og:image" content="https://alexsnri.github.io/README/quincy/img/og.png">
+<!--/repo-only-->
+<title>Quincy para Empresas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Quincy con tu marca para empresas, Afores, cajas de ahorro y universidades: límite de gasto diario, derechos laborales y retiro, sin datos personales en servidores.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/app.css">
+<style>
+/* Layout: a sales page. One column of arguments, numbers in a strip, segments in a grid, an honest "what it is not". */
+.b2b-hero{padding-block:44px 20px;display:grid;gap:16px;max-width:52rem}
+.b2b-hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.04;font-weight:800;letter-spacing:-.03em}
+.b2b-hero h1 em{font-style:normal;color:var(--sun)}
+.b2b-hero p{color:var(--mut);font-size:1.1rem;max-width:42rem}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}
+@media (max-width:820px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.strip div{background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:6px}
+.strip b{font:800 1.6rem/1 var(--f-display);color:var(--sun);font-variant-numeric:tabular-nums}
+.strip span{color:var(--mut);font-size:.88rem}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:820px){.steps{grid-template-columns:minmax(0,1fr)}}
+.steps .card b.n{font:600 .75rem/1 var(--f-data);color:var(--tide);letter-spacing:.12em}
+.steps .card p{color:var(--mut);font-size:.92rem}
+.segs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.segs .card h3{color:var(--sun)}
+.segs .card p{color:var(--mut);font-size:.92rem}
+.segs .card ul{margin:0;padding-left:18px;font-size:.9rem;display:grid;gap:4px}
+pre.code{background:var(--night);border:1px solid var(--line-hi);border-radius:12px;padding:14px;overflow-x:auto;font:500 .8rem/1.5 var(--f-data);color:var(--fg);margin:0;white-space:pre}
+.trust{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.trust li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start}
+.trust svg{width:20px;height:20px;color:var(--ok);margin-top:3px}
+.cta-band{margin-top:40px;padding:26px;border-radius:var(--r);border:1px solid var(--sun);background:linear-gradient(120deg,rgba(255,181,71,.16),rgba(90,214,200,.08));display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.cta-band h2{font-size:1.4rem}
+body{padding-bottom:0}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="./"><i></i><span>quincy<b>.</b></span></a>
+    <span class="mut small" style="margin-left:auto">Para empresas</span>
+    <a class="btn btn-sun btn-sm" href="#contacto">Pedir piloto</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="b2b-hero">
+    <p class="eyebrow">Recursos humanos · Afores · Cajas de ahorro · Universidades</p>
+    <h1>Tu gente llega a fin de quincena <em>con dinero</em>.</h1>
+    <p>Quincy les dice cada día cuánto pueden gastar para llegar a su siguiente pago, cuánto les toca por ley y cómo van para su retiro. Con tu marca, sin instalar nada y sin que tú ni nosotros manejemos sus datos personales.</p>
+    <div class="actions">
+      <a class="btn btn-sun" id="demo" href="app.html?marca=Empresa%20Ejemplo&amp;color=7c5cff&amp;cta=https%3A%2F%2Fwww.gob.mx%2Fconsar&amp;cta_txt=Conoce%20tu%20plan%20de%20ahorro" target="_blank" rel="noopener">Ver demo con marca</a>
+      <a class="btn btn-ghost" href="#contacto">Pedir un piloto gratis</a>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div><b>22.9 M</b><span>puestos de trabajo en el IMSS, septiembre de 2026</span></div>
+    <div><b>41%</b><span>de los adultos guarda su dinero en casa</span></div>
+    <div><b>7.9%</b><span>de quienes tienen Afore hace aportaciones voluntarias</span></div>
+    <div><b>$315.04</b><span>salario mínimo diario 2026</span></div>
+  </div>
+  <p class="small mut" style="margin-top:8px">Fuentes: IMSS (vía México, ¿cómo vamos?), ENIF 2024 (INEGI y CNBV) y CONASAMI.</p>
+
+  <div class="sec-head"><p class="eyebrow">Qué ganas</p><h2>Menos estrés financiero, menos preguntas a nómina</h2></div>
+  <div class="steps">
+    <div class="card"><b class="n">HOY</b><h3>Un límite diario</h3><p>Cada colaborador sabe cuánto puede gastar hoy para llegar a la quincena. Es el número que se revisa todos los días.</p></div>
+    <div class="card"><b class="n">ME TOCA</b><h3>Sus derechos, claros</h3><p>Aguinaldo, vacaciones, prima vacacional y PTU calculados con la ley de 2026. Menos dudas y menos consultas repetidas a recursos humanos.</p></div>
+    <div class="card"><b class="n">TU BOTÓN</b><h3>Tu programa, en el momento justo</h3><p>Tu caja de ahorro, tu plan de pensiones o tu programa de bienestar aparece justo donde la persona decide qué hacer con su dinero.</p></div>
+  </div>
+
+  <div class="sec-head"><p class="eyebrow">Para quién</p><h2>Una herramienta, varios usos</h2></div>
+  <div class="segs">
+    <div class="card"><h3>Empresas</h3><p>Bienestar financiero como prestación.</p><ul><li>Botón a tu caja o plan de ahorro</li><li>Reto diario para compartir en equipo</li><li>Sin datos personales del colaborador</li></ul></div>
+    <div class="card"><h3>Afores</h3><p>Más aportaciones voluntarias.</p><ul><li>Tu botón de aportación en la sección diaria</li><li>El simulador de retiro con tu marca</li><li>Campañas de aguinaldo y quincena</li></ul></div>
+    <div class="card"><h3>Cajas de ahorro y SOFIPOs</h3><p>Ahorro desde la quincena.</p><ul><li>"Págate primero" con tu producto</li><li>Tandas organizadas, con tu producto como siguiente paso</li><li>Tu marca y tu color</li><li>Enlace con la etiqueta de tu campaña</li></ul></div>
+    <div class="card"><h3>Universidades</h3><p>Educación financiera que sí se usa.</p><ul><li>Reto diario para grupos</li><li>Derechos laborales antes del primer empleo</li><li>Funciona en cualquier celular</li></ul></div>
+  </div>
+
+  <div class="sec-head"><p class="eyebrow">Cómo se integra</p><h2>Un enlace. Nada que instalar.</h2></div>
+  <div class="grid-2">
+    <div class="card">
+      <p class="small mut">Tu versión vive en un enlace con tu marca, tu color y tu botón:</p>
+      <pre class="code" id="link-code"></pre>
+      <p class="small mut">O dentro de tu intranet:</p>
+      <pre class="code" id="embed-code"></pre>
+    </div>
+    <div class="card">
+      <h3>Privacidad desde el diseño</h3>
+      <ul class="trust">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>No hay registro ni base de datos de personas. Sueldo, gastos y fechas viven en el teléfono de cada quien.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>La empresa nunca ve cuánto gasta o cuánto calcula cada colaborador.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cálculos con la Ley Federal del Trabajo y fuentes oficiales (CONASAMI, INEGI, Banxico).</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mides el resultado en tu propio sistema: los clics a tu botón llegan con la etiqueta de la campaña.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="cta-band" id="contacto">
+    <div>
+      <h2>Piloto gratis de 90 días</h2>
+      <p class="mut">Para las primeras diez organizaciones, a cambio de compartir resultados agregados.</p>
+    </div>
+    <a class="btn btn-sun" id="contact" href="#" target="_blank" rel="noopener">Solicitar piloto</a>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <p><b>Quincy</b> es una herramienta educativa. No es asesoría legal, fiscal ni de inversión. Las marcas de la demo son ficticias.</p>
+  </div>
+</footer>
+<script src="js/core.js"></script>
+<script>
+(() => {
+  const link = `${FY.CONFIG.SITE}app.html?marca=Tu%20Empresa&color=2f6fed&cta=https%3A%2F%2Ftu-intranet.mx%2Fahorro%3Futm_source%3Dquincy&cta_txt=Inscr%C3%ADbete%20a%20la%20caja%20de%20ahorro`;
+  document.getElementById("link-code").textContent = link;
+  document.getElementById("embed-code").textContent = `<iframe src="${link}"\n  style="width:100%;height:100vh;border:0"\n  title="Quincy"></iframe>`;
+  document.getElementById("contact").href = FY.CONFIG.CONTACT_URL;
+})();
+</script>
+</body>
+</html>
