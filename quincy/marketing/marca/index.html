@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Marca Quincy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a brand sheet. Profile photo first (the thing to download now), then logos on dark and light, colors, type, network images and rules. Single dark theme: Quincy's night palette, chosen on purpose. */
+:root{
+  --night:#07121a; --deep:#0c1d28; --raise:#11283a; --line:#1e3a4a; --line-hi:#2c5468;
+  --fg:#eaf3f4; --mut:#9db4bd; --dim:#668693; --paper:#f3f5f4;
+  --sun:#ffb547; --sun-ink:#1a1206; --tide:#5ad6c8; --ok:#86e3a8; --bad:#ff8574;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--night);color:var(--fg);font:400 16px/1.6 var(--f-body)}
+a{color:var(--tide)}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 72px;display:grid;gap:56px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(1.8rem,4.4vw,2.6rem);line-height:1.08;font-weight:800}
+h2{font-size:1.25rem;font-weight:600}
+h3{font-size:.95rem;font-weight:600}
+p{margin:0}
+.eyebrow{font:600 .72rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--tide)}
+.mut{color:var(--mut)} .small{font-size:.88rem}
+.sec{display:grid;gap:18px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;border-top:1px solid var(--line);padding-top:20px}
+.btn{font:600 .86rem/1 var(--f-body);border-radius:999px;padding:10px 14px;cursor:pointer;border:1px solid var(--line-hi);background:var(--raise);color:var(--fg);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--tide)}
+.btn.sun{background:var(--sun);color:var(--sun-ink);border-color:var(--sun)}
+.btn.done{background:var(--ok);border-color:var(--ok);color:var(--sun-ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hero{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:32px;align-items:center;background:var(--deep);border:1px solid var(--line-hi);border-radius:20px;padding:24px}
+@media (max-width:720px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero img.pp{width:100%;max-width:300px;height:auto;border-radius:50%;display:block;justify-self:center}
+.hero .body{display:grid;gap:14px;min-width:0}
+.sizes{display:flex;gap:14px;align-items:center}
+.sizes img{border-radius:50%;display:block;height:auto}
+.steps{margin:0;padding-left:1.2em;color:var(--mut);font-size:.93rem;display:grid;gap:4px}
+.steps b{color:var(--fg)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:720px){.grid{grid-template-columns:minmax(0,1fr)}}
+.tile{display:grid;grid-template-rows:auto auto;border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0}
+.tile .stage{display:grid;place-items:center;min-height:180px;padding:28px}
+.tile .stage.dark{background:var(--night)}
+.tile .stage.light{background:var(--paper)}
+.tile .stage img{max-width:100%;height:auto;max-height:110px;display:block}
+.tile .foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--deep)}
+.tile .foot b{font-size:.9rem}
+.colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:820px){.colors{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.color{display:grid;grid-template-rows:110px auto;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-width:0}
+.color .chip{display:block}
+.color .info{display:grid;gap:4px;padding:10px 12px;background:var(--deep)}
+.color code{font:600 .85rem/1 var(--f-data);color:var(--tide)}
+.color button{justify-self:start}
+.type{display:grid;gap:12px}
+.font{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:center;background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.font .sample{grid-column:1/-1;overflow-wrap:anywhere}
+.nets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:720px){.nets{grid-template-columns:minmax(0,1fr)}}
+.net{display:grid;gap:10px;background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.net img{width:100%;height:auto;border-radius:8px;display:block}
+.hl{display:flex;flex-wrap:wrap;gap:18px}
+.hl figure{margin:0;display:grid;gap:6px;justify-items:center}
+.hl img{width:96px;height:96px;object-fit:cover;border-radius:50%;border:2px solid var(--line-hi);display:block}
+.hl figcaption{font-size:.82rem;color:var(--mut)}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:720px){.rules{grid-template-columns:minmax(0,1fr)}}
+.rules ul{margin:0;padding-left:1.2em;display:grid;gap:6px;color:var(--mut);font-size:.93rem}
+.rules h3.ok{color:var(--ok)} .rules h3.no{color:var(--bad)}
+.rules > div{display:grid;gap:10px;background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header style="display:grid;gap:14px">
+    <p class="eyebrow">Quincy · Marca</p>
+    <h1>Logo, colores e imágenes</h1>
+    <p class="mut" style="max-width:62ch">Todo lo que necesitas para las cuentas de Instagram, TikTok, Facebook, YouTube, X y LinkedIn. Los archivos se descargan desde el sitio de Quincy.</p>
+    <div class="row"><a class="btn sun" id="zip" target="_blank" rel="noopener">Descargar todo (.zip)</a></div>
+  </header>
+
+  <section class="hero" aria-labelledby="h-pp">
+    <img class="pp" src="perfil-instagram-tiktok.png" alt="Foto de perfil de Quincy: un sol naranja con una órbita turquesa sobre fondo azul noche" width="1080" height="1080">
+    <div class="body">
+      <p class="eyebrow">Foto de perfil</p>
+      <h2 id="h-pp">Para Instagram, TikTok, Facebook y YouTube</h2>
+      <p class="mut">1080 × 1080. El símbolo está centrado para que el recorte circular no lo corte y se reconozca aunque se vea muy chico.</p>
+      <div class="sizes" aria-hidden="true"><img src="perfil-instagram-tiktok.png" width="110" alt=""><img src="perfil-instagram-tiktok.png" width="56" alt=""><img src="perfil-instagram-tiktok.png" width="32" alt=""></div>
+      <ol class="steps">
+        <li>Abre la imagen con el botón y <b>guárdala</b> (en el celular: mantén presionada → Guardar imagen).</li>
+        <li>Instagram → Perfil → <b>Editar perfil → Cambiar foto</b> → elige la imagen.</li>
+        <li>Usa la misma en TikTok, Facebook y YouTube.</li>
+      </ol>
+      <div class="row"><a class="btn sun" data-dl="perfil-instagram-tiktok.png" target="_blank" rel="noopener">Abrir foto de perfil</a></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-logo">
+    <div class="sec-head"><h2 id="h-logo">Logo</h2><span class="small mut">PNG con fondo transparente y SVG (vector, para imprimir o escalar sin perder calidad).</span></div>
+    <div class="grid" id="logos"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-color">
+    <div class="sec-head"><h2 id="h-color">Colores</h2><span class="small mut">Noche y Sol son la marca; Marea es para datos y enlaces.</span></div>
+    <div class="colors" id="colors"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-type">
+    <div class="sec-head"><h2 id="h-type">Tipografía</h2><span class="small mut">Las tres son gratis en Google Fonts.</span></div>
+    <div class="type" id="type"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-nets">
+    <div class="sec-head"><h2 id="h-nets">Portadas</h2><span class="small mut">Cada una con la medida que pide la red.</span></div>
+    <div class="nets" id="nets"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-hl">
+    <div class="sec-head"><h2 id="h-hl">Portadas de historias destacadas</h2><span class="small mut">Instagram → Nueva destacada → Editar portada.</span></div>
+    <div class="hl" id="hl"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-rules">
+    <div class="sec-head"><h2 id="h-rules">Cómo usarla</h2></div>
+    <div class="rules">
+      <div><h3 class="ok">Sí</h3><ul>
+        <li>Logo blanco sobre fondos oscuros; logo azul noche sobre fondos claros.</li>
+        <li>Deja alrededor del logo un espacio libre del alto de la "q".</li>
+        <li>Escribe el nombre en minúsculas y con el punto naranja: quincy.</li>
+        <li>Usa el símbolo solo (sin el nombre) cuando el espacio sea chico.</li>
+      </ul></div>
+      <div><h3 class="no">No</h3><ul>
+        <li>No estires, gires ni cambies los colores del logo.</li>
+        <li>No pongas el logo blanco sobre fondos claros o fotos con mucho detalle.</li>
+        <li>No le agregues sombras, contornos ni efectos.</li>
+        <li>No uses el naranja para textos largos: es solo para acentos y botones.</li>
+      </ul></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const D = {"base": "https://alexsnri.github.io/README/quincy/marketing/marca/", "logos": [{"name": "Logo para fondo oscuro", "f": "logo-fondo-oscuro", "bg": "dark"}, {"name": "Logo para fondo claro", "f": "logo-fondo-claro", "bg": "light"}, {"name": "Nombre para fondo oscuro", "f": "nombre-fondo-oscuro", "bg": "dark"}, {"name": "Nombre para fondo claro", "f": "nombre-fondo-claro", "bg": "light"}, {"name": "Símbolo", "f": "simbolo", "bg": "dark"}, {"name": "Símbolo para fondo claro", "f": "simbolo-fondo-claro", "bg": "light"}, {"name": "Ícono de app", "f": "icono-app", "bg": "light"}, {"name": "Foto de perfil", "f": "perfil", "bg": "light"}], "colors": [{"name": "Noche", "hex": "#07121a", "use": "Fondo principal"}, {"name": "Mar", "hex": "#15404f", "use": "Degradados y tarjetas"}, {"name": "Sol", "hex": "#ffb547", "use": "Acento, botones y el punto del logo"}, {"name": "Marea", "hex": "#5ad6c8", "use": "Datos, enlaces y la órbita"}, {"name": "Niebla", "hex": "#eaf3f4", "use": "Texto sobre fondo oscuro"}], "fonts": [{"name": "Unbounded", "use": "Logo y títulos. Peso 800 (ExtraBold) o 600.", "css": "800 2rem/1.1 Unbounded,sans-serif", "sample": "¿Cuánto te toca?", "link": "https://fonts.google.com/specimen/Unbounded"}, {"name": "Figtree", "use": "Textos y botones. Pesos 400 a 700.", "css": "500 1.15rem/1.5 Figtree,sans-serif", "sample": "Lo que te toca, cuándo te toca y cuánto te queda. Gratis y sin registro.", "link": "https://fonts.google.com/specimen/Figtree"}, {"name": "JetBrains Mono", "use": "Cantidades, fechas y etiquetas.", "css": "600 1.1rem/1.4 'JetBrains Mono',monospace", "sample": "AGUINALDO 2026 · $7,500", "link": "https://fonts.google.com/specimen/JetBrains+Mono"}], "nets": [{"name": "Portada de Facebook", "size": "1640 × 856", "f": "portada-facebook-1640x856.png"}, {"name": "Banner de YouTube", "size": "2560 × 1440", "f": "banner-youtube-2560x1440.png"}, {"name": "Portada de X", "size": "1500 × 500", "f": "portada-x-1500x500.png"}, {"name": "Portada de LinkedIn", "size": "1584 × 396", "f": "portada-linkedin-1584x396.png"}], "highlights": [{"name": "Quincy", "f": "destacada-quincy.png"}, {"name": "Aguinaldo", "f": "destacada-aguinaldo.png"}, {"name": "Finiquito", "f": "destacada-finiquito.png"}, {"name": "Tandas", "f": "destacada-tandas.png"}, {"name": "Quincena", "f": "destacada-quincena.png"}]};
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const url = (path) => D.base + path;
+  const open = (path, txt, main) => `<a class="btn${main ? " sun" : ""}" href="${url(path)}" target="_blank" rel="noopener">${txt} ↗</a>`;
+  $("zip").href = url("quincy-marca.zip");
+  document.querySelectorAll("[data-dl]").forEach((a) => { a.href = url(a.dataset.dl); });
+
+  $("logos").innerHTML = D.logos.map((l) => `<div class="tile"><div class="stage ${l.bg}"><img src="png/${l.f}.png" alt="${esc(l.name)}" loading="lazy"></div>
+    <div class="foot"><b>${esc(l.name)}</b><div class="row">${open("png/" + l.f + ".png", "PNG", true)}${open("svg/" + l.f + ".svg", "SVG")}</div></div></div>`).join("");
+
+  $("colors").innerHTML = D.colors.map((c, i) => `<div class="color"><span class="chip" style="background:${c.hex}"></span>
+    <div class="info"><b>${esc(c.name)}</b><code>${c.hex.toUpperCase()}</code><span class="small mut">${esc(c.use)}</span>
+    <button class="btn" type="button" data-c="${i}">Copiar</button></div></div>`).join("");
+  $("colors").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-c]"); if (!b) return;
+    const t = D.colors[+b.dataset.c].hex.toUpperCase(), old = b.textContent;
+    try { await navigator.clipboard.writeText(t); b.textContent = "Copiado"; } catch (err) { b.textContent = t; }
+    b.classList.add("done"); setTimeout(() => { b.textContent = old; b.classList.remove("done"); }, 1500);
+  });
+
+  $("type").innerHTML = D.fonts.map((f) => `<div class="font"><b>${esc(f.name)}</b>${`<a class="btn" href="${f.link}" target="_blank" rel="noopener">Google Fonts ↗</a>`}
+    <span class="small mut" style="grid-column:1/-1">${esc(f.use)}</span>
+    <span class="sample" style="font:${f.css}">${esc(f.sample)}</span></div>`).join("");
+
+  $("nets").innerHTML = D.nets.map((n) => `<div class="net"><img src="redes/${n.f}" alt="${esc(n.name)}" loading="lazy"><div class="row" style="justify-content:space-between"><span><b>${esc(n.name)}</b> <span class="small mut">${esc(n.size)}</span></span>${open("redes/" + n.f, "Abrir", true)}</div></div>`).join("");
+
+  $("hl").innerHTML = D.highlights.map((h) => `<figure><a href="${url("redes/" + h.f)}" target="_blank" rel="noopener"><img src="redes/${h.f}" alt="Portada destacada ${esc(h.name)}" loading="lazy"></a><figcaption>${esc(h.name)}</figcaption></figure>`).join("");
+})();
+</script>
+
+</body>
+</html>

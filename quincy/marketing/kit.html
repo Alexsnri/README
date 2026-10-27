@@ -167,7 +167,7 @@ p{margin:0}
     toAg >= 0 ? [toAg, "días para el límite del aguinaldo (19 dic)"] : ["✓", "ya pasó el aguinaldo"],
     [D.feed.length + D.stories.length + D.reels.length, "piezas listas"],
   ].map(([b, s]) => `<div class="stat"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("");
-  $("links").innerHTML = [["Sitio", ""], ["App", "app.html"], ["Aguinaldo", "aguinaldo/"], ["Finiquito", "finiquito/"], ["Tandas", "tanda/"], ["Quincena", "quincena/"], ["Empresas", "empresas.html"]]
+  $("links").innerHTML = [["Sitio", ""], ["App", "app.html"], ["Aguinaldo", "aguinaldo/"], ["Finiquito", "finiquito/"], ["Tandas", "tanda/"], ["Quincena", "quincena/"], ["Empresas", "empresas.html"], ["Marca y logos", "marketing/marca/"], ["Guía", "marketing/guia.html"]]
     .map(([t, p]) => `<a class="chip" href="${D.site + p}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 
   // Next post
