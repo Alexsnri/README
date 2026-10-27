@@ -11,18 +11,21 @@
 - Enlaces de tanda: cuando alguien manda su tanda al grupo de WhatsApp, cada miembro abre Quincy.
 - Tasas de CETES actualizadas cada semana con GitHub Actions (necesita el secreto `BANXICO_TOKEN`).
 
-**Lo que necesita a una persona** (ninguna red social permite publicar sola sin una cuenta y sin un token):
+- Robot de Instagram (GitHub Actions): publica 15 posts, 22 historias y 8 reels del 2 de noviembre al 18 de diciembre, a la 1:30 p. m. y a las 8 p. m. (`.github/workflows/quincy-social.yml`, calendario en `marketing/social/schedule.json`).
 
-1. Crear las cuentas @quincy (o @quincy.mx o @quincyapp) en TikTok, Instagram y Facebook.
-2. Dar de alta el sitio en Google Search Console y enviar `sitemap.xml` (5 minutos).
-3. Publicar según `calendario-30-dias.md`, con los textos de `posts.md`.
+**Lo que necesita a una persona** (unos 45 minutos, una vez; detalle en `marketing/guia.html`):
+
+1. Crear la cuenta de Instagram, hacerla profesional y conectar el robot con un token (secreto `INSTAGRAM_TOKEN`).
+2. Crear la cuenta de TikTok y programar los 8 reels en 3 ratos desde TikTok Studio. TikTok no deja publicar en público con apps sin auditar.
+3. Dar de alta el sitio en Google Search Console y enviar `sitemap.xml`.
+4. Mandar los mensajes de WhatsApp el día 1 y publicar en Reddit el día 2.
 
 ## Canales y orden
 
 | Orden | Canal | Acción | Costo |
 |---|---|---|---|
 | 1 | WhatsApp | Mandar la calculadora de aguinaldo a 10 contactos y 3 grupos de trabajo (mensaje abajo). | $0 |
-| 2 | TikTok, Reels y Shorts | Video vertical + 1 video por semana con los ganchos de `posts.md`. | $0 |
+| 2 | Instagram (robot), TikTok y Shorts | 8 reels con gancho escrito; Instagram se publica solo, TikTok y YouTube se programan. | $0 |
 | 3 | Instagram y Facebook | 12 posts y 5 historias (`posts/`, `stories/`). | $0 |
 | 4 | Reddit | r/MexicoFinanciero y r/mexico (texto abajo). | $0 |
 | 5 | Grupos de Facebook de tandas y ahorro | La página /tanda/ y la ruleta. | $0 |
@@ -98,6 +101,7 @@ Asunto: App gratuita calcula aguinaldo, finiquito y qué número de la tanda con
 - **Name:** Quincy
 - **Tagline:** Know what you're owed, when you get it and what you can spend today
 - **Description:** Quincy is a free, no-signup money app for Mexican workers. It turns labor law into numbers (year-end bonus, vacation, profit sharing, severance) and gives you one number a day: how much you can spend until your next payday. It also runs rotating savings circles ("tandas") with a fair wheel draw, a shared calendar and the real cost of each turn. Your data never leaves your phone.
+- **Media:** use `video/reel-01-app-aguinaldo.mp4` and the feed images.
 - **First comment:** Why I built it, what's next (an employer edition as an employee benefit) and a request for feedback on the calculations.
 
 ## LinkedIn (recursos humanos)

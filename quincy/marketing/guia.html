@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Guía de publicación Quincy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a checklist you work through once, in order. Progress at the top, then parts A–F, each step with its time, a direct link and copy buttons. Single dark theme: Quincy's night palette, chosen on purpose. */
+:root{
+  --night:#07121a; --deep:#0c1d28; --raise:#11283a; --line:#1e3a4a; --line-hi:#2c5468;
+  --fg:#eaf3f4; --mut:#9db4bd; --dim:#668693;
+  --sun:#ffb547; --sun-ink:#1a1206; --tide:#5ad6c8; --ok:#86e3a8;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--night);color:var(--fg);font:400 16px/1.6 var(--f-body)}
+a{color:var(--tide)}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 72px;display:grid;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(1.8rem,4.4vw,2.6rem);line-height:1.08;font-weight:800}
+h1 b{color:var(--sun);font-weight:800}
+h2{font-size:1.2rem;font-weight:600}
+p{margin:0}
+.eyebrow{font:600 .72rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--tide)}
+.mut{color:var(--mut)}
+.small{font-size:.88rem}
+.head{display:grid;gap:14px}
+.lede{max-width:62ch;color:var(--mut);font-size:1.05rem}
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--night);padding-block:10px;display:grid;gap:8px;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--night)}
+.bar{height:8px;border-radius:99px;background:var(--raise);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--tide),var(--sun));transition:width .3s}
+.progress span{font:600 .8rem/1 var(--f-data);color:var(--mut);font-variant-numeric:tabular-nums}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.summary{grid-template-columns:minmax(0,1fr)}}
+.summary div{background:var(--deep);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px;min-width:0}
+.summary b{font:600 .72rem/1 var(--f-data);letter-spacing:.1em;text-transform:uppercase}
+.summary .ok b{color:var(--ok)} .summary .mid b{color:var(--sun)} .summary .no b{color:var(--mut)}
+.summary p{font-size:.88rem;color:var(--mut)}
+.part{display:grid;gap:14px}
+.part-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 14px;border-top:1px solid var(--line);padding-top:18px}
+.part-head .t{font:500 .8rem/1 var(--f-data);color:var(--dim)}
+.part > p{color:var(--mut);max-width:65ch}
+ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.step{background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 12px}
+.step.done{opacity:.6}
+.step input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--tide);cursor:pointer}
+.step .body{display:grid;gap:8px;min-width:0}
+.step label{font-weight:600;cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.step label .n{font:600 .78rem/1 var(--f-data);color:var(--sun)}
+.step label .time{font:500 .75rem/1 var(--f-data);color:var(--dim);margin-left:auto}
+.step.done label span.txt{text-decoration:line-through}
+.step ul,.step ol{margin:0;padding-left:1.2em;color:var(--mut);font-size:.93rem;display:grid;gap:3px}
+.step p{color:var(--mut);font-size:.93rem}
+.step b{color:var(--fg)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:600 .84rem/1 var(--f-body);border-radius:999px;padding:9px 13px;cursor:pointer;border:1px solid var(--line-hi);background:var(--raise);color:var(--fg);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--tide)}
+.btn.sun{background:var(--sun);color:var(--sun-ink);border-color:var(--sun)}
+.btn.done{background:var(--ok);border-color:var(--ok);color:var(--sun-ink)}
+code,.code{font-family:var(--f-data);font-size:.85em;background:var(--night);border:1px solid var(--line);border-radius:6px;padding:2px 6px;color:var(--fg);overflow-wrap:anywhere}
+.note{font-size:.85rem;color:var(--dim)}
+.warn{border-left:3px solid var(--sun);padding:8px 12px;background:var(--night);border-radius:8px;font-size:.9rem;color:var(--mut)}
+.vids{display:grid;gap:8px}
+.vid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;align-items:center;background:var(--night);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.vid .w{font:600 .78rem/1.2 var(--f-data);color:var(--sun)}
+.vid .h{font-size:.92rem}
+.vid .row{grid-column:1/-1}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <p class="eyebrow">Quincy · Guía paso a paso</p>
+    <h1>Lo que tienes que hacer tú, <b>en orden</b></h1>
+    <p class="lede">Unos 45 minutos en total, una sola vez. Después, Instagram se publica solo hasta el 18 de diciembre y TikTok solo necesita 3 ratos de 10 minutos.</p>
+    <div class="summary">
+      <div class="ok"><b>Ya funciona solo</b><p>Sitio, app, calculadoras, aviso a buscadores, tasas y el robot que publica en Instagram.</p></div>
+      <div class="mid"><b>Necesita tu cuenta</b><p>Crear las cuentas y conectar el robot. Ninguna red deja hacerlo sin el dueño.</p></div>
+      <div class="no"><b>No se puede automatizar</b><p>TikTok solo publica en público con apps auditadas; se programa a mano desde TikTok Studio.</p></div>
+    </div>
+  </header>
+
+  <div class="progress" aria-live="polite"><div class="bar"><i id="bar"></i></div><span id="count"></span></div>
+
+  <div id="parts"></div>
+
+  <p class="note">Las pantallas de Meta, TikTok y GitHub cambian seguido: si un botón tiene otro nombre, busca el más parecido. Tu avance se guarda en este navegador.</p>
+</main>
+
+<script>
+(() => {
+  const D = {"site": "https://alexsnri.github.io/README/quincy/", "reels": [{"id": "01-app-aguinaldo", "file": "video/reel-01-app-aguinaldo.mp4", "date": "2026-11-02", "when": "lunes 2 de noviembre", "hook": "POV: encontraste la app que te dice cuánto te toca de aguinaldo", "caption": "POV: encontraste la app que te dice cuánto te toca de aguinaldo, cuánto puedes gastar hoy y qué número de la tanda te conviene 👀\nGratis y sin registro. Link en bio.\n\n#aguinaldo #quincena #finanzaspersonales #derechoslaborales #mexico"}, {"id": "02-si-renuncias", "file": "video/reel-02-si-renuncias.mp4", "date": "2026-11-06", "when": "viernes 6 de noviembre", "hook": "¿Vas a renunciar? Esto te tienen que pagar", "caption": "¿Vas a renunciar? Antes de firmar, calcula tu finiquito: días trabajados, aguinaldo proporcional, vacaciones y prima vacacional.\nGratis en Quincy, link en bio.\n\n#finiquito #renuncia #derechoslaborales #trabajo #mexico"}, {"id": "03-calcula-aguinaldo", "file": "video/reel-03-calcula-aguinaldo.mp4", "date": "2026-11-11", "when": "miércoles 11 de noviembre", "hook": "¿Cuánto te toca de aguinaldo? Te lo digo en 10 segundos", "caption": "¿Cuánto te toca de aguinaldo? Pones tu sueldo y tu fecha de ingreso y listo. Te lo tienen que pagar antes del 20 de diciembre.\nCalcúlalo gratis, link en bio.\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #mexico"}, {"id": "04-numero-tanda", "file": "video/reel-04-numero-tanda.mp4", "date": "2026-11-13", "when": "viernes 13 de noviembre", "hook": "El número 1 de la tanda gana dinero. El último pierde.", "caption": "¿Pides el número 1 o el último de la tanda? 🤔\nEl 1 recibe un préstamo sin intereses; el último ahorra sin rendimiento. Quincy te dice cuánto gana o pierde cada número frente a CETES.\nLink en bio.\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"}, {"id": "05-si-te-despiden", "file": "video/reel-05-si-te-despiden.mp4", "date": "2026-11-19", "when": "jueves 19 de noviembre", "hook": "Si te despiden, esto es lo mínimo que te tienen que dar", "caption": "Si te despiden sin causa: 3 meses de salario integrado + 12 días por año de prima de antigüedad + tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.\nCalcula la tuya, link en bio.\n\n#liquidacion #despido #PROFEDET #derechoslaborales #mexico"}, {"id": "06-ruleta-tanda", "file": "video/reel-06-ruleta-tanda.mp4", "date": "2026-11-21", "when": "sábado 21 de noviembre", "hook": "Se acabaron los pleitos por el número de la tanda", "caption": "Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo de WhatsApp.\nGratis, link en bio.\n\n#tanda #ahorro #whatsapp #familia #mexico"}, {"id": "07-hoy-puedes-gastar", "file": "video/reel-07-hoy-puedes-gastar.mp4", "date": "2026-11-25", "when": "miércoles 25 de noviembre", "hook": "La app que me dice cuánto puedo gastar hoy", "caption": "La app que me dice cuánto puedo gastar hoy para llegar a la quincena. Si hoy gasto menos, mañana tengo más.\nSin conectar tu banco. Link en bio.\n\n#quincena #presupuesto #ahorro #finanzaspersonales #mexico"}, {"id": "08-faltan-dias-aguinaldo", "file": "video/reel-08-faltan-dias-aguinaldo.mp4", "date": "2026-12-01", "when": "martes 1 de diciembre", "hook": "Faltan 18 días para el aguinaldo. ¿Ya sabes cuánto te toca?", "caption": "Faltan 18 días para el límite del aguinaldo (19 de diciembre). ¿Ya sabes cuánto te toca? Calcúlalo en 10 segundos, link en bio.\n\n#aguinaldo #aguinaldo2026 #quincena #mexico"}], "batches": [{"day": "antes del domingo 1 de noviembre", "reels": [0, 1]}, {"day": "martes 10 de noviembre", "reels": [2, 3, 4]}, {"day": "sábado 21 de noviembre, temprano", "reels": [5, 6, 7]}]};
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const link = (href, txt) => `<a class="btn" href="${href}" target="_blank" rel="noopener">${txt} ↗</a>`;
+  const copyBtn = (key, txt, main) => `<button class="btn${main ? " sun" : ""}" type="button" data-copy="${key}">${txt}</button>`;
+  const COPY = {
+    bio: "Lo que te toca, cuándo te toca y cuánto te queda 💸\nAguinaldo · finiquito · tandas · tu límite diario\nGratis y sin registro 👇",
+    site: D.site,
+    secret: "INSTAGRAM_TOKEN",
+    piece: "fijado-feed-12-quincy",
+  };
+  D.reels.forEach((r, i) => { COPY["r" + i] = r.caption; });
+
+  const PARTS = [
+    { id: "A", title: "Instagram: crea la cuenta", time: "10 min", intro: "La cuenta tiene que ser profesional para que el robot pueda publicar.", steps: [
+      { t: "Crea la cuenta de Instagram", time: "3 min", html: `<p>Usa un correo nuevo o el tuyo. Nombres sugeridos, por si <b>@quincy</b> está ocupado: <code>quincy.mx</code>, <code>quincyapp</code>, <code>somosquincy</code>.</p><div class="row">${link("https://www.instagram.com/accounts/emailsignup/", "Crear cuenta")}</div>` },
+      { t: "Cámbiala a cuenta profesional", time: "2 min", html: `<ol><li>Perfil → menú ☰ → <b>Tipo de cuenta y herramientas</b> (o "Para profesionales").</li><li><b>Cambiar a cuenta profesional</b> → categoría <b>Servicios financieros</b> o <b>App</b> → tipo <b>Empresa</b>.</li><li>Cuando pregunte por Facebook, puedes omitirlo.</li></ol>` },
+      { t: "Pon la foto, la bio y el enlace", time: "4 min", html: `<ol><li>Foto de perfil: abre el logo, guárdalo y súbelo.</li><li>Editar perfil → <b>Presentación</b>: pega la bio.</li><li>Editar perfil → <b>Enlaces</b> → Agregar enlace externo: pega el enlace del sitio.</li></ol><div class="row">${link(D.site + "img/icon-512.png", "Logo")}${copyBtn("bio", "Copiar bio", true)}${copyBtn("site", "Copiar enlace")}</div>` },
+    ]},
+    { id: "B", title: "Instagram: conecta el robot", time: "15 min", intro: "Una sola vez. Meta permite que una app tuya publique en tu propia cuenta sin revisión. El token dura 60 días: alcanza para toda la campaña.", steps: [
+      { t: "Crea una app en Meta para desarrolladores", time: "5 min", html: `<ol><li>Entra con tu Facebook (si no tienes, crea uno) y acepta ser desarrollador si te lo pide.</li><li><b>Crear app</b> → nombre: <code>Quincy Publicador</code>.</li><li>Caso de uso: <b>Administrar mensajes y contenido en Instagram</b> (Manage messaging &amp; content on Instagram).</li><li>Si pide portafolio comercial: elige <b>todavía no quiero conectar uno</b>. Luego <b>Crear app</b>.</li></ol><div class="row">${link("https://developers.facebook.com/apps/creation/", "Crear app en Meta")}</div>` },
+      { t: "Genera el token de Instagram", time: "4 min", html: `<ol><li>En tu app: <b>Casos de uso</b> → Personalizar → <b>Configuración de la API con inicio de sesión de Instagram</b> (API setup with Instagram login).</li><li>Sección <b>Generar tokens de acceso</b> → <b>Agregar cuenta</b> → inicia sesión con la cuenta de Quincy y acepta.</li><li>Junto a la cuenta aparece <b>Generar token</b>: cópialo (empieza con <code>IG</code>).</li></ol><p class="warn">Si te pide agregar la cuenta como "evaluador de Instagram": en la app, <b>Roles de la app → Roles → Agregar personas → Evaluador de Instagram</b> con tu usuario. Luego en Instagram (web): Configuración → <b>Apps y sitios web → Invitaciones de evaluador</b> → Aceptar. Vuelve a generar el token.</p><p class="note">El token es como una contraseña: no lo mandes por chat ni lo pegues en otro lado.</p>` },
+      { t: "Guarda el token en GitHub", time: "2 min", html: `<ol><li>Abre la página de secretos del repositorio.</li><li>Name: <code>INSTAGRAM_TOKEN</code>. Secret: pega el token.</li><li><b>Add secret</b>.</li></ol><div class="row">${link("https://github.com/Alexsnri/README/settings/secrets/actions/new", "Nuevo secreto")}${copyBtn("secret", "Copiar nombre", true)}</div>` },
+      { t: "Prueba la conexión", time: "2 min", html: `<ol><li>Abre el robot → <b>Run workflow</b> → acción <code>probar</code> → <b>Run workflow</b>.</li><li>Espera un minuto: si sale ✅ verde, abre la corrida y verás "Conectado a @tu_cuenta".</li><li>Si sale ❌ rojo, abre la corrida: el mensaje dice qué falta (casi siempre, volver a generar el token).</li></ol><div class="row">${link("https://github.com/Alexsnri/README/actions/workflows/quincy-social.yml", "Abrir el robot")}</div>` },
+      { t: "Publica el post de presentación y fíjalo", time: "2 min", html: `<ol><li>Mismo botón: <b>Run workflow</b> → acción <code>ahora</code> → pieza <code>fijado-feed-12-quincy</code> → Run.</li><li>En Instagram, en ese post: <b>⋯ → Fijar en tu perfil</b>.</li></ol><p>Listo: desde el <b>lunes 2 de noviembre</b> el robot publica solo a la 1:30 p. m. (posts e historias) y a las 8 p. m. (reels), hasta el 18 de diciembre.</p><div class="row">${copyBtn("piece", "Copiar pieza", true)}</div>` },
+    ]},
+    { id: "C", title: "TikTok: cuenta y 3 ratos de programación", time: "10 min + 3 × 10 min", intro: "TikTok solo deja publicar en público a apps auditadas, así que aquí programas tú. Desde la computadora se puede programar hasta 10 días antes, por eso son 3 ratos.", steps: [
+      { t: "Crea la cuenta de TikTok y cámbiala a cuenta de empresa", time: "6 min", html: `<ol><li>Crea la cuenta con el mismo nombre que en Instagram.</li><li>Perfil → ☰ → <b>Configuración y privacidad → Cuenta → Cambiar a cuenta de empresa</b> (necesario para programar).</li><li>Editar perfil: misma foto y bio. Agrega el enlace si TikTok te deja; si no, escribe el enlace en la bio.</li></ol><div class="row">${link("https://www.tiktok.com/signup", "Crear cuenta")}${copyBtn("bio", "Copiar bio")}${copyBtn("site", "Copiar enlace")}</div>` },
+      ...D.batches.map((b, bi) => ({ t: `Rato ${bi + 1} (${b.day}): programa ${b.reels.length} video${b.reels.length > 1 ? "s" : ""}`, time: "10 min", html: `<ol><li>En la computadora abre TikTok Studio → <b>Subir</b>.</li><li>Por cada video: descárgalo, súbelo, pega su texto, activa <b>Programar</b> y pon la fecha a las 8:00 p. m.</li></ol><div class="vids">${b.reels.map((i) => { const r = D.reels[i]; return `<div class="vid"><span class="w">${esc(r.when)}</span><span class="h">${esc(r.hook)}</span><div class="row">${link(D.site + "marketing/" + r.file, "Video")}${copyBtn("r" + i, "Copiar texto", true)}</div></div>`; }).join("")}</div><div class="row">${link("https://www.tiktok.com/tiktokstudio/upload", "Abrir TikTok Studio")}</div>` })),
+    ]},
+    { id: "D", title: "YouTube Shorts (opcional)", time: "15 min", intro: "Los mismos 8 videos. YouTube deja programar todos de una vez.", steps: [
+      { t: "Sube y programa los 8 reels como Shorts", time: "15 min", html: `<ol><li>YouTube Studio → <b>Crear → Subir videos</b> → selecciona los 8 archivos.</li><li>Por cada uno: pega el texto, en Visibilidad elige <b>Programar</b> con su fecha a las 8:00 p. m.</li></ol><div class="row">${link("https://studio.youtube.com", "YouTube Studio")}${link(D.site + "marketing/kit.html", "Videos y textos en el kit")}</div>` },
+    ]},
+    { id: "E", title: "Google y lanzamiento", time: "20 min", intro: "Lo que hace que la gente llegue desde el primer día.", steps: [
+      { t: "Da de alta el sitio en Google Search Console", time: "5 min", html: `<ol><li>Agregar propiedad → <b>Prefijo de URL</b> → pega el enlace del sitio.</li><li>Verificación: elige <b>Etiqueta HTML</b>, copia solo el código que va en <code>content="..."</code> y pásamelo: yo lo agrego al sitio.</li><li>Después: <b>Sitemaps</b> → escribe <code>sitemap.xml</code> → Enviar.</li></ol><div class="row">${link("https://search.google.com/search-console", "Search Console")}${copyBtn("site", "Copiar enlace")}</div>` },
+      { t: "Lunes 2 de noviembre: manda el mensaje de aguinaldo por WhatsApp", time: "10 min", html: `<p>A 10 contactos y 3 grupos de trabajo. Los mensajes están listos en el kit.</p><div class="row">${link(D.site + "marketing/kit.html#h-msgs", "Mensajes listos")}</div>` },
+      { t: "Martes 3 de noviembre: publica en Reddit", time: "5 min", html: `<p>En r/MexicoFinanciero, con el texto del kit. Responde los comentarios ese día.</p><div class="row">${link("https://www.reddit.com/r/MexicoFinanciero/submit", "Publicar en Reddit")}</div>` },
+    ]},
+    { id: "F", title: "Cuando puedas", time: "30 min", intro: "No bloquean el lanzamiento.", steps: [
+      { t: "Cada día: contesta comentarios y mensajes", time: "5 min al día", html: `<p>Es lo único que el robot no hace. Si alguien pregunta por su caso, mándale el enlace de la calculadora; para conflictos laborales, PROFEDET (gratis).</p>` },
+      { t: "Mide visitas con Cloudflare Web Analytics (gratis)", time: "5 min", html: `<p>Crea el sitio, copia el token y pásamelo: yo lo pongo en la app.</p><div class="row">${link("https://dash.cloudflare.com/sign-up/web-analytics", "Cloudflare")}</div>` },
+      { t: "Activa la tasa de CETES automática", time: "5 min", html: `<p>Pide un token gratis de Banxico y guárdalo como secreto <code>BANXICO_TOKEN</code> (igual que el de Instagram).</p><div class="row">${link("https://www.banxico.org.mx/SieAPIRest/service/v1/token", "Token de Banxico")}${link("https://github.com/Alexsnri/README/settings/secrets/actions/new", "Nuevo secreto")}</div>` },
+      { t: "Revisa la marca \"Quincy\" en el IMPI", time: "15 min", html: `<p>Busca en las clases 9 (software) y 36 (servicios financieros) antes de invertir en la marca.</p><div class="row">${link("https://marcia.impi.gob.mx/marcas/search/quick", "Buscar en el IMPI")}</div>` },
+      { t: "Antes del 26 de diciembre: renueva el token de Instagram", time: "3 min", html: `<p>Repite los pasos B2 y B3 (generar token y reemplazar el secreto). Pon un recordatorio en tu calendario.</p>` },
+    ]},
+  ];
+
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem("qc-guia") || "{}"); } catch (e) {}
+  let total = 0;
+  $("parts").innerHTML = PARTS.map((P) => `<section class="part" aria-labelledby="p-${P.id}">
+    <div class="part-head"><h2 id="p-${P.id}">${P.id} · ${esc(P.title)}</h2><span class="t">${esc(P.time)}</span></div>
+    <p>${esc(P.intro)}</p>
+    <ol class="steps">${P.steps.map((s, i) => { total++; const k = P.id + (i + 1); return `<li class="step${done[k] ? " done" : ""}" id="s-${k}">
+      <input type="checkbox" id="c-${k}" data-k="${k}" ${done[k] ? "checked" : ""}>
+      <div class="body"><label for="c-${k}"><span class="n">${k}</span><span class="txt">${esc(s.t)}</span><span class="time">${esc(s.time)}</span></label>${s.html}</div></li>`; }).join("")}</ol>
+  </section>`).join("");
+
+  function progress() {
+    const n = Object.values(done).filter(Boolean).length;
+    $("bar").style.width = (100 * n / total) + "%";
+    $("count").textContent = `${n} de ${total} pasos`;
+  }
+  progress();
+  $("parts").addEventListener("change", (e) => {
+    const k = e.target.dataset.k; if (!k) return;
+    done[k] = e.target.checked; $("s-" + k).classList.toggle("done", e.target.checked);
+    try { localStorage.setItem("qc-guia", JSON.stringify(done)); } catch (_) {}
+    progress();
+  });
+  $("parts").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-copy]"); if (!b) return;
+    const text = COPY[b.dataset.copy], old = b.textContent;
+    try { await navigator.clipboard.writeText(text); b.textContent = "Copiado"; }
+    catch (err) {
+      const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand("copy"); } catch (_) {}
+      ta.remove(); b.textContent = ok ? "Copiado" : "Selecciona y copia";
+    }
+    b.classList.add("done"); setTimeout(() => { b.textContent = old; b.classList.remove("done"); }, 1600);
+  });
+})();
+</script>
+
+</body>
+</html>

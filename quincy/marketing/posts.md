@@ -4,7 +4,7 @@ Todo está en esta carpeta: imagen, texto y fecha. Solo copia, pega y publica.
 
 - **Feed (1080×1350):** `posts/`, para Instagram, Facebook, LinkedIn y Threads.
 - **Historias (1080×1920):** `stories/`, para Instagram, Facebook y WhatsApp Estados.
-- **Video vertical (32 s):** `video/quincy-landing-vertical.mp4`, para TikTok, Reels y Shorts.
+- **Reels (8 videos verticales):** `video/`, para Instagram, TikTok y YouTube Shorts. El robot los sube solos a Instagram; para TikTok y YouTube sigue `guia.html`.
 
 Enlace general: https://alexsnri.github.io/README/quincy/
 
@@ -152,7 +152,7 @@ Enlace: /quincena/
 
 ## Historias
 
-Todas se generan desde la app, así que cualquier persona puede crear la suya. Agrega el sticker de enlace con la URL que se indica.
+Todas se generan desde la app, así que cualquier persona puede crear la suya. El robot las sube a Instagram en su fecha, pero sin sticker de enlace (la API de Instagram no lo permite). Si quieres el sticker, súbela tú desde la app con la URL indicada.
 
 | Archivo | Cuándo | Sticker de enlace | Texto sugerido |
 |---|---|---|---|
@@ -164,21 +164,66 @@ Todas se generan desde la app, así que cualquier persona puede crear la suya. A
 
 ---
 
-## Video vertical · `video/quincy-landing-vertical.mp4`
+## Reels (Instagram, TikTok y YouTube Shorts)
 
-Úsalo el día de lanzamiento y repítelo cada 10 días con otro gancho en el texto.
+Cada reel trae el gancho escrito en los primeros segundos y cierra con la marca. El robot los publica en Instagram a las 8 p. m.; en TikTok y YouTube se programan con la guía.
 
-**TikTok / Reels / Shorts**
+<!-- reels:start (generado por scripts/build_social.py) -->
 
-> POV: encontraste una app que te dice cuánto te toca de aguinaldo, cuánto puedes gastar hoy y en qué número de la tanda te conviene estar 👀
+### R1 · POV: encontraste la app que te dice cuánto te toca de aguinaldo · `video/reel-01-app-aguinaldo.mp4` · lunes 2 de noviembre
+
+> POV: encontraste la app que te dice cuánto te toca de aguinaldo, cuánto puedes gastar hoy y qué número de la tanda te conviene 👀
 > Gratis y sin registro. Link en bio.
 >
-> #aguinaldo #quincena #tanda #finanzaspersonales #fyp #mexico
+> #aguinaldo #quincena #finanzaspersonales #derechoslaborales #mexico
 
-Ganchos para los primeros 2 segundos (texto en pantalla):
+### R2 · ¿Vas a renunciar? Esto te tienen que pagar · `video/reel-02-si-renuncias.mp4` · viernes 6 de noviembre
 
-1. "Tu patrón no quiere que sepas esto"
-2. "¿Cuánto te toca de aguinaldo? Te lo digo en 10 segundos"
-3. "El número 1 de la tanda gana dinero. El último pierde."
-4. "Si te despiden, esto es lo mínimo que te tienen que dar"
-5. "La app que me dice cuánto puedo gastar hoy"
+> ¿Vas a renunciar? Antes de firmar, calcula tu finiquito: días trabajados, aguinaldo proporcional, vacaciones y prima vacacional.
+> Gratis en Quincy, link en bio.
+>
+> #finiquito #renuncia #derechoslaborales #trabajo #mexico
+
+### R3 · ¿Cuánto te toca de aguinaldo? Te lo digo en 10 segundos · `video/reel-03-calcula-aguinaldo.mp4` · miércoles 11 de noviembre
+
+> ¿Cuánto te toca de aguinaldo? Pones tu sueldo y tu fecha de ingreso y listo. Te lo tienen que pagar antes del 20 de diciembre.
+> Calcúlalo gratis, link en bio.
+>
+> #aguinaldo #aguinaldo2026 #finanzaspersonales #mexico
+
+### R4 · El número 1 de la tanda gana dinero. El último pierde. · `video/reel-04-numero-tanda.mp4` · viernes 13 de noviembre
+
+> ¿Pides el número 1 o el último de la tanda? 🤔
+> El 1 recibe un préstamo sin intereses; el último ahorra sin rendimiento. Quincy te dice cuánto gana o pierde cada número frente a CETES.
+> Link en bio.
+>
+> #tanda #ahorro #CETES #finanzaspersonales #mexico
+
+### R5 · Si te despiden, esto es lo mínimo que te tienen que dar · `video/reel-05-si-te-despiden.mp4` · jueves 19 de noviembre
+
+> Si te despiden sin causa: 3 meses de salario integrado + 12 días por año de prima de antigüedad + tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.
+> Calcula la tuya, link en bio.
+>
+> #liquidacion #despido #PROFEDET #derechoslaborales #mexico
+
+### R6 · Se acabaron los pleitos por el número de la tanda · `video/reel-06-ruleta-tanda.mp4` · sábado 21 de noviembre
+
+> Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo de WhatsApp.
+> Gratis, link en bio.
+>
+> #tanda #ahorro #whatsapp #familia #mexico
+
+### R7 · La app que me dice cuánto puedo gastar hoy · `video/reel-07-hoy-puedes-gastar.mp4` · miércoles 25 de noviembre
+
+> La app que me dice cuánto puedo gastar hoy para llegar a la quincena. Si hoy gasto menos, mañana tengo más.
+> Sin conectar tu banco. Link en bio.
+>
+> #quincena #presupuesto #ahorro #finanzaspersonales #mexico
+
+### R8 · Faltan 18 días para el aguinaldo. ¿Ya sabes cuánto te toca? · `video/reel-08-faltan-dias-aguinaldo.mp4` · martes 1 de diciembre
+
+> Faltan 18 días para el límite del aguinaldo (19 de diciembre). ¿Ya sabes cuánto te toca? Calcúlalo en 10 segundos, link en bio.
+>
+> #aguinaldo #aguinaldo2026 #quincena #mexico
+
+<!-- reels:end -->

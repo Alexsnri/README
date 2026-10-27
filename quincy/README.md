@@ -13,7 +13,7 @@ Lo que te toca, cuándo te toca y cuánto te queda. Una app web gratis para trab
 | `aguinaldo/`, `finiquito/`, `vacaciones/`, `ptu/`, `tanda/`, `quincena/` | Páginas de búsqueda con calculadora, artículo y preguntas frecuentes. Se generan con `scripts/build_seo.py`. |
 | `empresas.html` | Página de ventas para empresas e instituciones. |
 | `plan.html` | Plan de negocio (no se indexa). |
-| `marketing/` | Kit de lanzamiento (`marketing/kit.html`): 12 posts, 5 historias, video vertical, textos (`posts.md`), calendario de 30 días y plan de lanzamiento. |
+| `marketing/` | Kit de lanzamiento (`marketing/kit.html`), guía paso a paso (`marketing/guia.html`), 8 reels, imágenes para Instagram (`ig/`), 12 posts, 5 historias, video vertical, textos (`posts.md`), calendario de 30 días y plan de lanzamiento. |
 
 ## Código
 
@@ -55,6 +55,7 @@ https://alexsnri.github.io/README/quincy/app.html?marca=Tu%20Empresa&color=2f6fe
 ## Automatizaciones
 
 - `.github/workflows/quincy-pages.yml` publica `quincy/` en la rama `gh-pages` en cada cambio y avisa a los buscadores con IndexNow (la llave es `a47e56b41e4abf5e6d43f62e3de33615.txt`). Si el sitio no abre, en Settings → Pages elige "Deploy from a branch" → `gh-pages`.
+- `.github/workflows/quincy-social.yml` publica en Instagram lo que marca `marketing/social/schedule.json` (13:37 y 20:07, hora de la Ciudad de México). Necesita el secreto `INSTAGRAM_TOKEN`; sin él no hace nada. Lo publicado queda en `.github/quincy-social/posted.json`. Para regenerar el calendario: `python3 quincy/scripts/build_social.py`. Guía para conectarlo: `marketing/guia.html`.
 - `.github/workflows/quincy-rates.yml` actualiza la tasa de CETES y la inflación cada miércoles si existe el secreto `BANXICO_TOKEN`.
 
 ## Supuestos

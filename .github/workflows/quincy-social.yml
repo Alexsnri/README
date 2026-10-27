@@ -1,0 +1,53 @@
+name: Quincy · Instagram
+
+# Publica en Instagram lo que marca quincy/marketing/social/schedule.json.
+# Corre a las 13:37 y a las 20:07 de la Ciudad de México (UTC-6).
+# Sin el secreto INSTAGRAM_TOKEN no publica nada y termina sin error.
+
+on:
+  schedule:
+    - cron: "37 19 * * *"
+    - cron: "7 2 * * *"
+  workflow_dispatch:
+    inputs:
+      accion:
+        description: "probar = revisar la conexión sin publicar · ahora = publicar una pieza ya · pendientes = publicar lo que ya tocaba"
+        type: choice
+        options: [probar, ahora, pendientes]
+        default: probar
+      pieza:
+        description: "Solo para 'ahora': id de la pieza (la de presentación es fijado-feed-12-quincy)"
+        type: string
+        default: fijado-feed-12-quincy
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quincy-social
+  cancel-in-progress: false
+
+jobs:
+  instagram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publicar
+        env:
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          ACCION: ${{ github.event_name == 'workflow_dispatch' && inputs.accion || 'pendientes' }}
+          PIEZA: ${{ inputs.pieza || 'fijado-feed-12-quincy' }}
+        run: python3 quincy/scripts/social_post.py "$ACCION" --pieza "$PIEZA"
+
+      - name: Guardar lo publicado
+        if: always()
+        run: |
+          git add .github/quincy-social/posted.json 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git config user.name "quincy-bot"
+          git config user.email "quincy-bot@users.noreply.github.com"
+          git commit -q -m "Instagram: registro de publicaciones"
+          for i in 1 2 3; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep $((i * 5)); done
+          exit 1
