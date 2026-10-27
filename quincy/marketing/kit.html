@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Kit de lanzamiento Quincy</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a working desk for the person who posts. Top: what to post next and the countdown. Then the feed in calendar order, stories, video, ready messages and a checklist. Single dark theme: Quincy's night palette, chosen on purpose. */
+:root{
+  --night:#07121a; --deep:#0c1d28; --raise:#11283a; --line:#1e3a4a; --line-hi:#2c5468;
+  --fg:#eaf3f4; --mut:#9db4bd; --dim:#668693;
+  --sun:#ffb547; --sun-ink:#1a1206; --tide:#5ad6c8; --ok:#86e3a8;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-data:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--night);color:var(--fg);font:400 16px/1.6 var(--f-body)}
+a{color:var(--tide)}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 72px;display:grid;gap:56px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.05;font-weight:800}
+h1 b{color:var(--sun);font-weight:800}
+h2{font-size:1.3rem;font-weight:600}
+h3{font-size:.98rem;font-weight:600;line-height:1.3}
+p{margin:0}
+.eyebrow{font:600 .72rem/1 var(--f-data);letter-spacing:.14em;text-transform:uppercase;color:var(--tide)}
+.mut{color:var(--mut)}
+.small{font-size:.88rem}
+.head{display:grid;gap:14px}
+.head p.lede{max-width:62ch;color:var(--mut);font-size:1.05rem}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.stat{flex:1 1 150px;background:var(--deep);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:grid;gap:2px;min-width:0}
+.stat b{font:600 1.5rem/1.1 var(--f-data);font-variant-numeric:tabular-nums;color:var(--sun)}
+.stat span{font-size:.82rem;color:var(--mut)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font:600 .82rem/1 var(--f-body);color:var(--fg);text-decoration:none;border:1px solid var(--line-hi);border-radius:999px;padding:8px 12px;background:var(--deep)}
+.chip:hover{border-color:var(--tide)}
+.sec{display:grid;gap:18px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px;border-top:1px solid var(--line);padding-top:20px}
+.next{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:22px;background:var(--deep);border:1px solid var(--line-hi);border-radius:18px;padding:18px}
+@media (max-width:700px){.next{grid-template-columns:minmax(0,1fr)}}
+.next img{width:100%;height:auto;border-radius:10px;display:block}
+.next .body{display:grid;gap:12px;align-content:start;min-width:0}
+.badge{justify-self:start;font:600 .72rem/1 var(--f-data);letter-spacing:.1em;text-transform:uppercase;color:var(--sun-ink);background:var(--sun);border-radius:6px;padding:6px 8px}
+.badge.tide{background:var(--tide)}
+.badge.ghost{background:transparent;color:var(--mut);border:1px solid var(--line-hi)}
+.cap{white-space:pre-wrap;font-size:.92rem;line-height:1.55;color:var(--fg);background:var(--night);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0;overflow-wrap:anywhere;font-family:var(--f-body)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:600 .86rem/1 var(--f-body);border-radius:999px;padding:10px 14px;cursor:pointer;border:1px solid var(--line-hi);background:var(--raise);color:var(--fg);text-decoration:none;display:inline-flex;align-items:center}
+.btn:hover{border-color:var(--tide)}
+.btn.sun{background:var(--sun);color:var(--sun-ink);border-color:var(--sun)}
+.btn.done{background:var(--ok);border-color:var(--ok);color:var(--sun-ink)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:960px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.grid{grid-template-columns:minmax(0,1fr)}}
+.post{display:grid;grid-template-rows:auto auto 1fr auto;gap:10px;background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0}
+.post.past{opacity:.62}
+.post img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:8px;display:block;background:var(--raise)}
+.post .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;font:500 .78rem/1.2 var(--f-data);color:var(--mut)}
+.post .cap{max-height:11.5em;overflow:auto}
+.stories{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.stories{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.stories{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.story{display:grid;gap:8px;min-width:0}
+.story img{width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:10px;display:block;border:1px solid var(--line)}
+.story b{font-size:.9rem}
+.story span{font-size:.8rem;color:var(--mut)}
+.video{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:700px){.video{grid-template-columns:minmax(0,1fr)}}
+.video video{width:100%;max-width:100%;aspect-ratio:9/16;border-radius:14px;background:var(--deep);border:1px solid var(--line);display:block}
+.vbody{display:grid;gap:12px;align-content:start;min-width:0}
+.hooks{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.msgs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.msgs{grid-template-columns:minmax(0,1fr)}}
+.msg{display:grid;gap:10px;align-content:start;background:var(--deep);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.msg .t{font-weight:600}
+.todo{list-style:none;margin:0;padding:0;display:grid}
+.todo li{border-bottom:1px solid var(--line)}
+.todo label{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:12px 0;cursor:pointer}
+.todo input{width:18px;height:18px;accent-color:var(--tide);margin:0;transform:translateY(3px)}
+.todo .t{font:500 .78rem/1 var(--f-data);color:var(--dim);white-space:nowrap}
+.todo input:checked + span{color:var(--dim);text-decoration:line-through}
+.note{font-size:.82rem;color:var(--dim)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <p class="eyebrow">Quincy · Kit de lanzamiento</p>
+    <h1>Todo listo para publicar. <b>Copia, pega y sube.</b></h1>
+    <p class="lede">12 posts, 5 historias y un video vertical, con su texto y su fecha. Empieza el lunes 2 de noviembre, en plena temporada de aguinaldo.</p>
+    <div class="stats" id="stats"></div>
+    <div class="links" id="links"></div>
+  </header>
+
+  <section class="sec" aria-labelledby="h-next">
+    <div class="sec-head"><h2 id="h-next">Lo que sigue</h2><span class="small mut" id="next-when"></span></div>
+    <div class="next" id="next"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-feed">
+    <div class="sec-head"><h2 id="h-feed">Feed · 1080×1350</h2><span class="small mut">Instagram, Facebook, LinkedIn y Threads. Mejor de 1 a 3 p. m. o de 8 a 10 p. m.</span></div>
+    <div class="grid" id="feed"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-stories">
+    <div class="sec-head"><h2 id="h-stories">Historias · 1080×1920</h2><span class="small mut">Agrega el sticker de enlace con la página indicada.</span></div>
+    <div class="stories" id="stories"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-video">
+    <div class="sec-head"><h2 id="h-video">Video vertical · 32 s</h2><span class="small mut">TikTok, Reels y Shorts. Repítelo cada 10 días con otro gancho.</span></div>
+    <div class="video">
+      <video id="vid" controls muted playsinline preload="metadata" poster="preview/video-poster.jpg" src="video/quincy-landing-vertical.mp4"></video>
+      <div class="vbody">
+        <pre class="cap" id="vcap"></pre>
+        <div class="actions"><button class="btn sun" type="button" id="vcopy">Copiar texto</button><a class="btn" id="vopen" target="_blank" rel="noopener">Abrir el video para guardarlo</a></div>
+        <h3>Ganchos para los primeros 2 segundos</h3>
+        <ol class="hooks" id="hooks"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-msgs">
+    <div class="sec-head"><h2 id="h-msgs">Mensajes listos</h2><span class="small mut">WhatsApp, Reddit, creadores, prensa y recursos humanos.</span></div>
+    <div class="msgs" id="msgs"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-todo">
+    <div class="sec-head"><h2 id="h-todo">Lo que solo tú puedes hacer</h2><span class="small mut">Se guarda en este navegador.</span></div>
+    <ul class="todo" id="todo"></ul>
+    <p class="note">Ninguna red social deja publicar sin una cuenta propia. Lo demás (sitio, buscadores, tasas y tarjetas para compartir) ya funciona solo.</p>
+  </section>
+</main>
+
+<script>
+(() => {
+  const D = {"feed": [{"n": "01", "title": "Aguinaldo 2026", "file": "01-aguinaldo-tabla.png", "stem": "01-aguinaldo-tabla", "when": "lunes 2 de noviembre", "iso": "2026-11-02", "caption": "¿Cuánto te toca de aguinaldo este año? 💸\nPor ley son mínimo 15 días de salario, y te lo tienen que pagar antes del 20 de diciembre (art. 87 LFT).\nSi entraste a mitad de año, te toca la parte proporcional.\nCalcula el tuyo en 10 segundos, gratis y sin registro 👉 link en bio\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico", "link": "https://alexsnri.github.io/README/quincy/aguinaldo/"}, {"n": "02", "title": "Vacaciones dignas", "file": "02-vacaciones-dignas.png", "stem": "02-vacaciones-dignas", "when": "miércoles 4 de noviembre", "iso": "2026-11-04", "caption": "Con un año trabajado te tocan 12 días de vacaciones. No 6.\nY cada año suben: 14, 16, 18, 20... más 25% de prima vacacional.\nGuarda este post y mándaselo a quien todavía cree que son 6 días 👀\n\n#vacacionesdignas #LFT #derechoslaborales #trabajo #mexico", "link": "https://alexsnri.github.io/README/quincy/vacaciones/"}, {"n": "03", "title": "Si renuncias", "file": "03-si-renuncias.png", "stem": "03-si-renuncias", "when": "viernes 6 de noviembre", "iso": "2026-11-06", "caption": "¿Vas a renunciar antes de diciembre? Ojo: el aguinaldo proporcional también te toca.\nTu finiquito incluye los días trabajados, el aguinaldo proporcional, las vacaciones que no tomaste y su prima.\nCalcula tu finiquito antes de firmar nada 👉 link en bio\n\n#finiquito #renuncia #derechoslaborales #trabajo #mexico", "link": "https://alexsnri.github.io/README/quincy/finiquito/"}, {"n": "04", "title": "Si te despiden", "file": "04-si-te-despiden.png", "stem": "04-si-te-despiden", "when": "lunes 9 de noviembre", "iso": "2026-11-09", "caption": "Si te despiden sin causa justificada, te toca liquidación: 3 meses de salario integrado + 12 días por año de prima de antigüedad + tu finiquito.\nTienes 2 meses para reclamar. PROFEDET te asesora gratis.\nNo firmes una renuncia que no escribiste.\n\n#liquidacion #despido #PROFEDET #derechoslaborales #mexico", "link": "https://alexsnri.github.io/README/quincy/finiquito/"}, {"n": "05", "title": "Aguinaldo e ISR", "file": "05-aguinaldo-isr.png", "stem": "05-aguinaldo-isr", "when": "miércoles 11 de noviembre", "iso": "2026-11-11", "caption": "Tu aguinaldo no paga ISR hasta $3,519.30 (30 veces la UMA de 2026).\nSolo lo que pase de esa cantidad paga impuesto. Por eso el depósito a veces llega un poco menor de lo que calculaste.\n\n#aguinaldo #ISR #SAT #finanzaspersonales #mexico", "link": "https://alexsnri.github.io/README/quincy/aguinaldo/"}, {"n": "06", "title": "¿Qué número te conviene?", "file": "06-tanda-numero.png", "stem": "06-tanda-numero", "when": "viernes 13 de noviembre", "iso": "2026-11-13", "caption": "¿Pides el número 1 o el último de la tanda? 🤔\nHicimos la cuenta: en una tanda de 10 personas, con $1,000 por quincena, el número 1 gana unos $115 frente a CETES y el último pierde unos $114.\nEl primero recibe un préstamo sin intereses; el último ahorra sin rendimiento.\nCalcula tu tanda y sortea los turnos gratis 👉 link en bio\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico", "link": "https://alexsnri.github.io/README/quincy/tanda/"}, {"n": "07", "title": "Hoy puedes gastar", "file": "07-hoy-puedes-gastar.png", "stem": "07-hoy-puedes-gastar", "when": "domingo 15 de noviembre (día de quincena)", "iso": "2026-11-15", "caption": "Cayó la quincena 🎉 Antes de que desaparezca:\nQuincy te da un solo número al día: cuánto puedes gastar hoy para llegar a la siguiente.\nSi hoy gastas menos, mañana tienes más.\nSin conectar tu banco. Tus datos no salen de tu teléfono.\n\n#quincena #presupuesto #ahorro #finanzaspersonales #mexico", "link": "https://alexsnri.github.io/README/quincy/quincena/"}, {"n": "08", "title": "PTU con tope", "file": "08-ptu-tope.png", "stem": "08-ptu-tope", "when": "martes 17 de noviembre", "iso": "2026-11-17", "caption": "¿Sabías que tu reparto de utilidades tiene tope?\nSon 3 meses de salario, o el promedio de lo que recibiste en los últimos 3 años: lo que más te convenga.\nGuárdalo para mayo 📌\n\n#PTU #utilidades #derechoslaborales #trabajo #mexico", "link": "https://alexsnri.github.io/README/quincy/ptu/"}, {"n": "09", "title": "Salario mínimo", "file": "09-salario-minimo.png", "stem": "09-salario-minimo", "when": "jueves 19 de noviembre", "iso": "2026-11-19", "caption": "El salario mínimo de 2026 es de $315.04 al día ($440.87 en la frontera norte).\nSi en tu recibo dice menos, algo está mal.\nManda esto al grupo de la chamba 👇\n\n#salariominimo #CONASAMI #trabajo #derechoslaborales #mexico", "link": "https://alexsnri.github.io/README/quincy/"}, {"n": "10", "title": "Ruleta de la tanda", "file": "10-tanda-ruleta.png", "stem": "10-tanda-ruleta", "when": "sábado 21 de noviembre", "iso": "2026-11-21", "caption": "Se acabaron los pleitos por el número de la tanda 🎡\nGira la ruleta, sortea los turnos y manda el calendario al grupo de WhatsApp. Cada quien ve cuándo paga y cuándo le toca.\nGratis, sin registro y sin que nadie maneje el dinero.\n\n#tanda #ahorro #whatsapp #familia #mexico", "link": "https://alexsnri.github.io/README/quincy/tanda/"}, {"n": "11", "title": "Ticket de la quincena", "file": "11-ticket.png", "stem": "11-ticket", "when": "lunes 30 de noviembre (día de quincena)", "iso": "2026-11-30", "caption": "¿En qué se te fue la quincena? 🧾\nQuincy te arma el ticket: lo que te llegó, lo que pagaste, lo que gastaste y lo que te queda.\nComparte el tuyo (puedes ocultar las cantidades).\n\n#quincena #ticket #finanzaspersonales #ahorro #mexico", "link": "https://alexsnri.github.io/README/quincy/quincena/"}, {"n": "12", "title": "Qué es Quincy", "file": "12-quincy.png", "stem": "12-quincy", "when": "fíjalo arriba en tu perfil", "iso": "", "caption": "Quincy: lo que te toca, cuándo te toca y cuánto te queda.\n✅ Tu límite diario de gasto\n✅ Aguinaldo, vacaciones, PTU y finiquito con la ley de 2026\n✅ Tandas con ruleta y calendario\n✅ Tu yo del futuro y un reto diario\nGratis, sin registro y sin bancos 👉 link en bio\n\n#quincy #finanzaspersonales #derechoslaborales #mexico", "link": "https://alexsnri.github.io/README/quincy/"}], "stories": [{"file": "01-aguinaldo.png", "stem": "01-aguinaldo", "when": "Cada lunes hasta el 19 de diciembre", "link": "https://alexsnri.github.io/README/quincy/aguinaldo/", "text": "¿Ya sabes cuánto te toca?"}, {"file": "02-tanda.png", "stem": "02-tanda", "when": "Viernes", "link": "https://alexsnri.github.io/README/quincy/tanda/", "text": "Arma la tuya con ruleta"}, {"file": "03-ticket.png", "stem": "03-ticket", "when": "Días 15 y 30", "link": "https://alexsnri.github.io/README/quincy/quincena/", "text": "Mi ticket de la quincena"}, {"file": "04-dias-en-verde.png", "stem": "04-dias-en-verde", "when": "Domingos", "link": "https://alexsnri.github.io/README/quincy/quincena/", "text": "Reto: días en verde"}, {"file": "05-mi-futuro.png", "stem": "05-mi-futuro", "when": "Miércoles", "link": "https://alexsnri.github.io/README/quincy/", "text": "Conoce a tu yo de 65"}], "video_caption": "POV: encontraste una app que te dice cuánto te toca de aguinaldo, cuánto puedes gastar hoy y en qué número de la tanda te conviene estar 👀\nGratis y sin registro. Link en bio.\n\n#aguinaldo #quincena #tanda #finanzaspersonales #fyp #mexico", "hooks": ["Tu patrón no quiere que sepas esto", "¿Cuánto te toca de aguinaldo? Te lo digo en 10 segundos", "El número 1 de la tanda gana dinero. El último pierde.", "Si te despiden, esto es lo mínimo que te tienen que dar", "La app que me dice cuánto puedo gastar hoy"], "msgs": [{"group": "WhatsApp", "label": "A contactos", "text": "Oye, hice una app gratis que te dice cuánto te toca de aguinaldo (con la ley de 2026) y cuánto puedes gastar al día para llegar a la quincena. No pide registro. ¿Me dices si te sirve? https://alexsnri.github.io/README/quincy/aguinaldo/"}, {"group": "WhatsApp", "label": "A grupos de trabajo", "text": "¿Ya saben cuánto nos toca de aguinaldo? Aquí lo calculan en 10 segundos, gratis y sin registro: https://alexsnri.github.io/README/quincy/aguinaldo/"}, {"group": "WhatsApp", "label": "A grupos de tanda o familia", "text": "Para que no haya pleitos con los números: aquí sorteamos los turnos con una ruleta y a todos les llega el calendario 🎡 https://alexsnri.github.io/README/quincy/tanda/"}, {"group": "Reddit", "label": "r/MexicoFinanciero", "title": "Hice una calculadora gratis de aguinaldo, finiquito y vacaciones con la ley de 2026 (sin registro)", "text": "Hola. Hice Quincy porque cada noviembre veo las mismas preguntas: ¿cuánto me toca de aguinaldo?, ¿cuánto paga de ISR?, ¿cuánto me dan si renuncio?\n\nQué hace:\n- Aguinaldo, vacaciones (con \"vacaciones dignas\"), prima vacacional, tope de PTU, finiquito y liquidación con el salario mínimo y la UMA de 2026.\n- Un límite diario de gasto para llegar a la siguiente quincena.\n- Tandas: sorteo de turnos con ruleta, calendario para el grupo y cuánto gana o pierde cada número frente a CETES.\n\nNo pide cuenta, no conecta tu banco y tus datos se quedan en tu teléfono. Es gratis.\n\nSi encuentran un error en algún cálculo, díganmelo y lo corrijo.\n\nhttps://alexsnri.github.io/README/quincy/"}, {"group": "Creadores", "label": "Mensaje directo", "text": "Hola, [nombre]. Hice Quincy, una app web gratis que le dice a cualquier trabajador cuánto le toca de aguinaldo, vacaciones, prima, PTU y finiquito con la ley de 2026, cuánto puede gastar al día para llegar a la quincena y qué número de la tanda le conviene. No pide registro ni datos personales.\nCreo que le queda a tu contenido en esta temporada de aguinaldo. No te pido nada a cambio; si te sirve, úsala. Si quieres una versión con tu marca para tu comunidad, también la tengo.\nhttps://alexsnri.github.io/README/quincy/"}, {"group": "Prensa", "label": "Correo", "title": "App gratuita calcula aguinaldo, finiquito y qué número de la tanda conviene", "text": "Hola, [nombre]:\n\nHay 22.9 millones de puestos de trabajo formales en el IMSS (septiembre de 2026). Todos tienen derecho a aguinaldo, vacaciones y prima vacacional, y mucha gente no sabe cuánto le toca. Además, millones de personas ahorran en tandas sin saber que el número que eligen cambia lo que ganan o pierden.\n\nQuincy es una herramienta gratuita hecha en México que:\n- calcula aguinaldo, vacaciones, prima vacacional, tope de PTU, finiquito y liquidación con los valores de 2026;\n- le dice a cada persona cuánto puede gastar al día para llegar a su siguiente quincena;\n- sortea los turnos de una tanda y calcula cuánto gana o pierde cada número frente a CETES.\n\nNo pide registro y no guarda datos en servidores. Puedo compartir datos de uso y ejemplos para tu nota.\n\nhttps://alexsnri.github.io/README/quincy/"}, {"group": "LinkedIn", "label": "Recursos humanos", "text": "En noviembre, recursos humanos recibe la misma pregunta cientos de veces: \"¿cuánto me toca de aguinaldo?\".\nHicimos Quincy: una herramienta gratuita, con la marca de tu empresa, donde cada colaborador ve su aguinaldo, vacaciones y PTU con la ley de 2026 y un límite diario de gasto para llegar a la quincena. Sin registro y sin datos personales en servidores.\nBuscamos 10 empresas para un piloto gratis de 90 días: https://alexsnri.github.io/README/quincy/empresas.html"}], "site": "https://alexsnri.github.io/README/quincy/"};
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const full = (path) => D.site + "marketing/" + path;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const day = (iso) => { const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d); };
+  const diff = (a, b) => Math.round((b - a) / 864e5);
+
+  async function copy(btn, text) {
+    const old = btn.textContent;
+    try { await navigator.clipboard.writeText(text); btn.textContent = "Copiado"; }
+    catch (e) {
+      const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+      let ok = false; try { ok = document.execCommand("copy"); } catch (_) {}
+      ta.remove(); btn.textContent = ok ? "Copiado" : "Selecciona el texto y cópialo";
+    }
+    btn.classList.add("done"); setTimeout(() => { btn.textContent = old; btn.classList.remove("done"); }, 1800);
+  }
+
+  // Header numbers
+  const launch = day("2026-11-02"), ag = day("2026-12-19");
+  const toLaunch = diff(today, launch), toAg = diff(today, ag);
+  $("stats").innerHTML = [
+    toLaunch > 0 ? [toLaunch, toLaunch === 1 ? "día para el lanzamiento" : "días para el lanzamiento"] : ["Día " + (1 - toLaunch), "de la campaña de 30 días"],
+    toAg >= 0 ? [toAg, "días para el límite del aguinaldo (19 dic)"] : ["✓", "ya pasó el aguinaldo"],
+    [D.feed.length + D.stories.length + 1, "piezas listas"],
+  ].map(([b, s]) => `<div class="stat"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("");
+  $("links").innerHTML = [["Sitio", ""], ["App", "app.html"], ["Aguinaldo", "aguinaldo/"], ["Finiquito", "finiquito/"], ["Tandas", "tanda/"], ["Quincena", "quincena/"], ["Empresas", "empresas.html"]]
+    .map(([t, p]) => `<a class="chip" href="${D.site + p}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
+
+  // Next post
+  const dated = D.feed.filter((p) => p.iso);
+  const next = dated.find((p) => day(p.iso) >= today) || D.feed[D.feed.length - 1];
+  const nd = next.iso ? diff(today, day(next.iso)) : null;
+  $("next-when").textContent = nd === null ? "Fíjalo arriba en tu perfil" : nd === 0 ? "Hoy" : nd === 1 ? "Mañana" : `En ${nd} días`;
+  $("next").innerHTML = `<img src="preview/${next.stem}.jpg" alt="Post ${esc(next.title)}" width="540" height="675">
+    <div class="body"><span class="badge">${esc(next.when)}</span><h3>${esc(next.n)} · ${esc(next.title)}</h3>
+    <pre class="cap">${esc(next.caption)}</pre>
+    <div class="actions"><button class="btn sun" type="button" data-copy="next">Copiar texto</button>
+    <a class="btn" href="${full("posts/" + next.file)}" target="_blank" rel="noopener">Abrir imagen en alta</a>
+    <a class="btn" href="${next.link}" target="_blank" rel="noopener">Enlace para la bio</a></div></div>`;
+  $("next").querySelector("[data-copy]").addEventListener("click", (e) => copy(e.currentTarget, next.caption));
+
+  // Feed
+  $("feed").innerHTML = D.feed.map((p, i) => {
+    const past = p.iso && day(p.iso) < today;
+    const badge = !p.iso ? '<span class="badge tide">Fijado</span>' : past ? '<span class="badge ghost">Publicado</span>' : p === next ? '<span class="badge">Siguiente</span>' : "";
+    return `<article class="post${past ? " past" : ""}">
+      <img src="preview/${p.stem}.jpg" alt="Post ${esc(p.title)}" loading="lazy" width="540" height="675">
+      <div class="meta"><span>${esc(p.n)} · ${esc(p.when)}</span>${badge}</div>
+      <pre class="cap">${esc(p.caption)}</pre>
+      <div class="actions"><button class="btn sun" type="button" data-i="${i}">Copiar texto</button><a class="btn" href="${full("posts/" + p.file)}" target="_blank" rel="noopener">Imagen en alta</a></div>
+    </article>`;
+  }).join("");
+  $("feed").querySelectorAll("[data-i]").forEach((b) => b.addEventListener("click", () => copy(b, D.feed[+b.dataset.i].caption)));
+
+  // Stories
+  $("stories").innerHTML = D.stories.map((s) => `<div class="story">
+    <a href="${full("stories/" + s.file)}" target="_blank" rel="noopener"><img src="preview/story-${s.stem}.jpg" alt="Historia ${esc(s.text)}" loading="lazy" width="360" height="640"></a>
+    <b>${esc(s.text)}</b><span>${esc(s.when)}</span><a class="small" href="${s.link}" target="_blank" rel="noopener">${esc(s.link.replace(D.site, "/") || "/")}</a></div>`).join("");
+
+  // Video
+  $("vcap").textContent = D.video_caption;
+  $("vcopy").addEventListener("click", (e) => copy(e.currentTarget, D.video_caption));
+  $("vopen").href = full("video/quincy-landing-vertical.mp4");
+  $("hooks").innerHTML = D.hooks.map((h) => `<li>${esc(h)}</li>`).join("");
+
+  // Messages
+  $("msgs").innerHTML = D.msgs.map((m, i) => `<div class="msg">
+    <span class="eyebrow">${esc(m.group)}</span><span class="t">${esc(m.label)}</span>
+    ${m.title ? `<p class="small"><span class="mut">${m.group === "Prensa" ? "Asunto" : "Título"}:</span> ${esc(m.title)}</p>` : ""}
+    <pre class="cap">${esc(m.text)}</pre>
+    <div class="actions"><button class="btn sun" type="button" data-m="${i}">Copiar mensaje</button>${m.title ? `<button class="btn" type="button" data-mt="${i}">Copiar ${m.group === "Prensa" ? "asunto" : "título"}</button>` : ""}</div></div>`).join("");
+  $("msgs").querySelectorAll("[data-m]").forEach((b) => b.addEventListener("click", () => copy(b, D.msgs[+b.dataset.m].text)));
+  $("msgs").querySelectorAll("[data-mt]").forEach((b) => b.addEventListener("click", () => copy(b, D.msgs[+b.dataset.mt].title)));
+
+  // Checklist
+  const TODO = [
+    ["gh", "Si el sitio no abre: Settings → Pages → Deploy from a branch → gh-pages", "1 min"],
+    ["gsc", "Dar de alta el sitio en Google Search Console y enviar sitemap.xml", "5 min"],
+    ["acc", "Crear las cuentas @quincy en TikTok, Instagram y Facebook", "15 min"],
+    ["bio", "Poner el enlace del sitio en la bio de cada cuenta", "2 min"],
+    ["wa", "Mandar el mensaje de aguinaldo a 10 contactos y 3 grupos", "10 min"],
+    ["cf", "Crear Cloudflare Web Analytics y pegar el token en js/core.js", "5 min"],
+    ["bx", "Agregar el secreto BANXICO_TOKEN en GitHub", "5 min"],
+    ["impi", "Buscar la marca \"Quincy\" en el IMPI y en la USPTO", "15 min"],
+  ];
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem("qc-kit-todo") || "{}"); } catch (e) {}
+  $("todo").innerHTML = TODO.map(([k, t, m]) => `<li><label><input type="checkbox" id="todo-${k}" ${done[k] ? "checked" : ""}><span>${esc(t)}</span><span class="t">${m}</span></label></li>`).join("");
+  $("todo").addEventListener("change", (e) => {
+    const k = e.target.id.replace("todo-", ""); done[k] = e.target.checked;
+    try { localStorage.setItem("qc-kit-todo", JSON.stringify(done)); } catch (_) {}
+  });
+})();
+</script>
+
+</body>
+</html>
