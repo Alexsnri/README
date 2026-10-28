@@ -179,7 +179,7 @@ p{margin:0}
     <div class="body"><span class="badge">${esc(next.when)}</span><h3>${esc(next.n)} · ${esc(next.title)}</h3>
     <pre class="cap">${esc(next.caption)}</pre>
     <div class="actions"><button class="btn sun" type="button" data-copy="next">Copiar texto</button>
-    <a class="btn" href="${full("posts/" + next.file)}" target="_blank" rel="noopener">Abrir imagen en alta</a>
+    <button class="btn" type="button" data-url="${full("posts/" + next.file)}">Guardar imagen</button>
     <a class="btn" href="${next.link}" target="_blank" rel="noopener">Enlace para la bio</a></div></div>`;
   $("next").querySelector("[data-copy]").addEventListener("click", (e) => copy(e.currentTarget, next.caption));
 
@@ -191,7 +191,7 @@ p{margin:0}
       <img src="preview/${p.stem}.jpg" alt="Post ${esc(p.title)}" loading="lazy" width="540" height="675">
       <div class="meta"><span>${esc(p.n)} · ${esc(p.when)}</span>${badge}</div>
       <pre class="cap">${esc(p.caption)}</pre>
-      <div class="actions"><button class="btn sun" type="button" data-i="${i}">Copiar texto</button><a class="btn" href="${full("posts/" + p.file)}" target="_blank" rel="noopener">Imagen en alta</a></div>
+      <div class="actions"><button class="btn sun" type="button" data-i="${i}">Copiar texto</button><button class="btn" type="button" data-url="${full("posts/" + p.file)}">Guardar imagen</button></div>
     </article>`;
   }).join("");
   $("feed").querySelectorAll("[data-i]").forEach((b) => b.addEventListener("click", () => copy(b, D.feed[+b.dataset.i].caption)));
@@ -207,7 +207,7 @@ p{margin:0}
     <div class="meta"><span>R${i + 1} · ${esc(r.when)}</span></div>
     <h3>${esc(r.hook)}</h3>
     <pre class="cap">${esc(r.caption)}</pre>
-    <div class="actions"><button class="btn sun" type="button" data-r="${i}">Copiar texto</button><a class="btn" href="${full(r.file)}" target="_blank" rel="noopener">Descargar video</a></div>
+    <div class="actions"><button class="btn sun" type="button" data-r="${i}">Copiar texto</button><button class="btn" type="button" data-url="${full(r.file)}">Guardar video</button></div>
   </article>`).join("");
   $("reels").querySelectorAll("[data-r]").forEach((b) => b.addEventListener("click", () => copy(b, D.reels[+b.dataset.r].caption)));
 
@@ -221,6 +221,22 @@ p{margin:0}
   $("msgs").querySelectorAll("[data-mt]").forEach((b) => b.addEventListener("click", () => copy(b, D.msgs[+b.dataset.mt].title)));
 
   $("guide").href = D.site + "marketing/guia.html";
+  const ON_SITE = /github\.io$/.test(location.hostname) || location.hostname === "localhost";
+  const cache = {};
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-url]"); if (!btn) return;
+    const u = btn.dataset.url, label = btn.dataset.label || (btn.dataset.label = btn.textContent);
+    if (!ON_SITE) { window.open(D.site + "marketing/kit.html", "_blank", "noopener"); return; }
+    try {
+      if (!cache[u]) { btn.textContent = "Preparando…"; const r = await fetch(u); const b = await r.blob(); const n = u.split("/").pop(); cache[u] = new File([b], n, { type: b.type || (n.endsWith(".mp4") ? "video/mp4" : "image/png") }); }
+      const f = cache[u];
+      if (navigator.canShare && navigator.canShare({ files: [f] })) {
+        try { await navigator.share({ files: [f] }); btn.textContent = "Listo ✓"; }
+        catch (err) { btn.textContent = err.name === "AbortError" ? label : "Toca otra vez para guardar"; return; }
+      } else { const a = document.createElement("a"); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove(); btn.textContent = "Descargado ✓"; }
+      setTimeout(() => (btn.textContent = label), 2000);
+    } catch (err) { btn.textContent = "No se pudo. Intenta de nuevo"; setTimeout(() => (btn.textContent = label), 2500); }
+  });
 })();
 </script>
 
