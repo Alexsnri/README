@@ -4,6 +4,8 @@ window.FY = Object.assign(window.FY || {}, (() => {
     SITE: "https://alexsnri.github.io/README/quincy/",
     // Donde llegan las solicitudes de instituciones. Cámbialo por tu correo o formulario.
     CONTACT_URL: "https://github.com/Alexsnri/README/issues/new?template=piloto.yml",
+    // Correo de Quincy para empresas. Si existe, "Solicitar piloto" abre un correo ya escrito (mejor que pedir cuenta de GitHub).
+    CONTACT_EMAIL: "",
     // Token de Cloudflare Web Analytics (gratis, sin cookies). Vacío = sin analítica.
     CF_ANALYTICS_TOKEN: "7867bd7b5a2449549624cefc62551f12",
     // Redes de Quincy.

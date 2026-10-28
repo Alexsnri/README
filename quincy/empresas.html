@@ -107,6 +107,13 @@ body{padding-bottom:0}
     </div>
   </div>
 
+  <div class="sec-head"><p class="eyebrow">El piloto</p><h2>90 días, sin costo y sin contrato</h2></div>
+  <div class="steps">
+    <div class="card"><b class="n">SEMANA 1</b><h3>Tu enlace con tu marca</h3><p>Te mandamos Quincy con tu logo, tu color y el botón a tu programa (caja de ahorro, Afore, bienestar). Lo compartes por correo, WhatsApp o intranet.</p></div>
+    <div class="card"><b class="n">TEMPORADA</b><h3>Una plática de 30 minutos</h3><p>"Tu aguinaldo sin estrés" en diciembre o "Tu PTU" en mayo: cuánto les toca, cuándo, y qué hacer para que no se les vaya en una semana.</p></div>
+    <div class="card"><b class="n">DÍA 90</b><h3>Resultados y decisión</h3><p>Revisamos juntos las visitas a tu enlace y los clics a tu botón (sin datos personales). Si sirve, seguimos con una cuota mensual fija según el tamaño de tu equipo. Si no, no pasa nada.</p></div>
+  </div>
+
   <section class="cta-band" id="contacto">
     <div>
       <h2>Piloto gratis de 90 días</h2>
@@ -126,7 +133,12 @@ body{padding-bottom:0}
   const link = `${FY.CONFIG.SITE}app.html?marca=Tu%20Empresa&color=2f6fed&cta=https%3A%2F%2Ftu-intranet.mx%2Fahorro%3Futm_source%3Dquincy&cta_txt=Inscr%C3%ADbete%20a%20la%20caja%20de%20ahorro`;
   document.getElementById("link-code").textContent = link;
   document.getElementById("embed-code").textContent = `<iframe src="${link}"\n  style="width:100%;height:100vh;border:0"\n  title="Quincy"></iframe>`;
-  document.getElementById("contact").href = FY.CONFIG.CONTACT_URL;
+  const mail = FY.CONFIG.CONTACT_EMAIL, contact = document.getElementById("contact");
+  if (mail) {
+    const body = "Hola, equipo de Quincy:\n\nMe interesa el piloto gratis de 90 días.\n\nOrganización:\nNúmero de colaboradores:\nPrograma que queremos impulsar (caja de ahorro, Afore, bienestar…):\nMi nombre y puesto:\nTeléfono:\n\nGracias.";
+    contact.href = `mailto:${mail}?subject=${encodeURIComponent("Piloto de Quincy para mi equipo")}&body=${encodeURIComponent(body)}`;
+    contact.removeAttribute("target");
+  } else contact.href = FY.CONFIG.CONTACT_URL;
 })();
 </script>
 </body>

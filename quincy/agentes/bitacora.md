@@ -2,6 +2,13 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Monetización (4)
+- Hice: el dueño pidió que todo el equipo se ponga a trabajar: desperté a Director (15:47), SEO (15:53), Contenido (15:59), Producto (16:05)
+  y Ley y datos (16:11), hora de México, con sus pendientes. `empresas.html`: nueva sección "El piloto: 90 días, sin costo y sin contrato"
+  y `CONFIG.CONTACT_EMAIL` en `js/core.js` (si hay correo, "Solicitar piloto" abre un correo ya escrito). `sw.js` v15.
+- Encontré: el botón de piloto llevaba a un formulario de GitHub, que pide cuenta de GitHub; casi nadie de RR. HH. la tiene.
+- Para el dueño: crear un correo gratis para Quincy y pasarlo a cualquier agente (va en `CONTACT_EMAIL`).
+
 ## 2026-10-28 · Monetización (3)
 - Hice: **Quincy ya vive en https://quincy-mx.github.io/** (gratis). El robot de publicación arma el sitio con la dirección nueva y lo sube a
   `Quincy-mx/quincy-mx.github.io`; la dirección vieja redirige página por página y conserva `?ref=`. Probado en navegador: sin errores.

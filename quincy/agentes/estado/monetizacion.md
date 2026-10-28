@@ -95,7 +95,7 @@ y anotar en esta tabla la fecha de la verificación.
 **Propuesta de valor:** menos adelantos de nómina y menos rotación; tu gente sabe cuánto le toca de aguinaldo, vacaciones y PTU
 (menos dudas a RR. HH.); Quincy con su logo, sin que la empresa maneje datos personales (todo corre en el teléfono).
 
-**Precio sugerido:** piloto **gratis 60 días** para la primera empresa de cada sector (a cambio de poder medir uso y usar su opinión con permiso).
+**Precio sugerido:** piloto **gratis 90 días** para las primeras 10 organizaciones (así lo dice `empresas.html`) (a cambio de poder medir uso y usar su opinión con permiso).
 Después: **$4,900 MXN al mes** hasta 500 personas; taller en vivo de 1 hora "Tu aguinaldo y tu PTU sin estrés": **$6,000 MXN**.
 (Precio de arranque para validar; se ajusta con las primeras 3 respuestas.)
 
@@ -108,7 +108,7 @@ Después: **$4,900 MXN al mes** hasta 500 personas; taller en vivo de 1 hora "Tu
 > Soy [tu nombre], hago Quincy, una app gratuita que le dice a cada persona cuánto le toca de aguinaldo, vacaciones y PTU según la ley,
 > y cuánto puede gastar al día para llegar a la quincena. No pide registro y no guarda datos personales.
 >
-> Estoy buscando 3 empresas para un piloto gratis de 60 días: Quincy con su logo para su equipo y una plática corta antes del aguinaldo.
+> Estoy buscando empresas para un piloto gratis de 90 días: Quincy con su logo para su equipo y una plática corta antes del aguinaldo.
 > A cambio solo te pido tu opinión al final.
 >
 > ¿Te late una llamada de 15 minutos esta semana o la que entra?
@@ -118,8 +118,9 @@ Después: **$4,900 MXN al mes** hasta 500 personas; taller en vivo de 1 hora "Tu
 > Saludos,
 > [tu nombre] · [tu teléfono]
 
-**Pendiente en el sitio:** mejorar `empresas.html` (piloto gratis arriba, "qué se lleva tu empresa" en 3 puntos, contacto directo por correo
-o WhatsApp en lugar del formulario de GitHub). Lo hago en la próxima corrida, coordinado con Producto para no chocar con el rediseño.
+**En el sitio (28 oct):** `empresas.html` tiene la sección "El piloto: 90 días, sin costo y sin contrato" (semana 1, plática de temporada,
+día 90). `CONFIG.CONTACT_EMAIL` en `js/core.js`: si tiene correo, "Solicitar piloto" abre un correo ya escrito; si está vacío, sigue el
+formulario de GitHub (que pide cuenta de GitHub: mala conversión para RR. HH.). **Falta el correo del dueño.**
 
 ## 4. Patrocinios
 
@@ -161,11 +162,15 @@ Todo es gratis. Solo lo que GitHub no deja hacer a nadie más que a ti (unos 10 
 9. **Google:** https://search.google.com/search-console → Agregar propiedad → Prefijo de URL `https://quincy-mx.github.io/`
    → Verificar con "Archivo HTML" (ya está subido) → Sitemaps → `sitemap.xml`.
 
+**Nuevo y rápido (5 min):** crea un correo gratis para Quincy (por ejemplo `hola.quincymx@gmail.com` en https://accounts.google.com/signup)
+y pásaselo a cualquier agente: va en `CONTACT_EMAIL` para que las empresas te escriban directo, y sirve para redes y avisos.
+
 Para cobrar más adelante (fase 2, no urge): cuenta bancaria y RFC con actividad empresarial o RESICO, porque los programas y las empresas piden factura.
 El registro de la marca en el IMPI lo sigue el agente de Marca.
 
 ## Registro de corridas
 
+- 2026-10-28 (5): `empresas.html` con la sección del piloto y contacto por correo listo (`CONFIG.CONTACT_EMAIL`). Desperté a Director, SEO, Contenido, Producto y Ley y datos a pedido del dueño.
 - 2026-10-28 (4): **mudanza hecha.** https://quincy-mx.github.io/ en línea; la dirección vieja redirige (probado con `?ref=wa`). Salud del sitio: 0 errores. Pendiente del dueño: cambiar el token que pegó en el chat y dar de alta la propiedad en Search Console.
 - 2026-10-28 (3): el robot ya no redirige el sitio viejo hasta comprobar que el nuevo responde; pasos del dueño detallados.
 - 2026-10-28 (2): el dueño pidió dominio gratis. Búsqueda a fondo; elegida la organización de GitHub `quincy-mx`. Mudanza automática programada (`mudanza.py` + robot de publicación).
