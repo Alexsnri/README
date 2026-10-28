@@ -34,7 +34,7 @@ h1,h2{font-family:var(--f-display);text-wrap:balance;letter-spacing:-.02em}
 
 /* ---------- fondo ---------- */
 .sky{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(120% 80% at 80% -10%,#123545 0,rgba(7,18,26,0) 60%),var(--night)}
-.sky i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;will-change:transform}
+.sky i{position:absolute;border-radius:50%;opacity:.55;will-change:transform}
 .sky i:nth-child(1){width:46vmax;height:46vmax;right:-12vmax;top:-14vmax;background:radial-gradient(circle,rgba(255,181,71,.55),rgba(255,181,71,0) 65%);animation:drift 22s ease-in-out infinite alternate}
 .sky i:nth-child(2){width:40vmax;height:40vmax;left:-14vmax;top:30vh;background:radial-gradient(circle,rgba(90,214,200,.4),rgba(90,214,200,0) 65%);animation:drift 28s ease-in-out infinite alternate-reverse}
 .sky i:nth-child(3){width:34vmax;height:34vmax;right:10vw;bottom:-18vmax;background:radial-gradient(circle,rgba(21,64,79,.9),rgba(21,64,79,0) 70%);animation:drift 32s ease-in-out infinite alternate}
@@ -77,7 +77,7 @@ h1,h2{font-family:var(--f-display);text-wrap:balance;letter-spacing:-.02em}
 .cd-grid span:first-child b{color:var(--sun)}
 .cd-grid small{font:600 .64rem/1 var(--f-data);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
 
-.glass{background:linear-gradient(160deg,rgba(18,40,54,.78),rgba(11,27,37,.62));border:1px solid rgba(90,214,200,.16);border-radius:var(--r);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);box-shadow:0 30px 80px -40px rgba(0,0,0,.8)}
+.glass{background:linear-gradient(160deg,rgba(18,40,54,.78),rgba(11,27,37,.62));border:1px solid rgba(90,214,200,.16);border-radius:var(--r);box-shadow:0 30px 80px -40px rgba(0,0,0,.8)}
 .calc{padding:26px;display:grid;gap:16px;position:relative}
 .calc::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(255,181,71,.7),rgba(90,214,200,.15) 40%,rgba(90,214,200,0) 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .hf{display:grid;gap:8px;min-width:0}
@@ -99,6 +99,7 @@ h1,h2{font-family:var(--f-display);text-wrap:balance;letter-spacing:-.02em}
 .h-share{min-height:48px}
 .more{font-weight:600;font-size:.92rem;text-decoration:none;justify-self:start;min-height:44px;display:inline-flex;align-items:center}
 .more:hover{text-decoration:underline}
+.more + .more{margin-top:-14px}
 
 /* ---------- compartir (también en app.css para las calculadoras) ---------- */
 .share-bar{display:flex;gap:8px;flex-wrap:wrap}
