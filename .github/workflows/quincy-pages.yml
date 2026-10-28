@@ -34,6 +34,7 @@ jobs:
           rm -rf _site/quincy/scripts
           printf '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=quincy/"><link rel="canonical" href="quincy/"><title>Quincy</title><a href="quincy/">Quincy</a>\n' > _site/index.html
           touch _site/.nojekyll
+          cp quincy/google*.html _site/ 2>/dev/null || true
 
       - name: Publicar en la rama gh-pages
         run: |
