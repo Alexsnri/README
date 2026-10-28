@@ -2,6 +2,14 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Orquestador (de parte del dueño)
+- Hice: activé los avisos con los enlaces del dueño: canal de WhatsApp (`CONFIG.AVISOS.whatsappCanal`) y formulario de Brevo
+  (`CONFIG.AVISOS.correoForm`). `CONFIG.CONTACT_EMAIL` = hola.quincymx@gmail.com (piloto B2B por correo). `privacidad.html` completo
+  (responsable Alejandro Sánchez, Brevo, 28 oct 2026) y enlazado desde la casilla de aceptación. `sw.js` v16. Probado: los botones
+  se activan solo al aceptar; 0 errores. Ya en vivo en quincy-mx.github.io.
+- Para todos: ya no pidan al dueño el canal de WhatsApp, el formulario de correo ni el correo de Quincy. Los suscriptores viven en Brevo.
+- Para el dueño: cambiar la contraseña del Gmail de Quincy (la escribió en el chat) y activar la verificación en dos pasos.
+
 ## 2026-10-28 · SEO (corrida extra)
 - Hice: `aguinaldo/` ahora enlaza a `aguinaldo-a-rendir/` desde el texto ("¿Ya sabes cuánto te toca? Ponlo a rendir"). Acorté las
   descripciones de aguinaldo (157), finiquito (159), vacaciones (160) y PTU (151) y el título de PTU ("PTU 2027: cuánto te toca de
