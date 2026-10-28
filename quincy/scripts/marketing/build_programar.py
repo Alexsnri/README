@@ -2,11 +2,11 @@
 a partir de marketing/social/schedule.json y reels.json.  Uso:  python3 quincy/scripts/marketing/build_programar.py
 """
 import json, os, sys, zipfile, datetime as dt
-HERE = os.path.dirname(os.path.abspath(__file__)); M = os.path.normpath(os.path.join(HERE, '..', '..', 'marketing')); SITE = 'https://alexsnri.github.io/README/quincy/'
+HERE = os.path.dirname(os.path.abspath(__file__)); M = os.path.normpath(os.path.join(HERE, '..', '..', 'marketing')); SITE = 'https://quincy-mx.github.io/'
 DIAS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]; MES = dict(enumerate(["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"], 1))
 TITLES = {"01-aguinaldo-tabla": "Aguinaldo 2026", "02-vacaciones-dignas": "Vacaciones dignas", "03-si-renuncias": "Si renuncias", "04-si-te-despiden": "Si te despiden",
   "05-aguinaldo-isr": "Aguinaldo e ISR", "06-tanda-numero": "¿Qué número te conviene?", "07-hoy-puedes-gastar": "Hoy puedes gastar", "08-ptu-tope": "PTU con tope",
-  "09-salario-minimo": "Salario mínimo", "10-tanda-ruleta": "Ruleta de la tanda", "11-ticket": "Ticket de la quincena", "12-quincy": "Qué es Quincy"}
+  "09-salario-minimo": "Salario mínimo", "10-tanda-ruleta": "Ruleta de la tanda", "11-ticket": "Ticket de la quincena", "12-quincy": "Qué es Quincy", "13-aguinaldo-a-rendir": "Aguinaldo a rendir"}
 sched = json.load(open(M + '/social/schedule.json'))['items']
 reels = {r['id']: r for r in json.load(open(M + '/social/reels.json'))}
 items, seen = [], set()
@@ -45,3 +45,27 @@ with zipfile.ZipFile(zp, 'w', zipfile.ZIP_STORED) as z:
         txt.append(f"{name}\n{'Publícalo hoy y fíjalo' if it['now'] else it['when'] + ' · ' + it['time']}\n\n{it['caption']}\n\n" + '-' * 40)
     z.writestr('quincy-instagram/00_textos.txt', '\n\n'.join(txt))
 print(len(items), 'items;', os.path.getsize(zp) // 1024 // 1024, 'MB zip')
+
+# Recordatorios de TikTok (.ics): un evento por reel con fecha, 10 minutos antes de las 8 p. m. (hora de la Ciudad de México).
+# El UID conserva el dominio viejo para que, al volver a importarlo, el calendario actualice los eventos en lugar de duplicarlos.
+def fold(line):
+    b, out = line.encode('utf-8'), []
+    while len(b) > 74:
+        cut = 74
+        while (b[cut] & 0xC0) == 0x80: cut -= 1
+        out.append(b[:cut].decode('utf-8')); b = b[cut:]
+    out.append(b.decode('utf-8'))
+    return '\r\n '.join(out)
+stamp = dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+ev = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Quincy//Recordatorios TikTok//ES", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:Quincy · TikTok"]
+for r in json.load(open(M + '/social/reels.json')):
+    if r['date'] == 'fijado': continue
+    start = dt.datetime.fromisoformat(r['date'] + 'T20:00').replace(tzinfo=dt.timezone(dt.timedelta(hours=-6))).astimezone(dt.timezone.utc)
+    f = lambda d: d.strftime('%Y%m%dT%H%M%SZ')
+    ev += [f"BEGIN:VEVENT", f"UID:quincy-tiktok-{r['id']}@alexsnri.github.io", f"DTSTAMP:{stamp}", f"DTSTART:{f(start)}", f"DTEND:{f(start + dt.timedelta(minutes=15))}",
+           f"SUMMARY:Subir a TikTok: {r['hook']}",
+           f"DESCRIPTION:1) Abre {SITE}marketing/programar.html en Safari y toca Guardar video en el reel \"{r['hook']}\".\\n2) TikTok: + → sube el video → pega el texto (botón Copiar texto) → Publicar.\\nTambién puedes subirlo a YouTube Shorts.",
+           f"URL:{SITE}marketing/programar.html", "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Subir reel de Quincy a TikTok", "TRIGGER:-PT10M", "END:VALARM", "END:VEVENT"]
+ev.append("END:VCALENDAR")
+open(M + '/recordatorios-tiktok.ics', 'w', encoding='utf-8', newline='').write('\r\n'.join(fold(l) for l in ev) + '\r\n')
+print(sum(1 for l in ev if l == 'BEGIN:VEVENT'), 'recordatorios de TikTok')

@@ -53,10 +53,20 @@ const C = {
     `<div class="li x"><i>✕</i>No firmes una renuncia que no escribiste</div><div class="li x"><i>✕</i>No firmes papeles en blanco</div><div class="li"><i>✓</i>PROFEDET te asesora gratis</div>`,
     `<div class="h2">Calcula tu finiquito o tu liquidación <b>en 1 minuto</b></div><div class="btn">Gratis · link en bio</div><div class="small">Mándaselo a quien lo necesite.</div>`,
   ],
+  'c4-aguinaldo-wrapped': [
+    `<span class="chip">Tu Aguinaldo Wrapped</span><div class="h1">Tu aguinaldo también tiene <b>su Wrapped</b></div><div class="t">Así se ve con un sueldo de <b>$12,000</b> al mes.</div>`,
+    `<div class="card" style="gap:26px;padding:56px 54px"><span class="chip">Tu aguinaldo 2026</span><div class="n">$6,000</div><div class="t">15 días de salario, <b>por ley.</b></div><div class="small">Artículo 87 de la Ley Federal del Trabajo.</div></div>`,
+    `<div class="card" style="gap:26px;padding:56px 54px;background:#5ad6c8;border-color:#5ad6c8"><span class="chip" style="background:#07121a;color:#5ad6c8">Cuenta regresiva</span><div class="n" style="color:#07121a">41</div><div class="h3" style="color:#07121a">días para cobrarlo</div><div class="small" style="color:#0c1d28">Contados desde el 8 de noviembre. Fecha límite: 19 de diciembre.</div></div>`,
+    `<div class="card" style="gap:26px;padding:56px 54px"><span class="chip">Libre de ISR</span><div class="n" style="font-size:118px">$3,519.30</div><div class="t">Solo sobre <b>$2,480.70</b> te retienen ISR.</div><div class="small">Exento hasta 30 UMA (UMA 2026: $117.31).</div></div>`,
+    `<div class="card" style="gap:26px;padding:56px 54px;background:#ffb547;border-color:#ffb547"><span class="chip" style="background:#07121a;color:#ffb547">Si lo pones en CETES un año</span><div class="n" style="color:#1a1206">+$373</div><div class="h3" style="color:#1a1206">antes de impuestos</div><div class="small" style="color:#3a2a10">CETES a 28 días al 6.22% anual (Banxico, octubre de 2026), si la tasa se mantiene.</div></div>`,
+    `<div class="h1">¿Y <b>tú</b>?</div><div class="h3">Haz tu Wrapped en 10 segundos y súbelo a tus historias</div><div class="btn">Tu Wrapped · link en bio</div><div class="small">Gratis y sin registro. Mándaselo a quien todavía no sabe cuánto le toca.</div>`,
+  ],
 };
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1350 } });
+  const only = process.argv.slice(2);
   for (const [id, slides] of Object.entries(C)) {
+    if (only.length && !only.includes(id)) continue;
     fs.mkdirSync(`${OUT}/${id}`, { recursive: true });
     for (let i = 0; i < slides.length; i++) {
       const first = i === 0, last = i === slides.length - 1;

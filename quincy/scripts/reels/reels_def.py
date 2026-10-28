@@ -285,6 +285,64 @@ R['08-faltan-18-dias'] = [
     ('Compártelo con tu equipo y calcula el tuyo en Quincy.', 3.4, lambda c: cta(c, 'Compártelo con <b>tu equipo</b>', 'Calcula el tuyo · link en bio'), ''),
 ]
 
+# Datos: CETES 28 días 6.22% y la inflación 3.45% de data/rates.json (Banxico, oct 2026); ISR 0.90% sobre el capital (LIF 2026).
+# $10,000 un año: rendimiento $640 − ISR $90 = $550; en el colchón la inflación le quita $333 de valor.
+R['09-aguinaldo-a-rendir'] = [
+    ('¿Tu aguinaldo se va a ir en las posadas?', 2.6, lambda c: f'''
+      <div class="chip" {a(c.T(0.02), 'left', 0.3)}>Aguinaldo a rendir</div>
+      {words(c.T(0.08), '¿Tu aguinaldo se va a ir <b>en las posadas</b>?', step=0.08)}''', ''),
+    ('Diez mil pesos en el colchón pierden unos trescientos treinta pesos de valor en un año, por la inflación.', 5.0, lambda c: f'''
+      <div class="chip sun" {a(c.T(0.05), 'left', 0.3)}>En el colchón</div>
+      <div class="h-m" {a(c.K('diez mil'))}><b>$10,000</b> guardados un año</div>
+      <div class="t" {a(c.K('pierden'))}>pierden de valor:</div>
+      <div style="color:#ff8574">{count(c, c.K('trescientos'), 0, 333, 'money', 1.0, pre='−', cls='num mid')}</div>
+      <div class="small" {a(c.K('inflación'))}>Inflación anual de 3.45% (Banxico).</div>''', ''),
+    ('En cetes, con la tasa de octubre, ganarías unos quinientos cincuenta pesos, ya con la retención de impuestos.', 5.4, lambda c: f'''
+      <div class="chip" {a(c.T(0.05), 'left', 0.3)}>En CETES un año</div>
+      <div class="card">
+        <div class="eq" {a(c.K('cetes'), 'left')}><span>Tasa CETES 28 días</span><span>6.22%</span></div>
+        <div class="eq" {a(c.K('ganarías'), 'left')}><span>Rendimiento</span><span>+$640</span></div>
+        <div class="eq" {a(c.K('retención'), 'left')}><span>− ISR (0.90%)</span><span>−$90</span></div>
+        <div class="eq total" {a(c.K('quinientos'), 'up')}><span>Ganas</span>{count(c, c.K('quinientos'), 0, 550, 'money', 0.9, pre='+', cls='')}</div>
+      </div>
+      <div class="small" {a(c.K('impuestos'))}>La tasa cambia cada semana. No es una recomendación.</div>''', ''),
+    ('Pero primero paga tu tarjeta y aparta para emergencias. Y revisa que esté regulada y protegida.', 5.0, lambda c: f'''
+      <div class="h-m" {a(c.T(0.05))}>Antes de invertir:</div>
+      {''.join(f'<div class="card" {a(c.K(k), "left")}><div class="row"><div class="h-l" style="color:#ffb547;min-width:70px">{n}</div><div class="item">{txt}</div></div></div>' for n, k, txt in [(1, 'paga tu tarjeta', 'Paga tu tarjeta de crédito'), (2, 'aparta', 'Aparta para emergencias'), (3, 'revisa', 'Revisa que esté regulada y protegida')])}''', ''),
+    ('Haz tu cuenta gratis en Quincy antes de gastarlo.', 3.4, lambda c: cta(c, 'Haz tu cuenta <b>antes de gastarlo</b>', 'Ponlo a rendir · link en bio'), ''),
+]
+
+# Tu Aguinaldo Wrapped (las tarjetas de FY.compartir.aguinaldoWrapped) con sueldo de $12,000 al mes, publicado el 3 de diciembre.
+# $400 diarios × 15 = $6,000; exento 30 UMA = $3,519.30; CETES un año 6.22% = $373 antes de impuestos; del 3 al 19 de dic: 16 días.
+WR = 'align-self:center;width:760px;border-radius:48px;padding:56px 54px;display:flex;flex-direction:column;gap:20px;box-shadow:0 30px 90px rgba(0,0,0,.5);'
+R['10-aguinaldo-wrapped'] = [
+    ('Tu aguinaldo también tiene su Wrapped.', 2.6, lambda c: f'''
+      <div class="chip" {a(c.T(0.02), 'left', 0.3)}>Tu Aguinaldo Wrapped</div>
+      {words(c.T(0.08), 'Tu aguinaldo también tiene <b>su Wrapped</b>', step=0.08)}''', ''),
+    ('Si ganas doce mil pesos al mes, te tocan seis mil.', 3.4, lambda c: f'''
+      <div style="{WR}background:linear-gradient(160deg,#16465a,#0b2230)" {a(c.T(0.05), 'pop')}>
+        <div class="small" style="color:#5ad6c8">TU AGUINALDO 2026</div>
+        {count(c, c.K('seis mil'), 0, 6000, 'money', 1.0, cls='num mid')}
+        <div class="t" {a(c.K('doce mil'))}>15 días de un sueldo de <b>$12,000</b> al mes.</div></div>''', ''),
+    ('Faltan dieciséis días para cobrarlo.', 2.8, lambda c: f'''
+      <div style="{WR}background:linear-gradient(160deg,#5ad6c8,#2a9d92);color:#07121a" {a(c.T(0.05), 'pop')}>
+        <div class="small" style="color:#07121a">CUENTA REGRESIVA</div>
+        <style>.wr-dark .num{{color:#07121a!important;text-shadow:none!important}}</style><div class="wr-dark">{count(c, c.K('dieciséis'), 30, 16, 'int', 1.0, cls='num')}</div>
+        <div class="h-m" style="color:#07121a">días para cobrarlo</div>
+        <div class="small" style="color:#0c1d28">Fecha límite: 19 de diciembre.</div></div>''', ''),
+    ('Tres mil quinientos diecinueve pesos no pagan impuesto.', 3.4, lambda c: f'''
+      <div style="{WR}background:linear-gradient(160deg,#16465a,#0b2230)" {a(c.T(0.05), 'pop')}>
+        <div class="small" style="color:#5ad6c8">LIBRE DE ISR</div>
+        {count(c, c.K('tres mil'), 0, 3519.30, 'money2', 1.2, cls='num sm')}
+        <div class="t" {a(c.K('impuesto'))}>Solo sobre <b>$2,480.70</b> te retienen ISR.</div></div>''', ''),
+    ('Y en cetes un año te daría unos trescientos setenta pesos, antes de impuestos.', 4.2, lambda c: f'''
+      <div style="{WR}background:linear-gradient(160deg,#ffb547,#d9862b);color:#1a1206" {a(c.T(0.05), 'pop')}>
+        <div class="small" style="color:#1a1206">SI LO PONES EN CETES UN AÑO</div>
+        <div class="wr-dark">{count(c, c.K('trescientos'), 0, 373, 'money', 1.0, pre='+', cls='num mid')}</div>
+        <div class="small" style="color:#3a2a10" {a(c.K('antes de impuestos'))}>Al 6.22% anual (Banxico, octubre), si la tasa se mantiene.</div></div>''', ''),
+    ('Haz el tuyo gratis en Quincy y súbelo a tus historias.', 3.6, lambda c: cta(c, 'Haz el tuyo y <b>súbelo a historias</b>', 'Tu Wrapped · link en bio'), ''),
+]
+
 CUSTOM = {
     '06-ruleta-tanda': '''window.custom = (t) => { document.querySelectorAll('[data-spin]').forEach((el) => { const t0 = +el.dataset.spin, k = +el.dataset.target; const p = inout((t - t0) / 3.6); const end = 5 * 360 + (360 - (k * 45 + 22.5)); el.querySelector('svg').style.transform = `rotate(${p * end}deg)`; }); };''',
     '00-conoce-quincy': '''window.custom = (t) => { const el = document.getElementById('w0'); if (el) el.style.transform = `rotate(${t * 70}deg)`; };''',

@@ -4,7 +4,7 @@ Todo está en esta carpeta: imagen, texto y fecha. Solo copia, pega y publica.
 
 - **Feed (1080×1350):** `posts/`, para Instagram, Facebook, LinkedIn y Threads.
 - **Historias (1080×1920):** `stories/`, para Instagram, Facebook y WhatsApp Estados.
-- **Reels (8 videos verticales):** `video/`, para Instagram, TikTok y YouTube Shorts. El robot los sube solos a Instagram; para TikTok y YouTube sigue `guia.html`.
+- **Reels (10 videos verticales):** `video/`, para Instagram, TikTok y YouTube Shorts. El robot los sube solos a Instagram; para TikTok y YouTube sigue `guia.html`.
 
 Enlace general: https://quincy-mx.github.io/
 
@@ -18,6 +18,7 @@ Usa enlaces directos cuando el post hable de algo concreto (vienen en cada post)
 | PTU | https://quincy-mx.github.io/ptu/ |
 | Tandas | https://quincy-mx.github.io/tanda/ |
 | Límite diario | https://quincy-mx.github.io/quincena/ |
+| Aguinaldo a rendir | https://quincy-mx.github.io/aguinaldo-a-rendir/ |
 
 Los mejores horarios en México son de 1 a 3 p. m. y de 8 a 10 p. m., entre semana. Los días de quincena (15 y 30) rinden más los posts de "hoy puedes gastar" y el ticket.
 
@@ -148,6 +149,16 @@ Enlace: /quincena/
 >
 > #quincy #finanzaspersonales #derechoslaborales #mexico
 
+### 13 · Aguinaldo a rendir · `13-aguinaldo-a-rendir.png` · jueves 10 de diciembre
+
+> $10,000 de aguinaldo, un año después 👇
+> En el colchón: la inflación le quita unos $333 de valor.
+> En CETES: ganarías unos $550, ya con la retención de ISR.
+> Con CETES a 28 días al 6.22% e inflación de 3.45% (Banxico, octubre de 2026). La tasa cambia cada semana y no es una recomendación: primero paga tu tarjeta y aparta para emergencias.
+> Haz tu cuenta con tu aguinaldo 👉 quincy-mx.github.io/aguinaldo-a-rendir (link en bio)
+>
+> #aguinaldo #CETES #ahorro #finanzaspersonales #mexico
+
 ---
 
 ## Historias
@@ -226,7 +237,21 @@ Cada reel trae el gancho escrito en los primeros segundos y cierra con la marca.
 >
 > #aguinaldo #aguinaldo2026 #ahorro #mexico
 
-### R9 · La app que te dice lo que te toca · `video/animados/reel-00-conoce-quincy.mp4` · Publícalo hoy y fíjalo
+### R9 · Tu aguinaldo también tiene su Wrapped · `video/animados/reel-10-aguinaldo-wrapped.mp4` · jueves 3 de diciembre
+
+> Tu aguinaldo también tiene su Wrapped ✨ Cuánto te toca, cuántos días faltan, cuánto no paga ISR y cuánto te daría en CETES.
+> Haz el tuyo en 10 segundos y súbelo a tus historias: quincy-mx.github.io/aguinaldo (link en bio).
+>
+> #aguinaldo #wrapped #aguinaldo2026 #finanzaspersonales #mexico
+
+### R10 · ¿Tu aguinaldo se va a ir en las posadas? · `video/animados/reel-09-aguinaldo-a-rendir.mp4` · jueves 17 de diciembre
+
+> ¿Tu aguinaldo se va a ir en las posadas? 🎄 $10,000 en el colchón pierden unos $333 de valor en un año; en CETES ganarías unos $550, ya con ISR (tasa de octubre, cambia cada semana).
+> Primero paga tu tarjeta y aparta para emergencias. Haz tu cuenta gratis: quincy-mx.github.io/aguinaldo-a-rendir (link en bio).
+>
+> #aguinaldo #CETES #ahorro #finanzaspersonales #mexico
+
+### R11 · La app que te dice lo que te toca · `video/animados/reel-00-conoce-quincy.mp4` · Publícalo hoy y fíjalo
 
 > Te presento Quincy 👋 La app que te dice lo que te toca, cuándo te toca y cuánto te queda.
 > Tu límite diario, tu aguinaldo, tus vacaciones y tu tanda. Gratis, sin registro y sin bancos.

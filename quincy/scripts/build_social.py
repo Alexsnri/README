@@ -8,7 +8,7 @@ import os
 import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE = "https://alexsnri.github.io/README/quincy/"
+SITE = "https://quincy-mx.github.io/"
 MEDIA = SITE + "marketing/"
 FEED_TIME, STORY_TIME, REEL_TIME = "13:30", "13:35", "20:00"  # hora de la Ciudad de México
 
@@ -43,6 +43,8 @@ REELS = {
     "05-te-despiden": "¿Te despidieron sin causa? No firmes nada todavía. Te tocan 3 meses de salario, 12 días por año y tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.\nMándaselo a quien lo necesite. Link en bio.\n\n#liquidacion #despido #PROFEDET #derechoslaborales #mexico",
     "06-ruleta-tanda": "Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo.\nOrganiza la tuya gratis: link en bio.\n\n#tanda #ahorro #whatsapp #familia #mexico",
     "07-hoy-puedes-gastar": "La regla que me salvó la quincena: lo que te llega, menos pagos fijos y ahorro, entre los días que faltan. Ese es tu número de hoy.\n¿Cuál es el tuyo? Calcúlalo gratis: link en bio.\n\n#quincena #presupuesto #ahorro #finanzaspersonales #mexico",
+    "09-aguinaldo-a-rendir": "¿Tu aguinaldo se va a ir en las posadas? 🎄 $10,000 en el colchón pierden unos $333 de valor en un año; en CETES ganarías unos $550, ya con ISR (tasa de octubre, cambia cada semana).\nPrimero paga tu tarjeta y aparta para emergencias. Haz tu cuenta gratis: quincy-mx.github.io/aguinaldo-a-rendir (link en bio).\n\n#aguinaldo #CETES #ahorro #finanzaspersonales #mexico",
+    "10-aguinaldo-wrapped": "Tu aguinaldo también tiene su Wrapped ✨ Cuánto te toca, cuántos días faltan, cuánto no paga ISR y cuánto te daría en CETES.\nHaz el tuyo en 10 segundos y súbelo a tus historias: quincy-mx.github.io/aguinaldo (link en bio).\n\n#aguinaldo #wrapped #aguinaldo2026 #finanzaspersonales #mexico",
     "08-faltan-18-dias": "Faltan 18 días para el límite del aguinaldo (19 de diciembre) ⏳ Antes de gastarlo: paga lo que te cobra intereses, aparta para enero y págate primero.\nCompártelo con tu equipo. Link en bio.\n\n#aguinaldo #aguinaldo2026 #ahorro #mexico",
 }
 
@@ -55,12 +57,17 @@ HOOKS = {
     "05-te-despiden": "¿Te despidieron? No firmes nada todavía",
     "06-ruleta-tanda": "Se acabaron los pleitos por el número",
     "07-hoy-puedes-gastar": "La regla que me salvó la quincena",
+    "09-aguinaldo-a-rendir": "¿Tu aguinaldo se va a ir en las posadas? 🎄 $10,000 en el colchón pierden unos $333 de valor en un año; en CETES ganarías unos $550, ya con ISR (tasa de octubre, cambia cada semana).\nPrimero paga tu tarjeta y aparta para emergencias. Haz tu cuenta gratis: quincy-mx.github.io/aguinaldo-a-rendir (link en bio).\n\n#aguinaldo #CETES #ahorro #finanzaspersonales #mexico",
+    "10-aguinaldo-wrapped": "Tu aguinaldo también tiene su Wrapped ✨ Cuánto te toca, cuántos días faltan, cuánto no paga ISR y cuánto te daría en CETES.\nHaz el tuyo en 10 segundos y súbelo a tus historias: quincy-mx.github.io/aguinaldo (link en bio).\n\n#aguinaldo #wrapped #aguinaldo2026 #finanzaspersonales #mexico",
     "08-faltan-18-dias": "Faltan 18 días para tu aguinaldo",
+    "09-aguinaldo-a-rendir": "¿Tu aguinaldo se va a ir en las posadas?",
+    "10-aguinaldo-wrapped": "Tu aguinaldo también tiene su Wrapped",
 }
 
 CAROUSELS = {
     "c1-aguinaldo": ("5 cosas de tu aguinaldo", "5 cosas que tienes que saber de tu aguinaldo 💸 Desliza y guárdalo para diciembre.\n¿Ya sabes cuánto te toca? Calcúlalo gratis: link en bio.\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico"),
     "c2-tanda": ("¿Qué número de la tanda te conviene?", "¿Qué número de la tanda te conviene? Hicimos la cuenta 👉 desliza.\nArma la tuya con ruleta y calendario, gratis: link en bio.\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"),
+    "c4-aguinaldo-wrapped": ("Tu Aguinaldo Wrapped", "Tu aguinaldo también tiene su Wrapped ✨ Así se ve con un sueldo de $12,000 al mes. Desliza 👉\n¿Y el tuyo? Hazlo en 10 segundos y súbelo a tus historias: quincy-mx.github.io/aguinaldo (link en bio).\n\n#aguinaldo #wrapped #aguinaldo2026 #finanzaspersonales #mexico"),
     "c3-finiquito-liquidacion": ("¿Finiquito o liquidación?", "¿Finiquito o liquidación? No es lo mismo. Desliza y guárdalo por si acaso 📌\nCalcula el tuyo gratis: link en bio.\n\n#finiquito #liquidacion #derechoslaborales #PROFEDET #mexico"),
 }
 
@@ -78,6 +85,7 @@ PLAN = [
     ("2026-11-05", "story", "02-tanda"),
     ("2026-11-06", "feed", "03-si-renuncias"), ("2026-11-06", "reel", "02-renuncias"),
     ("2026-11-07", "story", "04-dias-en-verde"),
+    ("2026-11-08", "carousel", "c4-aguinaldo-wrapped"),
     ("2026-11-09", "carousel", "c3-finiquito-liquidacion"), ("2026-11-09", "story", "01-aguinaldo"),
     ("2026-11-11", "feed", "05-aguinaldo-isr"), ("2026-11-11", "story", "05-mi-futuro"), ("2026-11-11", "reel", "03-aguinaldo-isr"),
     ("2026-11-12", "story", "02-tanda"),
@@ -98,8 +106,11 @@ PLAN = [
     ("2026-11-28", "story", "04-dias-en-verde"),
     ("2026-11-30", "feed", "11-ticket"), ("2026-11-30", "story", "03-ticket"),
     ("2026-12-01", "story", "01-aguinaldo"), ("2026-12-01", "reel", "08-faltan-18-dias"),
+    ("2026-12-03", "reel", "10-aguinaldo-wrapped"),
     ("2026-12-07", "story", "01-aguinaldo"),
+    ("2026-12-10", "feed", "13-aguinaldo-a-rendir"),
     ("2026-12-15", "feed", "07-hoy-puedes-gastar"), ("2026-12-15", "story", "03-ticket"),
+    ("2026-12-17", "reel", "09-aguinaldo-a-rendir"),
     ("2026-12-18", "story", "01-aguinaldo"),
 ]
 

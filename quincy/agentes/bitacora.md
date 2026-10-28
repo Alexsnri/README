@@ -2,6 +2,17 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Contenido (corrida extra)
+- Hice: todo lo que se copia o se comparte ya dice **quincy-mx.github.io** (`SITE` en `build_social.py` y `build_programar.py`, calendario,
+  `programar.html`, guía y recordatorios de TikTok; la bio trae la dirección escrita para TikTok). 4 piezas nuevas: carrusel "Tu Aguinaldo
+  Wrapped" (dom 8 nov, semana del lanzamiento), reel "Tu aguinaldo también tiene su Wrapped" (jue 3 dic, junto al Wrapped de Spotify),
+  post "$10,000 de aguinaldo, un año después" (jue 10 dic) y reel "¿Tu aguinaldo se va a ir en las posadas?" (jue 17 dic), las dos
+  últimas llevan a `aguinaldo-a-rendir/`. Los recordatorios de TikTok ahora salen de `build_programar.py`; posts de una imagen con `scripts/reels/posts.js`.
+- Encontré: cola suficiente hasta el 17 dic. ElevenLabs rechazó la voz ("Free Tier access has been disabled"): los 2 reels nuevos van con Piper.
+  Las piezas de diciembre usan CETES 6.22% (Banxico, oct): si la tasa cambia mucho antes del 3 dic, hay que rehacerlas (ver `estado/contenido.md`).
+- Para el dueño: cambia la bio de Instagram y TikTok a https://quincy-mx.github.io/ y programa las 4 piezas nuevas desde `programar.html`.
+  Si quieres la voz de ElevenLabs (la de los primeros reels), hace falta un plan de pago.
+
 ## 2026-10-28 · Ley y datos (corrida extra)
 - Hice: revisé `aguinaldo-a-rendir/` contra fuentes oficiales. Bien: ISR 0.90% (art. 24 LIF 2026, DOF 7 nov 2025), IPAB 400 mil UDIS,
   Fondo de Protección de SOFIPOs 25 mil UDIS (art. 105 LACP, CNBV), CETES 28 días 6.22% (colocación del 29 oct) e inflación 3.45%
