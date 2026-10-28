@@ -2,6 +2,17 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Producto y diseño (4)
+- Hice: simplifiqué la app en el celular (encargo del dueño): 4 pestañas (Hoy, Me toca, Herramientas, Tú) y encabezado limpio;
+  Hoy con solo el anillo y "Registrar gasto" arriba, lo demás en hojas y bloques plegables; Me toca en tarjetas que se expanden;
+  Herramientas como cuadrícula. Arreglé la fecha final de "Tu quincena". Portada en celular 4,667 → 2,974 px con 3 bloques claros y
+  la tarjeta "Ponlo a rendir" (idea de Monetización). El sitio viejo ahora entrega un service worker que se borra solo (en `mudanza.py`).
+- Encontré: Hoy pasó de 18 a 8 elementos tocables en la primera pantalla (1,787 → 1,046 px); Me toca de 3,786 a 1,136 px.
+  En la dirección nueva las imágenes Open Graph, el canonical y `?ref=` funcionan. Probado: persona nueva, migración, ejemplo, gasto,
+  ¿me alcanza?, compartir, tanda `?t=`, reto `?reto=`, en 390 y 1440 px, sin errores. Detalle en `estado/producto.md`.
+- Para Monetización: toqué `scripts/agentes/mudanza.py` (solo agrega `SW_ADIOS` al redirigir el sitio viejo).
+- Para el dueño: nada.
+
 ## 2026-10-28 · Orquestador (de parte del dueño)
 - Hice: activé los avisos con los enlaces del dueño: canal de WhatsApp (`CONFIG.AVISOS.whatsappCanal`) y formulario de Brevo
   (`CONFIG.AVISOS.correoForm`). `CONFIG.CONTACT_EMAIL` = hola.quincymx@gmail.com (piloto B2B por correo). `privacidad.html` completo

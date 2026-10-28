@@ -1,16 +1,19 @@
 // Quincy · arranque: secciones, marca de instituciones, retos recibidos, tasas, app instalable.
 (function (FY) {
   const { $, store, CONFIG } = FY;
-  const VIEWS = ["hoy", "derechos", "tanda", "futuro", "reto", "mas", "datos"];
+  const VIEWS = ["hoy", "derechos", "herramientas", "tanda", "futuro", "reto", "mas", "datos"];
+  // Cuatro pestañas: las herramientas (tanda, futuro, reto, calculadoras) viven dentro de "Herramientas".
+  const TAB = { tanda: "herramientas", futuro: "herramientas", reto: "herramientas", mas: "herramientas" };
 
   // ---------- secciones ----------
   function go(view, push) {
     if (!VIEWS.includes(view)) view = "hoy";
     VIEWS.forEach((v) => { $("v-" + v).hidden = v !== view; });
-    document.querySelectorAll("[data-go]").forEach((b) => {
-      if (!b.closest(".tabs-top") && !b.closest(".tabbar")) return;
-      if (b.dataset.go === view) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
+    const tab = TAB[view] || view;
+    document.querySelectorAll("[data-tab]").forEach((b) => {
+      if (b.dataset.tab === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
     });
+    document.querySelectorAll("dialog.sheet[open]").forEach((d) => d.close());
     if (push !== false) { try { history.replaceState(null, "", "#" + view); } catch (e) {} }
     window.scrollTo(0, 0);
     if (view === "futuro") { FY.sim.sizeCanvas(); FY.sim.render(); FY.sim.startWarp(); }
@@ -22,6 +25,18 @@
     store.set("view", view);
   }
   document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); go(b.dataset.go); FY.buzz(5); }));
+  // ---------- hojas desde abajo (lo secundario se abre a demanda) ----------
+  document.querySelectorAll("[data-sheet]").forEach((b) => b.addEventListener("click", () => {
+    const d = $(b.dataset.sheet); if (!d) return;
+    d.showModal(); FY.buzz(5);
+    const f = d.querySelector("input"); if (f && matchMedia("(pointer: fine)").matches) f.focus();
+  }));
+  document.querySelectorAll("dialog.sheet").forEach((d) => {
+    d.addEventListener("click", (e) => {
+      // Toque fuera de la hoja, en la X, o en algo que abre otra pantalla: se cierra.
+      if (e.target === d || e.target.closest("[data-close],[data-share],[data-go]")) d.close();
+    });
+  });
   addEventListener("hashchange", () => { const v = location.hash.slice(1); if (VIEWS.includes(v)) go(v, false); });
 
   // ---------- parámetros del enlace ----------

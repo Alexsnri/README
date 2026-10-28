@@ -64,6 +64,19 @@ def armar(sitio, nuevo, salida):
     print(f"Sitio nuevo armado en {salida} para {nuevo}.")
 
 
+# En la dirección vieja el service worker se reemplaza por uno que borra su caché, se da de baja y recarga las pestañas
+# abiertas: así quien abrió Quincy antes no se queda con páginas guardadas viejas y llega a la redirección.
+SW_ADIOS = """// Quincy se mudó: este service worker limpia lo guardado y se da de baja.
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (e) => {
+  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.map((k) => caches.delete(k))))
+    .then(() => self.registration.unregister())
+    .then(() => self.clients.matchAll({ type: "window" }))
+    .then((cs) => cs.forEach((c) => c.navigate(c.url))));
+});
+"""
+
+
 def redirigir(sitio, nuevo):
     revisar(nuevo)
     sitio = Path(sitio)
@@ -77,6 +90,7 @@ def redirigir(sitio, nuevo):
         f.write_text(stub(nuevo + rel), encoding="utf-8")
         n += 1
     (sitio / "index.html").write_text(stub(nuevo), encoding="utf-8")
+    (viejo_dir / "sw.js").write_text(SW_ADIOS, encoding="utf-8")
     sm = viejo_dir / "sitemap.xml"
     if sm.exists():
         sm.unlink()

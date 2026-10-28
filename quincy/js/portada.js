@@ -234,6 +234,10 @@
     }).join("");
   })();
 
+  // En celular el calendario empieza cerrado (es secundario); en temporada de aguinaldo, "ponlo a rendir" va primero.
+  if (matchMedia("(max-width:640px)").matches) $("cal").open = false;
+  if (season === "aguinaldo") { const g = document.querySelector(".calc-grid"), r = g.querySelector('a[href="aguinaldo-a-rendir/"]'); if (r) g.prepend(r); }
+
   // ---------- avatar ----------
   if (FY.avatar) $("l-avatar").innerHTML = FY.avatar.svg(65, "ok", 2, "long");
 

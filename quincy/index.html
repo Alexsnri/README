@@ -85,16 +85,16 @@
       </div>
       <div id="h-share" class="h-share"></div>
       <a class="more" id="h-more" href="aguinaldo/">Ver el cálculo completo y cuánto paga ISR <span aria-hidden="true">→</span></a>
-      <a class="more" id="h-more2" href="aguinaldo-a-rendir/">¿Y luego? Pon tu aguinaldo a rendir <span aria-hidden="true">→</span></a>
+      <a class="rend-card" id="h-more2" href="aguinaldo-a-rendir/"><span class="rend-ic" aria-hidden="true">↗</span><span><b>¿Y luego? Ponlo a rendir</b><small>Cuánto te daría en CETES o en el banco, con ISR e inflación.</small></span></a>
     </form>
   </section>
 
   <section class="wrap bento" aria-label="Todo lo que hace Quincy">
     <article class="tile t-hoy glass reveal">
       <div>
-        <p class="eyebrow">La app · Hoy</p>
+        <p class="eyebrow">Tu dinero hoy</p>
         <h2>Un solo número: lo que puedes gastar hoy.</h2>
-        <p class="mut">Pones lo que te llega y tus pagos fijos. Cada mañana te dice tu límite para llegar completo a tu siguiente pago.</p>
+        <p class="mut opt">Pones lo que te llega y tus pagos fijos. Cada mañana te dice tu límite para llegar completo a tu siguiente pago.</p>
       </div>
       <div class="hoy-demo">
         <div class="rng"><div class="rng-top"><label for="d-income">Te llega cada quincena</label><output id="d-income-out" class="mono"></output></div><input type="range" id="d-income" min="2000" max="40000" step="250" value="8000"></div>
@@ -104,13 +104,13 @@
       </div>
     </article>
 
-    <article class="tile t-cal glass reveal">
-      <p class="eyebrow">Tu dinero tiene calendario</p>
+    <details class="tile t-cal glass reveal" id="cal" open>
+      <summary class="eyebrow">Tu dinero tiene calendario</summary>
       <ol class="dates" id="dates"></ol>
-    </article>
+    </details>
 
     <nav class="tile t-calcs reveal" id="calculadoras" aria-labelledby="calcs-title">
-      <h2 id="calcs-title" class="sec-title">Calculadoras con la ley de 2026</h2>
+      <h2 id="calcs-title" class="sec-title">Lo que te toca, con la ley de 2026</h2>
       <div class="calc-grid">
         <a class="ct glass" href="aguinaldo/"><span class="ct-n mono">15 días</span><b>Aguinaldo 2026</b><span>Cuánto te toca, cuánto paga ISR y cuándo te lo pagan.</span></a>
         <a class="ct glass" href="aguinaldo-a-rendir/"><span class="ct-n mono">CETES</span><b>Pon tu aguinaldo a rendir</b><span>Cuánto ganas de verdad, con ISR e inflación.</span></a>
@@ -122,12 +122,17 @@
       </div>
     </nav>
 
+    <div class="tile t-more reveal">
+      <h2 class="sec-title">Más herramientas</h2>
+      <a class="go" href="app.html#herramientas">Ver todas <span aria-hidden="true">→</span></a>
+    </div>
+
     <a class="tile t-futuro glass reveal" href="app.html#futuro">
       <div class="fut-av"><svg id="l-avatar" viewBox="0 0 200 220" role="img" aria-label="Tu avatar a los 65 años"></svg></div>
       <div>
         <p class="eyebrow">Futuro</p>
         <h2>Tu yo de 65 ya existe.</h2>
-        <p class="mut">Mueve tu plan de ahorro y mira cómo cambia su cara. Con CETES e inflación reales.</p>
+        <p class="mut opt">Mueve tu plan de ahorro y mira cómo cambia su cara. Con CETES e inflación reales.</p>
         <span class="go">Conócelo <span aria-hidden="true">→</span></span>
       </div>
     </a>
@@ -135,7 +140,7 @@
     <a class="tile t-reto glass reveal" href="app.html#reto">
       <p class="eyebrow">Reto diario</p>
       <h2>5 preguntas de dinero.</h2>
-      <p class="mut">Las mismas para todo México. Reta a tus amigos por WhatsApp.</p>
+      <p class="mut opt">Las mismas para todo México. Reta a tus amigos por WhatsApp.</p>
       <span class="go">Jugar el de hoy <span aria-hidden="true">→</span></span>
     </a>
 
@@ -151,7 +156,7 @@
     <article class="tile t-avisame glass reveal" id="avisame">
       <p class="eyebrow">Avísame</p>
       <h2>Que no se te pase.</h2>
-      <p class="mut">Ponlo en tu calendario y tu teléfono te avisa un día antes.</p>
+      <p class="mut opt">Ponlo en tu calendario y tu teléfono te avisa un día antes.</p>
       <div class="row">
         <button class="btn btn-ghost btn-sm" type="button" id="rem-ag">Fecha límite del aguinaldo</button>
         <button class="btn btn-ghost btn-sm" type="button" id="rem-q">Mi próxima quincena</button>
@@ -164,7 +169,7 @@
         <p class="eyebrow">Gratis para siempre</p>
         <h2>Sin registro. Sin bancos. Tus datos no salen de tu teléfono.</h2>
       </div>
-      <ul class="checks">
+      <ul class="checks opt">
         <li>Funciona sin internet y se instala como app.</li>
         <li>Valores oficiales de 2026: CONASAMI, INEGI, SAT y Banxico.</li>
         <li>Información general, no asesoría legal. Para un despido, PROFEDET te asesora gratis.</li>

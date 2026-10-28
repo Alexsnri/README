@@ -113,11 +113,11 @@
     $("q-today-empty").hidden = !!(gastos[s.k] && gastos[s.k].length);
     // Periodo
     const label = cfg.freq === "semanal" ? "semana" : cfg.freq === "mensual" ? "mes" : "quincena";
-    $("q-period-title").textContent = `Tu ${label}: ${dateFmt(s.p.start)} → ${dateFmt(FY.addDays(s.p.next, -1))}`;
+    $("q-period-title").textContent = `Tu ${label}: ${dateFmt(s.p.start)} → ${dateFmt(s.p.next)}`;
     const pf = s.available > 0 ? s.periodSpent / s.available : 0;
     $("q-period-bar").style.width = Math.min(100, pf * 100).toFixed(1) + "%";
     $("q-period-bar").className = pf > 1 ? "bad" : "";
-    $("q-period-text").textContent = `Llevas ${fmt(s.periodSpent)} de ${fmt(s.available)} para gastar (${fmt(cfg.ingreso)} de pago, menos ${fmt(cfg.fijos)} fijos y ${fmt(cfg.ahorro)} de ahorro).`;
+    $("q-period-text").textContent = `Llevas ${fmt(s.periodSpent)} de ${fmt(s.available)} para gastar.`;
     const days = $("q-days"); days.innerHTML = "";
     for (let i = 0; i < s.p.len; i++) {
       const d = FY.addDays(s.p.start, i), k = FY.dayKey(d), el = document.createElement("i");
@@ -141,6 +141,8 @@
     // Racha
     const n = streak(s);
     $("streak-num").textContent = n;
+    $("streak-num").parentNode.lastChild.textContent = n === 1 ? " día seguido en tu límite" : " días seguidos en tu límite";
+    $("streak-pill").hidden = n === 0;
     $("streak-pill").classList.toggle("lit", n > 0 && green);
     document.querySelectorAll('[data-dot="hoy"]').forEach((d) => { d.hidden = !!gastos[s.k]; });
     alcanza();

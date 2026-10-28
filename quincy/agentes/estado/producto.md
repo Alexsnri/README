@@ -14,6 +14,37 @@ Lo más nuevo arriba. Cada cambio: qué se hizo, qué esperamos y cómo se mide.
 En local (sin el proxy del entorno de pruebas) la portada da 99/100/100/100. Primer pintado real en vivo medido con Playwright: 0.8 s.
 Escritorio 1440 px: la portada pasó de 11,700 px a 2,690 px y ya usa todo el ancho.
 
+## 2026-10-28 · App más simple en el celular (encargo del dueño: "muy saturado")
+
+**Antes y después** (390×844, persona con datos; "tocables" = botones, enlaces y campos visibles en la primera pantalla, incluida la navegación):
+
+| Vista | Tocables antes → después | Campos antes → después | Alto antes → después |
+|---|---|---|---|
+| Hoy | 18 → 8 | 1 → 0 | 1,787 → 1,046 px |
+| Me toca | 11 → 11 | 0 → 0 | 3,786 → 1,136 px |
+| Herramientas (nueva) | — → 11 | — → 0 | — → 774 px |
+| Portada | 8 → 8 | 1 → 1 | 4,667 → 2,974 px |
+
+La navegación pasó de 9 cosas (racha, perfil, ⋯ y 5 pestañas, más "Más" y "Tus datos" escondidos) a 5 (logo y 4 pestañas).
+Lighthouse móvil: app 89 → 90 (accesibilidad 100), portada 99 en local (accesibilidad 100).
+
+**Qué cambió**
+- 4 pestañas: Hoy · Me toca · Herramientas · Tú. Encabezado con solo el logo. Tanda, Futuro, Reto, calculadoras y empresas viven en
+  Herramientas (cuadrícula de tarjetas) y cada una tiene "‹ Herramientas" arriba. La racha pasó dentro de Hoy.
+- Hoy: arriba solo el anillo y un botón grande "Registrar gasto" (abre una hoja desde abajo con monto, categorías y gastos de hoy).
+  Abajo: "¿Me alcanza?" (hoja), "Tu quincena" (barra; la cuadrícula al expandir) y "Compartir o recordar" (hoja con ticket, días en
+  verde y recordatorios). "Tus números" salió de Hoy (vive en Tú).
+- Me toca: 4 tarjetas grandes que se expanden (Aguinaldo, Vacaciones, PTU, "Si hoy te vas" con sus campos dentro), "Cuándo te toca" y
+  la lista de 8 cosas plegables. Sin campos a la vista.
+- Error arreglado: "Tu quincena" ahora termina en la fecha del próximo pago (antes mostraba el día anterior).
+- Portada en celular: héroe igual + "Tu dinero hoy", "Lo que te toca" (con "Ponlo a rendir" primero en temporada de aguinaldo) y
+  "Más herramientas" con "Ver todas"; calendario plegado y lo demás compacto. En el héroe, tarjeta "¿Y luego? Ponlo a rendir".
+- Dirección vieja: `mudanza.py` ahora deja en alexsnri.github.io un service worker que borra su caché, se da de baja y recarga
+  (probado), para que nadie se quede con páginas viejas guardadas.
+
+**Pendiente (después del congelamiento):** Futuro (2,907 px) y Tanda (5 campos en la primera pantalla) siguen largos; pasarlos a pasos
+o bloques plegables el martes 3.
+
 ## 2026-10-28 · App: bienvenida y un solo perfil (encargo del dueño)
 
 **Qué cambió**

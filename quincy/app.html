@@ -29,20 +29,11 @@
   <div class="wrap">
     <a class="logo" href="index.html" aria-label="Quincy, portada"><i></i><span>quincy<b>.</b></span><span class="brand-x" id="brand-x" hidden></span></a>
     <nav class="tabs-top" aria-label="Secciones">
-      <button type="button" data-go="hoy">Hoy<span class="dot" data-dot="hoy" hidden></span></button>
-      <button type="button" data-go="derechos">Me toca</button>
-      <button type="button" data-go="tanda">Tanda</button>
-      <button type="button" data-go="futuro">Futuro</button>
-      <button type="button" data-go="reto">Reto<span class="dot" data-dot="reto" hidden></span></button>
-      <button type="button" data-go="mas">Más</button>
-      <button type="button" data-go="datos">Tus datos</button>
+      <button type="button" data-go="hoy" data-tab="hoy">Hoy<span class="dot" data-dot="hoy" hidden></span></button>
+      <button type="button" data-go="derechos" data-tab="derechos">Me toca</button>
+      <button type="button" data-go="herramientas" data-tab="herramientas">Herramientas<span class="dot" data-dot="reto" hidden></span></button>
+      <button type="button" data-go="datos" data-tab="datos">Tú</button>
     </nav>
-    <button type="button" class="streak-pill" id="streak-pill" data-go="hoy" aria-label="Días seguidos sin pasarte de tu límite">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span id="streak-num">0</span>
-    </button>
-    <button type="button" class="more-btn" data-go="datos" aria-label="Tus datos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 20c.8-3.6 3.6-5.6 7-5.6s6.2 2 7 5.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <button type="button" class="more-btn" data-go="mas" aria-label="Más: preguntas, fuentes y tus datos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></button>
     <button class="btn btn-sun btn-sm" id="install" hidden>Instalar</button>
   </div>
 </header>
@@ -58,7 +49,7 @@
 <main>
   <!-- ============ HOY ============ -->
   <section class="view" id="v-hoy" data-view="hoy" aria-labelledby="h-hoy">
-    <div class="wrap block">
+    <div class="wrap block narrow-v">
       <div class="view-head">
         <div>
           <p class="eyebrow" id="q-date">Hoy</p>
@@ -67,73 +58,44 @@
         <button type="button" class="chip mid chip-act" id="q-example" data-onb>Ejemplo · pon tus números</button>
       </div>
 
-      <div class="hoy-top">
-        <div class="card q-hero">
-          <div class="ring-wrap">
-            <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
-              <circle cx="60" cy="60" r="52" class="ring-bg"/>
-              <circle cx="60" cy="60" r="52" class="ring-arc ok" id="q-ring-arc" transform="rotate(-90 60 60)"/>
-            </svg>
-            <div class="ring-in">
-              <span class="small mut" id="q-big-label">Hoy todavía puedes gastar</span>
-              <b class="q-big mono ok" id="q-big">$0</b>
-            </div>
+      <div class="card q-hero">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+            <circle cx="60" cy="60" r="52" class="ring-bg"/>
+            <circle cx="60" cy="60" r="52" class="ring-arc ok" id="q-ring-arc" transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="ring-in">
+            <span class="small mut" id="q-big-label">Hoy todavía puedes gastar</span>
+            <b class="q-big mono ok" id="q-big">$0</b>
           </div>
-          <p class="mut small" id="q-sub" aria-live="polite"></p>
         </div>
-
-        <div class="card">
-          <h2 class="h2-sm">Registra un gasto</h2>
-          <div class="add-row">
-            <label class="sr" for="q-amount">Monto del gasto</label>
-            <span class="peso" aria-hidden="true">$</span>
-            <input type="number" inputmode="decimal" min="1" max="1000000" id="q-amount" placeholder="0">
-            <button type="button" class="btn btn-sun" id="q-add">Agregar</button>
-          </div>
-          <div class="chips" id="q-cats" role="group" aria-label="Categoría"></div>
-          <ul class="spend-list" id="q-today-list"></ul>
-          <p class="mut small" id="q-today-empty">Todavía no registras gastos hoy.</p>
-        </div>
+        <p class="mut small" id="q-sub" aria-live="polite"></p>
+        <p class="streak-pill" id="streak-pill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b id="streak-num">0</b> días seguidos en tu límite</span></p>
+        <button type="button" class="btn btn-sun wide btn-lg" data-sheet="sh-gasto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Registrar gasto<span class="dot" data-dot="hoy" hidden></span></button>
       </div>
 
-      <div class="hoy-grid">
-        <div class="card">
-          <h2 class="h2-sm">¿Me alcanza?</h2>
-          <p class="mut small">Antes de comprar algo, escribe el precio.</p>
-          <div class="add-row">
-            <label class="sr" for="alc-price">Precio</label>
-            <span class="peso" aria-hidden="true">$</span>
-            <input type="number" inputmode="decimal" min="1" max="1000000" id="alc-price" placeholder="Precio">
+      <div class="blocks">
+        <button type="button" class="block-row card" data-sheet="sh-alcanza">
+          <span class="br-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16l-2 11H6zM9 7a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+          <span class="br-tx"><b>¿Me alcanza?</b><small>Antes de comprar algo, revisa si cabe en tu día.</small></span>
+          <span class="br-go" aria-hidden="true">›</span>
+        </button>
+        <details class="card fold" id="q-fold">
+          <summary>
+            <span class="fold-tx"><b id="q-period-title">Tu quincena</b><span class="meter period"><i id="q-period-bar" style="width:0%"></i></span><small class="mut" id="q-period-text"></small></span>
+          </summary>
+          <div class="fold-body">
+            <div class="days" id="q-days" aria-label="Días de tu periodo"></div>
+            <div class="legend small"><span><i class="dot-ok"></i>En tu límite</span><span><i class="dot-bad"></i>Te pasaste</span><span><i class="dot-fut"></i>Por venir</span></div>
+            <div class="cat-bars" id="q-cat-bars"></div>
+            <p class="small" id="q-aguante"></p>
           </div>
-          <p id="alc-out" aria-live="polite"></p>
-          <p class="small mut" id="alc-future"></p>
-          <div class="actions">
-            <button type="button" class="btn btn-ghost btn-sm" id="alc-buy">Lo compro</button>
-            <button type="button" class="btn btn-sun btn-sm" id="alc-save">Me lo aguanto</button>
-          </div>
-          <p class="small" id="q-aguante"></p>
-        </div>
-
-        <div class="card">
-          <h2 class="h2-sm" id="q-period-title">Tu quincena</h2>
-          <div class="meter period"><i id="q-period-bar" style="width:0%"></i></div>
-          <p class="small mut" id="q-period-text"></p>
-          <div class="days" id="q-days" aria-label="Días de tu periodo"></div>
-          <div class="legend small"><span><i class="dot-ok"></i>En tu límite</span><span><i class="dot-bad"></i>Te pasaste</span><span><i class="dot-fut"></i>Por venir</span></div>
-          <div class="cat-bars" id="q-cat-bars"></div>
-        </div>
-      </div>
-
-      <div class="card numbers-card">
-        <div><p class="eyebrow">Tus números</p><p class="small" id="q-sum"></p></div>
-        <button type="button" class="btn btn-ghost btn-sm" data-go="datos">Editar</button>
-      </div>
-
-      <div class="actions spaced">
-        <a class="btn btn-ghost btn-sm" id="remind-google" target="_blank" rel="noopener" href="#">Recordatorio diario en Google Calendar</a>
-        <button type="button" class="btn btn-ghost btn-sm" id="remind-ics">Recordatorio para iPhone y otros</button>
-        <button type="button" class="btn btn-ghost btn-sm" data-share="verde">Compartir mis días en verde</button>
-        <button type="button" class="btn btn-ghost btn-sm" data-share="recibo">Ticket de mi quincena</button>
+        </details>
+        <button type="button" class="block-row card" data-sheet="sh-compartir">
+          <span class="br-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 9l5-5 5 5M5 14v5h14v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="br-tx"><b>Compartir o recordar</b><small>Tu ticket, tus días en verde y un recordatorio diario.</small></span>
+          <span class="br-go" aria-hidden="true">›</span>
+        </button>
       </div>
       <a class="partner" id="partner-cta" hidden target="_blank" rel="noopener" href="#"></a>
     </div>
@@ -144,7 +106,7 @@
     <div class="wrap block">
       <div class="view-head">
         <div>
-          <p class="eyebrow">Tu perfil</p>
+          <p class="eyebrow">Tú</p>
           <h1 class="h1-sm" id="h-datos">Tus datos</h1>
         </div>
       </div>
@@ -206,77 +168,81 @@
         <button type="button" class="chip mid chip-act" id="mt-example" data-go="datos">Ejemplo · pon tu sueldo</button>
       </div>
 
-      <div class="mt-grid">
-        <div class="card mt-form">
-          <h2 class="h2-sm">Tus datos de trabajo</h2>
-          <p class="small" id="mt-sum"></p>
-          <p class="small mut" id="mt-sd"></p>
-          <button type="button" class="btn btn-ghost btn-sm" data-go="datos">Editar mis datos</button>
-          <p class="small mut">Si tu contrato te da más que la ley (más días de aguinaldo o más prima), cámbialo en Tus datos.</p>
-        </div>
+      <div class="mt-sumline">
+        <p class="small" id="mt-sum"></p>
+        <button type="button" class="link-btn" data-go="datos">Editar en Tú</button>
+      </div>
 
-        <div class="mt-cards">
-          <div class="card mt-card">
-            <p class="eyebrow">Aguinaldo</p>
-            <b class="mt-num mono" id="mt-ag">$0</b>
+      <div class="mt-cards">
+        <details class="card mt-card fold">
+          <summary><span class="mt-sumy"><span class="eyebrow">Aguinaldo</span><b class="mt-num mono" id="mt-ag">$0</b><small class="mut" id="mt-ag-short"></small></span></summary>
+          <div class="fold-body">
             <p class="small" id="mt-ag-note"></p>
             <p class="small mut" id="mt-ag-tax"></p>
             <button type="button" class="btn btn-ghost btn-sm" data-share="aguinaldo">Compartir cuenta regresiva</button>
           </div>
-          <div class="card mt-card">
-            <p class="eyebrow">Vacaciones</p>
-            <b class="mt-num mono" id="mt-vac">0 días</b>
+        </details>
+        <details class="card mt-card fold">
+          <summary><span class="mt-sumy"><span class="eyebrow">Vacaciones</span><b class="mt-num mono" id="mt-vac">0 días</b><small class="mut" id="mt-vac-short"></small></span></summary>
+          <div class="fold-body">
             <p class="small" id="mt-vac-note"></p>
             <p class="small mut" id="mt-vac-next"></p>
           </div>
-          <div class="card mt-card">
-            <p class="eyebrow">Reparto de utilidades (PTU) · máximo</p>
-            <b class="mt-num mono" id="mt-ptu">$0</b>
-            <p class="small mut" id="mt-ptu-note"></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid-2 spaced">
-        <div class="card" id="mt-salida-card">
-          <div class="between">
-            <h2 class="h2-sm">Si hoy dejaras tu trabajo</h2>
-            <div class="seg" role="group" aria-label="Motivo">
+        </details>
+        <details class="card mt-card fold">
+          <summary><span class="mt-sumy"><span class="eyebrow">Reparto de utilidades (PTU) · máximo</span><b class="mt-num mono" id="mt-ptu">$0</b><small class="mut" id="mt-ptu-short"></small></span></summary>
+          <div class="fold-body"><p class="small mut" id="mt-ptu-note"></p></div>
+        </details>
+        <details class="card mt-card fold" id="mt-salida-card">
+          <summary><span class="mt-sumy"><span class="eyebrow" id="mt-total-label">Si hoy te vas</span><b class="mt-num mono" id="mt-total">$0</b><small class="mut">Toca para elegir si renuncias o te despiden.</small></span></summary>
+          <div class="fold-body">
+            <div class="seg full" role="group" aria-label="Motivo">
               <button type="button" data-motivo="renuncia" aria-pressed="false">Renuncio</button>
               <button type="button" data-motivo="despido" aria-pressed="true">Me despiden sin causa</button>
             </div>
+            <div class="three">
+              <div class="field"><label for="mt-end">Fecha de salida</label><input type="date" id="mt-end"></div>
+              <div class="field"><label for="mt-pend">Vacaciones sin tomar</label><input type="number" inputmode="numeric" id="mt-pend" min="0" max="365"></div>
+              <div class="field"><label for="mt-sinpago">Días sin pagar</label><input type="number" inputmode="numeric" id="mt-sinpago" min="0" max="365"></div>
+            </div>
+            <div class="tbl"><table><tbody id="mt-lines"></tbody></table></div>
+            <p class="small" id="mt-veinte"></p>
+            <p class="small mut" id="mt-salida-note"></p>
           </div>
-          <div class="three">
-            <div class="field"><label for="mt-end">Fecha de salida</label><input type="date" id="mt-end"></div>
-            <div class="field"><label for="mt-pend">Vacaciones sin tomar</label><input type="number" inputmode="numeric" id="mt-pend" min="0" max="365"></div>
-            <div class="field"><label for="mt-sinpago">Días sin pagar</label><input type="number" inputmode="numeric" id="mt-sinpago" min="0" max="365"></div>
-          </div>
-          <div class="tbl"><table><tbody id="mt-lines"></tbody></table></div>
-          <div class="total"><span id="mt-total-label">Tu liquidación</span><b class="mono" id="mt-total">$0</b></div>
-          <p class="small" id="mt-veinte"></p>
-          <p class="small mut" id="mt-salida-note"></p>
-        </div>
-        <div class="card">
-          <h2 class="h2-sm">Cuándo te toca</h2>
-          <ol class="timeline" id="mt-timeline"></ol>
-        </div>
+        </details>
       </div>
 
-      <div class="sec-head">
-        <p class="eyebrow">Checklist</p>
-        <h2>Ocho cosas que todo trabajador debería tener en orden</h2>
-      </div>
-      <div class="xp">
-        <span class="mono tide" id="mt-check-label">0 de 8</span>
-        <div class="meter" aria-hidden="true"><i id="mt-check-bar" style="width:0%"></i></div>
-      </div>
-      <div class="missions" id="mt-check"></div>
+      <details class="card fold spaced">
+        <summary><span class="fold-tx"><b>Cuándo te toca</b><small class="mut">Tus fechas de pago, aguinaldo, PTU y vacaciones.</small></span></summary>
+        <div class="fold-body"><ol class="timeline" id="mt-timeline"></ol></div>
+      </details>
+      <details class="card fold spaced">
+        <summary><span class="fold-tx"><b>Ocho cosas que todo trabajador debería tener en orden</b><span class="xp"><span class="mono tide" id="mt-check-label">0 de 8</span><span class="meter" aria-hidden="true"><i id="mt-check-bar" style="width:0%"></i></span></span></span></summary>
+        <div class="fold-body"><div class="missions" id="mt-check"></div></div>
+      </details>
       <p class="small mut spaced">Cálculos de referencia con el mínimo de ley. Tu caso puede tener más prestaciones. Para una disputa, la asesoría de <a href="https://www.gob.mx/profedet" target="_blank" rel="noopener">PROFEDET</a> es gratuita.</p>
+      <p class="small mut" id="mt-sd"></p>
+    </div>
+  </section>
+
+  <!-- ============ HERRAMIENTAS ============ -->
+  <section class="view" id="v-herramientas" data-view="herramientas" hidden aria-labelledby="h-herr">
+    <div class="wrap block">
+      <div class="view-head"><div><p class="eyebrow">Herramientas</p><h1 class="h1-sm" id="h-herr">Más para tu dinero</h1></div></div>
+      <div class="tools">
+        <button type="button" class="tool card" data-go="futuro"><span class="tool-ic sun" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><b>Tu yo del futuro</b><small>Cómo vivirás a los 65 con lo que ahorras hoy.</small></button>
+        <button type="button" class="tool card" data-go="tanda"><span class="tool-ic tide" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="4" r="2.2" fill="currentColor"/><circle cx="19" cy="15" r="2.2" fill="currentColor"/><circle cx="5" cy="15" r="2.2" fill="currentColor"/></svg></span><b>Tandas</b><small>Sortea los turnos y manda el calendario al grupo.</small></button>
+        <button type="button" class="tool card" data-go="reto"><span class="tool-ic sun" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4 2.8c-.8.3-1 1-1 1.7V14M12 18h.01" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><b>Reto diario<span class="dot" data-dot="reto" hidden></span></b><small>5 preguntas de dinero, iguales para todo México.</small></button>
+        <a class="tool card" href="aguinaldo-a-rendir/"><span class="tool-ic tide" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 4 7-7M15 9h5v5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Pon tu aguinaldo a rendir</b><small>Cuánto ganas de verdad, con ISR e inflación.</small></a>
+        <button type="button" class="tool card" data-go="mas"><span class="tool-ic sun" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 7h8M8 11h2M12 11h2M8 15h2M12 15h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><b>Calculadoras y fuentes</b><small>Finiquito, vacaciones, PTU y de dónde sale cada número.</small></button>
+        <a class="tool card" href="empresas.html"><span class="tool-ic tide" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V8l8-4 8 4v12M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><b>Para empresas</b><small>Bienestar financiero para tu equipo.</small></a>
+      </div>
     </div>
   </section>
 
   <!-- ============ TANDA ============ -->
   <section class="view" id="v-tanda" data-view="tanda" hidden aria-labelledby="h-tanda">
+    <div class="wrap back-wrap"><button type="button" class="back-link" data-go="herramientas">‹ Herramientas</button></div>
     <div class="wrap block">
       <div class="view-head">
         <div>
@@ -351,6 +317,7 @@
 
   <!-- ============ FUTURO ============ -->
   <section class="view" id="v-futuro" data-view="futuro" hidden aria-labelledby="h-futuro">
+    <div class="wrap back-wrap"><button type="button" class="back-link" data-go="herramientas">‹ Herramientas</button></div>
     <div class="hero wrap">
       <div class="hero-grid">
         <div>
@@ -432,6 +399,7 @@
 
   <!-- ============ RETO ============ -->
   <section class="view" id="v-reto" data-view="reto" hidden aria-labelledby="h-reto">
+    <div class="wrap back-wrap"><button type="button" class="back-link" data-go="herramientas">‹ Herramientas</button></div>
     <div class="wrap block narrow">
       <div class="reto-head">
         <div>
@@ -471,6 +439,7 @@
 
   <!-- ============ MÁS ============ -->
   <section class="view" id="v-mas" data-view="mas" hidden aria-labelledby="h-mas">
+    <div class="wrap back-wrap"><button type="button" class="back-link" data-go="herramientas">‹ Herramientas</button></div>
     <div class="wrap block">
       <div class="sec-head">
         <p class="eyebrow">Por qué existe Quincy</p>
@@ -528,12 +497,49 @@
   </section>
 </main>
 
+<!-- Hojas desde abajo: lo secundario de Hoy se abre a demanda -->
+<dialog class="sheet" id="sh-gasto" aria-labelledby="sh-gasto-t">
+  <div class="sheet-head"><h2 class="h2-sm" id="sh-gasto-t">Registrar gasto</h2><button type="button" class="sheet-x" data-close aria-label="Cerrar">×</button></div>
+  <div class="add-row">
+    <label class="sr" for="q-amount">Monto del gasto</label>
+    <span class="peso" aria-hidden="true">$</span>
+    <input type="number" inputmode="decimal" min="1" max="1000000" id="q-amount" placeholder="0">
+    <button type="button" class="btn btn-sun" id="q-add">Agregar</button>
+  </div>
+  <div class="chips" id="q-cats" role="group" aria-label="Categoría"></div>
+  <h3 class="sheet-sub">Hoy</h3>
+  <ul class="spend-list" id="q-today-list"></ul>
+  <p class="mut small" id="q-today-empty">Todavía no registras gastos hoy.</p>
+</dialog>
+<dialog class="sheet" id="sh-alcanza" aria-labelledby="sh-alcanza-t">
+  <div class="sheet-head"><h2 class="h2-sm" id="sh-alcanza-t">¿Me alcanza?</h2><button type="button" class="sheet-x" data-close aria-label="Cerrar">×</button></div>
+  <p class="mut small">Antes de comprar algo, escribe el precio.</p>
+  <div class="add-row">
+    <label class="sr" for="alc-price">Precio</label>
+    <span class="peso" aria-hidden="true">$</span>
+    <input type="number" inputmode="decimal" min="1" max="1000000" id="alc-price" placeholder="Precio">
+  </div>
+  <p id="alc-out" aria-live="polite"></p>
+  <p class="small mut" id="alc-future"></p>
+  <div class="actions">
+    <button type="button" class="btn btn-ghost btn-sm" id="alc-buy">Lo compro</button>
+    <button type="button" class="btn btn-sun btn-sm" id="alc-save">Me lo aguanto</button>
+  </div>
+</dialog>
+<dialog class="sheet" id="sh-compartir" aria-labelledby="sh-compartir-t">
+  <div class="sheet-head"><h2 class="h2-sm" id="sh-compartir-t">Compartir o recordar</h2><button type="button" class="sheet-x" data-close aria-label="Cerrar">×</button></div>
+  <div class="sheet-list">
+    <button type="button" class="btn btn-ghost" data-share="recibo">Ticket de mi quincena</button>
+    <button type="button" class="btn btn-ghost" data-share="verde">Compartir mis días en verde</button>
+    <a class="btn btn-ghost" id="remind-google" target="_blank" rel="noopener" href="#">Recordatorio diario en Google Calendar</a>
+    <button type="button" class="btn btn-ghost" id="remind-ics">Recordatorio diario para iPhone y otros</button>
+  </div>
+</dialog>
 <nav class="tabbar" aria-label="Secciones">
-  <button type="button" data-go="hoy"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hoy<span class="dot" data-dot="hoy" hidden></span></button>
-  <button type="button" data-go="derechos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4zM8 7V5h8v2M4 12h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Me toca</button>
-  <button type="button" data-go="tanda"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="4" r="2.2" fill="currentColor"/><circle cx="19" cy="15" r="2.2" fill="currentColor"/><circle cx="5" cy="15" r="2.2" fill="currentColor"/></svg>Tanda</button>
-  <button type="button" data-go="futuro"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Futuro</button>
-  <button type="button" data-go="reto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Reto<span class="dot" data-dot="reto" hidden></span></button>
+  <button type="button" data-go="hoy" data-tab="hoy"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Hoy<span class="dot" data-dot="hoy" hidden></span></button>
+  <button type="button" data-go="derechos" data-tab="derechos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4zM8 7V5h8v2M4 12h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Me toca</button>
+  <button type="button" data-go="herramientas" data-tab="herramientas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Herramientas<span class="dot" data-dot="reto" hidden></span></button>
+  <button type="button" data-go="datos" data-tab="datos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 20c.8-3.6 3.6-5.6 7-5.6s6.2 2 7 5.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Tú</button>
 </nav>
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">

@@ -33,10 +33,12 @@
     $("mt-ag-note").innerHTML = agLeft >= 0
       ? `Te lo deben pagar a más tardar el <b>19 de diciembre</b>: faltan <b class="sun">${agLeft} días</b>. ${ag.full ? `Son ${dias} días de salario.` : `Proporcional a ${ag.days} días trabajados este año.`}`
       : `El de este año ya se debió pagar el 19 de diciembre. Si no te lo dieron, puedes reclamarlo.`;
+    $("mt-ag-short").textContent = agLeft >= 0 ? `A más tardar el 19 de diciembre · faltan ${agLeft} días` : "Ya te lo debieron pagar";
     $("mt-ag-tax").textContent = `Exento de ISR hasta ${fmt(ag.exento)} (30 UMA). ${ag.gravado > 0 ? `Sobre ${fmt(ag.gravado)} te retienen ISR.` : "No te deben quitar ISR."}`;
     // Vacaciones
     const v = ley.vacaciones({ sd, start, at: t, prima });
     $("mt-vac").textContent = v.years >= 1 ? `${v.days} días` : "Aún no";
+    $("mt-vac-short").textContent = v.years >= 1 ? `Y ${fmt(v.prima)} de prima vacacional` : "Al cumplir tu primer año te tocan 12";
     $("mt-vac-note").innerHTML = v.years >= 1
       ? `Llevas ${v.years} ${v.years === 1 ? "año" : "años"}. Tu prima vacacional (${perfil.prima}%) es de <b class="sun">${fmt(v.prima)}</b>.`
       : `Al cumplir tu primer año te tocan 12 días con goce de sueldo.`;
@@ -44,6 +46,7 @@
     // PTU
     const p = ley.ptu({ sd, at: t });
     $("mt-ptu").textContent = fmt(p.tope);
+    $("mt-ptu-short").textContent = `Si tu empresa tuvo utilidades · a más tardar el ${p.empresas.toLocaleDateString("es-MX", { day: "numeric", month: "long" })}`;
     $("mt-ptu-note").innerHTML = `Es el máximo que te pueden dar: 3 meses de salario o el promedio de tus últimos 3 años, lo que más te convenga. Las empresas pagan a más tardar el <b>${longDate(p.empresas)}</b>; los patrones personas físicas, el <b>${longDate(p.personas)}</b>.`;
     // Salida
     let fin = parse(salida.fin) || t;
@@ -51,7 +54,7 @@
     const r = ley.salida({ sd, start, end: fin, motivo: salida.motivo, zona: perfil.zona, dias, prima, vacPendientes: salida.pend, diasSinPago: salida.sinPago });
     document.querySelectorAll("[data-motivo]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.motivo === salida.motivo));
     $("mt-lines").innerHTML = r.lines.filter((l) => l.amount > 0.5 || l.key === "aguinaldo").map((l) => `<tr><td>${l.label}<small>${l.note}</small></td><td class="mono">${fmt(l.amount)}</td></tr>`).join("");
-    $("mt-total-label").textContent = r.despido ? "Tu liquidación (mínimo de ley)" : "Tu finiquito";
+    $("mt-total-label").textContent = r.despido ? "Si hoy te despiden sin causa" : "Si hoy renuncias";
     $("mt-total").textContent = fmt(r.total);
     $("mt-veinte").hidden = !r.despido;
     $("mt-veinte").innerHTML = `Además, en algunos casos (art. 50) aplican <b>20 días por año</b>: <b class="sun">${fmt(r.veinte)}</b> más. Pregunta en PROFEDET si es tu caso.`;
