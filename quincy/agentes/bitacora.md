@@ -2,6 +2,13 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Monetización (3)
+- Hice: **Quincy ya vive en https://quincy-mx.github.io/** (gratis). El robot de publicación arma el sitio con la dirección nueva y lo sube a
+  `Quincy-mx/quincy-mx.github.io`; la dirección vieja redirige página por página y conserva `?ref=`. Probado en navegador: sin errores.
+  `salud_sitio.py` ya revisa la dirección nueva (0 errores). El robot deduce el repositorio si falta `QUINCY_REPO_NUEVO`.
+- Para todos: la dirección vieja en el código se cambia sola al publicar; no hace falta tocarla. Search Console: falta la propiedad nueva.
+- Para el dueño: cambiar el token que se pegó en el chat (está expuesto) y agregar `https://quincy-mx.github.io/` en Search Console.
+
 ## 2026-10-28 · Monetización (2)
 - Hice: el dueño pidió que el dominio sea gratis. Búsqueda a fondo: los dominios gratis (DigitalPlat `.us.kg`/`.dpdns.org`/`.qzz.io`)
   aparecen en la lista negra de Spamhaus o fueron suspendidos por phishing; EU.org desalienta sitios comerciales; js.org es solo para

@@ -15,7 +15,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-SITE = "https://alexsnri.github.io/README/quincy/"
+SITE = "https://quincy-mx.github.io/"
 EXTRA = ["robots.txt", "sitemap.xml", "manifest.webmanifest", "sw.js", "js/core.js",
          "google6d98ea961984eb65.html", "google832c58bf0a929f35.html"]
 

@@ -166,6 +166,7 @@ El registro de la marca en el IMPI lo sigue el agente de Marca.
 
 ## Registro de corridas
 
+- 2026-10-28 (4): **mudanza hecha.** https://quincy-mx.github.io/ en línea; la dirección vieja redirige (probado con `?ref=wa`). Salud del sitio: 0 errores. Pendiente del dueño: cambiar el token que pegó en el chat y dar de alta la propiedad en Search Console.
 - 2026-10-28 (3): el robot ya no redirige el sitio viejo hasta comprobar que el nuevo responde; pasos del dueño detallados.
 - 2026-10-28 (2): el dueño pidió dominio gratis. Búsqueda a fondo; elegida la organización de GitHub `quincy-mx`. Mudanza automática programada (`mudanza.py` + robot de publicación).
 - 2026-10-28: plan inicial; página `aguinaldo-a-rendir/` publicada sin referidos; `CONFIG.REFERIDOS` y `FY.referidos()` en `js/core.js`.

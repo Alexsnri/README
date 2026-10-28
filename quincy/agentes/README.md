@@ -86,7 +86,9 @@ Si salen errores nuevos por tu cambio, arréglalo o haz `git revert` de tu commi
 
 ## Datos del proyecto
 
-- Sitio: https://alexsnri.github.io/README/quincy/ (GitHub Pages, rama `main`, carpeta `quincy/`).
+- Sitio: **https://quincy-mx.github.io/** (desde el 28 oct 2026). El código sigue aquí, en `quincy/`; el robot `quincy-pages.yml` lo publica en
+  el repositorio `Quincy-mx/quincy-mx.github.io` cambiando la dirección vieja (`https://alexsnri.github.io/README/quincy/`) por la nueva, y la
+  dirección vieja redirige página por página. Puedes seguir escribiendo la dirección vieja en el código: se cambia sola al publicar.
 - Redes: Instagram @quincy_app, TikTok @quincyapp. La publicación en Instagram es manual desde `marketing/programar.html`
   (no hay token de API). Si algún día existe el secreto `INSTAGRAM_TOKEN`, el robot `.github/workflows/quincy-social.yml` publica solo.
 - Marca: colores Noche #07121A, Mar #15404F, Sol #FFB547, Marea #5AD6C8, Niebla #EAF3F4. Fuentes Unbounded, Figtree, JetBrains Mono.
