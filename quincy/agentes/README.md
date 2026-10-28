@@ -12,6 +12,10 @@ notificación corta al dueño.
 | Marca | `4-marca.md` | día 3 de cada mes 19:52 | Vigila en el IMPI marcas "Quincy" nuevas o que cambian de estatus, y copias. |
 | Director | `5-director.md` | domingo 18:37 | Mide (visitas, salud), revisa el trabajo de los demás, fija prioridades y le da al dueño sus 3 tareas de la semana. |
 
+Cada agente tiene su propia sesión de Claude Code en la nube (etiqueta `quincy-agentes`) con este repositorio conectado.
+El horario manda el mensaje a esa sesión; ahí el agente trabaja, publica en `main` y le avisa al dueño.
+Para pausar uno, desactiva su tarea programada; para darle una orden extra, escríbele en su sesión.
+
 Los agentes se coordinan por archivos:
 
 - `bitacora.md`: lo que hizo cada agente, lo más nuevo arriba. Todos la leen al empezar y escriben al terminar.
