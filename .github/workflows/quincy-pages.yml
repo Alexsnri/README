@@ -25,6 +25,10 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      # Se aceptan como variables o como secretos (por si se guardaron en la pestaña equivocada).
+      NUEVO_RAW: ${{ vars.QUINCY_SITIO_NUEVO || secrets.QUINCY_SITIO_NUEVO }}
+      REPO_RAW: ${{ vars.QUINCY_REPO_NUEVO || secrets.QUINCY_REPO_NUEVO }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
@@ -42,20 +46,25 @@ jobs:
 
       - name: Armar el sitio nuevo
         id: nuevo
-        if: ${{ vars.QUINCY_SITIO_NUEVO != '' && vars.QUINCY_REPO_NUEVO != '' }}
         env:
-          NUEVO: ${{ vars.QUINCY_SITIO_NUEVO }}
           HAS_TOKEN: ${{ secrets.QUINCY_PUBLICAR_TOKEN != '' }}
         run: |
-          [ "$HAS_TOKEN" = "true" ] || { echo "Falta el secreto QUINCY_PUBLICAR_TOKEN: sigo solo con el sitio actual."; exit 0; }
+          NUEVO=$(echo "$NUEVO_RAW" | tr -d '[:space:]'); REPO=$(echo "$REPO_RAW" | tr -d '[:space:]')
+          if [ -z "$NUEVO" ] && [ -z "$REPO" ] && [ "$HAS_TOKEN" != "true" ]; then echo "Sin mudanza configurada."; exit 0; fi
+          [ -n "$NUEVO" ] || { echo "::warning::Falta QUINCY_SITIO_NUEVO (variable de Actions)."; exit 0; }
+          [ -n "$REPO" ] || { echo "::warning::Falta QUINCY_REPO_NUEVO (variable de Actions)."; exit 0; }
+          [ "$HAS_TOKEN" = "true" ] || { echo "::warning::Falta el secreto QUINCY_PUBLICAR_TOKEN."; exit 0; }
+          case "$NUEVO" in */) ;; *) NUEVO="$NUEVO/";; esac
           python3 quincy/scripts/agentes/mudanza.py armar _site "$NUEVO" _nuevo
           echo "listo=1" >> "$GITHUB_OUTPUT"
+          { echo "NUEVO=$NUEVO"; echo "REPO=$REPO"; } >> "$GITHUB_ENV"
 
       - name: Publicar el sitio nuevo
+        id: push_nuevo
         if: ${{ steps.nuevo.outputs.listo == '1' }}
+        continue-on-error: true
         env:
           TOKEN: ${{ secrets.QUINCY_PUBLICAR_TOKEN }}
-          REPO: ${{ vars.QUINCY_REPO_NUEVO }}
         run: |
           cd _nuevo
           git init -q -b main
@@ -66,9 +75,7 @@ jobs:
           git push -f "https://x-access-token:${TOKEN}@github.com/${REPO}.git" main
 
       - name: Redirigir el sitio viejo (solo si el nuevo ya está en línea)
-        if: ${{ steps.nuevo.outputs.listo == '1' }}
-        env:
-          NUEVO: ${{ vars.QUINCY_SITIO_NUEVO }}
+        if: ${{ steps.nuevo.outputs.listo == '1' && steps.push_nuevo.outcome == 'success' }}
         run: |
           KEY=a47e56b41e4abf5e6d43f62e3de33615
           for i in $(seq 1 20); do
@@ -94,7 +101,7 @@ jobs:
         continue-on-error: true
         run: |
           sleep 60
-          SITE="${{ vars.QUINCY_SITIO_NUEVO }}"
+          SITE="$NUEVO"
           if [ "${{ steps.nuevo.outputs.listo }}" = "1" ]; then
             HOST=$(python3 -c "import sys;from urllib.parse import urlparse;print(urlparse(sys.argv[1]).hostname)" "$SITE")
             URLS=$(grep -o '<loc>[^<]*</loc>' _nuevo/sitemap.xml | sed 's#</\?loc>##g' | python3 -c "import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
