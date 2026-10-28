@@ -39,12 +39,12 @@ AGENDA = [
 ]
 
 CHISTES = [
-    "Tus agentes siguen trabajando gratis. Bueno, gratis no: con tu plan.",
-    "Recuerda: tú eres el jefe. El cuello de botella también, pero jefe.",
-    "Si alguien pregunta, sí, tienes empleados. Digitales, pero empleados.",
-    "Maneja con cuidado, que el único que no tiene respaldo eres tú.",
-    "Tus agentes no piden aguinaldo. Tú sí deberías calcular el tuyo.",
-    "Respira. Ningún agente ha pedido vacaciones dignas todavía.",
+    "Tú tranquilo, que aquí los únicos que chambean son ellos.",
+    "Ellos no piden aguinaldo. Tú sí deberías calcular el tuyo.",
+    "Si alguien pregunta, sí tienes empleados. Digitales, pero empleados.",
+    "Maneja con cuidado, jefe, que tú eres el único sin respaldo.",
+    "Qué pedo con esos pendientes, jefe. Los míos ya están hechos.",
+    "Ya ni el Director te cree que lo vas a hacer hoy.",
 ]
 
 
@@ -95,7 +95,7 @@ def entradas():
 def visitas():
     token = os.environ.get("CF_API_TOKEN", "").strip()
     if not token:
-        return "Las visitas todavía no las veo: falta guardar el token de Cloudflare en GitHub. Sí, otra vez tú."
+        return "Visitas no te puedo decir: sigue sin aparecer el token de Cloudflare. Ese es pendiente tuyo, jefe."
     h = {"Authorization": f"Bearer {token}", "Content-Type": "application/json", "User-Agent": "quincy-jarvis/1.0"}
     try:
         _, body = get("https://api.cloudflare.com/client/v4/accounts", h)
@@ -116,9 +116,9 @@ def visitas():
         hoy, sem = rango(dt.timedelta(hours=24)), rango(dt.timedelta(days=7))
         v24 = sum(g["sum"]["visits"] for g in hoy["tot"]) if hoy["tot"] else 0
         v7 = sum(g["sum"]["visits"] for g in sem["tot"]) if sem["tot"] else 0
-        txt = f"En las últimas 24 horas tuviste {v24} visitas, y {v7} en la semana."
+        txt = f"Llevas {v24} visitas en 24 horas y {v7} en la semana."
         if v24 == 0:
-            txt += " Cero. Ni tu mamá entró. Hay que compartir más."
+            txt += " Cero. Ni tu jefa entró. A compartir, huevón."
         pag = [g["dimensions"]["requestPath"] for g in hoy["pag"] if g["dimensions"]["requestPath"]]
         if pag:
             nombre = pag[0].strip("/").replace("-", " ") or "la portada"
@@ -142,8 +142,8 @@ def sitio():
         except Exception:
             malas.append(p or "portada")
     if not malas:
-        return "El sitio está arriba y sin broncas."
-    return "Ojo: no abre " + ", ".join(m.strip("/").replace(".html", "") for m in malas) + ". Los agentes ya deberían estar corriendo."
+        return ""
+    return "Aguas: no abre " + ", ".join(m.strip("/").replace(".html", "") for m in malas) + ". Los agentes ya deberían estar corriendo."
 
 
 def cuentas():
@@ -152,12 +152,12 @@ def cuentas():
     lanz = dt.date(2026, 11, 2)
     if hoy < lanz:
         d = (lanz - hoy).days
-        out.append("Mañana es el lanzamiento." if d == 1 else f"Faltan {d} días para el lanzamiento.")
+        out.append("Mañana es el lanzamiento, jefe. Ya ni modo de echarse para atrás." if d == 1 else f"Faltan {d} días para el lanzamiento.")
     elif hoy == lanz:
         out.append("Hoy es el lanzamiento. Publica el reel y manda los WhatsApp, que no se publican con la mente.")
     ag = dt.date(hoy.year, 12, 19)
     if dt.date(hoy.year, 11, 1) <= hoy <= ag:
-        out.append(f"Y faltan {(ag - hoy).days} días para la fecha límite del aguinaldo: temporada alta.")
+        out.append(f"Y {(ag - hoy).days} para el aguinaldo: temporada alta.")
     return " ".join(out)
 
 
@@ -170,41 +170,35 @@ def proximo():
                 dia = "hoy" if t.date() == NOW.date() else ("mañana" if t.date() == NOW.date() + dt.timedelta(days=1) else f"el {DIAS[t.weekday()]}")
                 h12 = (hh - 1) % 12 + 1
                 parte = "de la noche" if hh >= 19 else ("de la tarde" if hh >= 12 else "de la mañana")
-                return f"El próximo en chambear es {nombre}, {dia} a las {h12}:{mm:02d} {parte}."
+                return f"Al rato le toca {nombre.replace('el ', 'al ', 1)}, {dia} a las {h12}:{mm:02d}. Andan jalando, jefe."
     return ""
 
 
 def resumen():
     hora = NOW.hour
     saludo = "Buenos días" if hora < 12 else ("Buenas tardes" if hora < 19 else "Buenas noches")
-    partes = [f"{saludo}, jefe. Aquí Quincy, tu mayordomo digital."]
-    partes.append(cuentas())
-    partes.append(visitas())
-    partes.append(sitio())
+    partes = [f"{saludo}, jefe.", cuentas(), visitas(), sitio()]
 
     ents = entradas()
     hoy = NOW.date().isoformat()
     ayer = (NOW.date() - dt.timedelta(days=1)).isoformat()
     recientes = [e for e in ents if e["fecha"] in (hoy, ayer) and "Hice" in e and "Orquestador" not in e["agente"]]
     if recientes:
-        cuando = "hoy" if any(e["fecha"] == hoy for e in recientes) else "ayer"
         agentes = []
         for e in recientes:
             if e["agente"] not in agentes:
                 agentes.append(e["agente"])
-        n = len(agentes)
-        partes.append(f"{cuando.capitalize()} trabajaron {n} de tus agentes. Lo más importante:" if n > 1 else f"{cuando.capitalize()} trabajó {agentes[0].lower()}:")
-        for e in [next(x for x in recientes if x["agente"] == a) for a in agentes[:3]]:
-            partes.append(f"{e['agente']}: {frase(e['Hice'])}")
+        cuando = "hoy" if any(e["fecha"] == hoy for e in recientes) else "ayer"
+        top = [next(x for x in recientes if x["agente"] == a) for a in agentes[:2]]
+        partes.append(f"Ya los puse a chambear: {cuando} jalaron {len(agentes)}. " + " ".join(f"{e['agente']}: {frase(e['Hice'], 90)}" for e in top))
     else:
-        partes.append("Tus agentes no han reportado nada desde ayer. Están en horario, no de flojos.")
+        partes.append("Los huevones no han reportado nada desde ayer. Andan en horario, según ellos.")
 
     dueño = next((e["Para el dueño"] for e in ents if e.get("Para el dueño") and e["agente"].startswith("Director")), "")
     if dueño:
-        partes.append("Lo que te toca a ti, según el Director: " + frase(dueño, 260))
+        partes.append("A ti te toca: " + frase(dueño, 110))
     partes.append(proximo())
     partes.append(CHISTES[(NOW.timetuple().tm_yday * 12 + NOW.hour // 2) % len(CHISTES)])
-    partes.append(f"Resumen de las {(hora - 1) % 12 + 1}:{NOW.minute:02d}, {DIAS[NOW.weekday()]} {NOW.day} de {MESES[NOW.month - 1]}. Cambio y fuera.")
     return "\n".join(p for p in partes if p)
 
 

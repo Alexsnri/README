@@ -1,12 +1,7 @@
-Buenas tardes, jefe. Aquí Quincy, tu mayordomo digital.
+Buenas tardes, jefe.
 Faltan 5 días para el lanzamiento.
-Las visitas todavía no las veo: falta guardar el token de Cloudflare en GitHub. Sí, otra vez tú.
-El sitio está arriba y sin broncas.
-Hoy trabajaron 8 de tus agentes. Lo más importante:
-Contenido: todo lo que se copia o se comparte ya dice quincy-mx.github.io.
-Ley y datos: revisé aguinaldo-a-rendir contra fuentes oficiales.
-Producto y diseño: simplifiqué la app en el celular: 4 pestañas y encabezado limpio.
-Lo que te toca a ti, según el Director: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
-El próximo en chambear es el de SEO, hoy a las 10:41 de la noche.
-Si alguien pregunta, sí, tienes empleados. Digitales, pero empleados.
-Resumen de las 5:30, miércoles 28 de octubre. Cambio y fuera.
+Visitas no te puedo decir: sigue sin aparecer el token de Cloudflare. Ese es pendiente tuyo, jefe.
+Ya los puse a chambear: hoy jalaron 8. Contenido: todo lo que se copia o se comparte ya dice quincy-mx.github.io. Ley y datos: revisé aguinaldo-a-rendir contra fuentes oficiales.
+A ti te toca: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
+Al rato le toca al de SEO, hoy a las 10:41. Andan jalando, jefe.
+Si alguien pregunta, sí tienes empleados. Digitales, pero empleados.
