@@ -4,7 +4,7 @@
 
 **Lo que ya trabaja solo** (no tienes que hacer nada):
 
-- Sitio publicado en GitHub Pages, gratis: https://alexsnri.github.io/README/quincy/
+- Sitio publicado en GitHub Pages, gratis: https://quincy-mx.github.io/
 - 6 páginas de calculadora pensadas para Google (aguinaldo, finiquito, vacaciones, PTU, tanda y quincena). Cada una tiene preguntas frecuentes con datos estructurados.
 - Sitemap, robots.txt y aviso automático a Bing, Yandex, Seznam y Naver vía IndexNow en cada publicación.
 - Tarjetas para compartir (historias de 1080×1920) dentro de la app: cada usuario que comparte trae a otros.
@@ -38,15 +38,15 @@
 
 **A contactos:**
 
-> Oye, hice una app gratis que te dice cuánto te toca de aguinaldo (con la ley de 2026) y cuánto puedes gastar al día para llegar a la quincena. No pide registro. ¿Me dices si te sirve? https://alexsnri.github.io/README/quincy/aguinaldo/
+> Oye, hice una app gratis que te dice cuánto te toca de aguinaldo (con la ley de 2026) y cuánto puedes gastar al día para llegar a la quincena. No pide registro. ¿Me dices si te sirve? https://quincy-mx.github.io/aguinaldo/
 
 **A grupos de trabajo:**
 
-> ¿Ya saben cuánto nos toca de aguinaldo? Aquí lo calculan en 10 segundos, gratis y sin registro: https://alexsnri.github.io/README/quincy/aguinaldo/
+> ¿Ya saben cuánto nos toca de aguinaldo? Aquí lo calculan en 10 segundos, gratis y sin registro: https://quincy-mx.github.io/aguinaldo/
 
 **A grupos de tanda o familia:**
 
-> Para que no haya pleitos con los números: aquí sorteamos los turnos con una ruleta y a todos les llega el calendario 🎡 https://alexsnri.github.io/README/quincy/tanda/
+> Para que no haya pleitos con los números: aquí sorteamos los turnos con una ruleta y a todos les llega el calendario 🎡 https://quincy-mx.github.io/tanda/
 
 ## Reddit
 
@@ -65,19 +65,19 @@ Título: Hice una calculadora gratis de aguinaldo, finiquito y vacaciones con la
 >
 > Si encuentran un error en algún cálculo, díganmelo y lo corrijo.
 >
-> https://alexsnri.github.io/README/quincy/
+> https://quincy-mx.github.io/
 
 **r/mexico** (segundo post, día 22, con datos reales de uso)
 
 Título: Calculé qué número de la tanda conviene más (y cuánto pierde el último)
 
-> Comparé una tanda de 10 personas con $1,000 por quincena contra invertir en CETES al 6.23%. El número 1 gana unos $115 y el número 10 pierde unos $114: el primero recibe un préstamo sin intereses y el último ahorra sin rendimiento. Hice una herramienta gratis para calcularlo con tus números y sortear los turnos: https://alexsnri.github.io/README/quincy/tanda/
+> Comparé una tanda de 10 personas con $1,000 por quincena contra invertir en CETES al 6.23%. El número 1 gana unos $115 y el número 10 pierde unos $114: el primero recibe un préstamo sin intereses y el último ahorra sin rendimiento. Hice una herramienta gratis para calcularlo con tus números y sortear los turnos: https://quincy-mx.github.io/tanda/
 
 ## Mensaje para creadores
 
 > Hola, [nombre]. Hice Quincy, una app web gratis que le dice a cualquier trabajador cuánto le toca de aguinaldo, vacaciones, prima, PTU y finiquito con la ley de 2026, cuánto puede gastar al día para llegar a la quincena y qué número de la tanda le conviene. No pide registro ni datos personales.
 > Creo que le queda a tu contenido en esta temporada de aguinaldo. No te pido nada a cambio; si te sirve, úsala. Si quieres una versión con tu marca para tu comunidad, también la tengo.
-> https://alexsnri.github.io/README/quincy/
+> https://quincy-mx.github.io/
 
 ## Correo para periodistas
 
@@ -94,7 +94,7 @@ Asunto: App gratuita calcula aguinaldo, finiquito y qué número de la tanda con
 >
 > No pide registro y no guarda datos en servidores. Puedo compartir datos de uso y ejemplos para tu nota.
 >
-> https://alexsnri.github.io/README/quincy/
+> https://quincy-mx.github.io/
 
 ## Product Hunt (inglés)
 
@@ -108,7 +108,7 @@ Asunto: App gratuita calcula aguinaldo, finiquito y qué número de la tanda con
 
 > En noviembre, recursos humanos recibe la misma pregunta cientos de veces: "¿cuánto me toca de aguinaldo?".
 > Hicimos Quincy: una herramienta gratuita, con la marca de tu empresa, donde cada colaborador ve su aguinaldo, vacaciones y PTU con la ley de 2026 y un límite diario de gasto para llegar a la quincena. Sin registro y sin datos personales en servidores.
-> Buscamos 10 empresas para un piloto gratis de 90 días: https://alexsnri.github.io/README/quincy/empresas.html
+> Buscamos 10 empresas para un piloto gratis de 90 días: https://quincy-mx.github.io/empresas.html
 
 ## Métricas a vigilar
 

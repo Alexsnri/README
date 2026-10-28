@@ -6,18 +6,18 @@ Todo está en esta carpeta: imagen, texto y fecha. Solo copia, pega y publica.
 - **Historias (1080×1920):** `stories/`, para Instagram, Facebook y WhatsApp Estados.
 - **Reels (8 videos verticales):** `video/`, para Instagram, TikTok y YouTube Shorts. El robot los sube solos a Instagram; para TikTok y YouTube sigue `guia.html`.
 
-Enlace general: https://alexsnri.github.io/README/quincy/
+Enlace general: https://quincy-mx.github.io/
 
 Usa enlaces directos cuando el post hable de algo concreto (vienen en cada post):
 
 | Tema | Enlace |
 |---|---|
-| Aguinaldo | https://alexsnri.github.io/README/quincy/aguinaldo/ |
-| Finiquito y liquidación | https://alexsnri.github.io/README/quincy/finiquito/ |
-| Vacaciones | https://alexsnri.github.io/README/quincy/vacaciones/ |
-| PTU | https://alexsnri.github.io/README/quincy/ptu/ |
-| Tandas | https://alexsnri.github.io/README/quincy/tanda/ |
-| Límite diario | https://alexsnri.github.io/README/quincy/quincena/ |
+| Aguinaldo | https://quincy-mx.github.io/aguinaldo/ |
+| Finiquito y liquidación | https://quincy-mx.github.io/finiquito/ |
+| Vacaciones | https://quincy-mx.github.io/vacaciones/ |
+| PTU | https://quincy-mx.github.io/ptu/ |
+| Tandas | https://quincy-mx.github.io/tanda/ |
+| Límite diario | https://quincy-mx.github.io/quincena/ |
 
 Los mejores horarios en México son de 1 a 3 p. m. y de 8 a 10 p. m., entre semana. Los días de quincena (15 y 30) rinden más los posts de "hoy puedes gastar" y el ticket.
 

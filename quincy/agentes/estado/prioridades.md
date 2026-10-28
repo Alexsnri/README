@@ -1,17 +1,25 @@
 # Prioridades de la semana
 
-Las fija el Director cada domingo. Todos los agentes las siguen antes que cualquier otra cosa.
+Las fija el Director cada domingo (o en una corrida extra). Todos los agentes las siguen antes que cualquier otra cosa.
 
-**Fase actual: 1 · Audiencia.** Semana del 28 de octubre al 3 de noviembre de 2026 (lanzamiento el lunes 2 de noviembre).
+**Fase actual: 1 · Audiencia.** Del miércoles 28 de octubre al domingo 1 de noviembre de 2026: **los días previos al lanzamiento
+del lunes 2 de noviembre**. Quincy ya vive en **https://quincy-mx.github.io/** (la dirección vieja redirige).
 
-1. **Producto y diseño (ya, antes del lanzamiento):** rediseño completo de la portada y de las calculadoras según `6-producto.md`:
-   portada de temporada con calculadora de aguinaldo y cuenta regresiva arriba, retícula bento, más ligera (sin three.js bloqueando),
-   compartir en 1 toque por WhatsApp e historias con `?ref=`, imágenes Open Graph por página, enlaces a Instagram y TikTok.
-   Que esté publicado antes del domingo 1 de noviembre.
-2. **SEO:** temporada de aguinaldo. Que `aguinaldo/` sea la mejor respuesta a "cuánto me toca de aguinaldo 2026"
-   (proporcional con ejemplos, fecha límite: a más tardar el 19 de diciembre, qué hacer si no te pagan). Corregir las descripciones largas.
-   Coordinar con Producto: el diseño lo cambia Producto; textos, títulos y preguntas frecuentes, SEO.
-3. **Monetización:** plan inicial en `estado/monetizacion.md` (dominio propio, programas de referidos regulados en México, B2B) y la
-   página "¿Dónde pongo mi aguinaldo a rendir?" sin enlaces de referido todavía.
-4. **Contenido:** la cola llega al 18 de diciembre; sumar piezas de tendencia y el formato "Wrapped" para diciembre.
-5. **Ley y datos:** valores 2026 vigentes; vigilar el anuncio del salario mínimo 2027 (CONASAMI, diciembre).
+**Regla de la semana: congelamiento desde el sábado 31 de octubre a las 12:00.** A partir de ahí, solo arreglos de errores y textos;
+nada de rediseños ni funciones nuevas hasta el martes 3. Lo que se publique antes debe estar probado en la dirección nueva, en celular.
+
+1. **Producto y diseño · que nada falle el día 2.** Revisar en `https://quincy-mx.github.io/` el recorrido completo en celular
+   (portada → aguinaldo → compartir por WhatsApp e Historias con `?ref=` → la app), las imágenes Open Graph y el service worker
+   (que quien abrió la dirección vieja no se quede con páginas guardadas viejas). Sumar en la portada de temporada la tarjeta hacia
+   `aguinaldo-a-rendir/`. Por qué: el día de lanzamiento casi todo el tráfico llega de WhatsApp a `aguinaldo/`; un error ahí se paga caro.
+2. **SEO · aguinaldo y la dirección nueva en Google.** Enlazar `aguinaldo-a-rendir/` desde `aguinaldo/`, acortar las descripciones largas
+   (aguinaldo, finiquito, vacaciones, PTU) y el título de PTU, y empezar `estado/seo.json` con las posiciones de "cuánto me toca de
+   aguinaldo 2026" y "aguinaldo proporcional". Por qué: noviembre es el pico de búsquedas de aguinaldo y Google apenas conoce la dirección nueva.
+3. **Contenido · todo lo que se comparte lleva la dirección nueva.** Bio, textos de `posts.md`, piezas programadas y reels con
+   `quincy-mx.github.io`; preparar 2 piezas de "¿Dónde pongo mi aguinaldo a rendir?" para diciembre y el formato "Tu Aguinaldo Wrapped".
+   Por qué: el lanzamiento depende de lo que el dueño publique esos días; un enlace largo o viejo resta clics.
+
+En segundo plano (sin corridas extra): **Ley y datos** confirma los datos de `aguinaldo-a-rendir/` y vigila el salario mínimo 2027;
+**Monetización** espera el correo de contacto del dueño para el piloto B2B (no busca referidos hasta tener tráfico).
+
+**Costo:** hoy ya se usaron unas 14 corridas (lo pidió el dueño). No hay más corridas extra esta semana; quedan solo las del horario.

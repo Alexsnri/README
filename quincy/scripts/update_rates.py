@@ -46,7 +46,7 @@ def main() -> int:
         if rates.get(field) != value:
             rates[field] = value
             changed = True
-        fuente = f"{title.strip()} · dato del {dato['fecha']} (Banco de México, SIE)"
+        fuente = f"{' '.join(title.split())} · dato del {dato['fecha']} (Banco de México, SIE)"
         rates[f"{field}_fuente"] = fuente
         print(f"{field} = {value} ({dato['fecha']})")
 
