@@ -5,10 +5,19 @@ window.FY = Object.assign(window.FY || {}, (() => {
     // Donde llegan las solicitudes de instituciones. Cámbialo por tu correo o formulario.
     CONTACT_URL: "https://github.com/Alexsnri/README/issues/new?template=piloto.yml",
     // Token de Cloudflare Web Analytics (gratis, sin cookies). Vacío = sin analítica.
-    CF_ANALYTICS_TOKEN: "",
+    CF_ANALYTICS_TOKEN: "7867bd7b5a2449549624cefc62551f12",
     // true en la copia que vive dentro del visor de Claude (ahí no se pueden descargar archivos).
     EMBEDDED_VIEWER: false
   };
+
+  // Analítica sin cookies en todas las páginas, solo en el sitio publicado (no en pruebas ni en el visor).
+  if (CONFIG.CF_ANALYTICS_TOKEN && !CONFIG.EMBEDDED_VIEWER && location.hostname === new URL(CONFIG.SITE).hostname
+      && !document.querySelector("script[data-cf-beacon]")) {
+    const s = document.createElement("script");
+    s.defer = true; s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+    s.setAttribute("data-cf-beacon", JSON.stringify({ token: CONFIG.CF_ANALYTICS_TOKEN }));
+    document.head.appendChild(s);
+  }
 
   const YEAR = new Date().getFullYear();
   const INITIAL_SEARCH = location.search; // app.js limpia la URL; aquí queda la original

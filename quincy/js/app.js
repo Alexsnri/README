@@ -90,13 +90,6 @@
   $("install").addEventListener("click", async () => { if (!deferred) return; deferred.prompt(); try { await deferred.userChoice; } catch (e) {} deferred = null; $("install").hidden = true; });
   if ("serviceWorker" in navigator && window.isSecureContext && !CONFIG.EMBEDDED_VIEWER) navigator.serviceWorker.register("sw.js").catch(() => {});
 
-  // Analítica sin cookies (opcional, solo si hay token).
-  if (CONFIG.CF_ANALYTICS_TOKEN && !CONFIG.EMBEDDED_VIEWER) {
-    const s = document.createElement("script");
-    s.defer = true; s.src = "https://static.cloudflareinsights.com/beacon.min.js";
-    s.setAttribute("data-cf-beacon", JSON.stringify({ token: CONFIG.CF_ANALYTICS_TOKEN }));
-    document.head.appendChild(s);
-  }
 
   // Los botones que abren el selector de fotos también funcionan con teclado.
   document.querySelectorAll("label.btn[for]").forEach((l) => {
