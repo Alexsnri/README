@@ -1,8 +1,8 @@
 // Quincy: funciona sin conexión. Red primero (tasas y versiones nuevas), caché si no hay internet.
-const CACHE = "quincy-v11";
+const CACHE = "quincy-v12";
 const CORE = [
   "./", "index.html", "app.html", "empresas.html", "manifest.webmanifest", "css/app.css", "css/landing.css",
-  "js/core.js", "js/ley.js", "js/avatar.js", "js/sim.js", "js/quincena.js", "js/derechos.js", "js/tanda.js", "js/reto.js", "js/share.js", "js/app.js", "js/portada.js", "js/compartir.js",
+  "js/core.js", "js/ley.js", "js/avatar.js", "js/sim.js", "js/quincena.js", "js/derechos.js", "js/tanda.js", "js/reto.js", "js/share.js", "js/app.js", "js/portada.js", "js/compartir.js", "js/perfil.js", "js/bienvenida.js",
   "fonts/unbounded.woff2", "fonts/figtree.woff2", "fonts/jetbrains-mono.woff2",
   "img/icon.svg", "img/icon-192.png", "data/rates.json"
 ];

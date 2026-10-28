@@ -6,10 +6,13 @@ window.FY = Object.assign(window.FY || {}, (() => {
     CONTACT_URL: "https://github.com/Alexsnri/README/issues/new?template=piloto.yml",
     // Token de Cloudflare Web Analytics (gratis, sin cookies). Vacío = sin analítica.
     CF_ANALYTICS_TOKEN: "7867bd7b5a2449549624cefc62551f12",
-    // Redes de Quincy. WA_CHANNEL: enlace del canal de WhatsApp cuando exista (vacío = el bloque "Avísame" solo ofrece el calendario).
+    // Redes de Quincy.
     INSTAGRAM: "https://www.instagram.com/quincy_app/",
     TIKTOK: "https://www.tiktok.com/@quincyapp",
-    WA_CHANNEL: "",
+    // Avisos opcionales (audiencia propia, sin registro). Vacío = ese botón no se muestra.
+    // whatsappCanal: enlace del canal de WhatsApp. correoForm: enlace del formulario de un servicio de correos.
+    // Al llenar cualquiera, enlaza también privacidad.html (llena antes ahí el nombre y correo del responsable).
+    AVISOS: { whatsappCanal: "", correoForm: "" },
     // true en la copia que vive dentro del visor de Claude (ahí no se pueden descargar archivos).
     EMBEDDED_VIEWER: false,
     // Enlaces de referido que el dueño ya dio de alta. Vacío = no se muestra nada.
@@ -37,14 +40,76 @@ window.FY = Object.assign(window.FY || {}, (() => {
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const store = {
+  const raw = {
     get(k, d) { try { const v = localStorage.getItem("qc:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem("qc:" + k, JSON.stringify(v)); return true; } catch (e) { return false; } },
     del(k) { try { localStorage.removeItem("qc:" + k); } catch (e) {} }
   };
 
+  // ---- tu perfil: un solo objeto en este teléfono ("qc:yo") ----
+  // pago: lo de "Hoy" · trabajo: lo de "Me toca" · futuro: lo de "Futuro". Los módulos siguen pidiendo "q", "perfil" y "state";
+  // aquí se traducen a partes del perfil. Mientras no exista perfil (bienvenida sin terminar) nada de eso se guarda.
+  const sumFijos = (l) => (l || []).reduce((s, f) => s + (+f.amt || 0), 0);
+  const DEF = {
+    pago: { freq: "quincenal", proximo: "", ingreso: 7000, fijos: [{ k: "renta", amt: 2000 }, { k: "luz", amt: 300 }, { k: "celular", amt: 300 }, { k: "transporte", amt: 400 }], ahorro: 500, configurado: false },
+    trabajo: { sueldo: 15000, inicio: "", zona: "general", agDias: 15, prima: 25, configurado: false },
+    futuro: { age: 28, retire: 65, monthly: 1500, saved: 10000, need: 15000, veh: "cetes", skin: 2, hair: "short" }
+  };
+  let yo = raw.get("yo", null);
+  // Quien ya usaba Quincy con las llaves de antes no ve la bienvenida: sus datos pasan al perfil nuevo.
+  if (!yo) {
+    const q = raw.get("q"), p = raw.get("perfil"), st = raw.get("state");
+    const used = q || p || st || raw.get("gastos") || raw.get("tandas") || raw.get("retoStats");
+    if (used) {
+      yo = { v: 1, ejemplo: false, migrado: true,
+        pago: Object.assign({}, DEF.pago, q || {}, { fijos: q ? [{ k: "fijos", amt: +q.fijos || 0 }] : DEF.pago.fijos }),
+        trabajo: Object.assign({}, DEF.trabajo, p || {}),
+        futuro: Object.assign({}, DEF.futuro, st || {}) };
+      raw.set("yo", yo); ["q", "perfil", "state"].forEach(raw.del);
+    }
+  }
+  const saveYo = () => { if (yo) { yo.actualizado = new Date().toISOString().slice(0, 10); raw.set("yo", yo); } };
+  const store = {
+    get(k, d) {
+      if (k === "q") return yo ? Object.assign({}, yo.pago, { fijos: sumFijos(yo.pago.fijos) }) : d;
+      if (k === "perfil") return yo ? Object.assign({}, yo.trabajo) : d;
+      if (k === "state") return yo ? Object.assign({}, yo.futuro) : d;
+      return raw.get(k, d);
+    },
+    set(k, v) {
+      if (k === "q" || k === "perfil" || k === "state") {
+        if (!yo) return false;
+        if (k === "q") {
+          const fijos = Math.max(0, +v.fijos || 0);
+          yo.pago = Object.assign({}, yo.pago, v, { fijos: Math.abs(sumFijos(yo.pago.fijos) - fijos) < 0.5 ? yo.pago.fijos : [{ k: "fijos", amt: fijos }] });
+        } else if (k === "perfil") yo.trabajo = Object.assign({}, yo.trabajo, v);
+        else yo.futuro = Object.assign({}, yo.futuro, v);
+        saveYo(); return true;
+      }
+      return raw.set(k, v);
+    },
+    del: raw.del
+  };
+  const perfil = {
+    DEF, sumFijos,
+    exists: () => !!yo,
+    get: () => yo,
+    // Crea o reemplaza el perfil completo (bienvenida, ejemplo o respaldo).
+    set(next) { yo = Object.assign({ v: 1 }, next); yo.pago = Object.assign({}, DEF.pago, yo.pago); yo.trabajo = Object.assign({}, DEF.trabajo, yo.trabajo); yo.futuro = Object.assign({}, DEF.futuro, yo.futuro); saveYo(); return yo; },
+    update(part, values) { if (!yo) return; yo[part] = Object.assign({}, yo[part], values); if (part === "pago" || part === "trabajo") yo.ejemplo = false; saveYo(); },
+    // Todo lo que Quincy guarda en este navegador, para el respaldo.
+    dump() { const out = {}; try { Object.keys(localStorage).filter((k) => k.startsWith("qc:")).forEach((k) => { out[k.slice(3)] = JSON.parse(localStorage.getItem(k)); }); } catch (e) {} return out; },
+    restore(data) {
+      if (!data || typeof data !== "object" || !data.yo || !data.yo.pago) return false;
+      try { Object.keys(localStorage).filter((k) => k.startsWith("qc:")).forEach((k) => localStorage.removeItem(k)); } catch (e) {}
+      const KEYS = ["yo", "gastos", "aguantes", "allow", "check", "salida", "reto", "retoStats", "tandas", "tandaSel", "tandaYo", "view"];
+      Object.entries(data).forEach(([k, v]) => { if (KEYS.includes(k)) raw.set(k, v); });
+      return true;
+    }
+  };
+
   const state = Object.assign(
-    { age: 28, retire: 65, monthly: 1500, saved: 10000, need: 15000, veh: "cetes", skin: 2, hair: "short" },
+    Object.assign({}, DEF.futuro),
     store.get("state", {})
   );
   const save = () => store.set("state", state);
@@ -170,7 +235,7 @@ window.FY = Object.assign(window.FY || {}, (() => {
   const emit = (n, d) => bus.dispatchEvent(new CustomEvent(n, { detail: d }));
 
   return {
-    CONFIG, YEAR, INITIAL_SEARCH, RATES, VEH, state, save, store, $, fmt, short, clamp, reduced,
+    CONFIG, YEAR, INITIAL_SEARCH, RATES, VEH, state, save, store, perfil, $, fmt, short, clamp, reduced,
     realAnnual, monthlyReal, balanceAt, requiredMonthly, targetFor, yearsLeft, futureOf, futureOfRecurring, freedomDays,
     dayKey, keyToDate, addDays, rng, toast, buzz, confetti, copyText, nativeShare, download, shareURL, referidos, on, emit
   };

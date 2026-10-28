@@ -14,6 +14,26 @@ Lo más nuevo arriba. Cada cambio: qué se hizo, qué esperamos y cómo se mide.
 En local (sin el proxy del entorno de pruebas) la portada da 99/100/100/100. Primer pintado real en vivo medido con Playwright: 0.8 s.
 Escritorio 1440 px: la portada pasó de 11,700 px a 2,690 px y ya usa todo el ancho.
 
+## 2026-10-28 · App: bienvenida y un solo perfil (encargo del dueño)
+
+**Qué cambió**
+- Bienvenida la primera vez (sin perfil): "Hola, soy Quincy" con tarjeta de privacidad; pago (frecuencia y fecha del próximo pago),
+  cuánto te llega, pagos fijos por concepto + ahorro, y trabajo opcional (sueldo, fecha de ingreso, frontera, edad). Al final,
+  "Hoy puedes gastar $X" animado y lo desbloqueado (días para tu pago, aguinaldo, vacaciones). "Ver con un ejemplo" deja datos de ejemplo
+  marcados. Con enlace de tanda o reto se entra directo.
+- Un solo perfil `qc:yo` (pago, trabajo, futuro) en `js/core.js`. Los módulos siguen pidiendo "q", "perfil" y "state" y core lo traduce.
+  Quien tenía las llaves viejas se migra sin ver la bienvenida. Hoy y Me toca muestran un resumen con "Editar"; todo se edita en
+  la vista nueva "Tus datos" (#datos), con pagos fijos por concepto, edad, avisos, respaldo (JSON) y borrar.
+- "Hoy" respeta la fecha de próximo pago que diste (semanal en cualquier día, quincena fuera del 15/fin de mes, mensual).
+- La portada pasa el sueldo a la app (`?sueldo=` y `qc:portada`).
+- Avisos opcionales: calendario (.ics con aguinaldo y salario mínimo) siempre; canal de WhatsApp y correo solo si `CONFIG.AVISOS`
+  tiene enlaces, con casilla de aceptación. `privacidad.html` lista para llenar (sin enlazar hasta entonces).
+
+**Qué esperamos:** más personas que terminan de configurar y regresan (el límite de hoy ya es suyo desde el minuto 1).
+
+**Cómo se mide:** sin analítica de eventos todavía. Proxy: visitas a `app.html` que regresan (Cloudflare) y respuestas al canal/correo
+cuando existan. Idea: contar en Cloudflare una visita a `app.html#hoy?listo` al terminar la bienvenida (sin datos personales).
+
 ## 2026-10-28 · Historias directo a Instagram (pedido del dueño)
 
 **Problema:** el botón "Historias" solo descargaba un PNG. La tarjeta se dibujaba después del toque y el navegador ya no dejaba abrir

@@ -158,6 +158,7 @@
   $("h-count-label").textContent = countLabel;
 
   let current = null;
+  const SUELDO = ["aguinaldo", "minimo", "ptu", "vacaciones"];
   function run() {
     const typed = num($("h-sal").value), ex = !typed;
     current = S.calc(typed || S.ex, ex);
@@ -165,6 +166,14 @@
     $("h-big").textContent = current.big;
     $("h-note").textContent = current.note;
     $("h-form").classList.toggle("is-ex", ex);
+    // La app llega con este sueldo ya puesto (solo en temporadas donde lo que escribes es tu sueldo mensual).
+    if (SUELDO.includes(season)) {
+      if (typed) FY.store.set("portada", { sueldo: typed });
+      document.querySelectorAll('a[href^="app.html"]').forEach((a) => {
+        const [base, hash] = a.getAttribute("href").split("#");
+        a.setAttribute("href", base.split("?")[0] + (typed ? `?sueldo=${typed}` : "") + (hash ? "#" + hash : ""));
+      });
+    }
   }
   // Formato con comas mientras escribes, sin mover el cursor al final si no hace falta.
   $("h-sal").addEventListener("input", (e) => {
@@ -236,7 +245,7 @@
   $("rem-q").addEventListener("click", () => {
     FY.compartir.ics({ title: "Hoy es quincena", date: nextPayday(), desc: `Un minuto para saber cuánto puedes gastar al día: ${FY.compartir.link("recordatorio", "app.html")}`, alarmDays: 0, name: "quincena" });
   });
-  if (FY.CONFIG.WA_CHANNEL) { $("rem-wa").hidden = false; $("rem-wa").href = FY.CONFIG.WA_CHANNEL; }
+  if (FY.CONFIG.AVISOS.whatsappCanal) { $("rem-wa").hidden = false; $("rem-wa").href = FY.CONFIG.AVISOS.whatsappCanal; }
   $("ig").href = FY.CONFIG.INSTAGRAM; $("tt").href = FY.CONFIG.TIKTOK;
 
 })(window.FY);

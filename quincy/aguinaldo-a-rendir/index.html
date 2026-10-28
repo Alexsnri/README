@@ -143,7 +143,7 @@ card:{kicker:'Si pongo mi aguinaldo a rendir',big:$('o-main').textContent,line:'
 FY.compartir.welcome(document.querySelector(".calc-hero"), ".calc input, .calc select");
 
 $("rem").addEventListener("click", () => { const r = (() => { const y=today.getMonth()===11&&today.getDate()>19?today.getFullYear()+1:today.getFullYear(); return {title:'Me pagan el aguinaldo: ponerlo a rendir',date:new Date(y,11,19),alarmDays:1,name:'aguinaldo'}; })(); FY.compartir.ics(Object.assign({ desc: `Calcula cuánto te toca: ${FY.compartir.link("recordatorio")}` }, r)); });
-if (FY.CONFIG.WA_CHANNEL) { $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.WA_CHANNEL; }
+if (FY.CONFIG.AVISOS.whatsappCanal) { $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.AVISOS.whatsappCanal; }
 })();
 </script>
 </body>

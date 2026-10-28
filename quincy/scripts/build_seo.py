@@ -420,7 +420,7 @@ FY.compartir.bar($("share"), {share});
 FY.compartir.welcome(document.querySelector(".calc-hero"), ".calc input, .calc select");
 {hero_js}
 $("rem").addEventListener("click", () => {{ const r = ({remind})(); FY.compartir.ics(Object.assign({{ desc: `Calcula cuánto te toca: ${{FY.compartir.link("recordatorio")}}` }}, r)); }});
-if (FY.CONFIG.WA_CHANNEL) {{ $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.WA_CHANNEL; }}
+if (FY.CONFIG.AVISOS.whatsappCanal) {{ $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.AVISOS.whatsappCanal; }}
 }})();
 </script>
 </body>

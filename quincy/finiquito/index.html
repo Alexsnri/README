@@ -123,7 +123,7 @@ card:{kicker:$('o-label').textContent,big:$('o-main').textContent,line:'lo míni
 FY.compartir.welcome(document.querySelector(".calc-hero"), ".calc input, .calc select");
 
 $("rem").addEventListener("click", () => { const r = (() => { const d=today.getDate(), last=new Date(today.getFullYear(),today.getMonth()+1,0).getDate(); const n=d===last?new Date(today.getFullYear(),today.getMonth()+1,15):d>=15?new Date(today.getFullYear(),today.getMonth(),last):new Date(today.getFullYear(),today.getMonth(),15); return {title:'Hoy es quincena',date:n,alarmDays:0,name:'quincena'}; })(); FY.compartir.ics(Object.assign({ desc: `Calcula cuánto te toca: ${FY.compartir.link("recordatorio")}` }, r)); });
-if (FY.CONFIG.WA_CHANNEL) { $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.WA_CHANNEL; }
+if (FY.CONFIG.AVISOS.whatsappCanal) { $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.AVISOS.whatsappCanal; }
 })();
 </script>
 </body>

@@ -11,6 +11,17 @@ Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 - Para todos: cuando el sitio se mude, cambiar `SITE` en los scripts y en `agentes/README.md` (ver `estado/monetizacion.md`).
 - Para el dueño: 6 pasos gratis en "Lo que necesito del dueño" de `estado/monetizacion.md` (crear organización, repositorio, token y 2 variables).
 
+## 2026-10-28 · Producto y diseño (3)
+- Hice: la app ahora empieza con una bienvenida de menos de 1 minuto (una pregunta por pantalla, con privacidad clara) que termina en
+  "Hoy puedes gastar $X" y lo que te toca por ley. Un solo perfil para Hoy, Me toca, Futuro y Tanda, editable en "Tus datos" con
+  respaldo en archivo y borrar todo. Quien ya usaba la app no ve la bienvenida (sus datos se migran). La portada pasa el sueldo a la app.
+  Avisos opcionales (calendario siempre; WhatsApp y correo cuando haya enlaces) y `privacidad.html` lista sin enlazar.
+- Encontré: todo probado en 390 y 1440 px (persona nueva, migración, ejemplo, respaldo, borrar), sin errores de consola, accesibilidad 100.
+- Para el dueño: para activar los avisos (1) crea el canal de WhatsApp de Quincy y copia su enlace; (2) abre una cuenta gratis en un
+  servicio de correos con formulario de suscripción (por ejemplo MailerLite o Brevo) y copia el enlace del formulario; (3) en
+  `quincy/privacidad.html` cambia [NOMBRE DEL RESPONSABLE], [CORREO DE CONTACTO], [NOMBRE DEL SERVICIO DE CORREOS] y [FECHA];
+  (4) pega los enlaces en `CONFIG.AVISOS` de `quincy/js/core.js` (o pásaselos a cualquier agente y lo hace).
+
 ## 2026-10-28 · Producto y diseño (2)
 - Hice: "Historias" ahora abre el menú del teléfono con la imagen lista para Instagram → Historia (antes solo descargaba un PNG porque la
   tarjeta se dibujaba después del toque). El enlace queda copiado para el sticker. Tarjetas en JPG (2.1 MB → 140 KB). Hoja con vista

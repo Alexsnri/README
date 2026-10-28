@@ -15,9 +15,31 @@
   const noon = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12);
   const lastDay = (y, m) => new Date(y, m + 1, 0).getDate();
   const diff = (a, b) => Math.round((noon(b) - noon(a)) / 864e5);
-  function period(freq, today) {
+  // Un paso de pago hacia adelante (dir 1) o hacia atrás (dir -1) desde una fecha de pago.
+  function step(freq, x, dir) {
+    const y = x.getFullYear(), m = x.getMonth(), d = x.getDate();
+    if (freq === "semanal") return new Date(y, m, d + 7 * dir, 12);
+    if (freq === "mensual") {
+      const tm = m + dir, isLast = d === lastDay(y, m);
+      return new Date(y, tm, isLast ? lastDay(y, tm) : Math.min(d, lastDay(y, tm)), 12);
+    }
+    if (d === 15) return dir > 0 ? new Date(y, m, lastDay(y, m), 12) : new Date(y, m, 0, 12);
+    if (d === lastDay(y, m)) return dir > 0 ? new Date(y, m + 1, 15, 12) : new Date(y, m, 15, 12);
+    return new Date(y, m, d + 15 * dir, 12);
+  }
+  const parseISO = (v) => { const r = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ""); return r ? new Date(+r[1], +r[2] - 1, +r[3], 12) : null; };
+  // Con `proximo` (la fecha que la persona dijo) los pagos se cuentan desde ahí; sin ella, el calendario de siempre.
+  function period(freq, today, proximo) {
     const t = noon(today), y = t.getFullYear(), m = t.getMonth(), d = t.getDate(), ld = lastDay(y, m);
     let start, next;
+    const anchor = parseISO(proximo);
+    if (anchor) {
+      next = anchor;
+      for (let i = 0; i < 2000 && next <= t; i++) next = step(freq, next, 1);
+      for (let i = 0; i < 2000 && step(freq, next, -1) > t; i++) next = step(freq, next, -1);
+      start = step(freq, next, -1);
+      return { start, next, daysLeft: Math.max(1, diff(t, next)), len: Math.max(1, diff(start, next)) };
+    }
     if (freq === "semanal") {
       const back = (t.getDay() - 5 + 7) % 7; // pago en viernes
       start = new Date(y, m, d - back, 12); next = new Date(y, m, d - back + 7, 12);
@@ -40,7 +62,7 @@
   }
 
   function snapshot(today = new Date()) {
-    const p = period(cfg.freq, today);
+    const p = period(cfg.freq, today, cfg.proximo);
     const available = Math.max(0, cfg.ingreso - cfg.fijos - cfg.ahorro);
     const before = spentBetween(p.start, today);
     const k = FY.dayKey(today);
@@ -67,6 +89,8 @@
     const green = s.left >= 0;
     $("q-date").textContent = new Date().toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" });
     $("q-example").hidden = cfg.configurado;
+    const per = cfg.freq === "semanal" ? "cada semana" : cfg.freq === "mensual" ? "cada mes" : "cada quincena";
+    if ($("q-sum")) $("q-sum").textContent = `Te llegan ${fmt(cfg.ingreso)} ${per} · pagos fijos ${fmt(cfg.fijos)} · ahorro ${fmt(cfg.ahorro)}`;
     $("q-big-label").textContent = green ? "Hoy todavía puedes gastar" : "Hoy te pasaste por";
     $("q-big").textContent = fmt(Math.abs(s.left));
     $("q-big").className = "q-big mono " + (green ? (s.left < s.limit * 0.25 ? "warn" : "ok") : "bad");
@@ -172,16 +196,20 @@
   });
 
   // ---------- tus números ----------
-  const fields = { "q-freq": "freq", "q-income": "ingreso", "q-fixed": "fijos", "q-saving": "ahorro" };
+  // Los campos viven en "Tus datos"; los pagos fijos los edita js/perfil.js y luego llama a reload().
+  const fields = { "q-freq": "freq", "q-next": "proximo", "q-income": "ingreso", "q-saving": "ahorro" };
+  function fill() { Object.entries(fields).forEach(([id, key]) => { if ($(id)) $(id).value = cfg[key] || ""; }); }
   Object.entries(fields).forEach(([id, key]) => {
     const el = $(id);
-    el.value = cfg[key];
+    if (!el) return;
     el.addEventListener("input", () => {
-      cfg[key] = key === "freq" ? el.value : Math.max(0, Math.min(1e7, +el.value || 0));
+      cfg[key] = key === "freq" ? el.value : key === "proximo" ? (parseISO(el.value) ? el.value : "") : Math.max(0, Math.min(1e7, +el.value || 0));
       cfg.configurado = true; saveAll(); render();
     });
   });
-  $("q-setup").open = !cfg.configurado;
+  fill();
+  // Vuelve a leer el perfil (después de la bienvenida, de "Tus datos" o de cargar un respaldo).
+  function reload() { Object.assign(cfg, { proximo: "" }, store.get("q", {})); fill(); render(); }
 
   // ---------- recordatorios ----------
   function reminders() {
@@ -217,5 +245,5 @@
 
   function wipe() { [gastos, aguantes, allow].forEach((o) => Object.keys(o).forEach((k) => delete o[k])); }
   function init() { reminders(); render(); }
-  FY.quincena = { init, render, period, snapshot, ticket, nextPayday: () => period(cfg.freq, new Date()).next, cfg, summary: () => { const s = snapshot(); return { streak: streak(s), left: s.left, limit: s.limit }; }, wipe };
+  FY.quincena = { init, render, period, snapshot, ticket, nextPayday: () => period(cfg.freq, new Date(), cfg.proximo).next, reload, fill, cfg, summary: () => { const s = snapshot(); return { streak: streak(s), left: s.left, limit: s.limit }; }, wipe };
 })(window.FY);

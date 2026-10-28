@@ -1,7 +1,7 @@
 // Quincy · arranque: secciones, marca de instituciones, retos recibidos, tasas, app instalable.
 (function (FY) {
   const { $, store, CONFIG } = FY;
-  const VIEWS = ["hoy", "derechos", "tanda", "futuro", "reto", "mas"];
+  const VIEWS = ["hoy", "derechos", "tanda", "futuro", "reto", "mas", "datos"];
 
   // ---------- secciones ----------
   function go(view, push) {
@@ -18,6 +18,7 @@
     if (view === "derechos") FY.derechos.render();
     if (view === "tanda") FY.tanda.render();
     if (view === "reto") $("challenge").hidden = true;
+    if (view === "datos" && FY.datosUI) FY.datosUI.refresh();
     store.set("view", view);
   }
   document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); go(b.dataset.go); FY.buzz(5); }));
@@ -115,8 +116,13 @@
   const tandaLink = FY.tanda.init();
   FY.reto.init();
   FY.share.init();
+  FY.datosUI = FY.perfilUI.init();
+  // La tanda nueva arranca con la misma frecuencia con la que te pagan.
+  if (FY.perfil.exists() && !store.get("tandas", []).length) $("tn-freq").value = FY.perfil.get().pago.freq;
   const first = location.hash.slice(1);
   go(tandaLink ? "tanda" : VIEWS.includes(first) ? first : (store.get("view", "hoy")), false);
+  FY.go = go;
+  FY.bienvenida.init();
   fetch("data/rates.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).then(applyRates).catch(() => {});
   FY.go = go;
 })(window.FY);

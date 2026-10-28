@@ -127,7 +127,7 @@ name:'mi-aguinaldo',wrapped:()=>FY.compartir.aguinaldoWrapped(ag,left)}; });
 FY.compartir.welcome(document.querySelector(".calc-hero"), ".calc input, .calc select");
 (() => { const y=today.getMonth()===11&&today.getDate()>19?today.getFullYear()+1:today.getFullYear(); FY.compartir.countdown($('cd'), new Date(y,11,20), 'Faltan para la fecha límite, 19 de diciembre'); })();
 $("rem").addEventListener("click", () => { const r = (() => { const y=today.getMonth()===11&&today.getDate()>19?today.getFullYear()+1:today.getFullYear(); return {title:'Fecha límite de mi aguinaldo',date:new Date(y,11,19),alarmDays:3,name:'aguinaldo'}; })(); FY.compartir.ics(Object.assign({ desc: `Calcula cuánto te toca: ${FY.compartir.link("recordatorio")}` }, r)); });
-if (FY.CONFIG.WA_CHANNEL) { $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.WA_CHANNEL; }
+if (FY.CONFIG.AVISOS.whatsappCanal) { $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.AVISOS.whatsappCanal; }
 })();
 </script>
 </body>

@@ -22,6 +22,9 @@
     const { sd, start, dias, prima } = inputs();
     const t = today();
     $("mt-example").hidden = perfil.configurado;
+    if ($("mt-sum")) $("mt-sum").textContent = perfil.configurado
+      ? `Sueldo de ${fmt(perfil.sueldo)} al mes${parse(perfil.inicio) ? `, desde el ${longDate(parse(perfil.inicio))}` : ""}${perfil.zona === "frontera" ? " · frontera norte" : ""}`
+      : "Con datos de ejemplo. Pon tu sueldo y tu fecha de ingreso.";
     $("mt-sd").textContent = `Salario diario: ${fmt(sd)} (sueldo mensual ÷ 30)`;
     // Aguinaldo
     const ag = ley.aguinaldo({ sd, start, at: t, dias });
@@ -61,7 +64,7 @@
 
   function timeline({ ag, v, p }) {
     const t = today(), ev = [];
-    if (FY.quincena) ev.push({ d: FY.quincena.nextPayday(), t: "Tu próximo pago", n: "Según la frecuencia que pusiste en Hoy." });
+    if (FY.quincena) ev.push({ d: FY.quincena.nextPayday(), t: "Tu próximo pago", n: "Según lo que pusiste en Tus datos." });
     const agDate = ley.diffDays(t, ag.deadline) >= 0 ? ag.deadline : new Date(t.getFullYear() + 1, 11, 19, 12);
     ev.push({ d: agDate, t: `Aguinaldo: ${fmt(ag.amount)}`, n: "Fecha límite para pagarlo (art. 87)." });
     ev.push({ d: v.nextDate, t: `Aniversario: ${v.nextDays} días de vacaciones`, n: `Más prima vacacional de ${fmt(v.nextDays * inputs().sd * inputs().prima)}.` });
@@ -76,6 +79,7 @@
 
   // ---------- controles ----------
   const pf = { "mt-salary": "sueldo", "mt-start": "inicio", "mt-zone": "zona", "mt-agdias": "agDias", "mt-prima": "prima" };
+  const fill = () => Object.entries(pf).forEach(([id, key]) => { $(id).value = perfil[key]; });
   Object.entries(pf).forEach(([id, key]) => {
     const el = $(id);
     el.value = perfil[key];
@@ -131,5 +135,7 @@
 
   function wipe() { done.clear(); }
   function init() { progress(); render(); }
-  FY.derechos = { init, render, inputs, wipe, aguinaldo: () => { const i = inputs(); return ley.aguinaldo({ sd: i.sd, start: i.start, at: today(), dias: i.dias }); } };
+  // Vuelve a leer el perfil (bienvenida, "Tus datos" o respaldo).
+  function reload() { Object.assign(perfil, store.get("perfil", {})); fill(); render(); }
+  FY.derechos = { init, render, inputs, wipe, reload, aguinaldo: () => { const i = inputs(); return ley.aguinaldo({ sd: i.sd, start: i.start, at: today(), dias: i.dias }); } };
 })(window.FY);
