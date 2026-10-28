@@ -16,9 +16,9 @@ on:
         options: [probar, ahora, pendientes]
         default: probar
       pieza:
-        description: "Solo para 'ahora': id de la pieza (la de presentación es fijado-feed-12-quincy)"
+        description: "Solo para 'ahora': id de la pieza (la de presentación es fijado-reel-00-conoce-quincy)"
         type: string
-        default: fijado-feed-12-quincy
+        default: fijado-reel-00-conoce-quincy
 
 permissions:
   contents: write
@@ -38,7 +38,7 @@ jobs:
         env:
           INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
           ACCION: ${{ github.event_name == 'workflow_dispatch' && inputs.accion || 'pendientes' }}
-          PIEZA: ${{ inputs.pieza || 'fijado-feed-12-quincy' }}
+          PIEZA: ${{ inputs.pieza || 'fijado-reel-00-conoce-quincy' }}
         run: python3 quincy/scripts/social_post.py "$ACCION" --pieza "$PIEZA"
 
       - name: Guardar lo publicado

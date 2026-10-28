@@ -170,60 +170,68 @@ Cada reel trae el gancho escrito en los primeros segundos y cierra con la marca.
 
 <!-- reels:start (generado por scripts/build_social.py) -->
 
-### R1 · POV: encontraste la app que te dice cuánto te toca de aguinaldo · `video/reel-01-app-aguinaldo.mp4` · lunes 2 de noviembre
+### R1 · Tu aguinaldo no es un regalo · `video/animados/reel-01-aguinaldo-ley.mp4` · lunes 2 de noviembre
 
-> POV: encontraste la app que te dice cuánto te toca de aguinaldo, cuánto puedes gastar hoy y qué número de la tanda te conviene 👀
-> Gratis y sin registro. Link en bio.
+> Tu aguinaldo no es un regalo: es ley 💸 Mínimo 15 días de salario y te lo tienen que pagar antes del 20 de diciembre.
+> Mándaselo a quien todavía no sabe cuánto le toca 👇 Calcula el tuyo gratis: link en bio.
 >
-> #aguinaldo #quincena #finanzaspersonales #derechoslaborales #mexico
+> #aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico
 
-### R2 · ¿Vas a renunciar? Esto te tienen que pagar · `video/reel-02-si-renuncias.mp4` · viernes 6 de noviembre
+### R2 · ¿Renuncias? No pierdes tu aguinaldo · `video/animados/reel-02-renuncias.mp4` · viernes 6 de noviembre
 
-> ¿Vas a renunciar? Antes de firmar, calcula tu finiquito: días trabajados, aguinaldo proporcional, vacaciones y prima vacacional.
-> Gratis en Quincy, link en bio.
+> ¿Vas a renunciar? No pierdes tu aguinaldo. Tu finiquito incluye días no pagados, aguinaldo proporcional, vacaciones y prima vacacional.
+> Guárdalo por si acaso y calcula el tuyo: link en bio.
 >
 > #finiquito #renuncia #derechoslaborales #trabajo #mexico
 
-### R3 · ¿Cuánto te toca de aguinaldo? Te lo digo en 10 segundos · `video/reel-03-calcula-aguinaldo.mp4` · miércoles 11 de noviembre
+### R3 · ¿Por qué tu aguinaldo llega incompleto? · `video/animados/reel-03-aguinaldo-isr.mp4` · miércoles 11 de noviembre
 
-> ¿Cuánto te toca de aguinaldo? Pones tu sueldo y tu fecha de ingreso y listo. Te lo tienen que pagar antes del 20 de diciembre.
-> Calcúlalo gratis, link en bio.
+> ¿Por qué tu aguinaldo llega incompleto? Los primeros $3,519.30 no pagan ISR; solo lo que pasa de ahí.
+> Guárdalo para diciembre 📌 Calcula el tuyo: link en bio.
 >
-> #aguinaldo #aguinaldo2026 #finanzaspersonales #mexico
+> #aguinaldo #ISR #SAT #finanzaspersonales #mexico
 
-### R4 · El número 1 de la tanda gana dinero. El último pierde. · `video/reel-04-numero-tanda.mp4` · viernes 13 de noviembre
+### R4 · ¿Pides el número 1 o el 10? · `video/animados/reel-04-tanda-numero.mp4` · viernes 13 de noviembre
 
-> ¿Pides el número 1 o el último de la tanda? 🤔
-> El 1 recibe un préstamo sin intereses; el último ahorra sin rendimiento. Quincy te dice cuánto gana o pierde cada número frente a CETES.
-> Link en bio.
+> ¿Pides el número 1 o el 10 de la tanda? 🤔 El 1 recibe un préstamo sin intereses; el 10 presta su dinero gratis.
+> Etiqueta a quien organiza tu tanda 👇 Calcula la tuya: link en bio.
 >
 > #tanda #ahorro #CETES #finanzaspersonales #mexico
 
-### R5 · Si te despiden, esto es lo mínimo que te tienen que dar · `video/reel-05-si-te-despiden.mp4` · jueves 19 de noviembre
+### R5 · ¿Te despidieron? No firmes nada todavía · `video/animados/reel-05-te-despiden.mp4` · jueves 19 de noviembre
 
-> Si te despiden sin causa: 3 meses de salario integrado + 12 días por año de prima de antigüedad + tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.
-> Calcula la tuya, link en bio.
+> ¿Te despidieron sin causa? No firmes nada todavía. Te tocan 3 meses de salario, 12 días por año y tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.
+> Mándaselo a quien lo necesite. Link en bio.
 >
 > #liquidacion #despido #PROFEDET #derechoslaborales #mexico
 
-### R6 · Se acabaron los pleitos por el número de la tanda · `video/reel-06-ruleta-tanda.mp4` · sábado 21 de noviembre
+### R6 · Se acabaron los pleitos por el número · `video/animados/reel-06-ruleta-tanda.mp4` · sábado 21 de noviembre
 
-> Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo de WhatsApp.
-> Gratis, link en bio.
+> Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo.
+> Organiza la tuya gratis: link en bio.
 >
 > #tanda #ahorro #whatsapp #familia #mexico
 
-### R7 · La app que me dice cuánto puedo gastar hoy · `video/reel-07-hoy-puedes-gastar.mp4` · miércoles 25 de noviembre
+### R7 · La regla que me salvó la quincena · `video/animados/reel-07-hoy-puedes-gastar.mp4` · miércoles 25 de noviembre
 
-> La app que me dice cuánto puedo gastar hoy para llegar a la quincena. Si hoy gasto menos, mañana tengo más.
-> Sin conectar tu banco. Link en bio.
+> La regla que me salvó la quincena: lo que te llega, menos pagos fijos y ahorro, entre los días que faltan. Ese es tu número de hoy.
+> ¿Cuál es el tuyo? Calcúlalo gratis: link en bio.
 >
 > #quincena #presupuesto #ahorro #finanzaspersonales #mexico
 
-### R8 · Faltan 18 días para el aguinaldo. ¿Ya sabes cuánto te toca? · `video/reel-08-faltan-dias-aguinaldo.mp4` · martes 1 de diciembre
+### R8 · Faltan 18 días para tu aguinaldo · `video/animados/reel-08-faltan-18-dias.mp4` · martes 1 de diciembre
 
-> Faltan 18 días para el límite del aguinaldo (19 de diciembre). ¿Ya sabes cuánto te toca? Calcúlalo en 10 segundos, link en bio.
+> Faltan 18 días para el límite del aguinaldo (19 de diciembre) ⏳ Antes de gastarlo: paga lo que te cobra intereses, aparta para enero y págate primero.
+> Compártelo con tu equipo. Link en bio.
 >
-> #aguinaldo #aguinaldo2026 #quincena #mexico
+> #aguinaldo #aguinaldo2026 #ahorro #mexico
+
+### R9 · La app que te dice lo que te toca · `video/animados/reel-00-conoce-quincy.mp4` · Publícalo hoy y fíjalo
+
+> Te presento Quincy 👋 La app que te dice lo que te toca, cuándo te toca y cuánto te queda.
+> Tu límite diario, tu aguinaldo, tus vacaciones y tu tanda. Gratis, sin registro y sin bancos.
+> Link en bio.
+>
+> #quincy #finanzaspersonales #aguinaldo #quincena #mexico
 
 <!-- reels:end -->

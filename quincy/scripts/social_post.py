@@ -6,7 +6,7 @@ propia cuenta profesional. Solo usa la biblioteca estándar de Python.
 Acciones:
   probar                Revisa el token, la cuenta, el límite de publicaciones y que cada archivo exista. No publica.
   pendientes            Publica lo que ya tocaba (hasta 30 horas de atraso) y no se ha publicado.
-  ahora --pieza ID      Publica una pieza ya, sin importar la fecha (por ejemplo: fijado-feed-12-quincy).
+  ahora --pieza ID      Publica una pieza ya, sin importar la fecha (por ejemplo: fijado-reel-00-conoce-quincy).
 
 Variables de entorno:
   INSTAGRAM_TOKEN   token de acceso (obligatorio para publicar)
@@ -71,6 +71,8 @@ def api(method, path, **params):
         except ValueError:
             msg = body[:300]
         raise ApiError(f"{method} {path}: HTTP {e.code}: {msg}") from None
+    except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+        raise ApiError(f"{method} {path}: sin conexión con Instagram ({e}). Se reintentará en la siguiente corrida.") from None
 
 
 def media_ok(url):
@@ -142,6 +144,15 @@ def publish(uid, it):
         params = {"image_url": it["media"], "caption": it["caption"]}
     elif kind == "story":
         params = {"image_url": it["media"], "media_type": "STORIES"}
+    elif kind == "carousel":
+        kids = []
+        for u in it["children"]:
+            if not media_ok(u):
+                raise ApiError(f"El archivo no está disponible en {u}")
+            kids.append(api("POST", f"{uid}/media", image_url=u, is_carousel_item="true")["id"])
+        for k in kids:
+            wait_ready(k, "feed")
+        params = {"media_type": "CAROUSEL", "children": ",".join(kids), "caption": it["caption"]}
     elif kind == "reel":
         params = {"video_url": it["media"], "media_type": "REELS", "caption": it["caption"], "share_to_feed": "true", "thumb_offset": "1500"}
     else:
@@ -158,14 +169,14 @@ def publish(uid, it):
 
 
 def label(it):
-    names = {"feed": "Post", "story": "Historia", "reel": "Reel"}
+    names = {"feed": "Post", "story": "Historia", "reel": "Reel", "carousel": "Carrusel"}
     return f"{names[it['type']]} {it['id']}"
 
 
 def run_probar(tz, items, state):
     now = now_local(tz)
     log(f"Hora en la Ciudad de México: {now:%Y-%m-%d %H:%M}")
-    missing = [it["media"] for it in items if not media_ok(it["media"])]
+    missing = [u for it in items for u in it.get("children", [it["media"]]) if not media_ok(u)]
     log(f"Archivos revisados: {len(items) - len(missing)} de {len(items)} disponibles.")
     for m in missing:
         log(f"  Falta: {m}")
@@ -207,7 +218,7 @@ def run_publish(tz, items, state, only=None):
             return 1
     else:
         todo = [it for it in items if it["at"] and now - CATCH_UP <= it["at"] <= now and it["id"] not in state["posted"]]
-        todo.sort(key=lambda i: (i["at"], ["feed", "story", "reel"].index(i["type"])))
+        todo.sort(key=lambda i: (i["at"], ["feed", "carousel", "story", "reel"].index(i["type"])))
         skipped = [it for it in items if it["at"] and it["at"] < now - CATCH_UP and it["id"] not in state["posted"] and it["id"] not in state.get("skipped", {})]
         for it in skipped:
             state.setdefault("skipped", {})[it["id"]] = now.isoformat(timespec="minutes")
@@ -236,7 +247,7 @@ def run_publish(tz, items, state, only=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("accion", choices=["probar", "pendientes", "ahora"])
-    ap.add_argument("--pieza", default="fijado-feed-12-quincy")
+    ap.add_argument("--pieza", default="fijado-reel-00-conoce-quincy")
     a = ap.parse_args()
     tz, items = load_schedule()
     state = load_state()

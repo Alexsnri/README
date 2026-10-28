@@ -18,12 +18,12 @@
    "caption": ""
   },
   {
-   "id": "2026-11-02-reel-01-app-aguinaldo",
+   "id": "2026-11-02-reel-01-aguinaldo-ley",
    "date": "2026-11-02",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-01-app-aguinaldo.mp4",
-   "caption": "POV: encontraste la app que te dice cuánto te toca de aguinaldo, cuánto puedes gastar hoy y qué número de la tanda te conviene 👀\nGratis y sin registro. Link en bio.\n\n#aguinaldo #quincena #finanzaspersonales #derechoslaborales #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-01-aguinaldo-ley.mp4",
+   "caption": "Tu aguinaldo no es un regalo: es ley 💸 Mínimo 15 días de salario y te lo tienen que pagar antes del 20 de diciembre.\nMándaselo a quien todavía no sabe cuánto le toca 👇 Calcula el tuyo gratis: link en bio.\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico"
   },
   {
    "id": "2026-11-03-story-05-mi-futuro",
@@ -58,12 +58,12 @@
    "caption": "¿Vas a renunciar antes de diciembre? Ojo: el aguinaldo proporcional también te toca.\nTu finiquito incluye los días trabajados, el aguinaldo proporcional, las vacaciones que no tomaste y su prima.\nCalcula tu finiquito antes de firmar nada 👉 link en bio\n\n#finiquito #renuncia #derechoslaborales #trabajo #mexico"
   },
   {
-   "id": "2026-11-06-reel-02-si-renuncias",
+   "id": "2026-11-06-reel-02-renuncias",
    "date": "2026-11-06",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-02-si-renuncias.mp4",
-   "caption": "¿Vas a renunciar? Antes de firmar, calcula tu finiquito: días trabajados, aguinaldo proporcional, vacaciones y prima vacacional.\nGratis en Quincy, link en bio.\n\n#finiquito #renuncia #derechoslaborales #trabajo #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-02-renuncias.mp4",
+   "caption": "¿Vas a renunciar? No pierdes tu aguinaldo. Tu finiquito incluye días no pagados, aguinaldo proporcional, vacaciones y prima vacacional.\nGuárdalo por si acaso y calcula el tuyo: link en bio.\n\n#finiquito #renuncia #derechoslaborales #trabajo #mexico"
   },
   {
    "id": "2026-11-07-story-04-dias-en-verde",
@@ -74,12 +74,21 @@
    "caption": ""
   },
   {
-   "id": "2026-11-09-feed-04-si-te-despiden",
+   "id": "2026-11-09-carousel-c3-finiquito-liquidacion",
    "date": "2026-11-09",
    "time": "13:30",
-   "type": "feed",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/ig/04-si-te-despiden.jpg",
-   "caption": "Si te despiden sin causa justificada, te toca liquidación: 3 meses de salario integrado + 12 días por año de prima de antigüedad + tu finiquito.\nTienes 2 meses para reclamar. PROFEDET te asesora gratis.\nNo firmes una renuncia que no escribiste.\n\n#liquidacion #despido #PROFEDET #derechoslaborales #mexico"
+   "type": "carousel",
+   "media": "https://alexsnri.github.io/README/quincy/marketing/carruseles/c3-finiquito-liquidacion/01.jpg",
+   "children": [
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c3-finiquito-liquidacion/01.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c3-finiquito-liquidacion/02.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c3-finiquito-liquidacion/03.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c3-finiquito-liquidacion/04.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c3-finiquito-liquidacion/05.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c3-finiquito-liquidacion/06.jpg"
+   ],
+   "title": "¿Finiquito o liquidación?",
+   "caption": "¿Finiquito o liquidación? No es lo mismo. Desliza y guárdalo por si acaso 📌\nCalcula el tuyo gratis: link en bio.\n\n#finiquito #liquidacion #derechoslaborales #PROFEDET #mexico"
   },
   {
    "id": "2026-11-09-story-01-aguinaldo",
@@ -106,12 +115,12 @@
    "caption": ""
   },
   {
-   "id": "2026-11-11-reel-03-calcula-aguinaldo",
+   "id": "2026-11-11-reel-03-aguinaldo-isr",
    "date": "2026-11-11",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-03-calcula-aguinaldo.mp4",
-   "caption": "¿Cuánto te toca de aguinaldo? Pones tu sueldo y tu fecha de ingreso y listo. Te lo tienen que pagar antes del 20 de diciembre.\nCalcúlalo gratis, link en bio.\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-03-aguinaldo-isr.mp4",
+   "caption": "¿Por qué tu aguinaldo llega incompleto? Los primeros $3,519.30 no pagan ISR; solo lo que pasa de ahí.\nGuárdalo para diciembre 📌 Calcula el tuyo: link en bio.\n\n#aguinaldo #ISR #SAT #finanzaspersonales #mexico"
   },
   {
    "id": "2026-11-12-story-02-tanda",
@@ -122,20 +131,29 @@
    "caption": ""
   },
   {
-   "id": "2026-11-13-feed-06-tanda-numero",
+   "id": "2026-11-13-carousel-c2-tanda",
    "date": "2026-11-13",
    "time": "13:30",
-   "type": "feed",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/ig/06-tanda-numero.jpg",
-   "caption": "¿Pides el número 1 o el último de la tanda? 🤔\nHicimos la cuenta: en una tanda de 10 personas, con $1,000 por quincena, el número 1 gana unos $115 frente a CETES y el último pierde unos $114.\nEl primero recibe un préstamo sin intereses; el último ahorra sin rendimiento.\nCalcula tu tanda y sortea los turnos gratis 👉 link en bio\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"
+   "type": "carousel",
+   "media": "https://alexsnri.github.io/README/quincy/marketing/carruseles/c2-tanda/01.jpg",
+   "children": [
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c2-tanda/01.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c2-tanda/02.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c2-tanda/03.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c2-tanda/04.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c2-tanda/05.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c2-tanda/06.jpg"
+   ],
+   "title": "¿Qué número de la tanda te conviene?",
+   "caption": "¿Qué número de la tanda te conviene? Hicimos la cuenta 👉 desliza.\nArma la tuya con ruleta y calendario, gratis: link en bio.\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"
   },
   {
-   "id": "2026-11-13-reel-04-numero-tanda",
+   "id": "2026-11-13-reel-04-tanda-numero",
    "date": "2026-11-13",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-04-numero-tanda.mp4",
-   "caption": "¿Pides el número 1 o el último de la tanda? 🤔\nEl 1 recibe un préstamo sin intereses; el último ahorra sin rendimiento. Quincy te dice cuánto gana o pierde cada número frente a CETES.\nLink en bio.\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-04-tanda-numero.mp4",
+   "caption": "¿Pides el número 1 o el 10 de la tanda? 🤔 El 1 recibe un préstamo sin intereses; el 10 presta su dinero gratis.\nEtiqueta a quien organiza tu tanda 👇 Calcula la tuya: link en bio.\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"
   },
   {
    "id": "2026-11-14-story-04-dias-en-verde",
@@ -194,12 +212,12 @@
    "caption": "El salario mínimo de 2026 es de $315.04 al día ($440.87 en la frontera norte).\nSi en tu recibo dice menos, algo está mal.\nManda esto al grupo de la chamba 👇\n\n#salariominimo #CONASAMI #trabajo #derechoslaborales #mexico"
   },
   {
-   "id": "2026-11-19-reel-05-si-te-despiden",
+   "id": "2026-11-19-reel-05-te-despiden",
    "date": "2026-11-19",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-05-si-te-despiden.mp4",
-   "caption": "Si te despiden sin causa: 3 meses de salario integrado + 12 días por año de prima de antigüedad + tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.\nCalcula la tuya, link en bio.\n\n#liquidacion #despido #PROFEDET #derechoslaborales #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-05-te-despiden.mp4",
+   "caption": "¿Te despidieron sin causa? No firmes nada todavía. Te tocan 3 meses de salario, 12 días por año y tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.\nMándaselo a quien lo necesite. Link en bio.\n\n#liquidacion #despido #PROFEDET #derechoslaborales #mexico"
   },
   {
    "id": "2026-11-20-story-02-tanda",
@@ -222,8 +240,8 @@
    "date": "2026-11-21",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-06-ruleta-tanda.mp4",
-   "caption": "Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo de WhatsApp.\nGratis, link en bio.\n\n#tanda #ahorro #whatsapp #familia #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-06-ruleta-tanda.mp4",
+   "caption": "Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo.\nOrganiza la tuya gratis: link en bio.\n\n#tanda #ahorro #whatsapp #familia #mexico"
   },
   {
    "id": "2026-11-22-story-04-dias-en-verde",
@@ -234,12 +252,21 @@
    "caption": ""
   },
   {
-   "id": "2026-11-23-feed-01-aguinaldo-tabla",
+   "id": "2026-11-23-carousel-c1-aguinaldo",
    "date": "2026-11-23",
    "time": "13:30",
-   "type": "feed",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/ig/01-aguinaldo-tabla.jpg",
-   "caption": "Recordatorio: el aguinaldo se paga a más tardar el 19 de diciembre y son mínimo 15 días de salario.\nSi entraste este año, te toca la parte proporcional. Calcula el tuyo, link en bio 💸\n\n#aguinaldo #quincena #finanzaspersonales #derechoslaborales #mexico"
+   "type": "carousel",
+   "media": "https://alexsnri.github.io/README/quincy/marketing/carruseles/c1-aguinaldo/01.jpg",
+   "children": [
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c1-aguinaldo/01.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c1-aguinaldo/02.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c1-aguinaldo/03.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c1-aguinaldo/04.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c1-aguinaldo/05.jpg",
+    "https://alexsnri.github.io/README/quincy/marketing/carruseles/c1-aguinaldo/06.jpg"
+   ],
+   "title": "5 cosas de tu aguinaldo",
+   "caption": "5 cosas que tienes que saber de tu aguinaldo 💸 Desliza y guárdalo para diciembre.\n¿Ya sabes cuánto te toca? Calcúlalo gratis: link en bio.\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico"
   },
   {
    "id": "2026-11-23-story-01-aguinaldo",
@@ -262,8 +289,8 @@
    "date": "2026-11-25",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-07-hoy-puedes-gastar.mp4",
-   "caption": "La app que me dice cuánto puedo gastar hoy para llegar a la quincena. Si hoy gasto menos, mañana tengo más.\nSin conectar tu banco. Link en bio.\n\n#quincena #presupuesto #ahorro #finanzaspersonales #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-07-hoy-puedes-gastar.mp4",
+   "caption": "La regla que me salvó la quincena: lo que te llega, menos pagos fijos y ahorro, entre los días que faltan. Ese es tu número de hoy.\n¿Cuál es el tuyo? Calcúlalo gratis: link en bio.\n\n#quincena #presupuesto #ahorro #finanzaspersonales #mexico"
   },
   {
    "id": "2026-11-26-story-02-tanda",
@@ -314,12 +341,12 @@
    "caption": ""
   },
   {
-   "id": "2026-12-01-reel-08-faltan-dias-aguinaldo",
+   "id": "2026-12-01-reel-08-faltan-18-dias",
    "date": "2026-12-01",
    "time": "20:00",
    "type": "reel",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/video/reel-08-faltan-dias-aguinaldo.mp4",
-   "caption": "Faltan 18 días para el límite del aguinaldo (19 de diciembre). ¿Ya sabes cuánto te toca? Calcúlalo en 10 segundos, link en bio.\n\n#aguinaldo #aguinaldo2026 #quincena #mexico"
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-08-faltan-18-dias.mp4",
+   "caption": "Faltan 18 días para el límite del aguinaldo (19 de diciembre) ⏳ Antes de gastarlo: paga lo que te cobra intereses, aparta para enero y págate primero.\nCompártelo con tu equipo. Link en bio.\n\n#aguinaldo #aguinaldo2026 #ahorro #mexico"
   },
   {
    "id": "2026-12-07-story-01-aguinaldo",
@@ -354,12 +381,12 @@
    "caption": ""
   },
   {
-   "id": "fijado-feed-12-quincy",
+   "id": "fijado-reel-00-conoce-quincy",
    "date": "fijado",
-   "time": "13:30",
-   "type": "feed",
-   "media": "https://alexsnri.github.io/README/quincy/marketing/ig/12-quincy.jpg",
-   "caption": "Quincy: lo que te toca, cuándo te toca y cuánto te queda.\n✅ Tu límite diario de gasto\n✅ Aguinaldo, vacaciones, PTU y finiquito con la ley de 2026\n✅ Tandas con ruleta y calendario\n✅ Tu yo del futuro y un reto diario\nGratis, sin registro y sin bancos 👉 link en bio\n\n#quincy #finanzaspersonales #derechoslaborales #mexico"
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://alexsnri.github.io/README/quincy/marketing/video/animados/reel-00-conoce-quincy.mp4",
+   "caption": "Te presento Quincy 👋 La app que te dice lo que te toca, cuándo te toca y cuánto te queda.\nTu límite diario, tu aguinaldo, tus vacaciones y tu tanda. Gratis, sin registro y sin bancos.\nLink en bio.\n\n#quincy #finanzaspersonales #aguinaldo #quincena #mexico"
   }
  ]
 }
