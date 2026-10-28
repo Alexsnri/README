@@ -7,7 +7,10 @@ window.FY = Object.assign(window.FY || {}, (() => {
     // Token de Cloudflare Web Analytics (gratis, sin cookies). Vacío = sin analítica.
     CF_ANALYTICS_TOKEN: "7867bd7b5a2449549624cefc62551f12",
     // true en la copia que vive dentro del visor de Claude (ahí no se pueden descargar archivos).
-    EMBEDDED_VIEWER: false
+    EMBEDDED_VIEWER: false,
+    // Enlaces de referido que el dueño ya dio de alta. Vacío = no se muestra nada.
+    // Ejemplo: cetes: { nombre: "Abre tu cuenta en …", url: "https://…", nota: "Banco · protegido por el IPAB" }
+    REFERIDOS: {}
   };
 
   // Analítica sin cookies en todas las páginas, solo en el sitio publicado (no en pruebas ni en el visor).
@@ -145,6 +148,18 @@ window.FY = Object.assign(window.FY || {}, (() => {
     Object.entries(params || {}).forEach(([k, v]) => u.searchParams.set(k, v));
     return u.toString();
   };
+  // Pinta en `el` los referidos pedidos (solo los que existan), siempre con su aviso de comisión.
+  function referidos(el, claves) {
+    const list = (claves || Object.keys(CONFIG.REFERIDOS)).map((k) => CONFIG.REFERIDOS[k]).filter((r) => r && r.url);
+    if (!el || !list.length) return;
+    el.replaceChildren(...list.map((r) => {
+      const d = document.createElement("div"), a = document.createElement("a"), n = document.createElement("small");
+      a.className = "btn btn-sun btn-sm"; a.href = r.url; a.target = "_blank"; a.rel = "sponsored noopener"; a.textContent = r.nombre;
+      n.className = "mut"; n.textContent = (r.nota ? r.nota + " · " : "") + "Enlace de referido: Quincy puede recibir una comisión";
+      d.append(a, n); return d;
+    }));
+    el.hidden = false;
+  }
   // Pequeño bus de eventos entre módulos.
   const bus = new EventTarget();
   const on = (n, f) => bus.addEventListener(n, (e) => f(e.detail));
@@ -153,6 +168,6 @@ window.FY = Object.assign(window.FY || {}, (() => {
   return {
     CONFIG, YEAR, INITIAL_SEARCH, RATES, VEH, state, save, store, $, fmt, short, clamp, reduced,
     realAnnual, monthlyReal, balanceAt, requiredMonthly, targetFor, yearsLeft, futureOf, futureOfRecurring, freedomDays,
-    dayKey, keyToDate, addDays, rng, toast, buzz, confetti, copyText, nativeShare, download, shareURL, on, emit
+    dayKey, keyToDate, addDays, rng, toast, buzz, confetti, copyText, nativeShare, download, shareURL, referidos, on, emit
   };
 })());

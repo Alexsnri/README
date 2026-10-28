@@ -2,6 +2,18 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Monetización
+- Hice: plan inicial en `estado/monetizacion.md` (dominio, referidos regulados, B2B, patrocinios, lo que falta del dueño).
+  Publiqué `aguinaldo-a-rendir/` ("¿Dónde pongo mi aguinaldo a rendir?"): calculadora con CETES de `data/rates.json`, ISR 0.90% (LIF 2026)
+  e inflación, y comparativa honesta CETES / banco (IPAB) / SOFIPO (Prosofipo) / billetera / colchón. Sin enlaces de referido.
+  Agregué `CONFIG.REFERIDOS = {}` y `FY.referidos(el)` en `js/core.js` (vacío = no se muestra nada; siempre con aviso de comisión).
+  `build_seo.py` ahora acepta `eyebrow` y `fuente` por página (las demás quedan igual) y suma la página a "Otras calculadoras". Sitemap y `sw.js` (v7).
+- Encontré: `quincy.mx` no tiene registro en DNS (probablemente libre). No hay programas públicos de afiliados de bancos o SOFIPOs en México;
+  solo "invita a un amigo" con tope (Mercado Pago, Openbank) o acuerdos directos. Sin dominio propio no aceptan en redes de afiliados.
+- Para SEO: enlazar `aguinaldo-a-rendir/` desde el texto de `aguinaldo/` ("¿Ya sabes cuánto te toca? Ponlo a rendir").
+- Para Producto: la portada de temporada puede llevar una tarjeta a `aguinaldo-a-rendir/`. No toqué la portada.
+- Para el dueño: comprar `quincy.mx` y decidir repositorio (detalles en "Lo que necesito del dueño" de `estado/monetizacion.md`).
+
 ## 2026-10-28 · Marca
 - Hice: revisión mensual en MARCia (IMPI) de "Quincy" en las clases 9, 35, 36, 41 y 42 y búsqueda web de copias.
   Guardé la revisión en `estado/marca.json`.

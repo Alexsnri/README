@@ -209,9 +209,71 @@ $('o-note').textContent=left>0?`Faltan ${n} ${n===1?'día':'días'} para tu quin
             ("¿Necesito registrarme?", "No. Quincy funciona sin registro y tus datos se quedan en tu teléfono."),
         ],
     },
+    "aguinaldo-a-rendir": {
+        "title": "¿Dónde pongo mi aguinaldo a rendir? Comparativa 2026",
+        "h1": "¿Dónde pongo mi aguinaldo a rendir?",
+        "desc": "Calcula cuánto te daría tu aguinaldo en CETES o en una cuenta con rendimiento, después de ISR e inflación, y compara qué tan protegido está tu dinero.",
+        "eyebrow": "Calculadora gratuita · CETES, bancos y SOFIPOs · 2026",
+        "intro": "Antes de que se te vaya en las posadas: pon tu aguinaldo, la tasa que te ofrecen y el plazo. Te decimos cuánto ganas de verdad, ya con impuestos e inflación.",
+        "app": "futuro",
+        "form": field("c-monto", "¿Cuánto vas a poner a rendir?", num("c-monto", 7500)) +
+                field("c-tasa", "Tasa anual que te ofrecen (%)", '<input type="number" inputmode="decimal" id="c-tasa" value="6.23" min="0" max="30" step="0.01">', 'Viene puesta la de CETES a 28 días. Si una app te ofrece otra, ponla aquí.') +
+                field("c-meses", "¿Cuánto tiempo lo vas a dejar?", '<select id="c-meses"><option value="1">1 mes</option><option value="3">3 meses</option><option value="6">6 meses</option><option value="12" selected>1 año</option><option value="24">2 años</option></select>'),
+        "out": '<p class="eyebrow">Al final tendrías</p><b class="calc-big mono ok-t" id="o-main">$0</b><p id="o-note"></p><p class="small mut" id="o-real"></p><p class="small mut" id="o-src"></p><div id="ref-slot" class="related" hidden></div>',
+        "js": """
+const tasa=$('c-tasa'); tasa.addEventListener('input',()=>{tasa.dataset.touched='1';});
+let inf=FY.RATES.inflacion;
+function run(){const m=Math.max(0,+$('c-monto').value||0), t=Math.max(0,+tasa.value||0)/100, n=+$('c-meses').value||12, y=n/12;
+const bruto=m*(Math.pow(1+t/12,n)-1), isr=m*0.009*y, neto=Math.max(0,bruto-isr), pierde=m*(1-1/Math.pow(1+inf/100,y)), real=(m+neto)/Math.pow(1+inf/100,y)-m;
+$('o-main').textContent=FY.fmt(m+neto);
+$('o-note').innerHTML=`Ganas <b>${FY.fmt(neto)}</b> en ${n===12?'un año':n===24?'dos años':n===1?'un mes':n+' meses'}, ya con la retención de ISR (unos ${FY.fmt(isr)}).`;
+$('o-real').textContent=(real>=0?`Contra la inflación (${inf.toFixed(2)}% al año) le ganas ${FY.fmt(real)} en pesos de hoy.`:`Ojo: con esta tasa la inflación (${inf.toFixed(2)}% al año) te gana por ${FY.fmt(-real)} en pesos de hoy.`)+` Bajo el colchón, tus ${FY.fmt(m)} valdrían ${FY.fmt(m-pierde)} de hoy.`;}
+fetch('../data/rates.json',{cache:'no-cache'}).then((r)=>r.ok?r.json():null).then((d)=>{if(!d||typeof d.cetes28!=='number')return;
+if(!tasa.dataset.touched)tasa.value=d.cetes28; if(typeof d.inflacion==='number')inf=d.inflacion;
+$('o-src').textContent=`CETES 28 días: ${d.cetes28.toFixed(2)}% · ${d.cetes28_fuente||'Banxico'}. Inflación: ${d.inflacion_fuente||'INEGI'}.`; run();}).catch(()=>{});
+FY.referidos($('ref-slot'));""",
+        "body": """
+<h2>Primero lo primero</h2>
+<ul>
+<li><b>¿Debes en tu tarjeta?</b> Págala antes de invertir. Ninguna inversión te da lo que te cobra una tarjeta de crédito de intereses.</li>
+<li><b>¿Tienes un colchón para emergencias?</b> Aparta primero el equivalente a uno a tres meses de gastos donde lo puedas sacar el mismo día.</li>
+<li><b>Lo que sobre, ponlo a rendir.</b> Dejarlo en una cuenta que no paga nada es perder poco a poco contra la inflación.</li>
+</ul>
+<h2>Las opciones, comparadas sin letra chiquita</h2>
+<p>Ordenamos por lo que más te conviene a ti: qué tan protegido está tu dinero, qué tan fácil lo sacas y cuánto rinde. Quincy no cobra comisión de ninguna de estas opciones.</p>
+<style>.opts{display:grid;gap:10px;margin-top:12px}.opts .card{display:grid;gap:6px}.opts h3{margin:0;font-size:1.02rem;color:var(--sun)}.opts p{margin:0;font-size:.94rem}</style>
+<div class="opts">
+<div class="card"><h3>1. CETES en cetesdirecto</h3><p><b>Quién responde:</b> Es deuda del Gobierno de México</p><p><b>Cuándo lo sacas:</b> Al vencer el plazo (28 días o más). El fondo BONDDIA de la misma plataforma se retira cualquier día hábil.</p><p><b>Ojo con:</b> Desde $100, sin comisiones. La tasa cambia en cada subasta semanal.</p></div>
+<div class="card"><h3>2. Banco (cuenta o apartado con rendimiento)</h3><p><b>Quién responde:</b> Seguro del IPAB: hasta 400 mil UDIS por persona y por banco (más de 3 millones de pesos)</p><p><b>Cuándo lo sacas:</b> Casi siempre al momento.</p><p><b>Ojo con:</b> Las tasas más altas suelen tener tope de saldo, condiciones (usar la tarjeta, recibir tu nómina) y fecha de fin.</p></div>
+<div class="card"><h3>3. SOFIPO (sociedad financiera popular)</h3><p><b>Quién responde:</b> Fondo de Protección: hasta 25 mil UDIS por persona (más de 190 mil pesos)</p><p><b>Cuándo lo sacas:</b> Al momento o al vencer el plazo.</p><p><b>Ojo con:</b> Pueden pagar más, pero la protección es mucho menor. Revisa que esté autorizada por la CNBV.</p></div>
+<div class="card"><h3>4. Billetera digital (IFPE)</h3><p><b>Quién responde:</b> Ningún seguro de depósitos</p><p><b>Cuándo lo sacas:</b> Al momento.</p><p><b>Ojo con:</b> Cómoda para pagar, pero tu saldo no tiene el seguro del IPAB.</p></div>
+<div class="card"><h3>5. Colchón o cuenta sin rendimiento</h3><p><b>Quién responde:</b> Nadie</p><p><b>Cuándo lo sacas:</b> Al momento.</p><p><b>Ojo con:</b> La inflación le quita valor cada mes.</p></div>
+</div>
+<h2>Cómo revisar una oferta antes de meter tu dinero</h2>
+<ul>
+<li><b>Que esté regulada.</b> Búscala en el registro de instituciones financieras de la <a href="https://www.gob.mx/condusef" target="_blank" rel="noopener">CONDUSEF</a> y en el padrón de la <a href="https://www.gob.mx/cnbv" target="_blank" rel="noopener">CNBV</a>. Si no aparece, no es opción.</li>
+<li><b>Mira la GAT real</b>, no solo la tasa grande del anuncio. La GAT real ya descuenta la inflación estimada.</li>
+<li><b>Lee el tope y las condiciones.</b> Un "hasta 15%" puede aplicar solo a los primeros miles de pesos o solo si cumples algo cada mes.</li>
+<li><b>No pongas todo en un solo lugar</b> si pasas del tope de protección.</li>
+<li><b>Rendimientos pasados no garantizan los futuros.</b> Las tasas cambian: la que ves hoy puede bajar el mes que entra.</li>
+</ul>
+<h2>¿Y los impuestos?</h2>
+<p>En 2026 los bancos, SOFIPOs y cetesdirecto te retienen ISR de <b>0.90% al año sobre el capital</b> que tienes invertido, según la Ley de Ingresos de la Federación 2026. La calculadora ya lo descuenta. Si tus ingresos por intereses son pocos, esa retención puede ser todo el impuesto que pagas por ellos.</p>""",
+        "faq": [
+            ("¿Dónde pongo mi aguinaldo a rendir?", "Primero paga deudas caras y aparta un fondo de emergencia. Lo que sobre puede ir a CETES en cetesdirecto (desde $100, deuda del gobierno) o a una cuenta con rendimiento de un banco protegido por el IPAB. Revisa siempre tope, condiciones y que la institución esté regulada."),
+            ("¿Cuánto me da CETES por mi aguinaldo?", "Depende de la tasa de la subasta de esa semana. Con la calculadora de esta página pones tu aguinaldo y el plazo, y ves cuánto ganas ya con la retención de ISR y la inflación."),
+            ("¿Mi dinero está protegido en una SOFIPO?", "Sí, pero menos que en un banco: el Fondo de Protección cubre hasta 25 mil UDIS por persona. En un banco, el IPAB cubre hasta 400 mil UDIS por persona y por banco."),
+            ("¿Qué es la GAT?", "La Ganancia Anual Total. La GAT nominal es lo que rinde tu dinero en un año; la GAT real le resta la inflación estimada. Compara siempre la GAT real."),
+            ("¿Me cobran impuestos por los intereses?", "Sí. En 2026 te retienen ISR de 0.90% anual sobre el capital invertido, según la Ley de Ingresos de la Federación 2026."),
+        ],
+        "fuente": 'Herramienta educativa, no es asesoría financiera ni una recomendación personalizada. Rendimientos pasados no garantizan rendimientos futuros. Fuentes: tasa de CETES de las subastas de <a href="https://www.banxico.org.mx" target="_blank" rel="noopener">Banxico</a>, inflación del <a href="https://www.inegi.org.mx" target="_blank" rel="noopener">INEGI</a>, seguro de depósitos del <a href="https://www.gob.mx/ipab" target="_blank" rel="noopener">IPAB</a>, <a href="https://www.fondodeproteccion.mx/" target="_blank" rel="noopener">Fondo de Protección de SOFIPOs</a> y Ley de Ingresos de la Federación 2026 (DOF).',
+    },
 }
 
-RELATED = [("aguinaldo", "Aguinaldo 2026"), ("finiquito", "Finiquito y liquidación"), ("vacaciones", "Vacaciones dignas"), ("ptu", "PTU"), ("tanda", "Tandas"), ("quincena", "Cuánto gastar al día")]
+RELATED = [("aguinaldo", "Aguinaldo 2026"), ("aguinaldo-a-rendir", "Pon tu aguinaldo a rendir"), ("finiquito", "Finiquito y liquidación"), ("vacaciones", "Vacaciones dignas"), ("ptu", "PTU"), ("tanda", "Tandas"), ("quincena", "Cuánto gastar al día")]
+
+EYEBROW = "Calculadora gratuita · Ley Federal del Trabajo · 2026"
+FUENTE = 'Herramienta educativa con el mínimo de ley y valores de 2026 (salario mínimo de CONASAMI y UMA de INEGI). No es asesoría legal ni fiscal. Fuente: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFT.pdf" target="_blank" rel="noopener">Ley Federal del Trabajo</a>.'
 
 TEMPLATE = """<!doctype html>
 <html lang="es-MX">
@@ -265,7 +327,7 @@ body{{padding-bottom:0}}
 </header>
 <main class="wrap">
   <section class="calc-hero">
-    <p class="eyebrow">Calculadora gratuita · Ley Federal del Trabajo · 2026</p>
+    <p class="eyebrow">{eyebrow}</p>
     <h1>{h1}</h1>
     <p>{intro}</p>
   </section>
@@ -283,7 +345,7 @@ body{{padding-bottom:0}}
     </div>
     <h2>Otras calculadoras</h2>
     <nav class="related" aria-label="Otras calculadoras">{related}</nav>
-    <p class="small mut" style="margin-top:24px">Herramienta educativa con el mínimo de ley y valores de 2026 (salario mínimo de CONASAMI y UMA de INEGI). No es asesoría legal ni fiscal. Fuente: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFT.pdf" target="_blank" rel="noopener">Ley Federal del Trabajo</a>.</p>
+    <p class="small mut" style="margin-top:24px">{fuente}</p>
   </article>
 </main>
 <footer><div class="wrap"><p><b>Quincy</b> · Lo que te toca, cuándo te toca y cuánto te queda.</p></div></footer>
@@ -319,7 +381,8 @@ def build():
         related = "".join(f'<a class="chip-btn" href="../{s}/">{html.escape(n)}</a>' for s, n in RELATED if s != slug)
         out = TEMPLATE.format(title=html.escape(p["title"]), desc=html.escape(p["desc"]), url=url, site=SITE, ld=json.dumps(ld, ensure_ascii=False),
                               h1=html.escape(p["h1"]), intro=html.escape(p["intro"]), form=p["form"], out=p["out"], body=p["body"], faq_html=faq_html,
-                              related=related, app=p["app"], js=p["js"])
+                              related=related, app=p["app"], js=p["js"],
+                              eyebrow=html.escape(p.get("eyebrow", EYEBROW)), fuente=p.get("fuente", FUENTE))
         d = ROOT / slug
         d.mkdir(exist_ok=True)
         (d / "index.html").write_text(out, encoding="utf-8")
