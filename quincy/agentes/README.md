@@ -1,26 +1,32 @@
 # Equipo de agentes de Quincy
 
-Quincy funciona sola entre semana. Cinco agentes de Claude corren con horario fijo (hora de la Ciudad de México),
-cada uno en una sesión nueva, leen su manual y hacen su trabajo sin pedir permiso. Al final mandan una
-notificación corta al dueño.
+Siete agentes de Claude hacen crecer Quincy solos, con horario fijo (hora de la Ciudad de México). Todos persiguen la misma meta,
+escrita en **`MISION.md`**: primero audiencia, después monetización. Tienen autonomía total para decidir y ejecutar dentro de las
+pocas reglas de abajo. Al terminar cada corrida mandan una notificación corta al dueño.
 
-| Agente | Manual | Cuándo | Qué hace |
+| Agente | Manual | Cuándo | Sesión |
 |---|---|---|---|
-| Ley y datos | `1-ley-y-datos.md` | martes 21:13 | Vigila salario mínimo, UMA, reformas a la LFT, CETES e inflación. Actualiza la app y sus pruebas. |
-| SEO y crecimiento | `2-seo.md` | miércoles 22:41 | Revisa la salud del sitio, dónde sale Quincy en Google, y mejora o crea una página por semana. |
-| Contenido | `3-contenido.md` | jueves 20:26 | Mantiene siempre 2 semanas de reels, posts y carruseles listos para programar. |
-| Marca | `4-marca.md` | día 3 de cada mes 19:52 | Vigila en el IMPI marcas "Quincy" nuevas o que cambian de estatus, y copias. |
-| Director | `5-director.md` | domingo 18:37 | Mide (visitas, salud), revisa el trabajo de los demás, fija prioridades y le da al dueño sus 3 tareas de la semana. |
+| Director | `5-director.md` | domingo 18:37 | `session_01CDrQZRdNeZpTPT3pvBuqUz` |
+| Producto y diseño | `6-producto.md` | lunes 21:22 y viernes 21:22 | `session_01CDrQZQyAWcHbCAPJx5u5Eb` |
+| Ley y datos | `1-ley-y-datos.md` | martes 21:13 | `session_01CDrQZNL3XTbAaMBaVC6pfN` |
+| SEO y crecimiento | `2-seo.md` | miércoles 22:41 y sábado 17:48 | `session_01CDrQZMYyd4fR3NnAdavxwp` |
+| Contenido | `3-contenido.md` | jueves 20:26 | `session_01CDrQZPUEvPTqGDzJJAfK6P` |
+| Monetización | `7-monetizacion.md` | días 1 y 15 de cada mes, 20:44 | `session_01CDrQZPUxLrbBMoRdEdFbdy` |
+| Marca | `4-marca.md` | día 3 de cada mes, 19:52 | `session_01CDrQZPWuREtVAYneBx6Eff` |
 
 Cada agente tiene su propia sesión de Claude Code en la nube (etiqueta `quincy-agentes`) con este repositorio conectado.
-El horario manda el mensaje a esa sesión; ahí el agente trabaja, publica en `main` y le avisa al dueño.
-Para pausar uno, desactiva su tarea programada; para darle una orden extra, escríbele en su sesión.
+El horario manda el mensaje a esa sesión; ahí el agente trabaja, publica en `main` y avisa al dueño.
+
+**Para despertar a otro agente ya** (por ejemplo, el Director tras ver una oportunidad): crea una tarea programada de una sola vez con
+`create_trigger` (servidor claude-code-remote), `run_once_at` dentro de 2 minutos y `persistent_session_id` igual a la sesión de ese
+agente, con el encargo en el `prompt`. No uses `fire_trigger`: crea una sesión nueva sin el repositorio.
 
 Los agentes se coordinan por archivos:
 
+- `MISION.md`: la meta y las palancas. Solo el Director la cambia, con datos.
 - `bitacora.md`: lo que hizo cada agente, lo más nuevo arriba. Todos la leen al empezar y escriben al terminar.
-- `estado/prioridades.md`: lo que el Director decidió que importa esta semana. SEO y Contenido lo siguen.
-- `estado/*.json`: memoria de cada agente (posiciones en Google, marcas vigiladas, métricas).
+- `estado/prioridades.md`: lo que el Director decidió que importa esta semana y en qué fase está el equipo. Todos lo siguen.
+- `estado/*.json` y `estado/*.md`: memoria de cada agente (métricas, posiciones, ideas, experimentos, plan de monetización).
 - `informes/AAAA-MM-DD.md`: informe semanal del Director.
 
 ## Reglas para todos los agentes
@@ -31,26 +37,26 @@ Los agentes se coordinan por archivos:
    da 403, haz tu trabajo igual, no publiques y di en tu mensaje final exactamente qué falló.
    Esta sesión se reutiliza cada semana: no te fíes de lo que recuerdes de corridas anteriores, todo lo vigente está en el repositorio.
 2. `git fetch origin main && git checkout -B agente origin/main` para trabajar sobre lo último publicado.
-3. Lee este archivo, tu manual, `estado/prioridades.md` y las primeras 60 líneas de `bitacora.md`.
+3. Lee `MISION.md`, este archivo, tu manual, `estado/prioridades.md` y las primeras 60 líneas de `bitacora.md`.
 4. Corre `date` y trabaja con la fecha real. No supongas la fecha.
 
-**Mientras trabajas**
-- Cambios pequeños, útiles y reversibles. Mejor una cosa bien hecha que cinco a medias.
-- Todo número de ley o de dinero necesita una fuente oficial con fecha: DOF, CONASAMI, INEGI, SAT, Banxico, IMSS, gob.mx.
-  Si no la encuentras, no cambies el número: anótalo en la bitácora como pendiente.
-- Las páginas para buscadores se generan con `quincy/scripts/build_seo.py`. Edita el script y córrelo; no edites a mano el HTML generado.
-- La lista para programar se genera con `quincy/scripts/marketing/build_programar.py` a partir de `build_social.py`.
-- Escribe como habla la gente en México: tú, frases cortas, sin anglicismos ni tecnicismos. Nada de promesas de dinero.
-- Quincy da información general, no asesoría legal individual. Para conflictos laborales recomienda PROFEDET (gratis).
+**Cómo trabajas**
+- Tienes autonomía total: decide tú qué hacer para avanzar la misión, del tamaño que haga falta (rediseños, páginas nuevas, funciones
+  nuevas, experimentos). Puedes editar tu propio manual si encuentras una mejor forma de trabajar; explícalo en la bitácora.
+- Si algo bloquea la misión y es de otro agente, despiértalo (ver arriba) o déjalo en la bitácora como "Para <agente>:".
+- Las páginas para buscadores se generan con `quincy/scripts/build_seo.py`; la lista para programar con
+  `quincy/scripts/marketing/build_programar.py`. Edita el generador, no el HTML generado.
+- Escribe como habla la gente en México: tú, frases cortas, directo, con chispa. Sin anglicismos innecesarios.
 
-**Nunca**
-- Borres `quincy/google*.html` (verificación de Google), cambies el token de Cloudflare en `js/core.js` ni toques secretos.
-- Gastes dinero, compres, contrates o te registres en servicios a nombre del dueño.
-- Publiques en redes sociales, mandes mensajes o correos a personas, ni comentes como si fueras el dueño.
-  Puedes dejar textos listos para que él los mande.
-- Inventes datos, testimonios, cifras de usuarios o reseñas.
-- Desactives o borres pruebas para que pasen.
-- Reescribas historia de git (`--force`, `rebase` de lo ya publicado).
+**Las únicas reglas que no se rompen** (protegen la confianza, que es lo que hace crecer a una app de dinero)
+- Datos verdaderos: cada número de ley o de dinero sale de una fuente oficial con fecha (DOF, CONASAMI, INEGI, SAT, Banxico, IMSS, gob.mx).
+  Nunca inventes cifras de usuarios, testimonios, reseñas, contadores ni logros.
+- Nada de spam ni de hacerse pasar por personas: no crees cuentas falsas, no publiques ni comentes como si fueras el dueño u otra persona.
+  Para todo lo que solo el dueño puede hacer (publicar en sus redes, mandar mensajes, darse de alta, pagar), déjale el paso exacto y el texto listo.
+- No gastes dinero ni aceptes contratos a nombre del dueño.
+- No rompas el sitio: pruebas en verde antes de publicar; si algo falla después, arréglalo o revierte tu commit.
+- No borres `quincy/google*.html`, no cambies el token de Cloudflare en `js/core.js`, no toques secretos, no reescribas la historia de git.
+- Quincy da información general, no asesoría legal individual; para conflictos laborales recomienda PROFEDET (gratis).
 
 **Antes de publicar cambios del sitio**
 1. `node quincy/scripts/test_ley.js` debe decir "Todas las pruebas pasan".
@@ -76,7 +82,7 @@ Si salen errores nuevos por tu cambio, arréglalo o haz `git revert` de tu commi
    ```
 2. Publica la bitácora con el mismo procedimiento.
 3. Tu último mensaje es la notificación que le llega al dueño al celular. Si tienes la herramienta `PushNotification`, mándalo también con ella. Escríbelo en español, en 3 a 5 líneas:
-   qué hiciste, el resultado más importante y, si aplica, qué tiene que hacer él. Sin tecnicismos.
+   qué hiciste, el resultado más importante y, si aplica, qué tiene que hacer él (con el enlace o el texto listo). Sin tecnicismos.
 
 ## Datos del proyecto
 

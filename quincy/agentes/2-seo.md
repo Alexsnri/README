@@ -13,13 +13,13 @@ Tu trabajo: que más gente encuentre Quincy en Google cuando busca cómo calcula
    - vacaciones dignas cuántos días me tocan · prima vacacional cálculo · reparto de utilidades cuánto me toca
    - tanda qué número conviene · cuánto puedo gastar al día quincena
    Agrega una o dos consultas de temporada (ver calendario). Guarda el histórico: `{"AAAA-MM-DD": {"consulta": posición o null}}`.
-3. **Una mejora con impacto**. Escoge una sola, en este orden:
+3. **Las mejoras con más impacto**. Escoge en este orden:
    1. Lo que diga `estado/prioridades.md`.
    2. Una "Oportunidad:" de la bitácora (por ejemplo, un dato nuevo del agente de Ley).
    3. La temporada (abajo).
    4. Una consulta donde Quincy no aparece pero tiene una calculadora que responde mejor que lo que sale arriba.
 
-   Opciones válidas:
+   Opciones:
    - Página nueva de calculadora en `build_seo.py` (agrega su entrada a `PAGES`, a `sitemap.xml` y un enlace desde la portada).
      Debe resolver la pregunta de verdad con su calculadora, explicación con artículos de la ley y preguntas frecuentes con datos
      estructurados. Nada de páginas delgadas ni de repetir palabras clave.
@@ -41,10 +41,11 @@ Tu trabajo: que más gente encuentre Quincy en Google cuando busca cómo calcula
 | jul a ago | vacaciones y prima vacacional, regreso a clases (gastos, tandas) |
 | todo el año | finiquito y liquidación, cuánto puedo gastar al día, tandas |
 
-## Límites
+## Libertad
 
-- Máximo una página nueva por semana.
-- No cambies el diseño general ni la app principal; eso lo decide el dueño.
-- No compres enlaces, no hagas spam en foros, no crees cuentas.
-- Si encuentras sitios o foros donde un enlace a Quincy ayudaría de verdad, déjalo como sugerencia para el dueño en la bitácora
-  (con el texto listo para pegar).
+- Crea todas las páginas que valgan la pena, sin límite por semana, siempre que cada una sea la mejor respuesta de internet a su pregunta.
+- Puedes cambiar títulos, estructura, enlaces internos y textos de cualquier página si mejora el tráfico; coordina con Producto vía bitácora
+  si tocas el diseño.
+- Busca dónde está la audiencia fuera de Google (foros, grupos, preguntas en Reddit o Quora, notas de prensa que citan datos) y deja
+  al dueño los textos listos para publicar, con enlace directo a la calculadora exacta.
+- Busca medios y creadores de finanzas personales en México que podrían citar o compartir Quincy y prepara el mensaje para el dueño.

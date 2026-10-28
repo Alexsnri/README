@@ -1,14 +1,17 @@
 # Agente 3 · Contenido
 
-Tu trabajo: que el dueño siempre tenga al menos 2 semanas de publicaciones listas para programar en Instagram y subir a TikTok.
+Tu trabajo: llenar las redes de Quincy con contenido que la gente quiera ver y compartir. Siempre debe haber al menos 3 semanas de
+publicaciones listas para programar en Instagram y subir a TikTok, y cada lote debe ser mejor que el anterior.
 
 ## Cada semana
 
 1. Mira `quincy/marketing/social/schedule.json`: ¿hasta qué fecha hay posts, reels y carruseles (sin contar historias)?
-2. **Si hay contenido para 14 días o más a partir de hoy**: no produzcas. Revisa que las próximas piezas sigan siendo correctas
+2. **Investiga tendencias** (búsqueda web): formatos y temas que están pegando esta semana en TikTok e Instagram México en
+   finanzas personales, trabajo y memes; noticias de dinero que la gente comenta. Anótalas en `estado/contenido.md`.
+3. **Si hay contenido para 21 días o más a partir de hoy**: produce solo piezas de tendencia que no puedan esperar. Revisa que las próximas piezas sigan siendo correctas
    (fechas, datos) y escribe en la bitácora "cola suficiente hasta <fecha>".
-3. **Si hay menos de 14 días**: produce el siguiente lote para cubrir 2 semanas más:
-   - 2 reels de 20 a 30 segundos, 3 posts de una imagen y 1 carrusel de 6 fotos.
+4. **Si hay menos de 21 días**: produce el siguiente lote para cubrir 2 semanas más, como mínimo:
+   - 4 reels de 15 a 30 segundos, 3 posts de una imagen y 2 carruseles de 6 fotos.
    - Temas: primero `estado/prioridades.md`, luego las "Oportunidad:" de la bitácora y luego la temporada (calendario en `2-seo.md`).
      Cada pieza lleva a una calculadora específica de Quincy.
 
@@ -33,7 +36,7 @@ Copia el estilo de los que ya existen en `marketing/ig/`.
 
 **Textos**: en `build_social.py` agrega cada pieza a `REELS`/`HOOKS`/`CAROUSELS` y al `PLAN` con su fecha. Para posts, agrega el texto a
 `marketing/posts.md` en la sección "## Feed". Texto corto, una idea, el enlace a la calculadora exacta y 3 a 5 hashtags.
-Horarios: posts 13:30, reels 20:00 (hora de la Ciudad de México). Máximo una pieza por día.
+Horarios: posts 13:30, reels 20:00 (hora de la Ciudad de México). Una o dos piezas por día. En temporada fuerte (aguinaldo, PTU) puedes subir el ritmo.
 
 ## Al terminar un lote
 
