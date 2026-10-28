@@ -22,10 +22,10 @@ Los agentes se coordinan por archivos:
 ## Reglas para todos los agentes
 
 **Al empezar**
-1. Conecta el repositorio con permiso de escritura: llama a la herramienta `add_repo` (servidor claude-code-remote; si no la ves,
-   búscala con ToolSearch) con `owner: "Alexsnri"`, `repo: "README"`, `access: "push"`, y clona con el comando que te devuelva.
-   Si ya hay una carpeta con `quincy/`, úsala. Sin esto, GitHub rechaza el push con un 403.
-   Si `add_repo` falla, haz tu trabajo igual, no publiques, y en tu mensaje final di exactamente qué falló.
+1. Tu sesión ya trae el repositorio conectado con permiso de escritura (busca la carpeta que contiene `quincy/`,
+   normalmente `/home/user/README`). Si no está, clónalo con `git clone https://github.com/Alexsnri/README`; si después el push
+   da 403, haz tu trabajo igual, no publiques y di en tu mensaje final exactamente qué falló.
+   Esta sesión se reutiliza cada semana: no te fíes de lo que recuerdes de corridas anteriores, todo lo vigente está en el repositorio.
 2. `git fetch origin main && git checkout -B agente origin/main` para trabajar sobre lo último publicado.
 3. Lee este archivo, tu manual, `estado/prioridades.md` y las primeras 60 líneas de `bitacora.md`.
 4. Corre `date` y trabaja con la fecha real. No supongas la fecha.
@@ -71,7 +71,7 @@ Si salen errores nuevos por tu cambio, arréglalo o haz `git revert` de tu commi
    - Para el dueño: … (o "nada")
    ```
 2. Publica la bitácora con el mismo procedimiento.
-3. Tu último mensaje es la notificación que le llega al dueño al celular. Escríbelo en español, en 3 a 5 líneas:
+3. Tu último mensaje es la notificación que le llega al dueño al celular. Si tienes la herramienta `PushNotification`, mándalo también con ella. Escríbelo en español, en 3 a 5 líneas:
    qué hiciste, el resultado más importante y, si aplica, qué tiene que hacer él. Sin tecnicismos.
 
 ## Datos del proyecto
