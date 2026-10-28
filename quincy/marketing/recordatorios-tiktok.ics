@@ -1,0 +1,149 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Quincy//Recordatorios TikTok//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Quincy · TikTok
+BEGIN:VEVENT
+UID:quincy-tiktok-01-aguinaldo-ley@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261103T020000Z
+DTEND:20261103T021500Z
+SUMMARY:Subir a TikTok: Tu aguinaldo no es un regalo
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "Tu aguinaldo no e
+ s un regalo".\n2) TikTok: + → sube el video → pega el texto (botón 
+ Copiar texto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-02-renuncias@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261107T020000Z
+DTEND:20261107T021500Z
+SUMMARY:Subir a TikTok: ¿Renuncias? No pierdes tu aguinaldo
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "¿Renuncias? No p
+ ierdes tu aguinaldo".\n2) TikTok: + → sube el video → pega el texto 
+ (botón Copiar texto) → Publicar.\nTambién puedes subirlo a YouTube Sh
+ orts.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-03-aguinaldo-isr@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261112T020000Z
+DTEND:20261112T021500Z
+SUMMARY:Subir a TikTok: ¿Por qué tu aguinaldo llega incompleto?
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "¿Por qué tu agu
+ inaldo llega incompleto?".\n2) TikTok: + → sube el video → pega el t
+ exto (botón Copiar texto) → Publicar.\nTambién puedes subirlo a YouTu
+ be Shorts.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-04-tanda-numero@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261114T020000Z
+DTEND:20261114T021500Z
+SUMMARY:Subir a TikTok: ¿Pides el número 1 o el 10?
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "¿Pides el númer
+ o 1 o el 10?".\n2) TikTok: + → sube el video → pega el texto (botón
+  Copiar texto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-05-te-despiden@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261120T020000Z
+DTEND:20261120T021500Z
+SUMMARY:Subir a TikTok: ¿Te despidieron? No firmes nada todavía
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "¿Te despidieron?
+  No firmes nada todavía".\n2) TikTok: + → sube el video → pega el t
+ exto (botón Copiar texto) → Publicar.\nTambién puedes subirlo a YouTu
+ be Shorts.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-06-ruleta-tanda@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261122T020000Z
+DTEND:20261122T021500Z
+SUMMARY:Subir a TikTok: Se acabaron los pleitos por el número
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "Se acabaron los p
+ leitos por el número".\n2) TikTok: + → sube el video → pega el text
+ o (botón Copiar texto) → Publicar.\nTambién puedes subirlo a YouTube 
+ Shorts.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-07-hoy-puedes-gastar@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261126T020000Z
+DTEND:20261126T021500Z
+SUMMARY:Subir a TikTok: La regla que me salvó la quincena
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "La regla que me s
+ alvó la quincena".\n2) TikTok: + → sube el video → pega el texto (b
+ otón Copiar texto) → Publicar.\nTambién puedes subirlo a YouTube Shor
+ ts.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-08-faltan-18-dias@alexsnri.github.io
+DTSTAMP:20261028T042056Z
+DTSTART:20261202T020000Z
+DTEND:20261202T021500Z
+SUMMARY:Subir a TikTok: Faltan 18 días para tu aguinaldo
+DESCRIPTION:1) Abre https://alexsnri.github.io/README/quincy/marketing/pro
+ gramar.html en Safari y toca Guardar video en el reel "Faltan 18 días p
+ ara tu aguinaldo".\n2) TikTok: + → sube el video → pega el texto (bo
+ tón Copiar texto) → Publicar.\nTambién puedes subirlo a YouTube Short
+ s.
+URL:https://alexsnri.github.io/README/quincy/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
