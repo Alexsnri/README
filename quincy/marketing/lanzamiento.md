@@ -11,12 +11,12 @@
 - Enlaces de tanda: cuando alguien manda su tanda al grupo de WhatsApp, cada miembro abre Quincy.
 - Tasas de CETES actualizadas cada semana con GitHub Actions (necesita el secreto `BANXICO_TOKEN`).
 
-- Robot de Instagram (GitHub Actions): publica 15 posts, 22 historias y 8 reels del 2 de noviembre al 18 de diciembre, a la 1:30 p. m. y a las 8 p. m. (`.github/workflows/quincy-social.yml`, calendario en `marketing/social/schedule.json`).
+- Robot de Instagram (GitHub Actions), listo pero apagado: necesita un token de una cuenta de desarrollador de Meta, que pide verificar un teléfono por SMS.
 
-**Lo que necesita a una persona** (unos 45 minutos, una vez; detalle en `marketing/guia.html`):
+**Lo que necesita a una persona** (una hora, una vez; detalle en `marketing/guia.html`):
 
-1. Crear la cuenta de Instagram, hacerla profesional y conectar el robot con un token (secreto `INSTAGRAM_TOKEN`).
-2. Crear la cuenta de TikTok y programar los 8 reels en 3 ratos desde TikTok Studio. TikTok no deja publicar en público con apps sin auditar.
+1. Instagram: cuenta profesional y las 23 publicaciones programadas desde la app con `marketing/programar.html` (sin Facebook).
+2. TikTok: los 8 reels programados con Metricool (gratis) o en 3 ratos desde TikTok Studio.
 3. Dar de alta el sitio en Google Search Console y enviar `sitemap.xml`.
 4. Mandar los mensajes de WhatsApp el día 1 y publicar en Reddit el día 2.
 
@@ -25,7 +25,7 @@
 | Orden | Canal | Acción | Costo |
 |---|---|---|---|
 | 1 | WhatsApp | Mandar la calculadora de aguinaldo a 10 contactos y 3 grupos de trabajo (mensaje abajo). | $0 |
-| 2 | Instagram (robot), TikTok y Shorts | 8 reels con gancho escrito; Instagram se publica solo, TikTok y YouTube se programan. | $0 |
+| 2 | Instagram, TikTok y Shorts | 8 reels con gancho escrito, programados una vez en cada red. | $0 |
 | 3 | Instagram y Facebook | 12 posts y 5 historias (`posts/`, `stories/`). | $0 |
 | 4 | Reddit | r/MexicoFinanciero y r/mexico (texto abajo). | $0 |
 | 5 | Grupos de Facebook de tandas y ahorro | La página /tanda/ y la ruleta. | $0 |

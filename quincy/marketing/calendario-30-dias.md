@@ -2,7 +2,7 @@
 
 El momento es ahora: el aguinaldo se paga a más tardar el 19 de diciembre, y noviembre es cuando más gente lo busca. Hay 2 quincenas en el periodo (15 y 30 de noviembre).
 
-**El robot de Instagram publica solo los posts, historias y reels de esta tabla** (ver `guia.html`). Lo que queda para ti es TikTok, WhatsApp, Reddit, creadores, prensa y responder comentarios. Los textos están en `posts.md`. Un "post" va al feed de Instagram, Facebook, LinkedIn y Threads. Una "historia" va a Instagram, Facebook y WhatsApp Estados. El "video" va a TikTok, Reels y Shorts.
+**Los posts y reels de Instagram se dejan programados desde la app** (`programar.html`); las historias son opcionales. Lo que queda para ti es WhatsApp, Reddit, creadores, prensa y responder comentarios. Los textos están en `posts.md`. Un "post" va al feed de Instagram, Facebook, LinkedIn y Threads. Una "historia" va a Instagram, Facebook y WhatsApp Estados. El "video" va a TikTok, Reels y Shorts.
 
 | Día | Fecha | Feed | Historia | Video / otra acción |
 |---|---|---|---|---|

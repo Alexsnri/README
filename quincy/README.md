@@ -13,7 +13,7 @@ Lo que te toca, cuándo te toca y cuánto te queda. Una app web gratis para trab
 | `aguinaldo/`, `finiquito/`, `vacaciones/`, `ptu/`, `tanda/`, `quincena/` | Páginas de búsqueda con calculadora, artículo y preguntas frecuentes. Se generan con `scripts/build_seo.py`. |
 | `empresas.html` | Página de ventas para empresas e instituciones. |
 | `plan.html` | Plan de negocio (no se indexa). |
-| `marketing/` | Kit de lanzamiento (`marketing/kit.html`), guía paso a paso (`marketing/guia.html`), marca y logos (`marketing/marca/`, con SVG, PNG, portadas y ZIP), 8 reels, imágenes para Instagram (`ig/`), 12 posts, 5 historias, video vertical, textos (`posts.md`), calendario de 30 días y plan de lanzamiento. |
+| `marketing/` | Kit de lanzamiento (`marketing/kit.html`), guía paso a paso (`marketing/guia.html`), página para programar Instagram desde el celular (`marketing/programar.html`, con ZIP), marca y logos (`marketing/marca/`, con SVG, PNG, portadas y ZIP), 8 reels, imágenes para Instagram (`ig/`), 12 posts, 5 historias, video vertical, textos (`posts.md`), calendario de 30 días y plan de lanzamiento. |
 
 ## Código
 

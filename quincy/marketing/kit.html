@@ -100,8 +100,8 @@ p{margin:0}
 <main class="wrap">
   <header class="head">
     <p class="eyebrow">Quincy · Kit de lanzamiento</p>
-    <h1>Instagram se publica solo. <b>TikTok, en 3 ratos.</b></h1>
-    <p class="lede">12 posts, 5 historias y 8 reels, con su texto y su fecha. El robot publica todo en Instagram; TikTok y YouTube se programan con la guía. Empieza el lunes 2 de noviembre, en plena temporada de aguinaldo.</p>
+    <h1>Programa una vez. <b>Se publica solo.</b></h1>
+    <p class="lede">12 posts, 5 historias y 8 reels, con su texto y su fecha. Instagram se programa desde la app (página "Programar Instagram") y TikTok con Metricool o TikTok Studio. Empieza el lunes 2 de noviembre, en plena temporada de aguinaldo.</p>
     <div class="stats" id="stats"></div>
     <div class="links" id="links"></div>
   </header>
@@ -122,7 +122,7 @@ p{margin:0}
   </section>
 
   <section class="sec" aria-labelledby="h-video">
-    <div class="sec-head"><h2 id="h-video">Reels · 1080×1920</h2><span class="small mut">El robot los sube a Instagram a las 8 p. m. Para TikTok y YouTube, descárgalos y prográmalos (guía).</span></div>
+    <div class="sec-head"><h2 id="h-video">Reels · 1080×1920</h2><span class="small mut">Se programan a las 8 p. m. en Instagram, TikTok y YouTube (ver la guía).</span></div>
     <div class="reels" id="reels"></div>
   </section>
 
@@ -167,7 +167,7 @@ p{margin:0}
     toAg >= 0 ? [toAg, "días para el límite del aguinaldo (19 dic)"] : ["✓", "ya pasó el aguinaldo"],
     [D.feed.length + D.stories.length + D.reels.length, "piezas listas"],
   ].map(([b, s]) => `<div class="stat"><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("");
-  $("links").innerHTML = [["Sitio", ""], ["App", "app.html"], ["Aguinaldo", "aguinaldo/"], ["Finiquito", "finiquito/"], ["Tandas", "tanda/"], ["Quincena", "quincena/"], ["Empresas", "empresas.html"], ["Marca y logos", "marketing/marca/"], ["Guía", "marketing/guia.html"]]
+  $("links").innerHTML = [["Sitio", ""], ["App", "app.html"], ["Aguinaldo", "aguinaldo/"], ["Finiquito", "finiquito/"], ["Tandas", "tanda/"], ["Quincena", "quincena/"], ["Empresas", "empresas.html"], ["Marca y logos", "marketing/marca/"], ["Guía", "marketing/guia.html"], ["Programar Instagram", "marketing/programar.html"]]
     .map(([t, p]) => `<a class="chip" href="${D.site + p}" target="_blank" rel="noopener">${t} ↗</a>`).join("");
 
   // Next post
