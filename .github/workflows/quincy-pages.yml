@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -r quincy _site/quincy
-          rm -rf _site/quincy/scripts
+          rm -rf _site/quincy/scripts _site/quincy/agentes
           printf '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=quincy/"><link rel="canonical" href="quincy/"><title>Quincy</title><a href="quincy/">Quincy</a>\n' > _site/index.html
           touch _site/.nojekyll
           cp quincy/google*.html _site/ 2>/dev/null || true

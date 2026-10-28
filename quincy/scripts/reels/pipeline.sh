@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
-D=/tmp/claude-0/-home-user-README/4be6a5f7-ac07-5cd5-8b8b-7a17b68ea14a/scratchpad/anim
-OUT=/home/user/README/quincy/marketing/video/animados
+# Uso: scripts/reels/pipeline.sh <id>…  (deja reel-<id>.mp4 en marketing/video/animados)
+D="$(cd "$(dirname "$0")" && pwd)"
+OUT="${OUT:-$D/../../marketing/video/animados}"
+mkdir -p "$D/build" "$OUT"
 cd $D
 python3 reels_def.py "$@" > /dev/null
 for id in "$@"; do

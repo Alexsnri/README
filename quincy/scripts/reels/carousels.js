@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
-const OUT = '/home/user/README/quincy/marketing/carruseles';
+const OUT = process.env.OUT || require('path').join(__dirname, '..', '..', 'marketing', 'carruseles');
 const CSS = `
 :root{--night:#07121a;--deep:#0c1d28;--line:#2c5468;--fg:#eaf3f4;--mut:#a9c0c8;--sun:#ffb547;--tide:#5ad6c8;--ok:#86e3a8;--bad:#ff8574}
 html,body{margin:0;width:1080px;height:1350px;overflow:hidden}
