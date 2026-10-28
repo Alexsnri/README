@@ -1,0 +1,40 @@
+name: Quincy · Jarvis
+
+# Cada 2 horas, de 7:00 a 23:00 de la Ciudad de México (UTC-6), arma el resumen hablado del negocio
+# en .github/jarvis/resumen.txt. El iPhone lo lee en voz alta con un Atajo al conectarse a la camioneta.
+# Para que diga visitas, guarda el secreto CF_API_TOKEN (Cloudflare → API Tokens → Account Analytics: Read).
+
+on:
+  schedule:
+    - cron: "7 13,15,17,19,21,23 * * *"
+    - cron: "7 1,3,5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: quincy-jarvis
+  cancel-in-progress: true
+
+jobs:
+  resumen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Armar el resumen
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: python3 quincy/scripts/agentes/jarvis.py
+
+      - name: Guardarlo
+        run: |
+          git add .github/jarvis/resumen.txt
+          git diff --cached --quiet && exit 0
+          git config user.name "quincy-bot"
+          git config user.email "quincy-bot@users.noreply.github.com"
+          git commit -q -m "Jarvis: resumen"
+          for i in 1 2 3 4; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep $((i * 5)); done
+          exit 1
