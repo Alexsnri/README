@@ -1,7 +1,7 @@
 /* Layout: an app with five views. "Hoy" leads with one number (what you can spend today) inside a ring;
    "Me toca" pairs your work data with what the law owes you; "Futuro" pairs the avatar with the time machine;
    "Reto" is the daily game; "Más" holds the why, FAQ and sources. One dark night-sky look; amber is money, teal is time. */
-@font-face{font-family:"Unbounded";src:url(../fonts/unbounded.woff2) format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Unbounded";src:url(../fonts/unbounded.woff2) format("woff2");font-weight:600 800;font-display:swap}
 @font-face{font-family:"Figtree";src:url(../fonts/figtree.woff2) format("woff2");font-weight:300 900;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(../fonts/jetbrains-mono.woff2) format("woff2");font-weight:100 800;font-display:swap}
 @view-transition{navigation:auto}

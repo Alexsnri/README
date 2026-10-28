@@ -1,7 +1,7 @@
 /* Layout: the home page. A seasonal calculator with a live countdown fills the first screen (copy on the left,
    calculator on the right; stacked on phones). Below it, a bento grid of tiles of different sizes shows the rest of Quincy.
    Self-contained: it does not load app.css. Background is pure CSS (three soft drifting glows), no WebGL. */
-@font-face{font-family:"Unbounded";src:url(../fonts/unbounded.woff2) format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Unbounded";src:url(../fonts/unbounded.woff2) format("woff2");font-weight:600 800;font-display:swap}
 @font-face{font-family:"Figtree";src:url(../fonts/figtree.woff2) format("woff2");font-weight:300 900;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(../fonts/jetbrains-mono.woff2) format("woff2");font-weight:100 800;font-display:swap}
 @view-transition{navigation:auto}
