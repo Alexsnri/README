@@ -77,6 +77,12 @@ def frase(t, n=170):
             if i > n * 0.5:
                 corte = corte[:i]
                 break
+    if len(corte) < len(t):
+        sueltas = {"de", "del", "la", "el", "los", "las", "en", "y", "a", "al", "que", "con", "para", "por", "o", "un", "una", "se", "ya", "dice", "su", "sus", "desde", "hasta", "sobre"}
+        pal = corte.rstrip(".;:, ").split()
+        while len(pal) > 3 and pal[-1].lower() in sueltas:
+            pal.pop()
+        corte = " ".join(pal)
     return corte.rstrip(".;:, ") + "."
 
 
@@ -205,24 +211,17 @@ def en_que_anda():
 
 
 def pase_de_lista(ents):
-    anda = en_que_anda()
-    lineas = ["Ya los puse a chambear. Va el pase de lista."]
-    for nombre, alias, apodo in EQUIPO:
-        mias = [e for e in ents if e["agente"].startswith(nombre) and "Hice" in e]
-        partes = [f"{alias[0].upper() + alias[1:]}, {apodo}."]
-        if mias:
-            ult = mias[0]
-            cuando = "hoy" if ult["fecha"] == NOW.date().isoformat() else ("ayer" if ult["fecha"] == (NOW.date() - dt.timedelta(days=1)).isoformat() else "la última vez")
-            partes.append(f"{cuando.capitalize()}: {frase(ult['Hice'], 75)}")
-        else:
-            partes.append("No ha reportado nada. Seguro anda en junta.")
-        if anda.get(nombre):
-            partes.append(f"Ahorita: {frase(anda[nombre], 65)}")
-        prox = cuando_toca(alias if alias != "el de la lana" else "el de la lana")
-        if prox:
-            partes.append(f"Vuelve {prox}.")
-        lineas.append(" ".join(partes))
-    return lineas
+    corto = {"Director": "El Director", "Producto y diseño": "Producto", "SEO": "SEO", "Contenido": "Contenido",
+             "Ley y datos": "El licenciado", "Monetización": "El de la lana", "Marca": "Marca"}
+    hoy, ayer = NOW.date().isoformat(), (NOW.date() - dt.timedelta(days=1)).isoformat()
+    items = []
+    for nombre, alias, _ in EQUIPO:
+        e = next((x for x in ents if x["agente"].startswith(nombre) and "Hice" in x and x["fecha"] in (hoy, ayer)), None)
+        if e:
+            items.append(f"{corto[nombre]}: {frase(e['Hice'], 55)}")
+    if not items:
+        return ["Los huevones no han reportado nada desde ayer. Andan en horario, según ellos."]
+    return [f"Ya los puse a chambear. Jalaron {len(items)}."] + items[:5]
 
 
 def proximo():
@@ -234,7 +233,7 @@ def proximo():
                 dia = "hoy" if t.date() == NOW.date() else ("mañana" if t.date() == NOW.date() + dt.timedelta(days=1) else f"el {DIAS[t.weekday()]}")
                 h12 = (hh - 1) % 12 + 1
                 parte = "de la noche" if hh >= 19 else ("de la tarde" if hh >= 12 else "de la mañana")
-                return f"Al rato le toca {nombre.replace('el ', 'al ', 1)}, {dia} a las {h12}:{mm:02d}. Andan jalando, jefe."
+                return f"Sigue {nombre.replace('el de ', '', 1)}, {dia} a las {h12}:{mm:02d}."
     return ""
 
 
@@ -248,9 +247,13 @@ def resumen():
 
     dueño = next((e["Para el dueño"] for e in ents if e.get("Para el dueño") and e["agente"].startswith("Director")), "")
     if dueño:
-        partes.append("A ti te toca: " + frase(dueño, 110))
+        partes.append("A ti te toca: " + frase(dueño, 95))
+    partes.append(proximo())
     partes.append(CHISTES[(NOW.timetuple().tm_yday * 12 + NOW.hour // 2) % len(CHISTES)])
-    return "\n".join(p for p in partes if p)
+    partes = [p for p in partes if p]
+    while len(" ".join(partes).split()) > 115 and len(partes) > 4:  # ~45 segundos en voz alta
+        partes.pop(-2 if partes[-1] in CHISTES else -1)
+    return "\n".join(partes)
 
 
 def main():

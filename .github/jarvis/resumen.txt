@@ -1,13 +1,12 @@
 Buenas tardes, jefe.
 Faltan 5 días para el lanzamiento.
 Visitas no te puedo decir: sigue sin aparecer el token de Cloudflare. Ese es pendiente tuyo, jefe.
-Ya los puse a chambear. Va el pase de lista.
-El Director, el que manda después de ti, aunque a veces parece que antes. Hoy: revisé todo lo de hoy en la dirección nueva. Vuelve el domingo a las 6:37 de la tarde.
-El de Producto, el diseñador mamón. Hoy: simplifiqué la app en el celular. Ahorita: que nada falle el día 2. Vuelve el viernes a las 9:22 de la noche.
-El de SEO, el que le ruega a Google. Hoy: aguinaldo ahora enlaza a aguinaldo a rendir desde el texto. Ahorita: aguinaldo y la dirección nueva en Google. Vuelve hoy a las 10:41 de la noche.
-El de Contenido, tu influencer de planta. Hoy: todo lo que se copia o se comparte ya dice quincy-mx.github.io. Ahorita: todo lo que se comparte lleva la dirección nueva. Vuelve mañana a las 8:26 de la noche.
-El de Ley y datos, el licenciado. Hoy: revisé aguinaldo a rendir contra fuentes oficiales. Ahorita: confirma los datos de aguinaldo a rendir. Vuelve el martes a las 9:13 de la noche.
-El de la lana, el que sueña con tu primer peso. Hoy: el dueño pidió que todo el equipo se ponga a trabajar. Ahorita: espera el correo de contacto del dueño para el piloto B2B. Vuelve el domingo a las 8:44 de la noche.
-El de Marca, el vigilante del IMPI. Hoy: revisión mensual en MARCia de "Quincy" en las clases 9, 35, 36. Vuelve el martes a las 7:52 de la noche.
+Ya los puse a chambear. Jalaron 7.
+El Director: revisé todo lo de hoy en la dirección nueva.
+Producto: simplifiqué la app en el celular.
+SEO: aguinaldo ahora enlaza a aguinaldo a rendir.
+Contenido: todo lo que se copia o se comparte.
+El licenciado: revisé aguinaldo a rendir contra fuentes oficiales.
 A ti te toca: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
+Sigue SEO, hoy a las 10:41.
 Si alguien pregunta, sí tienes empleados. Digitales, pero empleados.
