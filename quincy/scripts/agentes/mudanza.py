@@ -1,12 +1,14 @@
 """Muda el sitio publicado de Quincy a una dirección nueva sin perder visitas ni Google.
 
 Lo usa el robot de publicación (.github/workflows/quincy-pages.yml) cuando existe la variable QUINCY_SITIO_NUEVO.
-1. Copia el sitio armado (<sitio>/quincy) a <salida>, cambiando la dirección vieja por la nueva en todos los archivos de texto.
-   Si la dirección nueva es un dominio propio (no termina en github.io), escribe el archivo CNAME.
-2. En el sitio viejo cambia cada página por una redirección a la misma página en la dirección nueva
+1. armar: copia el sitio armado (<sitio>/quincy) a <salida>, cambiando la dirección vieja por la nueva en todos los archivos
+   de texto. Si la dirección nueva es un dominio propio (no termina en github.io), escribe el archivo CNAME.
+2. redirigir: en el sitio viejo cambia cada página por una redirección a la misma página en la dirección nueva
    (con canonical, y conservando ?ref= y #). Los archivos de verificación de Google se quedan igual.
+   El robot solo lo hace cuando ya comprobó que el sitio nuevo está en línea.
 
-Uso:  python3 quincy/scripts/agentes/mudanza.py _site https://quincy-mx.github.io/ _nuevo
+Uso:  python3 quincy/scripts/agentes/mudanza.py armar _site https://quincy-mx.github.io/ _nuevo
+      python3 quincy/scripts/agentes/mudanza.py redirigir _site https://quincy-mx.github.io/
 """
 import html
 import shutil
@@ -38,11 +40,14 @@ def stub(url):
     return STUB.format(url=html.escape(url), js='"' + url.replace("\\", "").replace('"', "") + '"')
 
 
-def main(sitio, nuevo, salida):
+def revisar(nuevo):
     if not nuevo.startswith("https://") or not nuevo.endswith("/"):
         sys.exit("La dirección nueva debe empezar con https:// y terminar en /")
-    sitio, salida = Path(sitio), Path(salida)
-    viejo_dir = sitio / "quincy"
+
+
+def armar(sitio, nuevo, salida):
+    revisar(nuevo)
+    viejo_dir, salida = Path(sitio) / "quincy", Path(salida)
     if salida.exists():
         shutil.rmtree(salida)
     shutil.copytree(viejo_dir, salida)
@@ -56,7 +61,13 @@ def main(sitio, nuevo, salida):
     if not host.endswith(".github.io"):
         (salida / "CNAME").write_text(host + "\n", encoding="utf-8")
     (salida / ".nojekyll").touch()
+    print(f"Sitio nuevo armado en {salida} para {nuevo}.")
 
+
+def redirigir(sitio, nuevo):
+    revisar(nuevo)
+    sitio = Path(sitio)
+    viejo_dir = sitio / "quincy"
     n = 0
     for f in viejo_dir.rglob("*.html"):
         if f.name.startswith("google"):
@@ -69,10 +80,13 @@ def main(sitio, nuevo, salida):
     sm = viejo_dir / "sitemap.xml"
     if sm.exists():
         sm.unlink()
-    print(f"Sitio nuevo en {salida} para {nuevo}; {n} páginas viejas ahora redirigen.")
+    print(f"{n} páginas viejas ahora redirigen a {nuevo}.")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) == 5 and sys.argv[1] == "armar":
+        armar(*sys.argv[2:])
+    elif len(sys.argv) == 4 and sys.argv[1] == "redirigir":
+        redirigir(*sys.argv[2:])
+    else:
         sys.exit(__doc__)
-    main(*sys.argv[1:])

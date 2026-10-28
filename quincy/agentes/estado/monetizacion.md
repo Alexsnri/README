@@ -153,13 +153,19 @@ Todo es gratis. Solo lo que GitHub no deja hacer a nadie más que a ti (unos 10 
 4. **Guardarlo en este repositorio:** https://github.com/Alexsnri/README/settings/secrets/actions/new → Name `QUINCY_PUBLICAR_TOKEN` → pega el token.
 5. **Dos variables:** https://github.com/Alexsnri/README/settings/variables/actions/new
    → `QUINCY_SITIO_NUEVO` = `https://quincy-mx.github.io/` y luego `QUINCY_REPO_NUEVO` = `quincy-mx/quincy-mx.github.io`.
-6. Listo: en la siguiente publicación (o en Actions → "Quincy · publicar" → Run workflow) el sitio se muda solo.
-   Después agrega `https://quincy-mx.github.io/` en Google Search Console (verificación por archivo HTML, ya está subido).
+6. **Primera publicación:** https://github.com/Alexsnri/README/actions/workflows/quincy-pages.yml → Run workflow.
+7. **Encender Pages en el repositorio nuevo:** https://github.com/quincy-mx/quincy-mx.github.io/settings/pages → Source: Deploy from a branch
+   → Branch `main`, carpeta `/ (root)` → Save. Espera 2 minutos y abre https://quincy-mx.github.io/
+8. **Segunda publicación** (Run workflow otra vez): ahora el robot ve que el sitio nuevo ya abre y pone las redirecciones en el viejo.
+   Mientras el nuevo no responda, el viejo se queda igual: no hay riesgo de dejar a nadie en una página rota.
+9. **Google:** https://search.google.com/search-console → Agregar propiedad → Prefijo de URL `https://quincy-mx.github.io/`
+   → Verificar con "Archivo HTML" (ya está subido) → Sitemaps → `sitemap.xml`.
 
 Para cobrar más adelante (fase 2, no urge): cuenta bancaria y RFC con actividad empresarial o RESICO, porque los programas y las empresas piden factura.
 El registro de la marca en el IMPI lo sigue el agente de Marca.
 
 ## Registro de corridas
 
+- 2026-10-28 (3): el robot ya no redirige el sitio viejo hasta comprobar que el nuevo responde; pasos del dueño detallados.
 - 2026-10-28 (2): el dueño pidió dominio gratis. Búsqueda a fondo; elegida la organización de GitHub `quincy-mx`. Mudanza automática programada (`mudanza.py` + robot de publicación).
 - 2026-10-28: plan inicial; página `aguinaldo-a-rendir/` publicada sin referidos; `CONFIG.REFERIDOS` y `FY.referidos()` en `js/core.js`.

@@ -3,7 +3,7 @@
 # Mudanza a un sitio propio (por ejemplo https://quincy-mx.github.io/ o un dominio): se activa sola cuando existen
 # la variable QUINCY_SITIO_NUEVO (URL con / final), la variable QUINCY_REPO_NUEVO (dueño/repositorio) y el secreto
 # QUINCY_PUBLICAR_TOKEN (token con permiso de escritura en ese repositorio). Entonces el sitio completo se publica allá
-# con sus URLs cambiadas y aquí quedan redirecciones página por página (conservan ?ref= y #).
+# con sus URLs cambiadas y, solo cuando ya responde en línea, aquí quedan redirecciones página por página (conservan ?ref= y #).
 name: Quincy · publicar
 
 on:
@@ -40,7 +40,7 @@ jobs:
           touch _site/.nojekyll
           cp quincy/google*.html _site/ 2>/dev/null || true
 
-      - name: Armar el sitio nuevo y dejar redirecciones aquí
+      - name: Armar el sitio nuevo
         id: nuevo
         if: ${{ vars.QUINCY_SITIO_NUEVO != '' && vars.QUINCY_REPO_NUEVO != '' }}
         env:
@@ -48,7 +48,7 @@ jobs:
           HAS_TOKEN: ${{ secrets.QUINCY_PUBLICAR_TOKEN != '' }}
         run: |
           [ "$HAS_TOKEN" = "true" ] || { echo "Falta el secreto QUINCY_PUBLICAR_TOKEN: sigo solo con el sitio actual."; exit 0; }
-          python3 quincy/scripts/agentes/mudanza.py _site "$NUEVO" _nuevo
+          python3 quincy/scripts/agentes/mudanza.py armar _site "$NUEVO" _nuevo
           echo "listo=1" >> "$GITHUB_OUTPUT"
 
       - name: Publicar el sitio nuevo
@@ -64,6 +64,21 @@ jobs:
           git add -A
           git commit -q -m "Publicar Quincy (${GITHUB_SHA::7})"
           git push -f "https://x-access-token:${TOKEN}@github.com/${REPO}.git" main
+
+      - name: Redirigir el sitio viejo (solo si el nuevo ya está en línea)
+        if: ${{ steps.nuevo.outputs.listo == '1' }}
+        env:
+          NUEVO: ${{ vars.QUINCY_SITIO_NUEVO }}
+        run: |
+          KEY=a47e56b41e4abf5e6d43f62e3de33615
+          for i in $(seq 1 20); do
+            if curl -fsS --max-time 10 "${NUEVO}${KEY}.txt?v=${GITHUB_SHA::7}" 2>/dev/null | grep -q "$KEY"; then
+              python3 quincy/scripts/agentes/mudanza.py redirigir _site "$NUEVO"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::warning::El sitio nuevo ($NUEVO) todavía no responde. Revisa Settings → Pages del repositorio nuevo. El sitio viejo se queda igual."
 
       - name: Publicar en la rama gh-pages
         run: |
