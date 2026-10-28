@@ -59,8 +59,8 @@ window.FY = Object.assign(window.FY || {}, (() => {
   // Quien ya usaba Quincy con las llaves de antes no ve la bienvenida: sus datos pasan al perfil nuevo.
   if (!yo) {
     const q = raw.get("q"), p = raw.get("perfil"), st = raw.get("state");
-    const used = q || p || st || raw.get("gastos") || raw.get("tandas") || raw.get("retoStats");
-    if (used) {
+    // La app de antes guardaba "q" y "state" en cada visita, así que con ellas basta para saber que ya la usaba.
+    if (q || p || st) {
       yo = { v: 1, ejemplo: false, migrado: true,
         pago: Object.assign({}, DEF.pago, q || {}, { fijos: q ? [{ k: "fijos", amt: +q.fijos || 0 }] : DEF.pago.fijos }),
         trabajo: Object.assign({}, DEF.trabajo, p || {}),
