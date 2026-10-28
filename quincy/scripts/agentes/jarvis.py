@@ -57,7 +57,7 @@ def get(url, headers=None, data=None, timeout=20):
 def hablado(t):
     """Limpia texto de la bitácora para que se oiga bien en voz alta."""
     t = re.sub(r"https?://\S+", "", t)
-    t = re.sub(r"`([^`]*)`", lambda m: re.sub(r"\.(html|py|js|json|md|yml|txt)\b", "", m.group(1)).strip("/").replace("/", " ").replace("_", " "), t)
+    t = re.sub(r"`([^`]*)`", lambda m: re.sub(r"\.(html|py|js|json|md|yml|txt)\b", "", m.group(1)).strip("/").split("/")[-1].replace("_", " ").replace("-", " "), t)
     t = re.sub(r"\(\d+\)\s*", "", t)
     t = re.sub(r"\([^)]*\)", "", t)
     t = re.sub(r"\*\*|__|\*", "", t)
@@ -69,10 +69,15 @@ def hablado(t):
 
 def frase(t, n=170):
     t = hablado(t)
-    corte = re.split(r"(?<=[.;])\s", t)[0]
+    corte = re.split(r"(?<=[.;:])\s", t)[0].rstrip(".;:")
     if len(corte) > n:
-        corte = corte[:n].rsplit(" ", 1)[0] + "…"
-    return corte.rstrip(".;") + "."
+        corte = corte[:n]
+        for sep in (", ", " y ", " "):
+            i = corte.rfind(sep)
+            if i > n * 0.5:
+                corte = corte[:i]
+                break
+    return corte.rstrip(".;:, ") + "."
 
 
 def entradas():
@@ -160,6 +165,65 @@ def cuentas():
         out.append(f"Y {(ag - hoy).days} para el aguinaldo: temporada alta.")
     return " ".join(out)
 
+# Pase de lista: nombre en la bitácora -> (cómo se dice, apodo)
+EQUIPO = [
+    ("Director", "el Director", "el que manda después de ti, aunque a veces parece que antes"),
+    ("Producto y diseño", "el de Producto", "el diseñador mamón"),
+    ("SEO", "el de SEO", "el que le ruega a Google"),
+    ("Contenido", "el de Contenido", "tu influencer de planta"),
+    ("Ley y datos", "el de Ley y datos", "el licenciado"),
+    ("Monetización", "el de la lana", "el que sueña con tu primer peso"),
+    ("Marca", "el de Marca", "el vigilante del IMPI"),
+]
+PRIORIDADES = os.path.join(ROOT, "agentes", "estado", "prioridades.md")
+
+
+def cuando_toca(alias):
+    for minutos in range(1, 60 * 24 * 32):
+        t = NOW + dt.timedelta(minutes=minutos)
+        for nombre, cuando, hh, mm in AGENDA:
+            if nombre != alias:
+                continue
+            ok = (t.weekday() in cuando.get("dow", [])) or (t.day in cuando.get("dom", []))
+            if ok and t.hour == hh and t.minute == mm:
+                dia = "hoy" if t.date() == NOW.date() else ("mañana" if t.date() == NOW.date() + dt.timedelta(days=1) else f"el {DIAS[t.weekday()]}")
+                return f"{dia} a las {(hh - 1) % 12 + 1}:{mm:02d} de la {'noche' if hh >= 19 else 'tarde'}"
+    return ""
+
+
+def en_que_anda():
+    try:
+        txt = open(PRIORIDADES, encoding="utf-8").read()
+    except OSError:
+        return {}
+    out = {}
+    for m in re.finditer(r"\*\*([^*·]+?) · ([^*]+?)\.?\*\*", txt):
+        out[m.group(1).strip()] = hablado(m.group(2))
+    for m in re.finditer(r"\*\*(Ley y datos|Monetización|Marca|Director)\*\* ([^;\n]+)", txt):
+        out.setdefault(m.group(1), hablado(m.group(2)))
+    return out
+
+
+def pase_de_lista(ents):
+    anda = en_que_anda()
+    lineas = ["Ya los puse a chambear. Va el pase de lista."]
+    for nombre, alias, apodo in EQUIPO:
+        mias = [e for e in ents if e["agente"].startswith(nombre) and "Hice" in e]
+        partes = [f"{alias[0].upper() + alias[1:]}, {apodo}."]
+        if mias:
+            ult = mias[0]
+            cuando = "hoy" if ult["fecha"] == NOW.date().isoformat() else ("ayer" if ult["fecha"] == (NOW.date() - dt.timedelta(days=1)).isoformat() else "la última vez")
+            partes.append(f"{cuando.capitalize()}: {frase(ult['Hice'], 75)}")
+        else:
+            partes.append("No ha reportado nada. Seguro anda en junta.")
+        if anda.get(nombre):
+            partes.append(f"Ahorita: {frase(anda[nombre], 65)}")
+        prox = cuando_toca(alias if alias != "el de la lana" else "el de la lana")
+        if prox:
+            partes.append(f"Vuelve {prox}.")
+        lineas.append(" ".join(partes))
+    return lineas
+
 
 def proximo():
     for minutos in range(1, 60 * 24 * 32):
@@ -180,24 +244,11 @@ def resumen():
     partes = [f"{saludo}, jefe.", cuentas(), visitas(), sitio()]
 
     ents = entradas()
-    hoy = NOW.date().isoformat()
-    ayer = (NOW.date() - dt.timedelta(days=1)).isoformat()
-    recientes = [e for e in ents if e["fecha"] in (hoy, ayer) and "Hice" in e and "Orquestador" not in e["agente"]]
-    if recientes:
-        agentes = []
-        for e in recientes:
-            if e["agente"] not in agentes:
-                agentes.append(e["agente"])
-        cuando = "hoy" if any(e["fecha"] == hoy for e in recientes) else "ayer"
-        top = [next(x for x in recientes if x["agente"] == a) for a in agentes[:2]]
-        partes.append(f"Ya los puse a chambear: {cuando} jalaron {len(agentes)}. " + " ".join(f"{e['agente']}: {frase(e['Hice'], 90)}" for e in top))
-    else:
-        partes.append("Los huevones no han reportado nada desde ayer. Andan en horario, según ellos.")
+    partes += pase_de_lista(ents)
 
     dueño = next((e["Para el dueño"] for e in ents if e.get("Para el dueño") and e["agente"].startswith("Director")), "")
     if dueño:
         partes.append("A ti te toca: " + frase(dueño, 110))
-    partes.append(proximo())
     partes.append(CHISTES[(NOW.timetuple().tm_yday * 12 + NOW.hour // 2) % len(CHISTES)])
     return "\n".join(p for p in partes if p)
 
