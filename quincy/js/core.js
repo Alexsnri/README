@@ -5,7 +5,7 @@ window.FY = Object.assign(window.FY || {}, (() => {
     // Donde llegan las solicitudes de instituciones. Cámbialo por tu correo o formulario.
     CONTACT_URL: "https://github.com/Alexsnri/README/issues/new?template=piloto.yml",
     // Correo de Quincy para empresas. Si existe, "Solicitar piloto" abre un correo ya escrito (mejor que pedir cuenta de GitHub).
-    CONTACT_EMAIL: "",
+    CONTACT_EMAIL: "hola.quincymx@gmail.com",
     // Token de Cloudflare Web Analytics (gratis, sin cookies). Vacío = sin analítica.
     CF_ANALYTICS_TOKEN: "7867bd7b5a2449549624cefc62551f12",
     // Redes de Quincy.
@@ -14,7 +14,10 @@ window.FY = Object.assign(window.FY || {}, (() => {
     // Avisos opcionales (audiencia propia, sin registro). Vacío = ese botón no se muestra.
     // whatsappCanal: enlace del canal de WhatsApp. correoForm: enlace del formulario de un servicio de correos.
     // Al llenar cualquiera, enlaza también privacidad.html (llena antes ahí el nombre y correo del responsable).
-    AVISOS: { whatsappCanal: "", correoForm: "" },
+    AVISOS: {
+      whatsappCanal: "https://whatsapp.com/channel/0029VbDxhAFHFxOyjGQ9862q",
+      correoForm: "https://b0e92322.sibforms.com/serve/MUIFANod8iT6Q0WKuLJ7dt1xCEk2IO7pZUcY_MRtbf9W5qLTGLM4ymmB4Z4vrMvCAJ4ED5bQhaElq5H-Xv1qy7eYOfF28NiaGsazAX4kDvefqlNVal6tsTRwqULbBFpgP5dE3d5O6p4vDP7gtKSDgB1Wr0J8iBtalOvSkb2HYrgdxWcwaWCrmY1TJqSoTjGzbdkVwD-_wDC7VomXzg=="
+    },
     // true en la copia que vive dentro del visor de Claude (ahí no se pueden descargar archivos).
     EMBEDDED_VIEWER: false,
     // Enlaces de referido que el dueño ya dio de alta. Vacío = no se muestra nada.
