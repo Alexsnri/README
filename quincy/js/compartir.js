@@ -9,7 +9,8 @@
   // ---------- enlaces ----------
   // Enlace público de la página actual (o de `path`, relativo al sitio) con ?ref=…; siempre apunta al sitio publicado.
   function link(ref, path) {
-    const rel = path != null ? path : (location.pathname.split("/quincy/")[1] || "").replace(/index\.html$/, "");
+    const base = new URL(SITE).pathname, here = location.pathname;
+    const rel = path != null ? path : (here.startsWith(base) ? here.slice(base.length) : here.split("/quincy/")[1] || "").replace(/index\.html$/, "");
     const u = new URL(rel, SITE);
     if (ref) u.searchParams.set("ref", ref);
     return u.toString();
@@ -72,16 +73,54 @@
     y = wrap(x, d.line || "", y + 380, "700 62px Figtree, sans-serif", "#ffffff", 900);
     if (d.sub) wrap(x, d.sub, y + 30, "500 42px Figtree, sans-serif", "#b9ced4", 860);
     footer(x, d.cta);
-    return new Promise((res) => cv.toBlob(res, "image/png"));
+    return new Promise((res) => cv.toBlob(res, "image/jpeg", 0.9));
   }
 
-  // Comparte imágenes con la hoja del teléfono; si no se puede, las descarga.
-  async function shareFiles(blobs, text, name) {
-    const files = blobs.map((b, i) => new File([b], `${name}${blobs.length > 1 ? "-" + (i + 1) : ""}.png`, { type: "image/png" }));
-    const ok = await FY.nativeShare({ files, text });
-    if (ok) return;
-    files.forEach((f, i) => setTimeout(() => FY.download(f, f.name), i * 350));
-    FY.toast(blobs.length > 1 ? "Listo: se descargaron tus tarjetas para subirlas a tus historias" : "Listo: se descargó tu tarjeta para subirla a tus historias");
+  // ---------- subir a historias ----------
+  // El menú de compartir del teléfono solo se abre si se llama justo al tocar (sin esperar a dibujar la tarjeta),
+  // por eso las tarjetas se preparan antes. Se manda solo la imagen: así Instagram ofrece "Historia" directo.
+  const ext = (b) => (b.type === "image/png" ? ".png" : ".jpg");
+  const toFile = (b, name) => new File([b], name + ext(b), { type: b.type || "image/jpeg" });
+  const canShareFiles = () => { try { return !!(navigator.share && navigator.canShare && navigator.canShare({ files: [toFile(new Blob(["x"], { type: "image/png" }), "x")] })); } catch (e) { return false; } };
+  const inApp = /Instagram|FBAN|FBAV|WhatsApp|Line\/|TikTok|musical_ly/i.test(navigator.userAgent || "");
+  // Debe llamarse dentro del toque, sin awaits antes. Devuelve una promesa: true si se compartió.
+  function shareStory(blobs, name, linkTxt) {
+    if (linkTxt) { try { navigator.clipboard.writeText(linkTxt).catch(() => {}); } catch (e) {} }
+    const files = blobs.map((b, i) => toFile(b, `${name}${blobs.length > 1 ? "-" + (i + 1) : ""}`));
+    return navigator.share({ files }).then(() => {
+      FY.toast(linkTxt ? "Tip: en tu historia agrega el sticker de enlace y pega el link (ya lo copiamos)" : "¡Listo!");
+      FY.emit && FY.emit("shared", "historia"); return true;
+    }).catch((e) => { if (e && e.name !== "AbortError") FY.toast("No se pudo abrir el menú. Guarda la imagen y súbela desde Instagram."); return false; });
+  }
+  function downloadAll(blobs, name) {
+    blobs.forEach((b, i) => setTimeout(() => FY.download(b, `${name}${blobs.length > 1 ? "-" + (i + 1) : ""}${ext(b)}`), i * 350));
+  }
+  // Hoja con la vista previa cuando no se puede subir directo (computadora, navegador dentro de otra app) o la tarjeta no estaba lista.
+  let sheet = null;
+  function storySheet(blob, name, linkTxt) {
+    if (!sheet) {
+      sheet = el("dialog", { className: "wrapped story-sheet" }, `
+        <button class="wr-x" type="button" aria-label="Cerrar">×</button>
+        <div class="wr-stage"><img alt="Tu tarjeta para historias" class="wr-img"></div>
+        <p class="ss-help"></p>
+        <div class="wr-actions"><button class="btn btn-sun ss-ig" type="button">Subir a Instagram</button><button class="btn btn-ghost ss-dl" type="button">Descargar</button></div>
+        <button class="btn btn-ghost ss-copy" type="button">Copiar enlace para el sticker</button>`);
+      document.body.append(sheet);
+      sheet.querySelector(".wr-x").addEventListener("click", () => sheet.close());
+      sheet.addEventListener("click", (e) => { if (e.target === sheet) sheet.close(); });
+    }
+    const url = URL.createObjectURL(blob), direct = canShareFiles();
+    sheet.querySelector(".wr-img").src = url;
+    sheet.querySelector(".ss-ig").hidden = !direct;
+    sheet.querySelector(".ss-help").textContent = direct
+      ? "Toca «Subir a Instagram», elige Instagram y luego «Historia». Agrega el sticker de enlace con tu link."
+      : inApp ? "Este navegador (dentro de otra app) no deja abrir Instagram directo. Mantén presionada la imagen para guardarla, o abre esta página en Chrome o Safari."
+      : "Desde aquí no se puede abrir Instagram directo. Descarga la imagen o abre esta página en tu celular.";
+    sheet.querySelector(".ss-ig").onclick = () => shareStory([blob], name, linkTxt).then((ok) => { if (ok) sheet.close(); });
+    sheet.querySelector(".ss-dl").onclick = () => downloadAll([blob], name);
+    sheet.querySelector(".ss-copy").onclick = () => FY.copyText(linkTxt);
+    sheet.onclose = () => URL.revokeObjectURL(url);
+    if (!sheet.open) sheet.showModal();
   }
 
   // ---------- barra de compartir ----------
@@ -99,15 +138,33 @@
     const refresh = () => { const d = get(); wa.href = waURL(`${d.wa} ${link(d.ref || "wa")}`); };
     wa.addEventListener("pointerdown", refresh); wa.addEventListener("focus", refresh);
     wa.addEventListener("click", () => { refresh(); FY.emit && FY.emit("shared", "wa"); });
+    // Tarjeta preparada de antemano (se rehace cuando cambian los datos) para abrir el menú en el mismo toque.
+    let ready = null, timer = 0, job = 0;
+    const keyOf = (d) => JSON.stringify(d.card);
+    const prebuild = (wait) => {
+      clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const d = get(), key = keyOf(d), n = ++job;
+        if (ready && ready.key === key) return;
+        try { const blob = await card(d.card); if (n === job) ready = { key, blob }; } catch (e) {}
+      }, wait);
+    };
+    const form = host.closest("form, .calc, main") || document;
+    form.addEventListener("input", () => prebuild(700)); form.addEventListener("change", () => prebuild(700));
+    // Se prepara con la primera señal de la persona (tocar, desplazarse, escribir), no al cargar, para no frenar la página.
+    const first = () => { ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => removeEventListener(t, first, true)); prebuild(250); };
+    ["pointerdown", "keydown", "scroll", "touchstart"].forEach((t) => addEventListener(t, first, { capture: true, passive: true }));
     st.addEventListener("click", async () => {
-      const d = get(); st.disabled = true; st.classList.add("busy");
-      try { const b = await card(d.card); await shareFiles([b], `${d.wa} ${link(d.ref || "historia")}`, d.name || "quincy"); }
+      const d = get(), name = d.name || "quincy", linkTxt = link(d.ref === "wa" || !d.ref ? "historia" : d.ref);
+      if (ready && ready.key === keyOf(d) && canShareFiles()) { shareStory([ready.blob], name, linkTxt); return; }
+      st.disabled = true; st.classList.add("busy");
+      try { const blob = await card(d.card); ready = { key: keyOf(d), blob }; storySheet(blob, name, linkTxt); }
       catch (e) { FY.toast("No pude crear la tarjeta. Inténtalo de nuevo."); }
       st.disabled = false; st.classList.remove("busy");
     });
     if (get().wrapped) {
       const w = el("button", { className: "sbtn sbtn-wrapped", type: "button" }, IC.spark + "<span>Tu Wrapped</span>");
-      w.addEventListener("click", () => { const d = get(); wrapped(d.wrapped(), `${d.wa} ${link("wrapped")}`, d.name || "quincy"); });
+      w.addEventListener("click", () => { const d = get(); wrapped(d.wrapped(), link("wrapped"), d.name || "quincy"); });
       box.append(w);
     }
     refresh();
@@ -123,7 +180,7 @@
         <div class="wr-bars" aria-hidden="true"></div>
         <button class="wr-x" type="button" aria-label="Cerrar">×</button>
         <div class="wr-stage"><img alt="" class="wr-img"><button class="wr-prev" type="button" aria-label="Anterior"></button><button class="wr-next" type="button" aria-label="Siguiente"></button></div>
-        <div class="wr-actions"><button class="btn btn-sun wr-share" type="button">Compartir todas</button><button class="btn btn-ghost wr-dl" type="button">Descargar</button></div>`);
+        <div class="wr-actions"><button class="btn btn-sun wr-share" type="button">Subir esta a Instagram</button><button class="btn btn-ghost wr-dl" type="button">Descargar todas</button></div>`);
       document.body.append(wrapDlg);
       wrapDlg.querySelector(".wr-x").addEventListener("click", () => wrapDlg.close());
       wrapDlg.addEventListener("click", (e) => { if (e.target === wrapDlg) wrapDlg.close(); });
@@ -144,8 +201,11 @@
     D.querySelector(".wr-prev").onclick = () => show(i - 1);
     D.querySelector(".wr-next").onclick = () => show(i + 1);
     D.onkeydown = (e) => { if (e.key === "ArrowRight") show(i + 1); if (e.key === "ArrowLeft") show(i - 1); };
-    D.querySelector(".wr-share").onclick = () => shareFiles(blobs, text, name + "-wrapped");
-    D.querySelector(".wr-dl").onclick = () => blobs.forEach((b, j) => setTimeout(() => FY.download(b, `${name}-wrapped-${j + 1}.png`), j * 350));
+    // Una por una: Instagram sube a historias una imagen a la vez.
+    const direct = canShareFiles();
+    D.querySelector(".wr-share").textContent = direct ? "Subir esta a Instagram" : "Descargar esta";
+    D.querySelector(".wr-share").onclick = () => { clearTimeout(timer); if (direct) shareStory([blobs[i]], `${name}-wrapped-${i + 1}`, text); else FY.download(blobs[i], `${name}-wrapped-${i + 1}${ext(blobs[i])}`); };
+    D.querySelector(".wr-dl").onclick = () => downloadAll(blobs, name + "-wrapped");
     D.onclose = () => { clearTimeout(timer); urls.forEach((u) => URL.revokeObjectURL(u)); };
     show(0);
   }
@@ -210,5 +270,5 @@
     tick(); setInterval(tick, 1000);
   }
 
-  FY.compartir = { link, waURL, card, shareFiles, bar, wrapped, welcome, ics, aguinaldoWrapped, countdown };
+  FY.compartir = { link, waURL, card, shareStory, storySheet, bar, wrapped, welcome, ics, aguinaldoWrapped, countdown };
 })(window.FY);

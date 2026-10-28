@@ -127,6 +127,9 @@ h1,h2{font-family:var(--f-display);text-wrap:balance;letter-spacing:-.02em}
 .wr-x{position:absolute;top:-6px;right:-6px;z-index:2;width:44px;height:44px;border-radius:50%;border:0;background:var(--fg);color:var(--night);font-size:1.6rem;line-height:1;cursor:pointer}
 .wr-actions{display:flex;gap:8px;margin-top:12px}
 .wr-actions .btn{flex:1}
+.story-sheet .wr-stage{max-height:58dvh}
+.ss-help{color:var(--mut);font-size:.9rem;margin:12px 0 0;text-align:center}
+.ss-copy{width:100%;margin-top:8px}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--night);font-weight:600;padding:12px 18px;border-radius:999px;z-index:80;font-size:.92rem;max-width:calc(100% - 32px);text-align:center}
 
 /* ---------- retícula bento ---------- */

@@ -14,6 +14,20 @@ Lo más nuevo arriba. Cada cambio: qué se hizo, qué esperamos y cómo se mide.
 En local (sin el proxy del entorno de pruebas) la portada da 99/100/100/100. Primer pintado real en vivo medido con Playwright: 0.8 s.
 Escritorio 1440 px: la portada pasó de 11,700 px a 2,690 px y ya usa todo el ancho.
 
+## 2026-10-28 · Historias directo a Instagram (pedido del dueño)
+
+**Problema:** el botón "Historias" solo descargaba un PNG. La tarjeta se dibujaba después del toque y el navegador ya no dejaba abrir
+el menú de compartir (necesita que se llame en el mismo toque), así que caía en la descarga. Además mandaba texto junto con la imagen y
+pesaba 2.1 MB.
+
+**Qué cambió (`js/compartir.js`):** la tarjeta se prepara antes (con la primera interacción y cada vez que cambian los datos) y al tocar
+"Historias" se abre el menú del teléfono solo con la imagen, donde aparece Instagram → Historia. El enlace se copia para pegarlo en el
+sticker de enlace. Tarjetas en JPG (~140 KB). Si no se puede subir directo (computadora o navegador dentro de Instagram/WhatsApp) sale una
+hoja con la vista previa, la explicación y botones para descargar y copiar el enlace. En el Wrapped el botón sube la tarjeta que estás
+viendo ("Subir esta a Instagram"). La tarjeta de la app (`share.js`) también manda solo la imagen.
+
+**Cómo se mide:** visitas con `?ref=historia` y `?ref=wrapped` (vienen del sticker de enlace).
+
 ## 2026-10-28 · Rediseño para el lanzamiento (primer gran trabajo)
 
 **Qué cambió**

@@ -181,6 +181,10 @@
   addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("modal").hidden) close(); });
   $("card-share").addEventListener("click", async () => {
     if (!blob) return;
+    // Solo la imagen (así Instagram ofrece "Historia"); el texto con el enlace queda copiado para el sticker de enlace.
+    if (FY.compartir && navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], "quincy.png", { type: "image/png" })] })) {
+      FY.compartir.shareStory([blob], "quincy", shareText()); return;
+    }
     const ok = await FY.nativeShare({ files: [new File([blob], "quincy.png", { type: "image/png" })], text: shareText() });
     if (!ok) { FY.copyText(shareText()); FY.toast("Texto copiado. Mantén presionada la imagen para guardarla."); }
   });

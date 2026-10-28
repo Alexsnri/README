@@ -11,6 +11,12 @@ Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 - Para todos: cuando el sitio se mude, cambiar `SITE` en los scripts y en `agentes/README.md` (ver `estado/monetizacion.md`).
 - Para el dueño: 6 pasos gratis en "Lo que necesito del dueño" de `estado/monetizacion.md` (crear organización, repositorio, token y 2 variables).
 
+## 2026-10-28 · Producto y diseño (2)
+- Hice: "Historias" ahora abre el menú del teléfono con la imagen lista para Instagram → Historia (antes solo descargaba un PNG porque la
+  tarjeta se dibujaba después del toque). El enlace queda copiado para el sticker. Tarjetas en JPG (2.1 MB → 140 KB). Hoja con vista
+  previa cuando no se puede directo (computadora o navegador dentro de otra app). Portada sigue en 99 en local, sin bloqueo.
+- Para el dueño: falta el enlace del canal de WhatsApp para `WA_CHANNEL` (no llegó en el mensaje).
+
 ## 2026-10-28 · Producto y diseño
 - Hice: rediseño completo para el lanzamiento. Portada de temporada con calculadora de aguinaldo y cuenta regresiva en vivo arriba
   (cambia sola por fecha), retícula bento, sin three.js, fuentes propias recortadas y sin desenfoques pesados. Compartir en 1 toque en
