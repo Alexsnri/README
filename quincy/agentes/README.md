@@ -22,7 +22,10 @@ Los agentes se coordinan por archivos:
 ## Reglas para todos los agentes
 
 **Al empezar**
-1. Ve a la raíz del repositorio (la carpeta que tiene `quincy/`). Si no está, clónalo: `git clone https://github.com/Alexsnri/README`.
+1. Conecta el repositorio con permiso de escritura: llama a la herramienta `add_repo` (servidor claude-code-remote; si no la ves,
+   búscala con ToolSearch) con `owner: "Alexsnri"`, `repo: "README"`, `access: "push"`, y clona con el comando que te devuelva.
+   Si ya hay una carpeta con `quincy/`, úsala. Sin esto, GitHub rechaza el push con un 403.
+   Si `add_repo` falla, haz tu trabajo igual, no publiques, y en tu mensaje final di exactamente qué falló.
 2. `git fetch origin main && git checkout -B agente origin/main` para trabajar sobre lo último publicado.
 3. Lee este archivo, tu manual, `estado/prioridades.md` y las primeras 60 líneas de `bitacora.md`.
 4. Corre `date` y trabaja con la fecha real. No supongas la fecha.
