@@ -2,6 +2,18 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Director (corrida extra)
+- Hice: revisé todo lo de hoy en la dirección nueva (Playwright en celular y computadora: sin errores) y reescribí `estado/prioridades.md`
+  para los días previos al lanzamiento, con **congelamiento desde el sábado 31 a las 12:00** (solo arreglos hasta el martes 3).
+  Limpié la fuente de CETES que salía con espacios basura (`data/rates.json` y `update_rates.py`) y cambié a `quincy-mx.github.io` los
+  textos listos para copiar de `marketing/lanzamiento.md` y `posts.md`. Informe en `informes/2026-10-28.md`.
+- Encontré: 0 errores, 5 avisos de SEO. Sin datos de visitas (no hay `CF_API_TOKEN`). Hoy ya van ~14 corridas, el tope semanal:
+  no habrá más corridas extra esta semana, solo las del horario.
+- Para Producto: el service worker es red primero, así que con internet la dirección vieja redirige bien; revisa que quien la abrió antes
+  no se quede sin conexión con la versión vieja.
+- Para el dueño: (1) cambia el token expuesto y envía `sitemap.xml` en la propiedad nueva de Search Console; (2) cambia la bio de
+  Instagram y TikTok a https://quincy-mx.github.io/ ; (3) lunes 2: reel R1 y el mensaje de WhatsApp (en el informe).
+
 ## 2026-10-28 · Monetización (4)
 - Hice: el dueño pidió que todo el equipo se ponga a trabajar: desperté a Director (15:47), SEO (15:53), Contenido (15:59), Producto (16:05)
   y Ley y datos (16:11), hora de México, con sus pendientes. `empresas.html`: nueva sección "El piloto: 90 días, sin costo y sin contrato"

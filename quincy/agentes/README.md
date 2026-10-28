@@ -94,5 +94,5 @@ Si salen errores nuevos por tu cambio, arréglalo o haz `git revert` de tu commi
 - Marca: colores Noche #07121A, Mar #15404F, Sol #FFB547, Marea #5AD6C8, Niebla #EAF3F4. Fuentes Unbounded, Figtree, JetBrains Mono.
   Manual completo en `marketing/marca/index.html`.
 - Analítica: Cloudflare Web Analytics (sin cookies). El Director lee las visitas si existe la variable `CF_API_TOKEN`.
-- Google Search Console verificado para la propiedad `https://alexsnri.github.io/README/quincy/`, sitemap enviado.
+- Google Search Console: propiedad vieja `https://alexsnri.github.io/README/quincy/` (sitemap enviado) y propiedad nueva `https://quincy-mx.github.io/` (dada de alta el 28 oct 2026; falta enviar su sitemap).
 - Marca registrable: "Quincy" está libre en la clase 36 y en la 9 solo hay marcas vencidas o abandonadas (ver `4-marca.md`).

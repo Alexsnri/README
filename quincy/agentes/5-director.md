@@ -15,7 +15,7 @@ cualquier agente cuando haga falta. Límite de costo: no más de 14 corridas de 
 3. **Métricas**:
    - Si existe la variable `CF_API_TOKEN`, consulta Cloudflare Web Analytics de los últimos 7 días y de los 7 anteriores.
      Primero `GET https://api.cloudflare.com/client/v4/accounts` para el id de la cuenta, luego
-     `GET /accounts/<id>/rum/site_info/list` para el `site_tag` del sitio `alexsnri.github.io`. Después, en
+     `GET /accounts/<id>/rum/site_info/list` para el `site_tag` del sitio `quincy-mx.github.io` (y `alexsnri.github.io` para semanas anteriores al 28 oct 2026). Después, en
      `https://api.cloudflare.com/client/v4/graphql`, pide `viewer.accounts(filter:{accountTag}).rumPageloadEventsAdaptiveGroups`
      filtrando por `siteTag` y fecha, con `count`, `sum { visits }` y dimensiones `requestPath`, `refererHost`, `countryName`,
      `deviceType`. Guarda el resumen en `estado/metricas.json` (`{"AAAA-MM-DD": {...}}`).
