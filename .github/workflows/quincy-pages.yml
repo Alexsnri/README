@@ -52,7 +52,11 @@ jobs:
           NUEVO=$(echo "$NUEVO_RAW" | tr -d '[:space:]'); REPO=$(echo "$REPO_RAW" | tr -d '[:space:]')
           if [ -z "$NUEVO" ] && [ -z "$REPO" ] && [ "$HAS_TOKEN" != "true" ]; then echo "Sin mudanza configurada."; exit 0; fi
           [ -n "$NUEVO" ] || { echo "::warning::Falta QUINCY_SITIO_NUEVO (variable de Actions)."; exit 0; }
-          [ -n "$REPO" ] || { echo "::warning::Falta QUINCY_REPO_NUEVO (variable de Actions)."; exit 0; }
+          if [ -z "$REPO" ]; then
+            # Sin QUINCY_REPO_NUEVO: para https://<dueño>.github.io/ el repositorio es <dueño>/<dueño>.github.io
+            HOST=$(python3 -c "import sys;from urllib.parse import urlparse;print(urlparse(sys.argv[1]).hostname or '')" "$NUEVO")
+            case "$HOST" in *.github.io) REPO="${HOST%.github.io}/$HOST";; *) echo "::warning::Falta QUINCY_REPO_NUEVO (variable de Actions)."; exit 0;; esac
+          fi
           [ "$HAS_TOKEN" = "true" ] || { echo "::warning::Falta el secreto QUINCY_PUBLICAR_TOKEN."; exit 0; }
           case "$NUEVO" in */) ;; *) NUEVO="$NUEVO/";; esac
           python3 quincy/scripts/agentes/mudanza.py armar _site "$NUEVO" _nuevo
