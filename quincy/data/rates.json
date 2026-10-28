@@ -1,9 +1,9 @@
 {
-  "actualizado": "2026-10-26",
-  "cetes28": 6.23,
-  "cetes28_fuente": "Subasta de CETES a 28 días del 22 de octubre de 2026 (Banxico / CetesDirecto)",
+  "actualizado": "2026-10-28",
+  "cetes28": 6.22,
+  "cetes28_fuente": "Valores gubernamentales                        Resultados de la subasta semanal Tasa de rendimiento                            Cetes a 28 días · dato del 29/10/2026 (Banco de México, SIE)",
   "inflacion": 3.45,
-  "inflacion_fuente": "INPC septiembre 2026, inflación anual (INEGI, boletín del 8 de octubre de 2026)",
+  "inflacion_fuente": "Índice Nacional de Precios al consumidor variación anual · dato del 01/09/2026 (Banco de México, SIE)",
   "optimista": 9.0,
   "optimista_fuente": "Supuesto ilustrativo de un portafolio diversificado de largo plazo. No es un rendimiento garantizado."
 }
