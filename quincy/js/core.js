@@ -93,6 +93,8 @@ window.FY = Object.assign(window.FY || {}, (() => {
   const perfil = {
     DEF, sumFijos,
     exists: () => !!yo,
+    // Borra el perfil también de la memoria, para que nada lo vuelva a guardar antes de recargar.
+    clear() { yo = null; raw.del("yo"); },
     get: () => yo,
     // Crea o reemplaza el perfil completo (bienvenida, ejemplo o respaldo).
     set(next) { yo = Object.assign({ v: 1 }, next); yo.pago = Object.assign({}, DEF.pago, yo.pago); yo.trabajo = Object.assign({}, DEF.trabajo, yo.trabajo); yo.futuro = Object.assign({}, DEF.futuro, yo.futuro); saveYo(); return yo; },

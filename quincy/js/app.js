@@ -92,8 +92,9 @@
   $("wipe-ask").addEventListener("click", () => { $("wipe-confirm").hidden = false; $("wipe-ask").hidden = true; });
   $("wipe-no").addEventListener("click", () => { $("wipe-confirm").hidden = true; $("wipe-ask").hidden = false; });
   $("wipe-yes").addEventListener("click", () => {
+    FY.perfil.clear();
     try { Object.keys(localStorage).filter((k) => k.startsWith("qc:")).forEach((k) => localStorage.removeItem(k)); } catch (e) {}
-    location.hash = "hoy"; location.reload();
+    location.replace(location.pathname + "#hoy"); location.reload();
   });
 
   // ---------- app instalable ----------

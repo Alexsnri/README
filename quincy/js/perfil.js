@@ -94,9 +94,12 @@
       if (!f) return;
       try {
         const data = JSON.parse(await f.text());
-        if (!perfil.restore(data && data.datos ? data.datos : data)) throw new Error("formato");
-        FY.toast("Listo: cargamos tu respaldo");
-        setTimeout(() => location.reload(), 700);
+        const datos = data && data.datos ? data.datos : data;
+        if (!datos || !datos.yo || !datos.yo.pago) throw new Error("formato");
+        perfil.clear();
+        if (!perfil.restore(datos)) throw new Error("formato");
+        // Recarga ya, antes de que algo en memoria vuelva a escribir encima del respaldo.
+        location.reload();
       } catch (er) { FY.toast("Ese archivo no es un respaldo de Quincy."); }
     });
     return { refresh() { const y = perfil.get(); if (y) ed.set(y.pago.fijos); $("pd-age").value = FY.state.age; } };
