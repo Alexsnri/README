@@ -177,7 +177,7 @@
   }
   // Formato con comas mientras escribes, sin mover el cursor al final si no hace falta.
   $("h-sal").addEventListener("input", (e) => {
-    const el = e.target, raw = el.value.replace(/[^\d]/g, "").slice(0, 8);
+    const el = e.target, raw = el.value.replace(/\.\d{0,2}\s*$/, "").replace(/[^\d]/g, "").slice(0, 8);
     const pretty = raw ? (+raw).toLocaleString("es-MX") : "";
     if (el.value !== pretty) { const fromEnd = el.value.length - el.selectionStart; el.value = pretty; const p = Math.max(0, pretty.length - fromEnd); try { el.setSelectionRange(p, p); } catch (er) {} }
     run();

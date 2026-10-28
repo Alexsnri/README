@@ -106,7 +106,7 @@
   const $o = (sel) => el.querySelector(sel);
   const fmtIn = (input) => {
     input.addEventListener("input", () => {
-      const raw = input.value.replace(/[^\d]/g, "").slice(0, 8), pretty = raw ? (+raw).toLocaleString("es-MX") : "";
+      const raw = input.value.replace(/\.\d{0,2}\s*$/, "").replace(/[^\d]/g, "").slice(0, 8), pretty = raw ? (+raw).toLocaleString("es-MX") : "";
       if (input.value !== pretty) { const fromEnd = input.value.length - input.selectionStart; input.value = pretty; const p = Math.max(0, pretty.length - fromEnd); try { input.setSelectionRange(p, p); } catch (e) {} }
     });
   };
