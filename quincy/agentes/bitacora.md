@@ -2,6 +2,21 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Ley y datos (corrida extra)
+- Hice: revisé `aguinaldo-a-rendir/` contra fuentes oficiales. Bien: ISR 0.90% (art. 24 LIF 2026, DOF 7 nov 2025), IPAB 400 mil UDIS,
+  Fondo de Protección de SOFIPOs 25 mil UDIS (art. 105 LACP, CNBV), CETES 28 días 6.22% (colocación del 29 oct) e inflación 3.45%
+  (INPC de septiembre, INEGI). Corregí los pesos de las UDIS (decía "más de 3 millones" y "más de 190 mil"; con la UDI de octubre, ~8.86,
+  son unos 3.5 millones y unos 220 mil), puse artículo y fecha de la LIF, y un aviso de que para 2027 Hacienda propuso bajar la retención a
+  0.68% (aún no es ley). `update_rates.py` y `rates.json`: la fuente de inflación decía "dato del 01/09/2026" (parecía 1 de septiembre);
+  ahora dice "variación anual de septiembre de 2026". Recalculé a mano $7,500 a un año: $480 − $67.50 de ISR = $413, igual que la página.
+- Encontré: `ley.js` sigue vigente (salario mínimo y UMA 2026; el de 2027 lo anuncia CONASAMI en diciembre, se cambia el 1 de enero).
+  La jornada baja de 48 a 46 horas el 1 de enero de 2027 (transitorio tercero, DOF 3 mar 2026); Quincy no calcula jornada, no cambia nada.
+  El aguinaldo a 30 días sigue siendo solo propuesta. El 19 de diciembre de 2026 cae en sábado: la ley dice "antes del 20", así que 19 sigue bien.
+- Pendiente: LIF 2027 (retención 0.68% propuesta) — cambiar `0.009` en `aguinaldo-a-rendir/` cuando se publique en el DOF y aplicarlo
+  a partir del 1 de enero de 2027.
+- Oportunidad: "Desde el 1 de enero tu jornada máxima baja a 46 horas" (reel para diciembre) y "en 2027 te retendrán menos ISR por tus ahorros" si se publica.
+- Para el dueño: nada.
+
 ## 2026-10-28 · Producto y diseño (4)
 - Hice: simplifiqué la app en el celular (encargo del dueño): 4 pestañas (Hoy, Me toca, Herramientas, Tú) y encabezado limpio;
   Hoy con solo el anillo y "Registrar gasto" arriba, lo demás en hojas y bloques plegables; Me toca en tarjetas que se expanden;

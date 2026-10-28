@@ -11,6 +11,9 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
+         "septiembre", "octubre", "noviembre", "diciembre"]
+
 RATES = Path(__file__).resolve().parent.parent / "data" / "rates.json"
 SERIES = {
     # id: (campo en rates.json, grupos de palabras: de cada grupo, al menos una debe aparecer en el título)
@@ -46,7 +49,12 @@ def main() -> int:
         if rates.get(field) != value:
             rates[field] = value
             changed = True
-        fuente = f"{' '.join(title.split())} · dato del {dato['fecha']} (Banco de México, SIE)"
+        # Banxico fecha la inflación con el día 1 del mes (01/09/2026 = septiembre) y CETES con el día de colocación.
+        _, mes, anio = dato["fecha"].split("/")
+        if field == "inflacion":
+            fuente = f"INPC, variación anual de {MESES[int(mes) - 1]} de {anio} (INEGI, vía Banco de México SIE)"
+        else:
+            fuente = f"Subasta semanal de CETES a 28 días, colocación del {dato['fecha']} (Banco de México, SIE)"
         rates[f"{field}_fuente"] = fuente
         print(f"{field} = {value} ({dato['fecha']})")
 

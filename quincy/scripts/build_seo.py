@@ -246,8 +246,8 @@ FY.referidos($('ref-slot'));""",
 <style>.opts{display:grid;gap:10px;margin-top:12px}.opts .card{display:grid;gap:6px}.opts h3{margin:0;font-size:1.02rem;color:var(--sun)}.opts p{margin:0;font-size:.94rem}</style>
 <div class="opts">
 <div class="card"><h3>1. CETES en cetesdirecto</h3><p><b>Quién responde:</b> Es deuda del Gobierno de México</p><p><b>Cuándo lo sacas:</b> Al vencer el plazo (28 días o más). El fondo BONDDIA de la misma plataforma se retira cualquier día hábil.</p><p><b>Ojo con:</b> Desde $100, sin comisiones. La tasa cambia en cada subasta semanal.</p></div>
-<div class="card"><h3>2. Banco (cuenta o apartado con rendimiento)</h3><p><b>Quién responde:</b> Seguro del IPAB: hasta 400 mil UDIS por persona y por banco (más de 3 millones de pesos)</p><p><b>Cuándo lo sacas:</b> Casi siempre al momento.</p><p><b>Ojo con:</b> Las tasas más altas suelen tener tope de saldo, condiciones (usar la tarjeta, recibir tu nómina) y fecha de fin.</p></div>
-<div class="card"><h3>3. SOFIPO (sociedad financiera popular)</h3><p><b>Quién responde:</b> Fondo de Protección: hasta 25 mil UDIS por persona (más de 190 mil pesos)</p><p><b>Cuándo lo sacas:</b> Al momento o al vencer el plazo.</p><p><b>Ojo con:</b> Pueden pagar más, pero la protección es mucho menor. Revisa que esté autorizada por la CNBV.</p></div>
+<div class="card"><h3>2. Banco (cuenta o apartado con rendimiento)</h3><p><b>Quién responde:</b> Seguro del IPAB: hasta 400 mil UDIS por persona y por banco (unos 3.5 millones de pesos con la UDI de octubre de 2026)</p><p><b>Cuándo lo sacas:</b> Casi siempre al momento.</p><p><b>Ojo con:</b> Las tasas más altas suelen tener tope de saldo, condiciones (usar la tarjeta, recibir tu nómina) y fecha de fin.</p></div>
+<div class="card"><h3>3. SOFIPO (sociedad financiera popular)</h3><p><b>Quién responde:</b> Fondo de Protección: hasta 25 mil UDIS por persona (unos 220 mil pesos con la UDI de octubre de 2026)</p><p><b>Cuándo lo sacas:</b> Al momento o al vencer el plazo.</p><p><b>Ojo con:</b> Pueden pagar más, pero la protección es mucho menor. Revisa que esté autorizada por la CNBV.</p></div>
 <div class="card"><h3>4. Billetera digital (IFPE)</h3><p><b>Quién responde:</b> Ningún seguro de depósitos</p><p><b>Cuándo lo sacas:</b> Al momento.</p><p><b>Ojo con:</b> Cómoda para pagar, pero tu saldo no tiene el seguro del IPAB.</p></div>
 <div class="card"><h3>5. Colchón o cuenta sin rendimiento</h3><p><b>Quién responde:</b> Nadie</p><p><b>Cuándo lo sacas:</b> Al momento.</p><p><b>Ojo con:</b> La inflación le quita valor cada mes.</p></div>
 </div>
@@ -260,7 +260,8 @@ FY.referidos($('ref-slot'));""",
 <li><b>Rendimientos pasados no garantizan los futuros.</b> Las tasas cambian: la que ves hoy puede bajar el mes que entra.</li>
 </ul>
 <h2>¿Y los impuestos?</h2>
-<p>En 2026 los bancos, SOFIPOs y cetesdirecto te retienen ISR de <b>0.90% al año sobre el capital</b> que tienes invertido, según la Ley de Ingresos de la Federación 2026. La calculadora ya lo descuenta. Si tus ingresos por intereses son pocos, esa retención puede ser todo el impuesto que pagas por ellos.</p>""",
+<p>En 2026 los bancos, SOFIPOs y cetesdirecto te retienen ISR de <b>0.90% al año sobre el capital</b> que tienes invertido, según el artículo 24 de la Ley de Ingresos de la Federación 2026 (DOF, 7 de noviembre de 2025). La calculadora ya lo descuenta. Si tus ingresos por intereses son pocos, esa retención puede ser todo el impuesto que pagas por ellos.</p>
+<p>Ojo: para 2027 Hacienda propuso bajarla a 0.68%. Todavía no es ley; cuando se publique en el DOF actualizamos la calculadora.</p>""",
         "faq": [
             ("¿Dónde pongo mi aguinaldo a rendir?", "Primero paga deudas caras y aparta un fondo de emergencia. Lo que sobre puede ir a CETES en cetesdirecto (desde $100, deuda del gobierno) o a una cuenta con rendimiento de un banco protegido por el IPAB. Revisa siempre tope, condiciones y que la institución esté regulada."),
             ("¿Cuánto me da CETES por mi aguinaldo?", "Depende de la tasa de la subasta de esa semana. Con la calculadora de esta página pones tu aguinaldo y el plazo, y ves cuánto ganas ya con la retención de ISR y la inflación."),
@@ -268,7 +269,7 @@ FY.referidos($('ref-slot'));""",
             ("¿Qué es la GAT?", "La Ganancia Anual Total. La GAT nominal es lo que rinde tu dinero en un año; la GAT real le resta la inflación estimada. Compara siempre la GAT real."),
             ("¿Me cobran impuestos por los intereses?", "Sí. En 2026 te retienen ISR de 0.90% anual sobre el capital invertido, según la Ley de Ingresos de la Federación 2026."),
         ],
-        "fuente": 'Herramienta educativa, no es asesoría financiera ni una recomendación personalizada. Rendimientos pasados no garantizan rendimientos futuros. Fuentes: tasa de CETES de las subastas de <a href="https://www.banxico.org.mx" target="_blank" rel="noopener">Banxico</a>, inflación del <a href="https://www.inegi.org.mx" target="_blank" rel="noopener">INEGI</a>, seguro de depósitos del <a href="https://www.gob.mx/ipab" target="_blank" rel="noopener">IPAB</a>, <a href="https://www.fondodeproteccion.mx/" target="_blank" rel="noopener">Fondo de Protección de SOFIPOs</a> y Ley de Ingresos de la Federación 2026 (DOF).',
+        "fuente": 'Herramienta educativa, no es asesoría financiera ni una recomendación personalizada. Rendimientos pasados no garantizan rendimientos futuros. Fuentes: tasa de CETES de las subastas de <a href="https://www.banxico.org.mx" target="_blank" rel="noopener">Banxico</a>, inflación del <a href="https://www.inegi.org.mx" target="_blank" rel="noopener">INEGI</a>, seguro de depósitos del <a href="https://www.gob.mx/ipab" target="_blank" rel="noopener">IPAB</a>, <a href="https://www.fondodeproteccion.mx/" target="_blank" rel="noopener">Fondo de Protección de SOFIPOs</a> y Ley de Ingresos de la Federación 2026, art. 24 (DOF, 7 de noviembre de 2025).',
     },
 }
 
