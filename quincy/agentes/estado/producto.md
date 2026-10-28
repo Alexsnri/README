@@ -1,0 +1,50 @@
+# Producto y diseño · ideas, experimentos y resultados
+
+Lo más nuevo arriba. Cada cambio: qué se hizo, qué esperamos y cómo se mide.
+
+## Mediciones (Lighthouse móvil, sitio publicado; mismo entorno antes y después)
+
+| Fecha | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | Peso | Alto en celular |
+|---|---|---|---|---|---|---|---|---|
+| 2026-10-28 antes | Portada | 75 | 96 | 100 | 100 | 4.4 s | 287 KB | 9,790 px |
+| 2026-10-28 después | Portada | 90–92 | 100 | 100 | 100 | 3.2 s | 142 KB | 4,629 px |
+| 2026-10-28 antes | Aguinaldo | 87 | 95 | 100 | 100 | 3.1 s | 131 KB | 2,655 px |
+| 2026-10-28 después | Aguinaldo | 94 | 100 | 100 | 100 | 3.0 s | 112 KB | 3,241 px |
+
+En local (sin el proxy del entorno de pruebas) la portada da 99/100/100/100. Primer pintado real en vivo medido con Playwright: 0.8 s.
+Escritorio 1440 px: la portada pasó de 11,700 px a 2,690 px y ya usa todo el ancho.
+
+## 2026-10-28 · Rediseño para el lanzamiento (primer gran trabajo)
+
+**Qué cambió**
+- Portada de temporada (`index.html`, `js/portada.js`, `css/landing.css`): arriba, una calculadora que funciona al instante con cuenta
+  regresiva en vivo. Cambia sola por fecha: aguinaldo (15 oct–19 dic), cuesta de enero (20 dic–15 ene), salario mínimo (16 ene–31 mar),
+  PTU (1 abr–29 jun), vacaciones (30 jun–15 ago), quincena/regreso a clases (16 ago–14 oct). Probar otra: `?temporada=ptu`.
+  El HTML trae fijo el texto de aguinaldo; en otras temporadas lo cambia el JS (en la corrida de diciembre conviene dejar fijo el de la siguiente).
+- Retícula bento: app "Hoy" con demo, calendario de fechas, 7 calculadoras, tu yo de 65, reto diario, Síguenos (IG/TikTok), Avísame (.ics),
+  privacidad y empresas. Animaciones solo con CSS (scroll-driven, view transitions) y respetan "reducir movimiento".
+- Sin three.js (se borró `js/landing.js`), fondo con degradados CSS sin `filter: blur` (el desenfoque retrasaba el primer pintado ~2 s en
+  equipos sin GPU). Fuentes servidas desde `fonts/`, recortadas a español (Unbounded 51→29 KB) con `font-display: swap` y precarga.
+- Compartir en 1 toque (`js/compartir.js`) en la portada y todas las calculadoras: WhatsApp con texto listo y `?ref=wa`; "Historias" crea
+  una tarjeta 1080×1920 (Web Share con archivo; si no, descarga); "Tu Wrapped" en aguinaldo (5 tarjetas: cuánto, cuenta regresiva,
+  libre de ISR, rendimiento en CETES, invitación). Al llegar con `?ref=` sale "Tu amigo ya sabe cuánto le toca. ¿Y tú?" (también en la app).
+- Open Graph propia por página (`img/og/*.jpg`, generadas con `node quincy/scripts/build_og.js`).
+- "Que no se te pase": recordatorio .ics (aguinaldo, PTU o quincena), Instagram y TikTok en cada calculadora; `CONFIG.WA_CHANNEL` vacío
+  en `js/core.js` para el canal de WhatsApp (aparece el botón en cuanto se llene).
+- Contraste: `--dim` de app.css subió a #7d9aa5 y el verde de WhatsApp a #15803d (texto blanco legible).
+
+**Qué esperamos**
+- Más personas que calculan (la calculadora está en el primer pantallazo, sin desplazarse).
+- Más visitas con `?ref=` (wa, historia, wrapped): cada resultado se comparte en 1 toque.
+- Mejor tarjeta en WhatsApp al pegar un enlace (imagen propia por página).
+
+**Cómo se mide** (Cloudflare Web Analytics, cuando el Director tenga `CF_API_TOKEN`)
+- Visitas con `ref=wa`, `ref=historia`, `ref=wrapped`, `ref=recordatorio` por semana (aparecen en la ruta con consulta).
+- Lighthouse móvil de portada y aguinaldo en cada corrida (meta ≥ 90).
+
+## Ideas para siguientes corridas
+- Medir clics en "WhatsApp", "Historias" y "Wrapped" (eventos propios sin cookies: un `?ref` distinto por botón ya lo permite al llegar).
+- Wrapped también para PTU (mayo) y "Mi quincena" (ticket).
+- Página de la cuesta de enero con plan de 30 días (diciembre).
+- Rediseñar la vista "Me toca" de la app con el mismo lenguaje bento.
+- Cuando exista dominio propio: actualizar `CONFIG.SITE`, canonical y OG.

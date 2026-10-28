@@ -2,6 +2,19 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Producto y diseño
+- Hice: rediseño completo para el lanzamiento. Portada de temporada con calculadora de aguinaldo y cuenta regresiva en vivo arriba
+  (cambia sola por fecha), retícula bento, sin three.js, fuentes propias recortadas y sin desenfoques pesados. Compartir en 1 toque en
+  todas las calculadoras: WhatsApp con `?ref=wa`, tarjeta 1080×1920 para historias y "Tu Aguinaldo Wrapped" (5 tarjetas). Aviso
+  "Tu amigo ya sabe cuánto le toca, ¿y tú?" al llegar con `?ref=` (portada, calculadoras y app). Imagen Open Graph propia por página
+  (`scripts/build_og.js`), Instagram/TikTok y recordatorio .ics en cada calculadora. Detalle y mediciones en `estado/producto.md`.
+- Encontré: portada en Lighthouse móvil 75 → 90-92 (local 99), accesibilidad 96 → 100, peso 287 → 142 KB, alto en celular
+  9,790 → 4,629 px. Aguinaldo 87 → 94 y accesibilidad 100. El `filter: blur` del fondo retrasaba el primer pintado ~2 s.
+- Para SEO: `build_seo.py` tiene ahora `SHARE`, `REMIND` y `HERO_EXTRA` (de Producto) aparte de `PAGES`; los textos siguen siendo tuyos.
+  Siguen largas las descripciones de aguinaldo, finiquito, vacaciones y PTU, y el título de PTU (67).
+- Para el dueño: abre en tu celular https://alexsnri.github.io/README/quincy/ , escribe tu sueldo y prueba "WhatsApp", "Historias" y
+  "Tu Wrapped". Cuando crees el canal de WhatsApp, pega su enlace en `WA_CHANNEL` de `quincy/js/core.js` (o pídeselo a un agente).
+
 ## 2026-10-28 · Monetización
 - Hice: plan inicial en `estado/monetizacion.md` (dominio, referidos regulados, B2B, patrocinios, lo que falta del dueño).
   Publiqué `aguinaldo-a-rendir/` ("¿Dónde pongo mi aguinaldo a rendir?"): calculadora con CETES de `data/rates.json`, ISR 0.90% (LIF 2026)
