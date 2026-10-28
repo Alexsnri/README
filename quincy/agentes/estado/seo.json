@@ -1,0 +1,30 @@
+{
+  "nota": "Posición de Quincy (quincy-mx.github.io o alexsnri.github.io) en búsqueda web; null = no aparece en los primeros resultados.",
+  "historico": {
+    "2026-10-28": {
+      "cuánto me toca de aguinaldo 2026": null,
+      "aguinaldo proporcional calculadora": null,
+      "calculadora de aguinaldo 2026": null,
+      "calcular finiquito": null,
+      "finiquito y liquidación diferencia": null,
+      "vacaciones dignas cuántos días me tocan": null,
+      "prima vacacional cálculo": null,
+      "reparto de utilidades cuánto me toca": null,
+      "tanda qué número conviene": null,
+      "cuánto puedo gastar al día quincena": null,
+      "dónde invertir mi aguinaldo CETES": null
+    }
+  },
+  "arriba": {
+    "2026-10-28": {
+      "aguinaldo": ["hacecuentas.com", "excelsior.com.mx", "viveusa.mx", "cotizadorhipotecario.mx", "calculoseguro.mx", "satfacil.com.mx", "facturama.mx", "bbva.mx", "runahr.com"],
+      "finiquito": ["facturama.mx", "razon.com.mx", "elcontribuyente.mx", "bbva.mx", "milenio.com"],
+      "vacaciones": ["cronica.com.mx", "elfinanciero.com.mx", "expansion.mx", "nmas.com.mx", "tramitecadigital.com"],
+      "prima vacacional": ["deel.com", "idconline.mx", "mercadopago.com.mx", "bbva.mx", "hacecuentas.com"],
+      "ptu": ["unotv.com", "publimetro.com.mx", "elimparcial.com", "chilango.com"],
+      "tanda": ["resultados sin relación (quiniela argentina): hueco libre"],
+      "quincena": ["hacecuentas.com", "chilango.com", "expansion.mx"],
+      "aguinaldo a rendir": ["adn40.mx", "dedinero.com.mx", "foxsports.com.mx", "vanguardia.com.mx"]
+    }
+  }
+}

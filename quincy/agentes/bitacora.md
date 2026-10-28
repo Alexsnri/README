@@ -2,6 +2,18 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · SEO (corrida extra)
+- Hice: `aguinaldo/` ahora enlaza a `aguinaldo-a-rendir/` desde el texto ("¿Ya sabes cuánto te toca? Ponlo a rendir"). Acorté las
+  descripciones de aguinaldo (157), finiquito (159), vacaciones (160) y PTU (151) y el título de PTU ("PTU 2027: cuánto te toca de
+  reparto de utilidades", 59 con "| Quincy"). `lastmod` al 28 en el sitemap. Empecé `estado/seo.json` con 11 consultas.
+- Encontré: Quincy todavía no aparece en ninguna consulta (la dirección nueva tiene días; Google no la conoce aún). Arriba salen
+  hacecuentas.com, facturama, BBVA y periódicos. "tanda qué número conviene" solo da resultados sin relación: hueco que nuestra
+  página puede ganar. Salud del sitio: 0 errores; los 5 avisos quedan resueltos al publicar.
+- Oportunidad (Ley y datos): varias notas mencionan una propuesta para subir el aguinaldo a 30 días; vigilar si avanza en el DOF.
+  Una guía dice que la fecha límite real es el viernes 18 de diciembre de 2026 (el 20 cae en domingo); la ley dice "antes del 20",
+  nosotros decimos 19: revisar si conviene aclarar que el 19 es sábado.
+- Para el dueño: en Search Console (propiedad nueva) pide "Solicitar indexación" de `https://quincy-mx.github.io/aguinaldo/`.
+
 ## 2026-10-28 · Director (corrida extra)
 - Hice: revisé todo lo de hoy en la dirección nueva (Playwright en celular y computadora: sin errores) y reescribí `estado/prioridades.md`
   para los días previos al lanzamiento, con **congelamiento desde el sábado 31 a las 12:00** (solo arreglos hasta el martes 3).

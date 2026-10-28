@@ -25,7 +25,7 @@ PAGES = {
     "aguinaldo": {
         "title": "Calculadora de aguinaldo 2026: cuánto te toca y cuándo",
         "h1": "Calculadora de aguinaldo 2026",
-        "desc": "Calcula tu aguinaldo 2026 con la Ley Federal del Trabajo: mínimo 15 días de salario, proporcional si entraste este año, cuánto está libre de ISR y la fecha límite de pago.",
+        "desc": "Calcula tu aguinaldo 2026 según la Ley Federal del Trabajo: mínimo 15 días, proporcional si entraste este año, cuánto está libre de ISR y cuándo te lo pagan.",
         "intro": "Pon tu sueldo y tu fecha de ingreso. Te decimos cuánto te toca, cuánto está libre de ISR y cuántos días faltan para que te lo paguen.",
         "app": "derechos",
         "form": field("c-sal", "Sueldo mensual (antes de impuestos)", num("c-sal", 15000)) +
@@ -51,7 +51,9 @@ $('o-tax').textContent=`Libre de ISR hasta ${FY.fmt(ag.exento)} (30 UMA). ${ag.g
 <tr><td>$30,000</td><td class="mono">$15,000</td></tr>
 </tbody></table></div>
 <h2>¿Cuánto del aguinaldo paga ISR?</h2>
-<p>El aguinaldo está libre de ISR hasta 30 veces la UMA diaria. Con la UMA de 2026 ($117.31) son <b>$3,519.30</b>. Lo que pase de esa cantidad sí paga ISR.</p>""",
+<p>El aguinaldo está libre de ISR hasta 30 veces la UMA diaria. Con la UMA de 2026 ($117.31) son <b>$3,519.30</b>. Lo que pase de esa cantidad sí paga ISR.</p>
+<h2>¿Ya sabes cuánto te toca? Ponlo a rendir</h2>
+<p>Antes de que se te vaya en las posadas, mira cuánto ganarías si lo guardas unos meses en CETES o en una cuenta con rendimiento, ya con ISR e inflación: <a href="../aguinaldo-a-rendir/">¿Dónde pongo mi aguinaldo a rendir?</a></p>""",
         "faq": [
             ("¿Cuánto me toca de aguinaldo en 2026?", "Mínimo 15 días de salario. Con un sueldo de $15,000 al mes son $7,500 si trabajaste todo el año."),
             ("¿Cuándo me tienen que pagar el aguinaldo?", "Antes del 20 de diciembre, según el artículo 87 de la Ley Federal del Trabajo."),
@@ -62,7 +64,7 @@ $('o-tax').textContent=`Libre de ISR hasta ${FY.fmt(ag.exento)} (30 UMA). ${ag.g
     "finiquito": {
         "title": "Calculadora de finiquito y liquidación 2026",
         "h1": "Calculadora de finiquito y liquidación 2026",
-        "desc": "Calcula tu finiquito si renuncias o tu liquidación si te despiden sin causa: aguinaldo y vacaciones proporcionales, prima vacacional, prima de antigüedad e indemnización de 3 meses, con valores 2026.",
+        "desc": "Calcula tu finiquito si renuncias o tu liquidación si te despiden: aguinaldo y vacaciones proporcionales, prima vacacional, de antigüedad e indemnización 2026.",
         "intro": "Si renuncias te toca tu finiquito. Si te despiden sin causa justificada, además te toca una indemnización. Calcula el mínimo de ley.",
         "app": "derechos",
         "form": field("c-sal", "Sueldo mensual (antes de impuestos)", num("c-sal", 15000)) +
@@ -101,7 +103,7 @@ $('o-note').innerHTML=r.despido?`En algunos casos (art. 50) aplican además <b>2
     "vacaciones": {
         "title": "Vacaciones dignas 2026: tabla de días y prima vacacional",
         "h1": "¿Cuántos días de vacaciones te tocan?",
-        "desc": "Tabla de vacaciones dignas 2026 (artículo 76 de la Ley Federal del Trabajo): 12 días el primer año, 14, 16, 18, 20 y luego 2 más cada 5 años. Calcula tus días y tu prima vacacional.",
+        "desc": "Tabla de vacaciones dignas 2026 (art. 76 LFT): 12 días el primer año y 2 más cada año hasta 20; luego 2 más cada 5 años. Calcula tus días y tu prima vacacional.",
         "intro": "Desde 2023, con la reforma de \"vacaciones dignas\", te tocan al menos 12 días al cumplir tu primer año. Calcula los tuyos y tu prima vacacional.",
         "app": "derechos",
         "form": field("c-sal", "Sueldo mensual", num("c-sal", 15000)) +
@@ -131,9 +133,9 @@ $('o-next').textContent=`En tu próximo aniversario (${v.nextDate.toLocaleDateSt
         ],
     },
     "ptu": {
-        "title": "PTU 2027: cuánto te toca de reparto de utilidades y cuándo",
+        "title": "PTU 2027: cuánto te toca de reparto de utilidades",
         "h1": "Reparto de utilidades (PTU)",
-        "desc": "Calcula el tope de tu PTU: 3 meses de salario o el promedio de tus últimos 3 años, lo que más te convenga. Fechas límite: 30 de mayo (empresas) y 29 de junio (personas físicas).",
+        "desc": "Calcula el tope de tu PTU: 3 meses de salario o el promedio de tus últimos 3 años. Fecha límite: 30 de mayo (empresas) y 29 de junio (personas físicas).",
         "intro": "Si tu empresa tuvo utilidades, reparte el 10% entre sus trabajadores. Calcula el máximo que te pueden dar y cuándo te lo deben pagar.",
         "app": "derechos",
         "form": field("c-sal", "Sueldo mensual", num("c-sal", 15000)) +
