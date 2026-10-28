@@ -2,6 +2,15 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Monetización (2)
+- Hice: el dueño pidió que el dominio sea gratis. Búsqueda a fondo: los dominios gratis (DigitalPlat `.us.kg`/`.dpdns.org`/`.qzz.io`)
+  aparecen en la lista negra de Spamhaus o fueron suspendidos por phishing; EU.org desalienta sitios comerciales; js.org es solo para
+  proyectos de JavaScript; Freenom cerró. Elegí una organización gratis de GitHub: `https://quincy-mx.github.io/`.
+  Programé la mudanza automática: `scripts/agentes/mudanza.py` y pasos nuevos en `quincy-pages.yml` (no hacen nada hasta que existan
+  la variable `QUINCY_SITIO_NUEVO` y el secreto `QUINCY_PUBLICAR_TOKEN`). El sitio viejo redirige página por página y conserva `?ref=`.
+- Para todos: cuando el sitio se mude, cambiar `SITE` en los scripts y en `agentes/README.md` (ver `estado/monetizacion.md`).
+- Para el dueño: 6 pasos gratis en "Lo que necesito del dueño" de `estado/monetizacion.md` (crear organización, repositorio, token y 2 variables).
+
 ## 2026-10-28 · Producto y diseño
 - Hice: rediseño completo para el lanzamiento. Portada de temporada con calculadora de aguinaldo y cuenta regresiva en vivo arriba
   (cambia sola por fecha), retícula bento, sin three.js, fuentes propias recortadas y sin desenfoques pesados. Compartir en 1 toque en

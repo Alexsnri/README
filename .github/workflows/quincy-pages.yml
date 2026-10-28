@@ -1,5 +1,9 @@
 # Quincy: publica la carpeta quincy/ en GitHub Pages desde la rama gh-pages y avisa a los buscadores.
 # Sitio: https://alexsnri.github.io/README/quincy/
+# Mudanza a un sitio propio (por ejemplo https://quincy-mx.github.io/ o un dominio): se activa sola cuando existen
+# la variable QUINCY_SITIO_NUEVO (URL con / final), la variable QUINCY_REPO_NUEVO (dueño/repositorio) y el secreto
+# QUINCY_PUBLICAR_TOKEN (token con permiso de escritura en ese repositorio). Entonces el sitio completo se publica allá
+# con sus URLs cambiadas y aquí quedan redirecciones página por página (conservan ?ref= y #).
 name: Quincy · publicar
 
 on:
@@ -36,6 +40,31 @@ jobs:
           touch _site/.nojekyll
           cp quincy/google*.html _site/ 2>/dev/null || true
 
+      - name: Armar el sitio nuevo y dejar redirecciones aquí
+        id: nuevo
+        if: ${{ vars.QUINCY_SITIO_NUEVO != '' && vars.QUINCY_REPO_NUEVO != '' }}
+        env:
+          NUEVO: ${{ vars.QUINCY_SITIO_NUEVO }}
+          HAS_TOKEN: ${{ secrets.QUINCY_PUBLICAR_TOKEN != '' }}
+        run: |
+          [ "$HAS_TOKEN" = "true" ] || { echo "Falta el secreto QUINCY_PUBLICAR_TOKEN: sigo solo con el sitio actual."; exit 0; }
+          python3 quincy/scripts/agentes/mudanza.py _site "$NUEVO" _nuevo
+          echo "listo=1" >> "$GITHUB_OUTPUT"
+
+      - name: Publicar el sitio nuevo
+        if: ${{ steps.nuevo.outputs.listo == '1' }}
+        env:
+          TOKEN: ${{ secrets.QUINCY_PUBLICAR_TOKEN }}
+          REPO: ${{ vars.QUINCY_REPO_NUEVO }}
+        run: |
+          cd _nuevo
+          git init -q -b main
+          git config user.name "quincy-bot"
+          git config user.email "quincy-bot@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Publicar Quincy (${GITHUB_SHA::7})"
+          git push -f "https://x-access-token:${TOKEN}@github.com/${REPO}.git" main
+
       - name: Publicar en la rama gh-pages
         run: |
           cd _site
@@ -50,6 +79,15 @@ jobs:
         continue-on-error: true
         run: |
           sleep 60
+          SITE="${{ vars.QUINCY_SITIO_NUEVO }}"
+          if [ "${{ steps.nuevo.outputs.listo }}" = "1" ]; then
+            HOST=$(python3 -c "import sys;from urllib.parse import urlparse;print(urlparse(sys.argv[1]).hostname)" "$SITE")
+            URLS=$(grep -o '<loc>[^<]*</loc>' _nuevo/sitemap.xml | sed 's#</\?loc>##g' | python3 -c "import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
+            curl -sS -o /dev/null -w "IndexNow (nuevo): %{http_code}\n" -X POST https://api.indexnow.org/indexnow \
+              -H "Content-Type: application/json; charset=utf-8" \
+              -d "{\"host\":\"$HOST\",\"key\":\"a47e56b41e4abf5e6d43f62e3de33615\",\"keyLocation\":\"${SITE}a47e56b41e4abf5e6d43f62e3de33615.txt\",\"urlList\":$URLS}"
+            exit 0
+          fi
           URLS=$(grep -o '<loc>[^<]*</loc>' quincy/sitemap.xml | sed 's#</\?loc>##g' | python3 -c "import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
           curl -sS -o /dev/null -w "IndexNow: %{http_code}\n" -X POST https://api.indexnow.org/indexnow \
             -H "Content-Type: application/json; charset=utf-8" \
