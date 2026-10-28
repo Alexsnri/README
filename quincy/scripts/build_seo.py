@@ -275,6 +275,44 @@ RELATED = [("aguinaldo", "Aguinaldo 2026"), ("aguinaldo-a-rendir", "Pon tu aguin
 EYEBROW = "Calculadora gratuita · Ley Federal del Trabajo · 2026"
 FUENTE = 'Herramienta educativa con el mínimo de ley y valores de 2026 (salario mínimo de CONASAMI y UMA de INEGI). No es asesoría legal ni fiscal. Fuente: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFT.pdf" target="_blank" rel="noopener">Ley Federal del Trabajo</a>.'
 
+# Compartir en 1 toque (Producto): qué manda cada calculadora por WhatsApp y qué dice su tarjeta para historias.
+# Cada valor es una función JS que corre dentro de la página (tiene $, today y parse) y devuelve
+# { wa: texto sin enlace, card: {kicker, big, line, sub}, name, wrapped?: () => [tarjetas] }.
+SHARE = {
+    "aguinaldo": """() => { const sd=+$('c-sal').value/30, st=parse($('c-start').value)||new Date(2023,2,1), d=Math.max(15,+$('c-dias').value||15);
+const ag=FY.ley.aguinaldo({sd,start:st,at:today,dias:d}), left=FY.ley.diffDays(today,ag.deadline);
+return {wa:`Ya sé cuánto me toca de aguinaldo${left>=0?` y faltan ${left} días para cobrarlo`:''}. ¿Y a ti cuánto te toca? Calcúlalo en 10 segundos:`,
+card:{kicker:`Mi aguinaldo ${ag.deadline.getFullYear()}`,big:FY.fmt(ag.amount),line:left>=0?`y faltan ${left} días para cobrarlo`:'ya me tocó',sub:'Por ley, a más tardar el 19 de diciembre.'},
+name:'mi-aguinaldo',wrapped:()=>FY.compartir.aguinaldoWrapped(ag,left)}; }""",
+    "finiquito": """() => ({wa:'Calculé lo mínimo que me toca por ley si dejo mi trabajo. Calcula lo tuyo:',
+card:{kicker:$('o-label').textContent,big:$('o-main').textContent,line:'lo mínimo que me toca por ley',sub:'Ley Federal del Trabajo, valores 2026.'},name:'mi-finiquito'})""",
+    "vacaciones": """() => { const v=$('o-main').textContent, ok=/días/.test(v);
+return {wa:ok?`Me tocan ${v} de vacaciones por ley. ¿Cuántos te tocan a ti?`:'Ya sé cuántos días de vacaciones me tocan por ley. ¿Y a ti?',
+card:{kicker:'Mis vacaciones',big:ok?v:'12 días',line:ok?'de vacaciones pagadas por ley':'al cumplir mi primer año',sub:'Vacaciones dignas, artículo 76 de la LFT.'},name:'mis-vacaciones'}; }""",
+    "ptu": """() => ({wa:'Ya sé hasta cuánto me puede tocar de reparto de utilidades. ¿Y a ti?',
+card:{kicker:'Mi PTU, hasta',big:$('o-main').textContent,line:'si mi empresa tuvo utilidades',sub:'Tope: 3 meses de salario o el promedio de 3 años.'},name:'mi-ptu'})""",
+    "tanda": """() => { const c=document.querySelector('#o-lines td.mono');
+return {wa:'¿Qué número de la tanda te conviene? Mira cuánto gana o pierde cada turno contra CETES:',
+card:{kicker:'En la tanda, el turno 1',big:c?c.textContent:'+$0',line:'le gana a invertir en CETES',sub:'Los primeros reciben un préstamo sin intereses.',tone:'tide'},name:'mi-tanda'}; }""",
+    "quincena": """() => ({wa:'Ya sé cuánto puedo gastar hoy para llegar a la quincena. ¿Y tú?',
+card:{kicker:'Hoy puedo gastar',big:$('o-main').textContent,line:'y llego completo a la quincena',sub:'Si hoy gasto menos, mañana tengo más.',tone:'tide'},name:'mi-limite-de-hoy'})""",
+    "aguinaldo-a-rendir": """() => ({wa:'Calculé cuánto me daría mi aguinaldo si lo pongo a rendir, ya con ISR e inflación. Haz tu cuenta:',
+card:{kicker:'Si pongo mi aguinaldo a rendir',big:$('o-main').textContent,line:'tendría al final del plazo',sub:'Ya con la retención de ISR.',tone:'tide'},name:'mi-aguinaldo-a-rendir'})""",
+}
+
+# Recordatorio en el calendario que ofrece cada página (las demás: la próxima quincena).
+REMIND = {
+    "aguinaldo": ("Fecha límite del aguinaldo", "() => { const y=today.getMonth()===11&&today.getDate()>19?today.getFullYear()+1:today.getFullYear(); return {title:'Fecha límite de mi aguinaldo',date:new Date(y,11,19),alarmDays:3,name:'aguinaldo'}; }"),
+    "aguinaldo-a-rendir": ("Fecha límite del aguinaldo", "() => { const y=today.getMonth()===11&&today.getDate()>19?today.getFullYear()+1:today.getFullYear(); return {title:'Me pagan el aguinaldo: ponerlo a rendir',date:new Date(y,11,19),alarmDays:1,name:'aguinaldo'}; }"),
+    "ptu": ("Fecha límite de la PTU", "() => { const p=FY.ley.ptu({sd:1,at:today}); return {title:'Fecha límite de la PTU',date:p.empresas,alarmDays:3,name:'ptu'}; }"),
+}
+REMIND_DEFAULT = ("Mi próxima quincena", "() => { const d=today.getDate(), last=new Date(today.getFullYear(),today.getMonth()+1,0).getDate(); const n=d===last?new Date(today.getFullYear(),today.getMonth()+1,15):d>=15?new Date(today.getFullYear(),today.getMonth(),last):new Date(today.getFullYear(),today.getMonth(),15); return {title:'Hoy es quincena',date:n,alarmDays:0,name:'quincena'}; }")
+
+# Arriba de la calculadora: cuenta regresiva en vivo en las páginas de temporada.
+HERO_EXTRA = {
+    "aguinaldo": "() => { const y=today.getMonth()===11&&today.getDate()>19?today.getFullYear()+1:today.getFullYear(); FY.compartir.countdown($('cd'), new Date(y,11,20), 'Faltan para la fecha límite, 19 de diciembre'); }",
+}
+
 TEMPLATE = """<!doctype html>
 <html lang="es-MX">
 <head>
@@ -289,23 +327,35 @@ TEMPLATE = """<!doctype html>
 <meta property="og:locale" content="es_MX">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
-<meta property="og:image" content="{site}img/og.png">
+<meta property="og:site_name" content="Quincy">
+<meta property="og:image" content="{site}img/og/{slug}.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{h1}">
 <meta property="og:url" content="{url}">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{ld}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preload" href="../fonts/unbounded.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../css/app.css">
 <style>
 /* Layout: a calculator page for search. The calculator sits beside the explanation on wide screens and on top on phones. */
 body{{padding-bottom:0}}
-.calc-hero{{padding-block:34px 10px;display:grid;gap:12px;max-width:46rem}}
-.calc-hero h1{{font-size:clamp(1.9rem,5vw,3rem);line-height:1.05;font-weight:800;letter-spacing:-.03em}}
-.calc-hero p{{color:var(--mut);font-size:1.08rem}}
+body{{background:radial-gradient(90% 60% at 85% -10%,#173c4f 0,rgba(7,18,26,0) 60%),var(--night) no-repeat}}
+.calc-hero{{padding-block:34px 6px;display:grid;gap:12px;max-width:52rem}}
+.calc-hero h1{{font-size:clamp(2rem,5.6vw,3.6rem);line-height:1;font-weight:800;letter-spacing:-.04em}}
+.calc-hero > p{{color:var(--mut);font-size:1.08rem;max-width:44rem}}
 .calc{{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;margin-top:18px}}
 @media (max-width:820px){{.calc{{grid-template-columns:minmax(0,1fr)}}}}
-.calc-big{{font:800 clamp(2rem,6vw,3rem)/1 var(--f-display);color:var(--sun)}}
+.calc .card{{border-radius:22px;padding:22px}}
+.calc .out{{position:sticky;top:76px;background:linear-gradient(140deg,rgba(255,181,71,.12),rgba(90,214,200,.05) 55%),var(--deep);border-color:rgba(255,181,71,.4);box-shadow:0 30px 70px -40px rgba(255,181,71,.45)}}
+@media (max-width:820px){{.calc .out{{position:static}}}}
+.calc input[type=number],.calc input[type=date],.calc select{{min-height:48px;border-radius:14px}}
+.calc-big{{font:800 clamp(2.4rem,7vw,3.6rem)/1 var(--f-display);color:var(--sun);letter-spacing:-.03em}}
+.share-slot{{margin-top:6px}}
+.cd{{min-height:96px}}
+.follow{{margin-top:16px;padding:22px;border-radius:var(--r);border:1px solid var(--line-hi);background:var(--deep);display:grid;gap:12px}}
+.follow h2{{margin:0;font-size:1.2rem}}
 .calc-big.ok-t{{color:var(--ok)}}
 .article{{max-width:46rem;margin-top:30px}}
 .article h2{{font-size:1.3rem;margin-top:30px}}
@@ -330,10 +380,11 @@ body{{padding-bottom:0}}
     <p class="eyebrow">{eyebrow}</p>
     <h1>{h1}</h1>
     <p>{intro}</p>
+    {hero_extra}
   </section>
   <div class="calc">
     <form class="card" onsubmit="return false" aria-label="Tus datos">{form}</form>
-    <div class="card" aria-live="polite">{out}</div>
+    <div class="card out" aria-live="polite">{out}<div id="share" class="share-slot"></div></div>
   </div>
   <article class="article">
     {body}
@@ -343,6 +394,10 @@ body{{padding-bottom:0}}
       <div><h2>Todo esto y más, todos los días</h2><p class="mut" style="margin:6px 0 0">Tu límite de gasto diario, tus derechos, tus tandas y tu futuro. Gratis y sin registro.</p></div>
       <a class="btn btn-sun" href="../app.html#{app}">Abrir Quincy</a>
     </div>
+    <div class="follow" id="avisame">
+      <div><h2>Que no se te pase</h2><p class="mut" style="margin:6px 0 0">Ponlo en tu calendario y síguenos: cada semana, dinero claro en 30 segundos.</p></div>
+      <div class="row"><button class="btn btn-ghost btn-sm" type="button" id="rem">{remind_label}</button><a class="btn btn-ghost btn-sm" href="https://www.instagram.com/quincy_app/" target="_blank" rel="noopener">Instagram @quincy_app</a><a class="btn btn-ghost btn-sm" href="https://www.tiktok.com/@quincyapp" target="_blank" rel="noopener">TikTok @quincyapp</a><a class="btn btn-ghost btn-sm" id="wa-canal" href="#" target="_blank" rel="noopener" hidden>Canal de WhatsApp</a></div>
+    </div>
     <h2>Otras calculadoras</h2>
     <nav class="related" aria-label="Otras calculadoras">{related}</nav>
     <p class="small mut" style="margin-top:24px">{fuente}</p>
@@ -351,6 +406,7 @@ body{{padding-bottom:0}}
 <footer><div class="wrap"><p><b>Quincy</b> · Lo que te toca, cuándo te toca y cuánto te queda.</p></div></footer>
 <script src="../js/core.js"></script>
 <script src="../js/ley.js"></script>
+<script src="../js/compartir.js"></script>
 <script>
 (() => {{
 const $ = (id) => document.getElementById(id);
@@ -360,6 +416,11 @@ const iso = (d) => `${{d.getFullYear()}}-${{String(d.getMonth() + 1).padStart(2,
 {js}
 document.querySelectorAll("input,select").forEach((el) => el.addEventListener("input", run));
 run();
+FY.compartir.bar($("share"), {share});
+FY.compartir.welcome(document.querySelector(".calc-hero"), ".calc input, .calc select");
+{hero_js}
+$("rem").addEventListener("click", () => {{ const r = ({remind})(); FY.compartir.ics(Object.assign({{ desc: `Calcula cuánto te toca: ${{FY.compartir.link("recordatorio")}}` }}, r)); }});
+if (FY.CONFIG.WA_CHANNEL) {{ $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.WA_CHANNEL; }}
 }})();
 </script>
 </body>
@@ -382,7 +443,10 @@ def build():
         out = TEMPLATE.format(title=html.escape(p["title"]), desc=html.escape(p["desc"]), url=url, site=SITE, ld=json.dumps(ld, ensure_ascii=False),
                               h1=html.escape(p["h1"]), intro=html.escape(p["intro"]), form=p["form"], out=p["out"], body=p["body"], faq_html=faq_html,
                               related=related, app=p["app"], js=p["js"],
-                              eyebrow=html.escape(p.get("eyebrow", EYEBROW)), fuente=p.get("fuente", FUENTE))
+                              eyebrow=html.escape(p.get("eyebrow", EYEBROW)), fuente=p.get("fuente", FUENTE), slug=slug,
+                              share=SHARE[slug], remind_label=REMIND.get(slug, REMIND_DEFAULT)[0], remind=REMIND.get(slug, REMIND_DEFAULT)[1],
+                              hero_extra='<div class="cd" id="cd"></div>' if slug in HERO_EXTRA else "",
+                              hero_js=f"({HERO_EXTRA[slug]})();" if slug in HERO_EXTRA else "")
         d = ROOT / slug
         d.mkdir(exist_ok=True)
         (d / "index.html").write_text(out, encoding="utf-8")

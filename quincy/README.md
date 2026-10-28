@@ -28,7 +28,10 @@ Lo que te toca, cuándo te toca y cuánto te queda. Una app web gratis para trab
 | `js/tanda.js` | Tandas: ruleta, calendario, enlace para el grupo y valor de cada turno frente a CETES. |
 | `js/share.js` | Tarjetas para historias (futuro, días en verde, aguinaldo, ticket de la quincena y tanda). |
 | `js/app.js` | Secciones, marca de empresas, retos recibidos y tasas. |
-| `js/landing.js`, `css/landing.css` | Escena 3D (three.js r128 desde cdnjs) y animaciones de la portada. |
+| `js/portada.js`, `css/landing.css` | Portada: calculadora de temporada (cambia sola por fecha; prueba otra con `?temporada=ptu`), cuenta regresiva y retícula bento. Sin three.js. |
+| `js/compartir.js` | Compartir en 1 toque: WhatsApp con `?ref=wa`, tarjeta 1080×1920 para historias, Aguinaldo Wrapped, aviso al llegar con `?ref=` y recordatorios `.ics`. |
+| `fonts/` | Unbounded, Figtree y JetBrains Mono (licencia OFL), servidas desde el sitio. |
+| `scripts/build_og.js` | Genera las imágenes de vista previa (Open Graph 1200×630) de cada página en `img/og/`. |
 
 ## Pruebas
 

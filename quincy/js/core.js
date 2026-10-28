@@ -6,6 +6,10 @@ window.FY = Object.assign(window.FY || {}, (() => {
     CONTACT_URL: "https://github.com/Alexsnri/README/issues/new?template=piloto.yml",
     // Token de Cloudflare Web Analytics (gratis, sin cookies). Vacío = sin analítica.
     CF_ANALYTICS_TOKEN: "7867bd7b5a2449549624cefc62551f12",
+    // Redes de Quincy. WA_CHANNEL: enlace del canal de WhatsApp cuando exista (vacío = el bloque "Avísame" solo ofrece el calendario).
+    INSTAGRAM: "https://www.instagram.com/quincy_app/",
+    TIKTOK: "https://www.tiktok.com/@quincyapp",
+    WA_CHANNEL: "",
     // true en la copia que vive dentro del visor de Claude (ahí no se pueden descargar archivos).
     EMBEDDED_VIEWER: false,
     // Enlaces de referido que el dueño ya dio de alta. Vacío = no se muestra nada.

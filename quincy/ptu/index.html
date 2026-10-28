@@ -12,23 +12,35 @@
 <meta property="og:locale" content="es_MX">
 <meta property="og:title" content="PTU 2027: cuánto te toca de reparto de utilidades y cuándo">
 <meta property="og:description" content="Calcula el tope de tu PTU: 3 meses de salario o el promedio de tus últimos 3 años, lo que más te convenga. Fechas límite: 30 de mayo (empresas) y 29 de junio (personas físicas).">
-<meta property="og:image" content="https://alexsnri.github.io/README/quincy/img/og.png">
+<meta property="og:site_name" content="Quincy">
+<meta property="og:image" content="https://alexsnri.github.io/README/quincy/img/og/ptu.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Reparto de utilidades (PTU)">
 <meta property="og:url" content="https://alexsnri.github.io/README/quincy/ptu/">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebApplication", "name": "Reparto de utilidades (PTU)", "url": "https://alexsnri.github.io/README/quincy/ptu/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "es-MX", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "MXN"}, "description": "Calcula el tope de tu PTU: 3 meses de salario o el promedio de tus últimos 3 años, lo que más te convenga. Fechas límite: 30 de mayo (empresas) y 29 de junio (personas físicas)."}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Cuándo se paga la PTU?", "acceptedAnswer": {"@type": "Answer", "text": "A más tardar el 30 de mayo si tu patrón es empresa, y el 29 de junio si es persona física."}}, {"@type": "Question", "name": "¿Cuál es el tope de la PTU?", "acceptedAnswer": {"@type": "Answer", "text": "3 meses de salario o el promedio de lo recibido en los últimos 3 años, lo que más le convenga al trabajador."}}, {"@type": "Question", "name": "¿A todos les toca PTU?", "acceptedAnswer": {"@type": "Answer", "text": "Solo si la empresa tuvo utilidades. Hay excepciones, como empresas de nueva creación en su primer año."}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Quincy", "item": "https://alexsnri.github.io/README/quincy/"}, {"@type": "ListItem", "position": 2, "name": "Reparto de utilidades (PTU)", "item": "https://alexsnri.github.io/README/quincy/ptu/"}]}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preload" href="../fonts/unbounded.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../css/app.css">
 <style>
 /* Layout: a calculator page for search. The calculator sits beside the explanation on wide screens and on top on phones. */
 body{padding-bottom:0}
-.calc-hero{padding-block:34px 10px;display:grid;gap:12px;max-width:46rem}
-.calc-hero h1{font-size:clamp(1.9rem,5vw,3rem);line-height:1.05;font-weight:800;letter-spacing:-.03em}
-.calc-hero p{color:var(--mut);font-size:1.08rem}
+body{background:radial-gradient(90% 60% at 85% -10%,#173c4f 0,rgba(7,18,26,0) 60%),var(--night) no-repeat}
+.calc-hero{padding-block:34px 6px;display:grid;gap:12px;max-width:52rem}
+.calc-hero h1{font-size:clamp(2rem,5.6vw,3.6rem);line-height:1;font-weight:800;letter-spacing:-.04em}
+.calc-hero > p{color:var(--mut);font-size:1.08rem;max-width:44rem}
 .calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;margin-top:18px}
 @media (max-width:820px){.calc{grid-template-columns:minmax(0,1fr)}}
-.calc-big{font:800 clamp(2rem,6vw,3rem)/1 var(--f-display);color:var(--sun)}
+.calc .card{border-radius:22px;padding:22px}
+.calc .out{position:sticky;top:76px;background:linear-gradient(140deg,rgba(255,181,71,.12),rgba(90,214,200,.05) 55%),var(--deep);border-color:rgba(255,181,71,.4);box-shadow:0 30px 70px -40px rgba(255,181,71,.45)}
+@media (max-width:820px){.calc .out{position:static}}
+.calc input[type=number],.calc input[type=date],.calc select{min-height:48px;border-radius:14px}
+.calc-big{font:800 clamp(2.4rem,7vw,3.6rem)/1 var(--f-display);color:var(--sun);letter-spacing:-.03em}
+.share-slot{margin-top:6px}
+.cd{min-height:96px}
+.follow{margin-top:16px;padding:22px;border-radius:var(--r);border:1px solid var(--line-hi);background:var(--deep);display:grid;gap:12px}
+.follow h2{margin:0;font-size:1.2rem}
 .calc-big.ok-t{color:var(--ok)}
 .article{max-width:46rem;margin-top:30px}
 .article h2{font-size:1.3rem;margin-top:30px}
@@ -53,10 +65,11 @@ body{padding-bottom:0}
     <p class="eyebrow">Calculadora gratuita · Ley Federal del Trabajo · 2026</p>
     <h1>Reparto de utilidades (PTU)</h1>
     <p>Si tu empresa tuvo utilidades, reparte el 10% entre sus trabajadores. Calcula el máximo que te pueden dar y cuándo te lo deben pagar.</p>
+    
   </section>
   <div class="calc">
     <form class="card" onsubmit="return false" aria-label="Tus datos"><div class="field"><label for="c-sal">Sueldo mensual</label><input type="number" inputmode="numeric" id="c-sal" value="15000" min="0" max="10000000"></div><div class="field"><label for="c-prom">Promedio de PTU de tus últimos 3 años (opcional)</label><input type="number" inputmode="numeric" id="c-prom" value="0" min="0" max="10000000"></div></form>
-    <div class="card" aria-live="polite"><p class="eyebrow">Máximo de tu PTU</p><b class="calc-big mono" id="o-main">$0</b><p id="o-note"></p></div>
+    <div class="card out" aria-live="polite"><p class="eyebrow">Máximo de tu PTU</p><b class="calc-big mono" id="o-main">$0</b><p id="o-note"></p><div id="share" class="share-slot"></div></div>
   </div>
   <article class="article">
     
@@ -70,6 +83,10 @@ body{padding-bottom:0}
       <div><h2>Todo esto y más, todos los días</h2><p class="mut" style="margin:6px 0 0">Tu límite de gasto diario, tus derechos, tus tandas y tu futuro. Gratis y sin registro.</p></div>
       <a class="btn btn-sun" href="../app.html#derechos">Abrir Quincy</a>
     </div>
+    <div class="follow" id="avisame">
+      <div><h2>Que no se te pase</h2><p class="mut" style="margin:6px 0 0">Ponlo en tu calendario y síguenos: cada semana, dinero claro en 30 segundos.</p></div>
+      <div class="row"><button class="btn btn-ghost btn-sm" type="button" id="rem">Fecha límite de la PTU</button><a class="btn btn-ghost btn-sm" href="https://www.instagram.com/quincy_app/" target="_blank" rel="noopener">Instagram @quincy_app</a><a class="btn btn-ghost btn-sm" href="https://www.tiktok.com/@quincyapp" target="_blank" rel="noopener">TikTok @quincyapp</a><a class="btn btn-ghost btn-sm" id="wa-canal" href="#" target="_blank" rel="noopener" hidden>Canal de WhatsApp</a></div>
+    </div>
     <h2>Otras calculadoras</h2>
     <nav class="related" aria-label="Otras calculadoras"><a class="chip-btn" href="../aguinaldo/">Aguinaldo 2026</a><a class="chip-btn" href="../aguinaldo-a-rendir/">Pon tu aguinaldo a rendir</a><a class="chip-btn" href="../finiquito/">Finiquito y liquidación</a><a class="chip-btn" href="../vacaciones/">Vacaciones dignas</a><a class="chip-btn" href="../tanda/">Tandas</a><a class="chip-btn" href="../quincena/">Cuánto gastar al día</a></nav>
     <p class="small mut" style="margin-top:24px">Herramienta educativa con el mínimo de ley y valores de 2026 (salario mínimo de CONASAMI y UMA de INEGI). No es asesoría legal ni fiscal. Fuente: <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFT.pdf" target="_blank" rel="noopener">Ley Federal del Trabajo</a>.</p>
@@ -78,6 +95,7 @@ body{padding-bottom:0}
 <footer><div class="wrap"><p><b>Quincy</b> · Lo que te toca, cuándo te toca y cuánto te queda.</p></div></footer>
 <script src="../js/core.js"></script>
 <script src="../js/ley.js"></script>
+<script src="../js/compartir.js"></script>
 <script>
 (() => {
 const $ = (id) => document.getElementById(id);
@@ -90,6 +108,12 @@ $('o-main').textContent=FY.fmt(p.tope);
 $('o-note').innerHTML=`3 meses de salario son ${FY.fmt(p.tresMeses)}. Fecha límite: <b>${p.empresas.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}</b> si tu patrón es empresa y <b>${p.personas.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})}</b> si es persona física. Libre de ISR hasta ${FY.fmt(p.exento)} (15 UMA).`;}
 document.querySelectorAll("input,select").forEach((el) => el.addEventListener("input", run));
 run();
+FY.compartir.bar($("share"), () => ({wa:'Ya sé hasta cuánto me puede tocar de reparto de utilidades. ¿Y a ti?',
+card:{kicker:'Mi PTU, hasta',big:$('o-main').textContent,line:'si mi empresa tuvo utilidades',sub:'Tope: 3 meses de salario o el promedio de 3 años.'},name:'mi-ptu'}));
+FY.compartir.welcome(document.querySelector(".calc-hero"), ".calc input, .calc select");
+
+$("rem").addEventListener("click", () => { const r = (() => { const p=FY.ley.ptu({sd:1,at:today}); return {title:'Fecha límite de la PTU',date:p.empresas,alarmDays:3,name:'ptu'}; })(); FY.compartir.ics(Object.assign({ desc: `Calcula cuánto te toca: ${FY.compartir.link("recordatorio")}` }, r)); });
+if (FY.CONFIG.WA_CHANNEL) { $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.WA_CHANNEL; }
 })();
 </script>
 </body>

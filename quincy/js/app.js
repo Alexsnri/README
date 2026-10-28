@@ -60,6 +60,17 @@
     $("challenge-text").textContent = rn === FY.reto.today ? `Te retaron: sacaron ${rp}/5 en el Reto #${rn} de hoy. ¿Le ganas?` : `Te retaron con el Reto #${rn}. Juega el de hoy y compara.`;
     $("challenge").hidden = false;
   }
+  // Llegó por una tarjeta o enlace compartido: ?ref=futuro|verde|recibo|aguinaldo|tanda|carta|wa…
+  else if (params.get("ref") && params.get("ref") !== "recordatorio") {
+    const REF = { futuro: ["futuro", "Tu amigo ya vio a su yo del futuro. ¿Y tú?", "Ver el mío"], carta: ["futuro", "Tu amigo ya vio a su yo del futuro. ¿Y tú?", "Ver el mío"],
+      aguinaldo: ["derechos", "Tu amigo ya sabe cuánto le toca de aguinaldo. ¿Y tú?", "Calcular el mío"], tanda: ["tanda", "Tu amigo ya organizó su tanda. ¿Y tú?", "Armar la mía"] };
+    const [view, txt, cta] = REF[params.get("ref")] || ["hoy", "Tu amigo ya sabe cuánto puede gastar hoy. ¿Y tú?", "Calcular el mío"];
+    const b = $("challenge").querySelector("[data-go]");
+    b.dataset.go = view; b.textContent = cta;
+    b.addEventListener("click", () => { $("challenge").hidden = true; });
+    $("challenge-text").textContent = txt;
+    $("challenge").hidden = false;
+  }
   $("challenge-x").addEventListener("click", () => { $("challenge").hidden = true; });
   if ([...params.keys()].length) { try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {} }
 
