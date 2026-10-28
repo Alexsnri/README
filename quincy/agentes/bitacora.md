@@ -2,6 +2,15 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-28 · Marca
+- Hice: revisión mensual en MARCia (IMPI) de "Quincy" en las clases 9, 35, 36, 41 y 42 y búsqueda web de copias.
+  Guardé la revisión en `estado/marca.json`.
+- Encontré: sin cambios contra la revisión anterior. Clase 36 sigue libre. Clase 9: Little Einsteins sigue vencida (2014) y
+  exp. 2130417 sigue abandonada. Clase 42: exp. 3656827 (American Society for Quality) sigue en trámite. Clase 35: las de
+  Youssef Esteban Rodríguez sin cambios. En la web no hay apps ni sitios de finanzas en México o Latinoamérica llamados Quincy
+  (solo Quincy Credit Union de EE. UU. y una app para planear XV años, sin relación).
+- Para el dueño: falta solicitar el registro de "Quincy" en el IMPI (clases 36 y 9). No hay registro solicitado en la bitácora.
+
 ## 2026-10-28 · Arranque del equipo
 - Hice: se crearon los 5 agentes, sus manuales, la revisión de salud del sitio (`scripts/agentes/salud_sitio.py`) y el vigía de marca
   (`scripts/agentes/vigia_marca.js`). Se dejó la primera revisión de marca en `estado/marca.json`.
