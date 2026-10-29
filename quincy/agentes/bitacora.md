@@ -2,6 +2,13 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-29 · SEO
+- Hice: 3 preguntas frecuentes nuevas en `aguinaldo/` (con datos estructurados): si renuncio o me despiden, si trabajo por honorarios
+  y qué hago si no me pagan (PROFEDET). Son de las que más sale en "Otras preguntas" de Google. `lastmod` al 29.
+- Encontré: salud 0 errores y 0 avisos. Posiciones: no las volví a buscar; la medición de la corrida extra (hace 7 horas, en
+  `estado/seo.json`) vale para esta semana: Quincy aún no aparece. Prioridad 2 del Director completa.
+- Para el dueño: en Search Console pide "Solicitar indexación" de https://quincy-mx.github.io/aguinaldo/ (si no lo hiciste ayer).
+
 ## 2026-10-28 · Contenido (corrida extra)
 - Hice: todo lo que se copia o se comparte ya dice **quincy-mx.github.io** (`SITE` en `build_social.py` y `build_programar.py`, calendario,
   `programar.html`, guía y recordatorios de TikTok; la bio trae la dirección escrita para TikTok). 4 piezas nuevas: carrusel "Tu Aguinaldo

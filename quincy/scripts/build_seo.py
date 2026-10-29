@@ -59,6 +59,9 @@ $('o-tax').textContent=`Libre de ISR hasta ${FY.fmt(ag.exento)} (30 UMA). ${ag.g
             ("¿Cuándo me tienen que pagar el aguinaldo?", "Antes del 20 de diciembre, según el artículo 87 de la Ley Federal del Trabajo."),
             ("Si entré a trabajar a mitad de año, ¿me toca aguinaldo?", "Sí, la parte proporcional a los días que trabajaste en el año."),
             ("¿El aguinaldo paga impuestos?", "Está exento de ISR hasta 30 UMA ($3,519.30 en 2026). Lo que pase de esa cantidad paga ISR."),
+            ("Si renuncio o me despiden antes de diciembre, ¿me pagan el aguinaldo?", "Sí. Te toca la parte proporcional a los días que trabajaste en el año y te la deben pagar junto con tu finiquito."),
+            ("¿Me toca aguinaldo si trabajo por honorarios?", "No, el aguinaldo es para quien tiene una relación de trabajo. Si en los hechos tienes jefe, horario y sueldo fijo, podrías tener derecho: pregunta gratis en PROFEDET."),
+            ("¿Qué hago si no me pagan el aguinaldo?", "Pídelo por escrito a tu patrón. Si no te lo paga, PROFEDET te orienta y te representa gratis para reclamarlo."),
         ],
     },
     "finiquito": {
