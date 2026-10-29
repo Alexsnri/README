@@ -9,15 +9,22 @@ Uso:  python3 quincy/scripts/agentes/jarvis.py [--stdout]
 import datetime as dt
 import json
 import os
+import random
 import re
 import sys
 import urllib.request
 from zoneinfo import ZoneInfo
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import jarvis_frases as F  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 REPO = os.path.dirname(ROOT)
 BITACORA = os.path.join(ROOT, "agentes", "bitacora.md")
 OUT = os.path.join(REPO, ".github", "jarvis", "resumen.txt")
+OUT_VARIANTES = os.path.join(REPO, ".github", "jarvis", "variantes.txt")
+N_VARIANTES = 10
+SEPARADOR = "~~~"
 SITE = "https://quincy-mx.github.io/"
 CF_SITE_TOKEN = "7867bd7b5a2449549624cefc62551f12"  # token público del beacon (js/core.js)
 TZ = ZoneInfo("America/Mexico_City")
@@ -38,7 +45,7 @@ AGENDA = [
     ("el de Marca", {"dom": [3]}, 19, 52),
 ]
 
-CHISTES = [
+CHISTES_VIEJOS = [
     "Tú tranquilo, que aquí los únicos que chambean son ellos.",
     "Ellos no piden aguinaldo. Tú sí deberías calcular el tuyo.",
     "Si alguien pregunta, sí tienes empleados. Digitales, pero empleados.",
@@ -106,7 +113,7 @@ def entradas():
 def visitas():
     token = os.environ.get("CF_API_TOKEN", "").strip()
     if not token:
-        return "Visitas no te puedo decir: sigue sin aparecer el token de Cloudflare. Ese es pendiente tuyo, jefe."
+        return {"estado": "sin_token"}
     h = {"Authorization": f"Bearer {token}", "Content-Type": "application/json", "User-Agent": "quincy-jarvis/1.0"}
     try:
         _, body = get("https://api.cloudflare.com/client/v4/accounts", h)
@@ -127,20 +134,14 @@ def visitas():
         hoy, sem = rango(dt.timedelta(hours=24)), rango(dt.timedelta(days=7))
         v24 = sum(g["sum"]["visits"] for g in hoy["tot"]) if hoy["tot"] else 0
         v7 = sum(g["sum"]["visits"] for g in sem["tot"]) if sem["tot"] else 0
-        txt = f"Llevas {v24} visitas en 24 horas y {v7} en la semana."
-        if v24 == 0:
-            txt += " Cero. Ni tu jefa entró. A compartir, huevón."
         pag = [g["dimensions"]["requestPath"] for g in hoy["pag"] if g["dimensions"]["requestPath"]]
-        if pag:
-            nombre = pag[0].strip("/").replace("-", " ") or "la portada"
-            txt += f" La página más vista fue {nombre}."
         refs = [g["dimensions"]["refererHost"] for g in hoy["ref"] if g["dimensions"]["refererHost"] and "quincy" not in g["dimensions"]["refererHost"]]
-        if refs:
-            txt += " Llegan sobre todo de " + ", ".join(r.replace("www.", "").replace("l.instagram.com", "Instagram").replace(".com", "") for r in refs[:2]) + "."
-        return txt
+        return {"estado": "ok", "v24": v24, "v7": v7,
+                "pagina": (pag[0].strip("/").replace("-", " ").replace(".html", "") or "la portada") if pag else "",
+                "fuentes": " y ".join(r.replace("www.", "").replace("l.instagram.com", "Instagram").replace(".com", "") for r in refs[:2])}
     except Exception as e:  # nunca tumbar el resumen por las visitas
         print(f"Cloudflare: {e}", file=sys.stderr)
-        return "Las visitas no las pude leer esta vez; Cloudflare anda de payaso."
+        return {"estado": "error"}
 
 
 def sitio():
@@ -152,23 +153,21 @@ def sitio():
                 malas.append(p or "portada")
         except Exception:
             malas.append(p or "portada")
-    if not malas:
-        return ""
-    return "Aguas: no abre " + ", ".join(m.strip("/").replace(".html", "") for m in malas) + ". Los agentes ya deberían estar corriendo."
+    return [m.strip("/").replace(".html", "") for m in malas]
 
 
-def cuentas():
+def cuentas(rng):
     hoy = NOW.date()
     out = []
     lanz = dt.date(2026, 11, 2)
     if hoy < lanz:
         d = (lanz - hoy).days
-        out.append("Mañana es el lanzamiento, jefe. Ya ni modo de echarse para atrás." if d == 1 else f"Faltan {d} días para el lanzamiento.")
+        out.append(rng.choice(F.LANZAMIENTO_MANANA) if d == 1 else rng.choice(F.LANZAMIENTO).format(dias=d))
     elif hoy == lanz:
-        out.append("Hoy es el lanzamiento. Publica el reel y manda los WhatsApp, que no se publican con la mente.")
+        out.append(rng.choice(F.LANZAMIENTO_HOY))
     ag = dt.date(hoy.year, 12, 19)
     if dt.date(hoy.year, 11, 1) <= hoy <= ag:
-        out.append(f"Y {(ag - hoy).days} para el aguinaldo: temporada alta.")
+        out.append(rng.choice(F.AGUINALDO).format(dias=(ag - hoy).days))
     return " ".join(out)
 
 # Pase de lista: nombre en la bitácora -> (cómo se dice, apodo)
@@ -210,21 +209,23 @@ def en_que_anda():
     return out
 
 
-def pase_de_lista(ents):
-    corto = {"Director": "El Director", "Producto y diseño": "Producto", "SEO": "SEO", "Contenido": "Contenido",
-             "Ley y datos": "El licenciado", "Monetización": "El de la lana", "Marca": "Marca"}
+def pase_de_lista(ents, rng):
     hoy, ayer = NOW.date().isoformat(), (NOW.date() - dt.timedelta(days=1)).isoformat()
     items = []
-    for nombre, alias, _ in EQUIPO:
+    for nombre, _, _ in EQUIPO:
         e = next((x for x in ents if x["agente"].startswith(nombre) and "Hice" in x and x["fecha"] in (hoy, ayer)), None)
         if e:
-            items.append(f"{corto[nombre]}: {frase(e['Hice'], 55)}")
+            apodo = rng.choice(F.APODOS[nombre])
+            linea = rng.choice(F.PASE_LINEA).format(nombre=apodo, hecho=frase(e["Hice"], 60))
+            items.append(linea[0].upper() + linea[1:])
     if not items:
-        return ["Los huevones no han reportado nada desde ayer. Andan en horario, según ellos."]
-    return [f"Ya los puse a chambear. Jalaron {len(items)}."] + items[:5]
+        return [rng.choice(F.PASE_NADIE)]
+    rng.shuffle(items)
+    return [rng.choice(F.PASE_INTRO).format(n=len(items))] + items[:4]
 
 
 def proximo():
+    """(quién, cuándo) del próximo agente en el horario."""
     for minutos in range(1, 60 * 24 * 32):
         t = NOW + dt.timedelta(minutes=minutos)
         for nombre, cuando, hh, mm in AGENDA:
@@ -233,38 +234,77 @@ def proximo():
                 dia = "hoy" if t.date() == NOW.date() else ("mañana" if t.date() == NOW.date() + dt.timedelta(days=1) else f"el {DIAS[t.weekday()]}")
                 h12 = (hh - 1) % 12 + 1
                 parte = "de la noche" if hh >= 19 else ("de la tarde" if hh >= 12 else "de la mañana")
-                return f"Sigue {nombre.replace('el de ', '', 1)}, {dia} a las {h12}:{mm:02d}."
-    return ""
+                return (nombre.replace("el de ", "", 1), f"{dia} a las {h12}:{mm:02d}")
+    return None
 
 
-def resumen():
+def resumen(rng, datos):
     hora = NOW.hour
-    saludo = "Buenos días" if hora < 12 else ("Buenas tardes" if hora < 19 else "Buenas noches")
-    partes = [f"{saludo}, jefe.", cuentas(), visitas(), sitio()]
+    momento = "mañana" if hora < 12 else ("tarde" if hora < 19 else "noche")
+    partes = [rng.choice(F.INTROS).format(saludo=rng.choice(F.SALUDOS[momento])), cuentas(rng)]
 
+    v = datos["visitas"]
+    if v["estado"] == "ok":
+        txt = rng.choice(F.VISITAS_OK).format(v24=v["v24"], v7=v["v7"])
+        if v["v24"] == 0:
+            txt += " " + rng.choice(F.VISITAS_CERO)
+        else:
+            if v["pagina"]:
+                txt += " " + rng.choice(F.PAGINA_TOP).format(pagina=v["pagina"])
+            if v["fuentes"]:
+                txt += " " + rng.choice(F.FUENTES).format(fuentes=v["fuentes"])
+        partes.append(txt)
+    else:
+        partes.append(rng.choice(F.VISITAS_SIN_TOKEN if v["estado"] == "sin_token" else F.VISITAS_ERROR))
+    if datos["malas"]:
+        partes.append(rng.choice(F.SITIO_MAL).format(paginas=", ".join(datos["malas"])))
+
+    pase = pase_de_lista(datos["ents"], rng)
+    tarea = rng.choice(F.TAREA).format(tarea=frase(datos["dueño"], 90)) if datos["dueño"] else ""
+    sigue = ""
+    if datos["sigue"]:
+        quien, cuando = datos["sigue"]
+        sigue = rng.choice(F.SIGUE).format(quien=quien, cuando=cuando)
+    cierre = rng.choice(F.CIERRES)
+
+    def armar():
+        return [p for p in partes + pase + [tarea, sigue, cierre] if p]
+
+    # máximo ~45 segundos (unas 115 palabras): primero se recorta el pase de lista, luego el "sigue"
+    while len(" ".join(armar()).split()) > 115:
+        if len(pase) > 3:
+            pase.pop()
+        elif sigue:
+            sigue = ""
+        elif datos["dueño"] and len(tarea) > 80:
+            tarea = rng.choice(F.TAREA).format(tarea=frase(datos["dueño"], 55))
+        else:
+            break
+    texto = "\n".join(armar())
+    texto = re.sub(r"\bde el\b", "del", texto)
+    texto = re.sub(r"\ba el\b", "al", texto)
+    return texto.replace('"', "")
+
+
+def datos_del_momento():
     ents = entradas()
-    partes += pase_de_lista(ents)
-
-    dueño = next((e["Para el dueño"] for e in ents if e.get("Para el dueño") and e["agente"].startswith("Director")), "")
-    if dueño:
-        partes.append("A ti te toca: " + frase(dueño, 95))
-    partes.append(proximo())
-    partes.append(CHISTES[(NOW.timetuple().tm_yday * 12 + NOW.hour // 2) % len(CHISTES)])
-    partes = [p for p in partes if p]
-    while len(" ".join(partes).split()) > 115 and len(partes) > 4:  # ~45 segundos en voz alta
-        partes.pop(-2 if partes[-1] in CHISTES else -1)
-    return "\n".join(partes)
+    return {"visitas": visitas(), "malas": sitio(), "ents": ents, "sigue": proximo(),
+            "dueño": next((e["Para el dueño"] for e in ents if e.get("Para el dueño") and e["agente"].startswith("Director")), "")}
 
 
 def main():
-    texto = resumen()
+    datos = datos_del_momento()
+    semilla = int(NOW.timestamp()) // 60
+    versiones = [resumen(random.Random(semilla * 100 + i), datos) for i in range(N_VARIANTES)]
     if "--stdout" in sys.argv:
-        print(texto)
+        print(f"\n{SEPARADOR}\n".join(versiones))
         return 0
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
-        f.write(texto + "\n")
-    print(texto)
+        f.write(versiones[0] + "\n")
+    with open(OUT_VARIANTES, "w", encoding="utf-8") as f:
+        f.write(f"\n{SEPARADOR}\n".join(versiones) + "\n")
+    print(versiones[0])
     return 0
 
 
