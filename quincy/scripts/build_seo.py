@@ -360,6 +360,26 @@ body{{background:radial-gradient(90% 60% at 85% -10%,#173c4f 0,rgba(7,18,26,0) 6
 .calc-big{{font:800 clamp(2.4rem,7vw,3.6rem)/1 var(--f-display);color:var(--sun);letter-spacing:-.03em}}
 .share-slot{{margin-top:6px}}
 .cd{{min-height:96px}}
+/* Celular: lo de arriba más compacto para que el campo y el resultado se vean pronto; barra fija con el resultado mientras no está a la vista. */
+.peek{{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-radius:18px;background:rgba(11,27,37,.96);border:1px solid rgba(255,181,71,.55);box-shadow:0 18px 40px -12px rgba(0,0,0,.8);color:var(--fg);text-decoration:none;min-height:56px}}
+.peek span{{font:600 .7rem/1.2 var(--f-data);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}}
+.peek b{{font:800 1.35rem/1 var(--f-display);color:var(--sun);margin-left:auto}}
+.peek i{{font-style:normal;color:var(--tide);font-weight:700;font-size:.9rem}}
+@media (min-width:821px){{.peek{{display:none}}}}
+@media (max-width:640px){{
+  .calc-hero{{padding-block:16px 2px;gap:8px}}
+  .calc-hero .eyebrow{{font-size:.62rem;letter-spacing:.08em}}
+  .calc-hero > p{{font-size:.98rem;line-height:1.45}}
+  .cd{{min-height:74px}}
+  .cd-grid{{margin-top:4px}}
+  .cd-grid span{{padding:6px 2px 5px}}
+  .cd-grid b{{font-size:1.15rem}}
+  .calc{{margin-top:12px}}
+  .calc .card{{padding:16px}}
+  .ref-hello{{padding:8px 8px 8px 12px;gap:8px}}
+  .ref-hello p{{font-size:.9rem;flex-basis:180px}}
+  .ref-hello .ref-x{{width:40px;height:40px}}
+}}
 .follow{{margin-top:16px;padding:22px;border-radius:var(--r);border:1px solid var(--line-hi);background:var(--deep);display:grid;gap:12px}}
 .follow h2{{margin:0;font-size:1.2rem}}
 .calc-big.ok-t{{color:var(--ok)}}
@@ -390,7 +410,7 @@ body{{background:radial-gradient(90% 60% at 85% -10%,#173c4f 0,rgba(7,18,26,0) 6
   </section>
   <div class="calc">
     <form class="card" onsubmit="return false" aria-label="Tus datos">{form}</form>
-    <div class="card out" aria-live="polite">{out}<div id="share" class="share-slot"></div></div>
+    <div class="card out" id="resultado" aria-live="polite">{out}<div id="share" class="share-slot"></div></div>
   </div>
   <article class="article">
     {body}
@@ -424,6 +444,18 @@ document.querySelectorAll("input,select").forEach((el) => el.addEventListener("i
 run();
 FY.compartir.bar($("share"), {share});
 FY.compartir.welcome(document.querySelector(".calc-hero"), ".calc input, .calc select");
+// Barra fija con el resultado en vivo mientras la tarjeta del resultado no se ve (celular).
+if ($("o-main") && "IntersectionObserver" in window) {{
+  const out = $("resultado"), peek = document.createElement("a");
+  peek.className = "peek"; peek.href = "#resultado"; peek.hidden = true;
+  peek.innerHTML = `<span></span><b></b><i>Ver ↓</i>`;
+  peek.firstChild.textContent = (out.querySelector(".eyebrow") || {{ textContent: "Resultado" }}).textContent;
+  document.body.appendChild(peek);
+  const sync = () => {{ peek.children[1].textContent = $("o-main").textContent; }};
+  new MutationObserver(sync).observe($("o-main"), {{ childList: true, characterData: true, subtree: true }}); sync();
+  new IntersectionObserver(([e]) => {{ peek.hidden = e.isIntersecting || e.boundingClientRect.top < 0; }}, {{ threshold: 0.35 }}).observe(out);
+  peek.addEventListener("click", (e) => {{ e.preventDefault(); out.scrollIntoView({{ behavior: FY.reduced ? "auto" : "smooth", block: "center" }}); }});
+}}
 {hero_js}
 $("rem").addEventListener("click", () => {{ const r = ({remind})(); FY.compartir.ics(Object.assign({{ desc: `Calcula cuánto te toca: ${{FY.compartir.link("recordatorio")}}` }}, r)); }});
 if (FY.CONFIG.AVISOS.whatsappCanal) {{ $("wa-canal").hidden = false; $("wa-canal").href = FY.CONFIG.AVISOS.whatsappCanal; }}

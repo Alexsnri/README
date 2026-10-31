@@ -14,6 +14,21 @@ Lo más nuevo arriba. Cada cambio: qué se hizo, qué esperamos y cómo se mide.
 En local (sin el proxy del entorno de pruebas) la portada da 99/100/100/100. Primer pintado real en vivo medido con Playwright: 0.8 s.
 Escritorio 1440 px: la portada pasó de 11,700 px a 2,690 px y ya usa todo el ancho.
 
+## 2026-10-30 · Revisión antes del lanzamiento y resultado a la vista en las calculadoras
+
+**Revisión en vivo (quincy-mx.github.io):** portada, 7 calculadoras, WhatsApp con `?ref=`, historias, Wrapped, los 36 recorridos de la app
+(390 y 1440 px) y la dirección vieja (redirige con `?ref=`; ya entrega el service worker que se borra solo): todo bien, 0 errores.
+
+**Problema encontrado:** quien llega desde WhatsApp a `aguinaldo/?ref=wa` en un iPhone (664 px útiles) veía el aviso, el título y la
+cuenta regresiva; el campo de sueldo quedaba casi al fondo y el resultado a 1,001 px, fuera de la pantalla.
+
+**Qué cambió (plantilla de `build_seo.py`, todas las calculadoras):** arriba más compacto en celular (aviso, etiqueta y cuenta regresiva)
+y una barra fija abajo con el resultado en vivo ("Tu aguinaldo $X · Ver ↓") mientras la tarjeta del resultado no se ve; al tocarla baja al
+detalle. El campo de sueldo pasó de casi fuera de la pantalla a y=470 de 664. En la portada, el aviso de `?ref=` también es más compacto.
+
+**Cómo se mide:** sin analítica de eventos; proxy: visitas con `?ref=wa` que terminan compartiendo (más visitas con `?ref=` la semana
+del lanzamiento).
+
 ## 2026-10-28 · App más simple en el celular (encargo del dueño: "muy saturado")
 
 **Antes y después** (390×844, persona con datos; "tocables" = botones, enlaces y campos visibles en la primera pantalla, incluida la navegación):

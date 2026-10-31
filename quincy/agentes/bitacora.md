@@ -2,6 +2,14 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-30 · Producto y diseño
+- Hice: revisión completa en quincy-mx.github.io antes del congelamiento (portada, 7 calculadoras, compartir con `?ref=`, historias,
+  Wrapped, app con 36 recorridos en 390 y 1440 px, dirección vieja): todo bien, 0 errores. Arreglé el embudo del lanzamiento:
+  en las calculadoras, en celular, lo de arriba es más compacto y una barra fija muestra el resultado en vivo hasta que se ve la tarjeta.
+- Encontré: en un iPhone, quien llegaba de WhatsApp a `aguinaldo/` tenía el resultado a 1,001 px (fuera de pantalla); ahora el campo
+  de sueldo está a la vista y el resultado siempre visible en la barra. El sitio viejo ya entrega el service worker que se borra solo.
+- Para el dueño: nada. Queda para el martes 3: Futuro y Tanda más cortos (ver `estado/producto.md`).
+
 ## 2026-10-29 · SEO
 - Hice: 3 preguntas frecuentes nuevas en `aguinaldo/` (con datos estructurados): si renuncio o me despiden, si trabajo por honorarios
   y qué hago si no me pagan (PROFEDET). Son de las que más sale en "Otras preguntas" de Google. `lastmod` al 29.

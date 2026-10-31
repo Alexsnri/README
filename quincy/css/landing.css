@@ -290,4 +290,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   .lfoot{padding-block:18px calc(24px + env(safe-area-inset-bottom,0px))}
   .t-calcs{gap:12px}
   .rend-card small{display:none}
+  .ref-hello{padding:8px 8px 8px 12px;gap:8px}
+  .ref-hello p{font-size:.9rem;flex-basis:180px}
+  .ref-x{width:40px;height:40px}
 }
