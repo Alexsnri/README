@@ -302,8 +302,9 @@ def main():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         f.write(versiones[0] + "\n")
+    # El Atajo del iPhone lee variantes.txt completo: debe traer UNA sola versión (otra distinta en cada corrida).
     with open(OUT_VARIANTES, "w", encoding="utf-8") as f:
-        f.write(f"\n{SEPARADOR}\n".join(versiones) + "\n")
+        f.write(random.Random().choice(versiones) + "\n")
     print(versiones[0])
     return 0
 
