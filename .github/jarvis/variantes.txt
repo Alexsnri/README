@@ -1,8 +1,8 @@
-Ey, jefe, Buenos días, madrugador. Ponga atención, que no lo voy a repetir… bueno, sí, cada vez que se suba.
-2 días para el lanzamiento. Ni modo, ya no hay para dónde hacerse.
-Las visitas son un misterio, jefe. El token de Cloudflare sigue en su lista de 'luego lo hago'.
-Pase de lista: 1 se pusieron a jalar.
-El de Producto, el que todo lo quiere bonito: revisión completa en quincy-mx.github.io antes.
-Lo que sigue esperándolo a usted: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
-Sigue SEO, hoy a las 5:48.
-Fin del reporte. Aplausos opcionales.
+Ey, jefe, Buenas tardes. Ponga atención, que no lo voy a repetir… bueno, sí, cada vez que se suba.
+Faltan 2 días para el lanzamiento. Tic tac, jefe.
+Visitas no le puedo decir: sigue sin aparecer el token de Cloudflare. Ese es pendiente suyo, jefe.
+Sus compadres trabajaron: 1 reportaron chamba.
+Dice el de Producto, el que todo lo quiere bonito: revisión completa en quincy-mx.github.io antes.
+A usted le toca: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
+El próximo en chambear: SEO, hoy a las 5:48.
+Eso es todo. Ahora sí, ponga su música.
