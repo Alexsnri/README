@@ -2,6 +2,15 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-10-31 · SEO
+- Hice (texto, permitido en el congelamiento): `tanda/` responde de verdad "¿qué número escojo?" según para qué quieres la tanda
+  (deuda o gasto urgente, ahorro forzoso, riesgo de los últimos turnos) y 2 preguntas frecuentes nuevas: qué pasa si alguien deja de
+  pagar y cómo se sortean los números. `lastmod` al 31. Probado en celular: sin errores.
+- Encontré: salud 0 errores, 0 avisos. Google aún no tiene ninguna página de quincy-mx.github.io (ni buscando el nombre).
+  En "tanda qué número conviene" solo hay una respuesta útil (N+); el resto es quiniela y numerología: buen hueco.
+- Para el dueño: en Search Console (propiedad quincy-mx.github.io) envía `sitemap.xml` y pide "Solicitar indexación" de la portada,
+  `aguinaldo/` y `tanda/`. Sin eso, Google puede tardar semanas en verlas.
+
 ## 2026-10-30 · Producto y diseño
 - Hice: revisión completa en quincy-mx.github.io antes del congelamiento (portada, 7 calculadoras, compartir con `?ref=`, historias,
   Wrapped, app con 36 recorridos en 390 y 1440 px, dirección vieja): todo bien, 0 errores. Arreglé el embudo del lanzamiento:

@@ -178,12 +178,21 @@ $('o-note').textContent=`Cada turno recibe ${FY.fmt(n*A)}. Con CETES al ${FY.RAT
         "body": """
 <h2>Las tandas son de las formas de ahorro más usadas en México</h2>
 <p>Alrededor de <b>1 de cada 5 adultos</b> participa en tandas, según la Encuesta Nacional de Inclusión Financiera 2024. Funcionan por confianza: cada quien pone lo mismo y cada turno alguien se lleva todo.</p>
+<h2>Entonces, ¿qué número escojo?</h2>
+<p>En dinero, siempre ganan los <b>primeros</b>: reciben todo antes y pagan después, como un préstamo sin intereses. Pero el mejor número depende de para qué la quieres:</p>
+<ul>
+<li><b>Si tienes una deuda con intereses</b> (tarjeta, préstamo) o un gasto urgente, pide de los primeros: te ahorras intereses.</li>
+<li><b>Si la quieres para ahorrar</b> y sabes que el dinero se te va, un número del final te obliga a guardar. Ojo: pierdes lo que habrías ganado en CETES y cargas con el riesgo de que alguien deje de pagar antes de tu turno.</li>
+<li><b>Si te toca de los últimos</b>, que sea en un grupo de personas que conozcas bien y que ya hayan cumplido en otras tandas.</li>
+</ul>
 <h2>Organízala sin pleitos</h2>
 <p>En Quincy sorteas los turnos con una ruleta, mandas el calendario al grupo de WhatsApp con un enlace y cada quien ve cuándo le toca y pone sus recordatorios de pago.</p>""",
         "faq": [
             ("¿Qué número de la tanda conviene más?", "Los primeros: reciben el dinero antes, como un préstamo sin intereses. Los últimos ahorran sin rendimiento."),
             ("¿Cuánto pierde el último número?", "Lo que habría ganado invirtiendo cada aportación. En una tanda de 10 personas con $1,000 por quincena, unos $114 con CETES al 6.23%."),
             ("¿La tanda es segura?", "Depende de la confianza en el grupo: si alguien deja de pagar, nadie lo cubre."),
+            ("¿Qué pasa si alguien deja de pagar la tanda?", "Nadie lo cubre: los que todavía no cobran pierden. Por eso conviene acordar desde el inicio, por escrito en el grupo, qué se hace si alguien falla."),
+            ("¿Cómo se sortean los números de la tanda?", "Lo justo es un sorteo frente a todos. En Quincy puedes hacerlo con una ruleta y mandar el calendario al grupo de WhatsApp."),
         ],
     },
     "quincena": {
