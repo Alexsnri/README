@@ -1,8 +1,8 @@
 Muy buenas tardes, jefecito. Arranque usted la camioneta, yo arranco el chisme.
 En 2 días sale Quincy al ruedo. Usted tranquilo, yo nervioso por los dos.
-De visitas, ni idea: sin el token de Cloudflare estoy más ciego que usted sin lentes.
-Se pusieron las pilas 1. Va lo que hicieron.
-Producto: revisión completa en quincy-mx.github.io antes.
+Visitas no le puedo decir: sigue sin aparecer el token de Cloudflare. Ese es pendiente suyo, jefe.
+Pase de lista: 1 se pusieron a jalar.
+De parte del de Producto, el que todo lo quiere bonito: revisión completa en quincy-mx.github.io antes.
 Y usted, ¿qué? Pues: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
-El próximo en chambear: SEO, hoy a las 5:48.
-Ya, jefe. Siga manejando, que la chamba la hacen ellos.
+El próximo en chambear: el Director, mañana a las 6:37.
+Se acabó. Recuerde: en este negocio, el cuello de botella es usted. Con cariño.
