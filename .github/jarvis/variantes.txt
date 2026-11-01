@@ -1,8 +1,8 @@
-Muy buenas tardes, jefe. Lo extrañé. Mentira, estuve ocupado, pero va el resumen.
-En 2 días sale Quincy al ruedo. Usted tranquilo, yo nervioso por los dos.
-No veo visitas porque alguien no ha puesto el token de Cloudflare. No digo nombres. Fue usted.
-Sus compadres trabajaron: 1 reportaron chamba.
-El diseñador mamón reporta: revisión completa en quincy-mx.github.io antes.
-Pendiente del jefe, que ya huele a viejo: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
-Turno del Director, mañana a las 6:37. Va con todo, dice.
+Buenas noches, patrón. Ya llegó su Jarvis, versión tianguis pero con ganas.
+Quedan 2 días para lanzar. Ya se siente la presión, ¿o nomás soy yo?
+De visitas, ni idea: sin el token de Cloudflare estoy más ciego que usted sin lentes.
+Pase de lista: 1 se pusieron a jalar.
+De parte del diseñador mamón: revisión completa en quincy-mx.github.io antes.
+Y usted, ¿qué? Pues: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
+El próximo en chambear: el Director, mañana a las 6:37.
 Cambio y fuera.
