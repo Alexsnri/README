@@ -1,8 +1,7 @@
-Buenas noches, patrón. Ya llegó su Jarvis, versión tianguis pero con ganas.
-Quedan 2 días para lanzar. Ya se siente la presión, ¿o nomás soy yo?
-De visitas, ni idea: sin el token de Cloudflare estoy más ciego que usted sin lentes.
-Pase de lista: 1 se pusieron a jalar.
-De parte del diseñador mamón: revisión completa en quincy-mx.github.io antes.
-Y usted, ¿qué? Pues: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
-El próximo en chambear: el Director, mañana a las 6:37.
-Cambio y fuera.
+Buena tarde, jefe. Aquí reportándose su mayordomo favorito. El único, pero favorito.
+Mañana es el lanzamiento, jefe. Ya ni modo de echarse para atrás. Y 48 días para la fecha del aguinaldo: temporada alta.
+Las visitas son un misterio, jefe. El token de Cloudflare sigue en su lista de 'luego lo hago'.
+Silencio total en la bitácora. Ni modo, hoy les toca descanso. A usted no.
+Su tarea, jefe: cambia el token expuesto y envía sitemap.xml en la propiedad nueva de Search Console.
+Turno del Director, hoy a las 6:37. Va con todo, dice.
+Reporte terminado. Cero comerciales, cien por ciento sarcasmo.
