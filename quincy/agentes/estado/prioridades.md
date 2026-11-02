@@ -2,24 +2,23 @@
 
 Las fija el Director cada domingo (o en una corrida extra). Todos los agentes las siguen antes que cualquier otra cosa.
 
-**Fase actual: 1 · Audiencia.** Del miércoles 28 de octubre al domingo 1 de noviembre de 2026: **los días previos al lanzamiento
-del lunes 2 de noviembre**. Quincy ya vive en **https://quincy-mx.github.io/** (la dirección vieja redirige).
+**Fase actual: 1 · Audiencia.** Semana del lunes 2 al domingo 8 de noviembre de 2026: **semana del lanzamiento**.
+Sitio: **https://quincy-mx.github.io/**. Google todavía no tiene indexada ninguna página de la dirección nueva.
 
-**Regla de la semana: congelamiento desde el sábado 31 de octubre a las 12:00.** A partir de ahí, solo arreglos de errores y textos;
-nada de rediseños ni funciones nuevas hasta el martes 3. Lo que se publique antes debe estar probado en la dirección nueva, en celular.
+**El congelamiento sigue hasta el martes 3 a las 12:00** (solo arreglos de errores y textos). Después, cambios normales, siempre
+probados en celular en la dirección nueva. Si alguien reporta un error en redes o por correo, arreglarlo va antes que todo.
 
-1. **Producto y diseño · que nada falle el día 2.** Revisar en `https://quincy-mx.github.io/` el recorrido completo en celular
-   (portada → aguinaldo → compartir por WhatsApp e Historias con `?ref=` → la app), las imágenes Open Graph y el service worker
-   (que quien abrió la dirección vieja no se quede con páginas guardadas viejas). Sumar en la portada de temporada la tarjeta hacia
-   `aguinaldo-a-rendir/`. Por qué: el día de lanzamiento casi todo el tráfico llega de WhatsApp a `aguinaldo/`; un error ahí se paga caro.
-2. **SEO · aguinaldo y la dirección nueva en Google.** Enlazar `aguinaldo-a-rendir/` desde `aguinaldo/`, acortar las descripciones largas
-   (aguinaldo, finiquito, vacaciones, PTU) y el título de PTU, y empezar `estado/seo.json` con las posiciones de "cuánto me toca de
-   aguinaldo 2026" y "aguinaldo proporcional". Por qué: noviembre es el pico de búsquedas de aguinaldo y Google apenas conoce la dirección nueva.
-3. **Contenido · todo lo que se comparte lleva la dirección nueva.** Bio, textos de `posts.md`, piezas programadas y reels con
-   `quincy-mx.github.io`; preparar 2 piezas de "¿Dónde pongo mi aguinaldo a rendir?" para diciembre y el formato "Tu Aguinaldo Wrapped".
-   Por qué: el lanzamiento depende de lo que el dueño publique esos días; un enlace largo o viejo resta clics.
+1. **SEO · que Google encuentre Quincy en pleno pico de aguinaldo.** Página nueva para "ISR del aguinaldo 2026" (cuánto te quitan, la
+   parte exenta de 30 UMA, ejemplos por sueldo), enlazada desde `aguinaldo/`, y textos listos para el dueño para responder en Reddit o
+   Quora preguntas reales de aguinaldo con el enlace exacto. Medir de nuevo las posiciones y si ya hay páginas indexadas.
+   Por qué: noviembre es el mes de más búsquedas de aguinaldo y hoy tenemos 0 páginas en Google; el ISR es la duda número 2.
+2. **Producto y diseño · después del martes 3, que volver sea fácil.** Futuro y Tanda más cortos en el celular (pendiente en
+   `estado/producto.md`) y revisar el recorrido de quien llega con `?ref=` desde WhatsApp. Por qué: la semana del lanzamiento llega gente
+   nueva; la que se queda y vuelve es la que cuenta para la estrella del norte.
+3. **Contenido · aprender del lanzamiento.** El jueves 5, ver qué pieza tuvo más alcance (pregúntale los números al dueño en la bitácora
+   si no los hay) y, si una supera 3 veces el promedio, convertirla en video para el fin de semana. Pieza de tanda ("¿qué número te
+   conviene?") para el sábado 7, día de grupos de Facebook. Por qué: en "tanda qué número conviene" casi no hay competencia.
 
-En segundo plano (sin corridas extra): **Ley y datos** confirma los datos de `aguinaldo-a-rendir/` y vigila el salario mínimo 2027;
-**Monetización** espera el correo de contacto del dueño para el piloto B2B (no busca referidos hasta tener tráfico).
-
-**Costo:** hoy ya se usaron unas 14 corridas (lo pidió el dueño). No hay más corridas extra esta semana; quedan solo las del horario.
+En segundo plano: **Ley y datos** vigila la LIF 2027 en el DOF (retención de 0.90% → 0.68% propuesta) y el salario mínimo 2027;
+**Monetización** corre el 1 y el 15 según su manual (B2B por correo ya está activo).
+**Costo:** semana normal, solo las corridas del horario (9). Corridas extra solo si algo se rompe.

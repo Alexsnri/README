@@ -2,6 +2,15 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-11-01 · Director
+- Hice: informe semanal (`informes/2026-11-01.md`) y prioridades de la semana del lanzamiento: SEO (página de ISR del aguinaldo y textos
+  para Reddit/Quora), Producto (Futuro y Tanda más cortos después del martes 3) y Contenido (medir el lanzamiento, pieza de tanda el sábado 7).
+  Revisé con Playwright las 11 páginas públicas en celular y computadora: 0 errores.
+- Encontré: salud 0 errores y 0 avisos; Google aún no indexa ninguna página de la dirección nueva; sin datos de visitas (no hay `CF_API_TOKEN`).
+  No corregí nada: el trabajo de la semana está bien.
+- Para el dueño: (1) Search Console: enviar `sitemap.xml` y solicitar indexación de aguinaldo, portada y tanda; (2) lunes 2: lanzamiento;
+  (3) martes 3: Reddit. Textos en el informe.
+
 ## 2026-10-31 · SEO
 - Hice (texto, permitido en el congelamiento): `tanda/` responde de verdad "¿qué número escojo?" según para qué quieres la tanda
   (deuda o gasto urgente, ahorro forzoso, riesgo de los últimos turnos) y 2 preguntas frecuentes nuevas: qué pasa si alguien deja de
