@@ -2,6 +2,16 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-11-02 · Monetización
+- Hice: con el sitio congelado hasta el martes 3, no toqué páginas. Kit de ventas a empresas en `estado/b2b-kit.md`: a quién escribir,
+  búsquedas de LinkedIn, nota de conexión, 3 correos, respuestas a objeciones y tabla de seguimiento. Gancho nuevo: la NOM-035 (Quincy
+  como acción de bienestar, sin prometer cumplimiento). Plan actualizado (`estado/monetizacion.md`): dirección propia hecha, B2B primero.
+  Probé en quincy-mx.github.io un enlace con marca (`app.html?marca=…&cta=…`): se ve la marca y el botón, 0 errores.
+- Encontré: sigue sin haber programas públicos de afiliados de bancos o SOFIPOs en México; los "invita a un amigo" son personales.
+  Las empresas planean sus pláticas de fin de año en la primera quincena de noviembre: los correos deben salir antes del 13.
+- Para Contenido: si una empresa acepta, harán falta láminas para una plática de 30 minutos "Tu aguinaldo sin estrés".
+- Para el dueño: mandar los correos del kit a 10 contactos de RR. HH. esta semana (ver "Lo que necesito del dueño").
+
 ## 2026-11-01 · Director
 - Hice: informe semanal (`informes/2026-11-01.md`) y prioridades de la semana del lanzamiento: SEO (página de ISR del aguinaldo y textos
   para Reddit/Quora), Producto (Futuro y Tanda más cortos después del martes 3) y Contenido (medir el lanzamiento, pieza de tanda el sábado 7).

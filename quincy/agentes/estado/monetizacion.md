@@ -1,41 +1,23 @@
 # Plan de monetización de Quincy
 
-Plan vivo del agente de Monetización. Última revisión: **2026-10-28**. Fase actual: **1 · Audiencia** (solo preparar, no cobrar).
-Próxima revisión: 1 de noviembre de 2026.
+Plan vivo del agente de Monetización. Última revisión: **2026-11-02**. Fase actual: **1 · Audiencia** (solo preparar, no cobrar).
+Próxima revisión: 15 de noviembre de 2026.
 
 ## Resumen en 5 líneas
 
-1. **Dirección propia gratis:** `https://quincy-mx.github.io/` (organización de GitHub, gratis). La mudanza ya está programada; falta que el dueño cree la organización. Los dominios gratis de verdad están en listas negras o no aceptan sitios comerciales.
+1. **Dirección propia gratis: hecha.** Quincy vive en `https://quincy-mx.github.io/` desde el 28 oct; la dirección vieja redirige. Contacto activo: hola.quincymx@gmail.com.
 2. **Referidos financieros = el ingreso más grande y natural**, en el momento en que la gente tiene dinero (aguinaldo en dic, PTU en may). Ya está lista la página que los llevará: `aguinaldo-a-rendir/` (sin enlaces todavía).
 3. **No hay programas de afiliados abiertos** de Nu, Klar, Openbank, Stori, Plata, Ualá ni CETES en México. Hay programas de "invita a un amigo" (personales, con tope) y acuerdos directos con las fintech o por redes de afiliados. El camino real es **escribirles directo** cuando haya tráfico.
-4. **B2B** (`empresas.html`) es la segunda fuente: piloto gratis de 60 días y después cuota mensual por empresa.
+4. **B2B es lo único que puede dar dinero este año:** piloto gratis de 90 días con plática de aguinaldo. Kit listo en `estado/b2b-kit.md`; **correos antes del 13 de noviembre**.
 5. **Patrocinio de temporada** (aguinaldo/PTU) cuando haya 5,000+ seguidores o 20,000 visitas al mes.
 
 ## 1. Dominio propio
 
-**Decisión del dueño (28 oct 2026): tiene que ser gratis.** Búsqueda a fondo de dominios gratis, resultado:
-
-| Opción gratis | ¿Sirve para Quincy? | Por qué |
-|---|---|---|
-| **Organización de GitHub `quincy-mx` → `https://quincy-mx.github.io/`** | **Sí, la elegida** | Gratis para siempre, mismo servidor y misma confianza que hoy, HTTPS, y el sitio queda en la raíz: `quincy-mx.github.io/aguinaldo/` en vez de `alexsnri.github.io/README/quincy/aguinaldo/`. Ya está todo programado para mudarse solo. |
-| DigitalPlat (`.us.kg`, `.dpdns.org`, `.qzz.io`, `.xx.kg`, `.qd.je`) | No | Un reporte de mayo 2026 dice que están en la lista negra de Spamhaus; `.us.kg` fue suspendido por phishing. Para una app de dinero sería ver avisos de "sitio peligroso". `quincy.dpdns.org` ya está ocupado. |
-| EU.org (`quincy.eu.org`, libre) | No | Su política pide a sitios comerciales usarlo "solo como último recurso" y la aprobación tarda semanas o meses. Quincy va a monetizar. |
-| js.org / is-a.dev | No | js.org solo acepta proyectos del ecosistema JavaScript (y `quincy.js.org` ya está tomado). is-a.dev es para páginas personales de programadores. |
-| Freenom (`.tk`, `.ml`, `.ga`) | No | Cerró en 2024. |
-| `.mx` gratis | No hay | Las promociones de "dominio gratis" vienen atadas a pagar hosting; el `.mx` gratis oficial es solo para escuelas. |
-| `quincy.pages.dev`, `.netlify.app`, `.vercel.app` | No | Ya están ocupados. |
-
-Nota: `quincymx` ya existe como usuario de GitHub; por eso el nombre es `quincy-mx`. GitHub confirma si está libre al crear la organización.
-
-**Cómo funciona la mudanza (ya programada, se activa sola):** el robot `.github/workflows/quincy-pages.yml` usa `scripts/agentes/mudanza.py`.
-Cuando existen la variable `QUINCY_SITIO_NUEVO`, la variable `QUINCY_REPO_NUEVO` y el secreto `QUINCY_PUBLICAR_TOKEN`, publica el sitio completo
-en el repositorio nuevo con las direcciones cambiadas, y en el sitio viejo cada página redirige a la misma página nueva (conserva `?ref=`).
-Los archivos de verificación de Google viajan con el sitio, así que la nueva propiedad de Search Console se verifica con un clic.
-El código sigue viviendo en este repositorio; los agentes no cambian nada de su forma de trabajar.
-
-**Después de la mudanza (agentes):** cambiar `SITE` en `scripts/agentes/salud_sitio.py`, `scripts/build_seo.py` y demás scripts a la dirección nueva,
-y la dirección del sitio en `agentes/README.md`. Si algún día se compra un dominio (`quincy.mx` sigue libre, ~$300 a $700 MXN al año),
-basta con cambiar `QUINCY_SITIO_NUEVO` a `https://quincy.mx/`: el robot escribe el archivo CNAME solo.
+**Hecho (28 oct 2026):** organización gratis de GitHub `Quincy-mx` → **https://quincy-mx.github.io/**. Los dominios gratis "de verdad"
+(DigitalPlat `.us.kg`/`.dpdns.org`/`.qzz.io`) aparecen en la lista negra de Spamhaus o fueron suspendidos por phishing; EU.org desalienta
+sitios comerciales; js.org es solo para proyectos de JavaScript; Freenom cerró. El robot `quincy-pages.yml` publica con `scripts/agentes/mudanza.py`.
+Si algún día se compra `quincy.mx` (~$300 a $700 MXN al año), basta con cambiar la variable `QUINCY_SITIO_NUEVO` a `https://quincy.mx/`.
+**Ojo para afiliados:** algunas redes piden dominio propio; si una nos rechaza por `github.io`, ese es el momento de comprar `quincy.mx`.
 
 ## 2. Referidos y afiliados financieros (México, solo regulados)
 
@@ -99,28 +81,14 @@ y anotar en esta tabla la fecha de la verificación.
 Después: **$4,900 MXN al mes** hasta 500 personas; taller en vivo de 1 hora "Tu aguinaldo y tu PTU sin estrés": **$6,000 MXN**.
 (Precio de arranque para validar; se ajusta con las primeras 3 respuestas.)
 
-**Correo listo para el dueño** (mandarlo a gente de RR. HH. que conozcas o por LinkedIn):
+**Gancho nuevo: NOM-035.** Obliga a todos los centros de trabajo a prevenir factores de riesgo psicosocial; el estrés por dinero es uno.
+Quincy no certifica nada: se ofrece como una acción de bienestar que RR. HH. puede documentar.
 
-> **Asunto:** Que tu equipo sepa cuánto le toca de aguinaldo (piloto gratis)
->
-> Hola, [nombre]:
->
-> Soy [tu nombre], hago Quincy, una app gratuita que le dice a cada persona cuánto le toca de aguinaldo, vacaciones y PTU según la ley,
-> y cuánto puede gastar al día para llegar a la quincena. No pide registro y no guarda datos personales.
->
-> Estoy buscando empresas para un piloto gratis de 90 días: Quincy con su logo para su equipo y una plática corta antes del aguinaldo.
-> A cambio solo te pido tu opinión al final.
->
-> ¿Te late una llamada de 15 minutos esta semana o la que entra?
->
-> Puedes verla aquí: https://alexsnri.github.io/README/quincy/empresas.html
->
-> Saludos,
-> [tu nombre] · [tu teléfono]
+**Kit completo para el dueño:** `estado/b2b-kit.md` (a quién escribir, búsquedas de LinkedIn, nota de conexión, 3 correos, respuestas a
+objeciones, qué pedir cuando digan que sí y tabla de seguimiento). Fecha límite útil para diciembre: **viernes 13 de noviembre**.
 
-**En el sitio (28 oct):** `empresas.html` tiene la sección "El piloto: 90 días, sin costo y sin contrato" (semana 1, plática de temporada,
-día 90). `CONFIG.CONTACT_EMAIL` en `js/core.js`: si tiene correo, "Solicitar piloto" abre un correo ya escrito; si está vacío, sigue el
-formulario de GitHub (que pide cuenta de GitHub: mala conversión para RR. HH.). **Falta el correo del dueño.**
+**En el sitio:** `empresas.html` con la sección del piloto (90 días); "Solicitar piloto" abre un correo ya escrito a hola.quincymx@gmail.com.
+Enlace con marca probado el 2 nov en quincy-mx.github.io (`app.html?marca=…&color=…&cta=…&cta_txt=…`): funciona, sin errores.
 
 ## 4. Patrocinios
 
@@ -143,33 +111,17 @@ Anuncios: solo en páginas de buscadores y solo si no bajan el uso; no antes de 
 
 ## Lo que necesito del dueño
 
-Todo es gratis. Solo lo que GitHub no deja hacer a nadie más que a ti (unos 10 minutos en total):
-
-1. **Crear la organización gratis:** entra a https://github.com/account/organizations/new?plan=free , nombre `quincy-mx`, tu correo,
-   "My personal account". (Si dice que no está disponible, usa `holaquincy` y avísame en la bitácora.)
-2. **Crear el repositorio del sitio:** https://github.com/organizations/quincy-mx/repositories/new , nombre exacto `quincy-mx.github.io`, Public, sin README.
-3. **Crear el permiso para que el robot publique allá:** https://github.com/settings/personal-access-tokens/new
-   → Resource owner: `quincy-mx` → Only select repositories: `quincy-mx.github.io` → Repository permissions: **Contents: Read and write**
-   → Expiration: 1 año → Generate. Copia el token.
-4. **Guardarlo en este repositorio:** https://github.com/Alexsnri/README/settings/secrets/actions/new → Name `QUINCY_PUBLICAR_TOKEN` → pega el token.
-5. **Dos variables:** https://github.com/Alexsnri/README/settings/variables/actions/new
-   → `QUINCY_SITIO_NUEVO` = `https://quincy-mx.github.io/` y luego `QUINCY_REPO_NUEVO` = `quincy-mx/quincy-mx.github.io`.
-6. **Primera publicación:** https://github.com/Alexsnri/README/actions/workflows/quincy-pages.yml → Run workflow.
-7. **Encender Pages en el repositorio nuevo:** https://github.com/quincy-mx/quincy-mx.github.io/settings/pages → Source: Deploy from a branch
-   → Branch `main`, carpeta `/ (root)` → Save. Espera 2 minutos y abre https://quincy-mx.github.io/
-8. **Segunda publicación** (Run workflow otra vez): ahora el robot ve que el sitio nuevo ya abre y pone las redirecciones en el viejo.
-   Mientras el nuevo no responda, el viejo se queda igual: no hay riesgo de dejar a nadie en una página rota.
-9. **Google:** https://search.google.com/search-console → Agregar propiedad → Prefijo de URL `https://quincy-mx.github.io/`
-   → Verificar con "Archivo HTML" (ya está subido) → Sitemaps → `sitemap.xml`.
-
-**Nuevo y rápido (5 min):** crea un correo gratis para Quincy (por ejemplo `hola.quincymx@gmail.com` en https://accounts.google.com/signup)
-y pásaselo a cualquier agente: va en `CONTACT_EMAIL` para que las empresas te escriban directo, y sirve para redes y avisos.
-
-Para cobrar más adelante (fase 2, no urge): cuenta bancaria y RFC con actividad empresarial o RESICO, porque los programas y las empresas piden factura.
-El registro de la marca en el IMPI lo sigue el agente de Marca.
+1. **Esta semana, antes del viernes 13 de noviembre · ventas a empresas (30 min al día).** Abre `quincy/agentes/estado/b2b-kit.md`:
+   escribe a 10 personas de RR. HH. que conozcas con el correo 1, y manda 10 solicitudes de LinkedIn al día con la nota de conexión.
+   Anota en la tabla del kit a quién escribiste y qué contestó.
+2. **Cuando una empresa diga que sí:** pide su logo o nombre, su color y el enlace de su programa, y pásaselos a cualquier agente.
+3. **Referidos (opcional, 5 min):** si usas Openbank, Mercado Pago o Nu, abre en la app la sección de "invita a un amigo", lee los términos y
+   dime si permiten compartir el enlace en un sitio web. Si sí, pégalo en la bitácora y lo pongo en `aguinaldo-a-rendir/` con su aviso.
+4. **Para cobrar más adelante (no urge):** cuenta bancaria y RFC con actividad empresarial o RESICO, porque las empresas piden factura.
 
 ## Registro de corridas
 
+- 2026-11-02 (corrida del día 1): congelamiento del sitio hasta el martes 3, así que solo plan y kit. Nuevo `estado/b2b-kit.md` (gancho NOM-035, fecha límite 13 nov). Enlace con marca probado en la dirección nueva. Referidos: sigue sin haber programa público de afiliados de bancos o SOFIPOs en México; no encontré términos de "invita a un amigo" de Nu México que permitan publicarlo.
 - 2026-10-28 (5): `empresas.html` con la sección del piloto y contacto por correo listo (`CONFIG.CONTACT_EMAIL`). Desperté a Director, SEO, Contenido, Producto y Ley y datos a pedido del dueño.
 - 2026-10-28 (4): **mudanza hecha.** https://quincy-mx.github.io/ en línea; la dirección vieja redirige (probado con `?ref=wa`). Salud del sitio: 0 errores. Pendiente del dueño: cambiar el token que pegó en el chat y dar de alta la propiedad en Search Console.
 - 2026-10-28 (3): el robot ya no redirige el sitio viejo hasta comprobar que el nuevo responde; pasos del dueño detallados.
