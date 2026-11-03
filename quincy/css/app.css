@@ -562,3 +562,14 @@ body.onb-open{overflow:hidden}
 .back-link{appearance:none;border:0;background:transparent;color:var(--tide);font:600 .95rem/1 var(--f-body);min-height:44px;padding:0;cursor:pointer}
 .back-wrap + .hero{padding-top:6px}
 .back-wrap + .wrap.block{padding-top:6px}
+
+/* ---------- Futuro y Tanda más cortos en el celular ---------- */
+@media (max-width:640px){.opt-m{display:none}}
+.plan-fold{border-top:1px solid var(--line);margin-top:6px}
+.plan-fold summary{padding:14px 0}
+.plan-fold .fold-body{padding:0 0 6px}
+.plan-fold .looks{margin-top:4px}
+#v-futuro .grid-2{align-items:start}
+.letter-fold .letter{margin:0}
+.tn-all summary{cursor:pointer;color:var(--tide);font-weight:600;min-height:44px;display:flex;align-items:center}
+.tn-fold .fold-body{gap:10px}
