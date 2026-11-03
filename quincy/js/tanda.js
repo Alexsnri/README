@@ -89,6 +89,7 @@
     $("tn-pick").hidden = lista.length < 2;
     $("tn-pick").innerHTML = lista.map((x, i) => `<option value="${i}"${i === cur ? " selected" : ""}>${x.nombre.replace(/</g, "")}</option>`).join("");
     const pot = n * T.monto;
+    $("tn-fold-sum").textContent = `${T.nombre} · ${n} personas · ${fmt(T.monto)} ${FREQ[T.freq]}${T.ejemplo ? " · ejemplo: toca para poner la tuya" : ""}`;
     $("tn-summary").innerHTML = `${n} personas ponen <b>${fmt(T.monto)}</b> ${FREQ[T.freq]}. Cada turno alguien recibe <b class="sun">${fmt(pot)}</b>. Termina el <b>${dateFmt(ds[n - 1])}</b>.`;
     // ¿quién eres?
     const key = encode(T), me = yo[key];
@@ -222,6 +223,8 @@
       T.personas.map((p, i) => `${i + 1}. ${p}: ${ds[i].toLocaleDateString("es-MX", { day: "numeric", month: "short" })}`).join("\n") +
       `\n\nMira cuándo te toca y pon tus recordatorios aquí: ${link(T)}`;
   }
+  // El aviso de ejemplo abre los datos de la tanda para cambiarlos.
+  $("tn-example").addEventListener("click", () => { $("tn-fold").open = true; $("tn-name").focus(); });
   $("tn-wa").addEventListener("click", () => { const T = t(); $("tn-wa").href = "https://wa.me/?text=" + encodeURIComponent(message(T)); FY.emit("shared", "tanda"); });
   $("tn-copy").addEventListener("click", () => FY.copyText(link(t())));
   $("tn-share-card").addEventListener("click", () => FY.share && FY.share.open("tanda"));

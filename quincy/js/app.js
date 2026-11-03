@@ -37,6 +37,8 @@
       if (e.target === d || e.target.closest("[data-close],[data-share],[data-go]")) d.close();
     });
   });
+  // La gráfica de Futuro se dibuja con el ancho real al abrir su bloque.
+  $("chart-fold").addEventListener("toggle", () => { if ($("chart-fold").open) FY.sim.render(); });
   addEventListener("hashchange", () => { const v = location.hash.slice(1); if (VIEWS.includes(v)) go(v, false); });
 
   // ---------- parámetros del enlace ----------
