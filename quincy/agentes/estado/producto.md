@@ -14,6 +14,20 @@ Lo más nuevo arriba. Cada cambio: qué se hizo, qué esperamos y cómo se mide.
 En local (sin el proxy del entorno de pruebas) la portada da 99/100/100/100. Primer pintado real en vivo medido con Playwright: 0.8 s.
 Escritorio 1440 px: la portada pasó de 11,700 px a 2,690 px y ya usa todo el ancho.
 
+## 2026-11-03 · Futuro y Tanda más cortos en el celular
+
+| Vista (390×844) | Tocables 1a pantalla antes → después | Campos antes → después | Alto antes → después |
+|---|---|---|---|
+| Futuro | 14 → 8 | 0 → 0 | 2,907 → 1,881 px |
+| Tanda | 12 → 10 | 5 → 0 | 2,700 → 1,357 px |
+
+**Qué cambió:** Futuro deja arriba el avatar, "Ahorro al mes", "¿Dónde lo guardas?" y el resultado; edad, retiro, ahorro actual, meta y
+avatar van en "Ajusta tu plan y tu avatar"; la gráfica (se dibuja al abrir) y la carta, plegables. Tanda deja arriba la ruleta y el
+calendario de turnos; "Datos de tu tanda" (con resumen), "Ver todas las fechas" y "¿Qué número te conviene?", plegables; el aviso de
+ejemplo abre los datos y pone el foco en el nombre. Mismos IDs: la lógica no cambió.
+
+**Cómo se mide:** más regresos a la app (Cloudflare, cuando haya `CF_API_TOKEN`) y más tandas compartidas con `?t=`.
+
 ## 2026-10-30 · Revisión antes del lanzamiento y resultado a la vista en las calculadoras
 
 **Revisión en vivo (quincy-mx.github.io):** portada, 7 calculadoras, WhatsApp con `?ref=`, historias, Wrapped, los 36 recorridos de la app

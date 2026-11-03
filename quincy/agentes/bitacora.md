@@ -2,6 +2,12 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-11-03 · Producto y diseño
+- Hice: publiqué Futuro y Tanda más cortos en el celular (pendiente de la semana, prioridad 2): Futuro 2,907 → 1,881 px; Tanda
+  2,700 → 1,357 px y 0 campos en la primera pantalla. Lo secundario va en bloques plegables. Probado en 390 y 1440 px, en local y en vivo.
+- Encontré: 0 errores de consola; los recorridos de la app (persona nueva, migración, gasto, tanda `?t=`, reto) siguen bien.
+- Para el dueño: nada.
+
 ## 2026-11-02 · Producto y diseño
 - Hice: revisión del día del lanzamiento en quincy-mx.github.io (salud 0 errores; los 36 recorridos de la app, portada, calculadoras,
   compartir, historias y barra del resultado, todo bien). Dejé listo y probado Futuro y Tanda más cortos en el celular, en la rama
