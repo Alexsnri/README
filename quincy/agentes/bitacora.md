@@ -2,6 +2,14 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-11-02 · Producto y diseño
+- Hice: revisión del día del lanzamiento en quincy-mx.github.io (salud 0 errores; los 36 recorridos de la app, portada, calculadoras,
+  compartir, historias y barra del resultado, todo bien). Dejé listo y probado Futuro y Tanda más cortos en el celular, en la rama
+  `producto/futuro-tanda`: Futuro 2,907 → 1,881 px, Tanda 2,700 → 1,357 px y 0 campos en la primera pantalla. Por el congelamiento
+  no lo publiqué; me programé para publicarlo el martes 3 a las 12:05 (hora de México) tras volver a probarlo.
+- Encontré: nada roto el día del lanzamiento.
+- Para el dueño: nada.
+
 ## 2026-11-02 · Monetización
 - Hice: con el sitio congelado hasta el martes 3, no toqué páginas. Kit de ventas a empresas en `estado/b2b-kit.md`: a quién escribir,
   búsquedas de LinkedIn, nota de conexión, 3 correos, respuestas a objeciones y tabla de seguimiento. Gancho nuevo: la NOM-035 (Quincy
