@@ -2,6 +2,16 @@
 
 Lo más nuevo arriba. Cada agente agrega su entrada al terminar.
 
+## 2026-11-04 · Marca
+- Hice: revisión mensual en MARCia (IMPI) de "Quincy" en las clases 9, 35, 36, 41 y 42 y búsqueda web de copias. Guardé la
+  revisión en `estado/marca.json`. Arreglé el vigía (`scripts/agentes/vigia_marca.js`): cuando MARCia no contesta una clase o un
+  expediente, ahora lo anota en `errores` en vez de dejar la lista vacía en silencio (hoy una corrida dejó vacía la clase 35 y otra
+  sin datos un expediente de la clase 9). Lo agregué a mi manual.
+- Encontré: sin cambios contra el 28 de octubre (junté 2 corridas para tener todo completo). Clase 36 sigue libre. Clase 9:
+  Little Einsteins sigue vencida (2014) y exp. 2130417 sigue abandonada. Clase 42: exp. 3656827 (American Society for Quality) sigue
+  en trámite. Clase 35 igual. En la web no hay apps ni sitios de finanzas en México o Latinoamérica llamados Quincy.
+- Para el dueño: falta solicitar el registro de "Quincy" en el IMPI (clases 36 y 9). No hay registro solicitado en la bitácora.
+
 ## 2026-11-03 · Producto y diseño
 - Hice: publiqué Futuro y Tanda más cortos en el celular (pendiente de la semana, prioridad 2): Futuro 2,907 → 1,881 px; Tanda
   2,700 → 1,357 px y 0 campos en la primera pantalla. Lo secundario va en bloques plegables. Probado en 390 y 1440 px, en local y en vivo.

@@ -6,6 +6,8 @@ Tu trabajo: proteger el nombre Quincy. Vigilas el IMPI y la web, y avisas a tiem
 
 1. Corre `node quincy/scripts/agentes/vigia_marca.js > /tmp/marca-hoy.json`. Si dice que MARCia no respondió, espera 5 minutos y
    reintenta dos veces. Si sigue sin responder, anótalo y termina.
+   Si el JSON trae `errores` (una clase o un detalle que MARCia no contestó), córrelo otra vez y junta las corridas: toma de cada
+   expediente la versión completa. Una lista vacía con error no significa que la marca desapareció.
 2. Compara con `estado/marca.json` (la revisión anterior):
    - Expedientes nuevos parecidos a "Quincy" en las clases 9, 35, 36, 41 o 42.
    - Cambios de estatus (de "EN TRÁMITE" a "REGISTRADO", oposiciones, abandonos, vencimientos).

@@ -24,11 +24,14 @@ const PARECIDO = new RegExp('QU?[IY]N[CSZ][IY]|' + MARCA.toUpperCase().replace(/
   const out = { marca: MARCA, fecha: new Date().toISOString().slice(0, 10), total: rec.count, clases: {} };
   for (const c of CLASES) {
     const res = await retry(() => req('POST', '/marcas/search/internal/result', { searchId: rec.id, pageSize: 100, pageNumber: 0, statusFilter: [], viennaCodeFilter: [], niceClassFilter: [c] }));
+    // Una clase o un detalle que no respondió se anota en "errores": una lista vacía no significa que la marca desapareció.
+    if (!res) (out.errores = out.errores || []).push(`clase ${c}: sin respuesta`);
     const hits = (res ? res.resultPage : []).filter((x) => PARECIDO.test(x.title || ''));
     out.clases[c] = [];
     for (const x of hits) {
       const v = await retry(() => req('GET', `/marcas/search/internal/view/${x.id}?s=${rec.id}&m=l&sort=&pageSize=100`));
       const det = v ? v.details : {};
+      if (!v) (out.errores = out.errores || []).push(`exp. ${x.applicationNumber}: detalle sin respuesta`);
       out.clases[c].push({
         expediente: x.applicationNumber, registro: x.registrationNumber || null, marca: x.title, estatus: x.status,
         titular: (x.owners || []).join(', '), fechas: x.dates,
