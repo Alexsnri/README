@@ -1,6 +1,9 @@
 """Descarga velas de 1 minuto de HistData.com (gratis, formato ASCII M1).
 
-Las horas vienen en EST fijo (UTC-5, sin horario de verano); aquí se convierten a UTC.
+HistData dice que sus horas están en "EST sin horario de verano", pero comparando minuto a minuto contra Dukascopy
+(UTC) en enero, julio y octubre de 2026 los precios coinciden exactos solo si se leen como hora de Nueva York CON
+horario de verano. lab/data.py hace esa corrección.
+Aquí se guarda el índice como "etiqueta + 5 h" en UTC, tal cual se descargó.
 Uso: python -I lab/histdata.py XAUUSD SPXUSD NSXUSD EURUSD GBPUSD
 """
 import io, os, re, sys, time, zipfile
