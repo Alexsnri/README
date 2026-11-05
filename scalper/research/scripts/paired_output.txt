@@ -1,0 +1,104 @@
+BTCUSDT 5m random costo=3bps N=8767 ATRef=10.8bps costo/R=0.18: E[R](a)=-0.192 sd=1.02 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 +0.007 [-0.007,+0.023]  sdR=0.74  P(R>=0)=0.24
+    c_BE@1.0                 -0.000 [-0.011,+0.009]  sdR=0.92  P(R>=0)=0.39
+    e1_BE@1+trail1.0         +0.014 [-0.005,+0.033]  sdR=1.05  P(R>=0)=0.43
+    e2_BE@1+trail2.0         +0.024 [-0.001,+0.057]  sdR=1.27  P(R>=0)=0.26
+    e4_trail1.0_sinBE_tp3    +0.006 [-0.016,+0.029]  sdR=0.76  P(R>=0)=0.29
+    f1_parcial50@1           -0.008 [-0.014,-0.001]  sdR=0.90  P(R>=0)=0.51
+    f2_parcial50@1+BE        -0.008 [-0.018,+0.002]  sdR=0.87  P(R>=0)=0.59
+    g_escalones0.5_tp3       +0.016 [-0.002,+0.033]  sdR=1.05  P(R>=0)=0.39
+BTCUSDT 5m breakout costo=3bps N=875 ATRef=10.5bps costo/R=0.19: E[R](a)=-0.237 sd=1.02 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 +0.022 [-0.024,+0.064]  sdR=0.75  P(R>=0)=0.23
+    c_BE@1.0                 -0.009 [-0.042,+0.022]  sdR=0.91  P(R>=0)=0.36
+    e1_BE@1+trail1.0         -0.013 [-0.058,+0.029]  sdR=1.01  P(R>=0)=0.39
+    e2_BE@1+trail2.0         -0.011 [-0.079,+0.054]  sdR=1.25  P(R>=0)=0.23
+    e4_trail1.0_sinBE_tp3    +0.003 [-0.051,+0.064]  sdR=0.73  P(R>=0)=0.27
+    f1_parcial50@1           +0.000 [-0.018,+0.019]  sdR=0.90  P(R>=0)=0.49
+    f2_parcial50@1+BE        -0.004 [-0.041,+0.028]  sdR=0.87  P(R>=0)=0.57
+    g_escalones0.5_tp3       -0.021 [-0.066,+0.020]  sdR=1.00  P(R>=0)=0.36
+ETHUSDT 5m random costo=5bps N=8772 ATRef=16.7bps costo/R=0.20: E[R](a)=-0.210 sd=1.01 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.005 [-0.018,+0.010]  sdR=0.71  P(R>=0)=0.20
+    c_BE@1.0                 +0.004 [-0.005,+0.016]  sdR=0.90  P(R>=0)=0.38
+    e1_BE@1+trail1.0         -0.005 [-0.024,+0.013]  sdR=0.99  P(R>=0)=0.41
+    e2_BE@1+trail2.0         -0.001 [-0.035,+0.029]  sdR=1.17  P(R>=0)=0.24
+    e4_trail1.0_sinBE_tp3    -0.011 [-0.030,+0.010]  sdR=0.72  P(R>=0)=0.28
+    f1_parcial50@1           +0.005 [-0.000,+0.011]  sdR=0.89  P(R>=0)=0.50
+    f2_parcial50@1+BE        +0.007 [-0.002,+0.017]  sdR=0.86  P(R>=0)=0.59
+    g_escalones0.5_tp3       -0.002 [-0.018,+0.015]  sdR=1.00  P(R>=0)=0.38
+ETHUSDT 5m breakout costo=5bps N=841 ATRef=16.7bps costo/R=0.20: E[R](a)=-0.244 sd=1.02 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.028 [-0.067,+0.012]  sdR=0.75  P(R>=0)=0.20
+    c_BE@1.0                 -0.013 [-0.039,+0.012]  sdR=0.92  P(R>=0)=0.36
+    e1_BE@1+trail1.0         -0.021 [-0.059,+0.028]  sdR=1.04  P(R>=0)=0.38
+    e2_BE@1+trail2.0         +0.002 [-0.055,+0.066]  sdR=1.24  P(R>=0)=0.22
+    e4_trail1.0_sinBE_tp3    -0.048 [-0.101,+0.003]  sdR=0.69  P(R>=0)=0.25
+    f1_parcial50@1           -0.007 [-0.022,+0.010]  sdR=0.90  P(R>=0)=0.49
+    f2_parcial50@1+BE        -0.014 [-0.041,+0.014]  sdR=0.87  P(R>=0)=0.56
+    g_escalones0.5_tp3       -0.019 [-0.057,+0.021]  sdR=1.01  P(R>=0)=0.36
+
+# Ruido (Yahoo, ~7 dias 1m y ~60 dias 5m; solo horas con datos)
+GC_1m: barras=8214 2026-10-28..2026-11-05 rango p50=3.95bps ATR14 mediana=4.35bps autocorr1=-0.014
+GC: barras=13694 2026-08-26..2026-11-05 rango p50=8.99bps ATR14 mediana=9.85bps autocorr1=-0.028
+NQ_1m: barras=8161 2026-10-28..2026-11-05 rango p50=4.59bps ATR14 mediana=4.96bps autocorr1=+0.047
+NQ: barras=13654 2026-08-26..2026-11-05 rango p50=7.20bps ATR14 mediana=7.91bps autocorr1=-0.003
+ES_1m: barras=8161 2026-10-28..2026-11-05 rango p50=2.58bps ATR14 mediana=2.72bps autocorr1=+0.024
+ES: barras=13655 2026-08-26..2026-11-05 rango p50=4.23bps ATR14 mediana=4.76bps autocorr1=-0.011
+EURUSD_1m: barras=8760 2026-10-28..2026-11-05 rango p50=0.00bps ATR14 mediana=0.71bps autocorr1=-0.095
+EURUSD: barras=16819 2026-08-13..2026-11-05 rango p50=1.16bps ATR14 mediana=1.72bps autocorr1=-0.054
+GBPUSD_1m: barras=8759 2026-10-28..2026-11-05 rango p50=0.00bps ATR14 mediana=0.67bps autocorr1=-0.061
+GBPUSD: barras=16822 2026-08-13..2026-11-05 rango p50=1.35bps ATR14 mediana=1.83bps autocorr1=-0.042
+
+# Estudio grueso Yahoo 5m (ATR y camino en 5m; T=36 barras=3h)
+GC 5m random costo=1.0bps N=5921 ATRef=10.1bps costo/R=0.07: E[R](a)=-0.087 sd=1.01 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.012 [-0.034,+0.010]  sdR=0.74  P(R>=0)=0.25
+    c_BE@1.0                 -0.007 [-0.021,+0.009]  sdR=0.91  P(R>=0)=0.39
+    e1_BE@1+trail1.0         -0.012 [-0.036,+0.016]  sdR=1.00  P(R>=0)=0.50
+    e2_BE@1+trail2.0         -0.001 [-0.034,+0.037]  sdR=1.21  P(R>=0)=0.27
+    e4_trail1.0_sinBE_tp3    -0.011 [-0.041,+0.014]  sdR=0.72  P(R>=0)=0.33
+    f1_parcial50@1           -0.000 [-0.008,+0.008]  sdR=0.88  P(R>=0)=0.50
+    f2_parcial50@1+BE        -0.004 [-0.020,+0.011]  sdR=0.85  P(R>=0)=0.59
+    g_escalones0.5_tp3       -0.013 [-0.035,+0.010]  sdR=1.01  P(R>=0)=0.39
+GC 5m breakout costo=1.0bps N=389 ATRef=10.0bps costo/R=0.07: E[R](a)=-0.087 sd=1.02 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.044 [-0.102,+0.016]  sdR=0.73  P(R>=0)=0.24
+    c_BE@1.0                 +0.025 [-0.020,+0.064]  sdR=0.91  P(R>=0)=0.42
+    e1_BE@1+trail1.0         +0.034 [-0.038,+0.097]  sdR=1.05  P(R>=0)=0.48
+    e2_BE@1+trail2.0         +0.079 [-0.025,+0.185]  sdR=1.28  P(R>=0)=0.32
+    e4_trail1.0_sinBE_tp3    -0.022 [-0.109,+0.059]  sdR=0.73  P(R>=0)=0.31
+    f1_parcial50@1           +0.011 [-0.022,+0.044]  sdR=0.88  P(R>=0)=0.50
+    f2_parcial50@1+BE        +0.024 [-0.022,+0.073]  sdR=0.85  P(R>=0)=0.61
+    g_escalones0.5_tp3       +0.041 [-0.028,+0.098]  sdR=1.05  P(R>=0)=0.40
+NQ 5m random costo=1.0bps N=5951 ATRef=7.8bps costo/R=0.09: E[R](a)=-0.134 sd=1.02 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.016 [-0.034,+0.001]  sdR=0.74  P(R>=0)=0.24
+    c_BE@1.0                 -0.014 [-0.026,-0.001]  sdR=0.91  P(R>=0)=0.38
+    e1_BE@1+trail1.0         -0.020 [-0.043,+0.002]  sdR=1.02  P(R>=0)=0.47
+    e2_BE@1+trail2.0         -0.029 [-0.087,+0.023]  sdR=1.37  P(R>=0)=0.25
+    e4_trail1.0_sinBE_tp3    -0.013 [-0.038,+0.011]  sdR=0.72  P(R>=0)=0.31
+    f1_parcial50@1           -0.002 [-0.010,+0.005]  sdR=0.89  P(R>=0)=0.49
+    f2_parcial50@1+BE        -0.009 [-0.023,+0.004]  sdR=0.86  P(R>=0)=0.58
+    g_escalones0.5_tp3       -0.017 [-0.040,+0.004]  sdR=1.01  P(R>=0)=0.37
+NQ 5m breakout costo=1.0bps N=388 ATRef=7.7bps costo/R=0.09: E[R](a)=-0.122 sd=1.03 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.029 [-0.099,+0.053]  sdR=0.71  P(R>=0)=0.22
+    c_BE@1.0                 -0.051 [-0.096,-0.008]  sdR=0.92  P(R>=0)=0.36
+    e1_BE@1+trail1.0         -0.079 [-0.140,-0.011]  sdR=0.96  P(R>=0)=0.43
+    e2_BE@1+trail2.0         -0.169 [-0.370,-0.024]  sdR=1.58  P(R>=0)=0.24
+    e4_trail1.0_sinBE_tp3    -0.070 [-0.155,+0.016]  sdR=0.71  P(R>=0)=0.28
+    f1_parcial50@1           -0.018 [-0.040,+0.006]  sdR=0.91  P(R>=0)=0.49
+    f2_parcial50@1+BE        -0.044 [-0.090,-0.000]  sdR=0.87  P(R>=0)=0.56
+    g_escalones0.5_tp3       -0.054 [-0.121,+0.017]  sdR=1.01  P(R>=0)=0.36
+EURUSD 5m random costo=0.6bps N=8267 ATRef=2.0bps costo/R=0.20: E[R](a)=-0.228 sd=1.13 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.023 [-0.039,-0.006]  sdR=0.81  P(R>=0)=0.24
+    c_BE@1.0                 -0.012 [-0.026,+0.003]  sdR=1.01  P(R>=0)=0.38
+    e1_BE@1+trail1.0         -0.024 [-0.053,+0.008]  sdR=1.18  P(R>=0)=0.38
+    e2_BE@1+trail2.0         -0.038 [-0.080,+0.007]  sdR=1.33  P(R>=0)=0.22
+    e4_trail1.0_sinBE_tp3    -0.053 [-0.079,-0.023]  sdR=0.87  P(R>=0)=0.28
+    f1_parcial50@1           +0.009 [-0.000,+0.017]  sdR=0.99  P(R>=0)=0.50
+    f2_parcial50@1+BE        +0.003 [-0.011,+0.016]  sdR=0.96  P(R>=0)=0.58
+    g_escalones0.5_tp3       -0.015 [-0.042,+0.014]  sdR=1.15  P(R>=0)=0.35
+EURUSD 5m breakout costo=0.6bps N=518 ATRef=2.0bps costo/R=0.20: E[R](a)=-0.252 sd=1.12 | dif vs (a) [IC95 bootstrap por dia]:
+    b_BE@0.5                 -0.006 [-0.078,+0.057]  sdR=0.81  P(R>=0)=0.25
+    c_BE@1.0                 +0.053 [-0.004,+0.108]  sdR=0.98  P(R>=0)=0.40
+    e1_BE@1+trail1.0         +0.088 [+0.009,+0.170]  sdR=1.23  P(R>=0)=0.41
+    e2_BE@1+trail2.0         +0.059 [-0.063,+0.194]  sdR=1.48  P(R>=0)=0.24
+    e4_trail1.0_sinBE_tp3    +0.008 [-0.070,+0.097]  sdR=0.90  P(R>=0)=0.31
+    f1_parcial50@1           +0.042 [+0.006,+0.081]  sdR=0.96  P(R>=0)=0.50
+    f2_parcial50@1+BE        +0.068 [+0.016,+0.130]  sdR=0.93  P(R>=0)=0.61
+    g_escalones0.5_tp3       +0.065 [+0.002,+0.127]  sdR=1.13  P(R>=0)=0.37

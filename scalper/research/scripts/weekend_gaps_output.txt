@@ -1,0 +1,5 @@
+EURUSD: n=12 gap medio=7.2 bps mediana=4.6 max=24.7
+GBPUSD: n=12 gap medio=4.0 bps mediana=3.0 max=14.8
+GC: n=10 gap medio=21.7 bps mediana=18.3 max=83.9
+NQ: n=10 gap medio=41.6 bps mediana=28.5 max=130.8
+ES: n=10 gap medio=22.8 bps mediana=18.1 max=65.3

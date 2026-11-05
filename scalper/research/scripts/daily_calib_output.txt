@@ -1,0 +1,11 @@
+EURUSD: rango diario medio 42.6 bps, mediana 37.8 bps, n=67  (precio ult 1.1264)
+GBPUSD: rango diario medio 41.2 bps, mediana 39.0 bps, n=67  (precio ult 1.3491)
+GC: rango diario medio 218.4 bps, mediana 196.9 bps, n=67  (precio ult 4149)
+NQ: rango diario medio 167.6 bps, mediana 148.7 bps, n=67  (precio ult 28290)
+ES: rango diario medio 100.0 bps, mediana 89.0 bps, n=67  (precio ult 7704)
+GC: rango 5m medio 10.63 bps -> k = 0.0487
+NQ: rango 5m medio 9.00 bps -> k = 0.0537
+ES: rango 5m medio 5.45 bps -> k = 0.0545
+k medio = 0.0523
+EURUSD rango 5m medio estimado 2.23 bps; {'Asia 18-02': np.float64(1.83), 'Londres 02-07': np.float64(2.89), 'Solape 07-11': np.float64(2.98), 'NY tarde 11-15': np.float64(1.92), 'Cierre 15-17': np.float64(1.64)}
+GBPUSD rango 5m medio estimado 2.16 bps; {'Asia 18-02': np.float64(1.77), 'Londres 02-07': np.float64(2.8), 'Solape 07-11': np.float64(2.89), 'NY tarde 11-15': np.float64(1.86), 'Cierre 15-17': np.float64(1.59)}
