@@ -1,0 +1,7 @@
+data/
+state/
+lab/
+research/
+tests/
+.env
+**/__pycache__

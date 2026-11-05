@@ -1,0 +1,4 @@
+-r ../requirements.txt
+numba>=0.60
+pyarrow>=15
+pytest>=8

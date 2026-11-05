@@ -1,0 +1,12 @@
+# Scalper DEMO image. Railway version: build context = repo root.
+FROM python:3.12-slim
+ENV PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 DATA_DIR=/data PORT=8080 TZ=America/Mexico_City
+WORKDIR /app
+COPY scalper/requirements.txt /app/requirements.txt
+RUN pip install -r /app/requirements.txt
+COPY scalper/bot /app/bot
+COPY scalper/config.yaml /app/config.yaml
+RUN mkdir -p /data
+EXPOSE 8080
+HEALTHCHECK --interval=60s --timeout=10s --start-period=120s CMD python -c "import urllib.request,os;urllib.request.urlopen('http://127.0.0.1:'+os.environ.get('PORT','8080')+'/health',timeout=8)"
+CMD ["python", "-m", "bot"]
