@@ -1,0 +1,93 @@
+# Configuración del bot. Las credenciales NO van aquí: van en variables de entorno (.env o en la nube).
+# Todo lo que dice "backtest" sale de lab/results (ver RESULTADOS.md).
+
+perfil: normal          # normal | agresivo   (también se cambia por Telegram con /perfil agresivo)
+
+perfiles:
+  normal:
+    # Recomendado por la investigación: ~1/4 de Kelly sobre la ventaja medida fuera de muestra.
+    riesgo_por_trade_pct: 1.0
+    arranque: {trades: 300, riesgo_por_trade_pct: 0.5}   # hasta medir la ventaja real en demo
+    riesgo_abierto_max_pct: 3.0
+    posiciones_max: 2
+    stop_diario_R: -6
+    stop_semanal_R: -15
+    breaker_perdidas_pausa: 7      # 7 pérdidas seguidas -> pausa 2 h a medio tamaño
+    breaker_perdidas_dia: 10       # 10 seguidas -> alto del día
+    # Riesgo estimado (bootstrap de días del walk-forward, US100 S1):
+    #   todo el OOS 2022-26: P(perder >= 50% en 1 año) = 0.0%   ·  mediana a 1 año +16.6%
+    #   solo 2025-26 (ventaja más débil): P(-50% en 1 año) = 0.0% · mediana a 1 año +4.4%
+  agresivo:
+    # El máximo que la investigación considera sobrevivible: ~1/2 Kelly con la ventaja de todo el OOS,
+    # ~Kelly completo con la ventaja reciente (más débil).
+    riesgo_por_trade_pct: 2.0
+    arranque: {trades: 0, riesgo_por_trade_pct: 2.0}
+    riesgo_abierto_max_pct: 5.0
+    posiciones_max: 2
+    stop_diario_R: -6
+    stop_semanal_R: -12
+    breaker_perdidas_pausa: 7
+    breaker_perdidas_dia: 10
+    # Riesgo de quiebra estimado: P(perder >= 50% en 1 año) = 0.1% (OOS completo) / 1.2% (2025-26).
+    #   Con ventaja negativa (E = -0.05R) la investigación estima 25% de ruina en un mes: por eso los frenos.
+    #   5% por trade ya daba 23% de P(-50%) en un año con la ventaja reciente: no se permite.
+
+# Estrategias "brazos": vivo = manda órdenes a la demo; sombra = el Learner las sigue en papel y solo
+# propone promoverlas con muestra suficiente (>= 271 trades y límite inferior del IC95 > 0).
+brazos:
+  - {estrategia: S1, instrumento: US100, modo: vivo,
+     params: {m: 1.25, check: 30, stop_atr: 2.0, exit: check}, politica_stop: fijo}
+  # Sombras: la configuración que eligió el último tramo del walk-forward (todas fallaron el estrés 2x spread)
+  - {estrategia: S1, instrumento: US500, modo: sombra,
+     params: {m: 1.0, check: 30, stop_atr: 2.0, exit: check}, politica_stop: fijo}
+  - {estrategia: S2, instrumento: US100, modo: sombra, params: {n: 5, tp_r: 0.0}, politica_stop: fijo}
+  - {estrategia: S2, instrumento: US500, modo: sombra, params: {n: 5, tp_r: 0.0}, politica_stop: fijo}
+
+# Stop Manager. La política sale del backtest por estrategia: en S1 "fijo" (dejar respirar) ganó a
+# break-even y trailing. Ver RESULTADOS.md "mover pronto vs dejar respirar".
+stop_manager:
+  politicas:
+    fijo: {be_trig: 0.0, trail_mult: 0.0, trail_start: 0.0}
+    be1.0: {be_trig: 1.0, trail_mult: 0.0, trail_start: 0.0}
+    be1.5: {be_trig: 1.5, trail_mult: 0.0, trail_start: 0.0}
+    be1.0+tr2.0: {be_trig: 1.0, trail_mult: 2.0, trail_start: 1.0}
+  paso_minimo_atr: 0.1        # no manda PUT si el stop mejora menos de 0.1 ATR (cuida el límite de peticiones)
+  cierre_parcial: false       # la API no permite cierre parcial y el backtest dice que no mejora la expectativa
+
+filtro:
+  spread_max_atr: 0.25        # spread vivo / ATR(5m)
+  spread_max_vs_tipico: 2.0   # spread vivo / mediana registrada
+  atr_percentil_min: 5
+  atr_percentil_max: 99
+  datos_max_seg: 15           # el último precio debe tener menos de 15 s
+
+analyst:
+  umbral: 70
+  pesos: {estrategia: 40, learner: 30, mercado: 20, informacion: 10}
+
+# Agentes de información: solo los que mejoraron el backtest fuera de muestra pesan en el score.
+# Resultado (lab/results/agentes_info.csv): ninguno mejoró a S1-US100, así que todos pesan 0.
+# Siguen calculándose para el panel "lectura del mercado" y para seguir midiéndolos.
+agentes_info:
+  trend:       {activo: true, peso: 0, razon: "OFF: filtrar por tendencia 1h bajó el crecimiento total (-0.39 log) y empeoró 3 de 5 años"}
+  big_money:   {activo: true, peso: 0, razon: "OFF: el COT semanal (asset managers) quitó la mitad de los trades sin mejorar la expectativa"}
+  retail:      {activo: true, peso: 0, razon: "OFF: Capital.com no da historial del sentimiento; se graba para evaluarlo después"}
+  correlation: {activo: true, peso: 0, razon: "OFF como señal: exigir que US500 confirme empeoró 4 de 5 años; solo se usa para riesgo"}
+  news:        {activo: true, peso: 0, bloqueo: true,
+                razon: "Bloqueo de seguridad: el backtest no puede medirlo (no modela el spread en noticias) y cuesta ~2 trades en 5 años",
+                antes_min: 5, despues_min: 15, fomc_antes_min: 10, fomc_despues_min: 45}
+
+learner:
+  descuento: 0.995            # Thompson sampling gaussiano sobre R con olvido lento
+  prior_trades: 50            # peso del backtest como prior (en trades equivalentes)
+  promover_min_trades: 271    # muestra para distinguir +0.10R de cero (investigación cap. 04)
+  pausar_si_prob_menor: 0.2   # P(E>0) del brazo vivo < 0.2 con >= 50 trades -> medio riesgo; < 0.05 -> pausa
+  auto_promover: false        # si true, promueve solo; si false, avisa por Telegram y espera /promover
+  reoptimizar_cada_dias: 7
+  reoptimizar_min_meses: 6
+
+demo:
+  saldo_inicial: 100          # la primera vez ajusta la demo a $100 con topUp (si la API lo permite)
+
+reportes:
+  resumen_diario_hora_cdmx: "08:00"
