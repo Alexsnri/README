@@ -135,3 +135,56 @@ probabilidad es 0% en una noche, 0% en un mes y 0% en un año, con cualquier niv
 garantice la quiebra. Lo realista es entre **+4% y +17% al año** a riesgo normal, y entre **+6% y +31%** en
 agresivo, con meses negativos frecuentes. Subir el riesgo a 5% no acelera la mediana: solo agranda la
 probabilidad de perder la mitad.
+
+## Revisión independiente (un subagente que no vio el trabajo)
+
+Revisó el backtest y el código por su cuenta, reimplementó S1-US100 desde cero y corrió sus propias pruebas.
+
+**Lo que confirmó:**
+- No hay *look-ahead*. Si la entrada se retrasa 1 minuto, la expectativa queda en +0.094R; si se retrasa 5
+  minutos, en +0.062R. Con direcciones al azar da entre −0.05 y +0.01R.
+- Su propia reimplementación da E = +0.103R con t = 2.08 en 776 trades, contra +0.103R y t = 2.18 en 834 del
+  laboratorio.
+- La corrección de zona horaria de HistData es correcta.
+- El candado DEMO no tiene ninguna salida hacia la cuenta real.
+- Las credenciales no aparecen en logs, en Telegram ni en el dashboard.
+
+**Lo que encontró en el backtest.** Lo dejo tal cual, porque cambia cuánto confiar en el resultado:
+1. **La ventaja es frágil.** Los 10 mejores trades de 834 aportan el 71% del R total; sin ellos,
+   E = +0.031R (t = 0.74). En 2025–26 solo: E = +0.034R (t = 0.47), estadísticamente indistinguible de cero.
+2. **Se probaron ~21 combinaciones de estrategia × instrumento y pasó una sola.** El DSR solo corrige por las
+   64 variantes de S1-US100. Si se corrige por todas, la probabilidad de que la ventaja sea suerte ronda el
+   30%.
+3. **El walk-forward es "degenerado".** Eligió la misma configuración en los 10 tramos y coincide con la mejor
+   de todo el periodo, así que el OOS es casi "en muestra sin 2021". No hay fuga de datos, pero tampoco es
+   una validación fuera de muestra tan fuerte como parece.
+4. **Huecos en los datos de 2023.** HistData US100 tiene horas faltantes en ~124 días (feb–jul 2023). Eso
+   vuelve el backtest de ese tramo ligeramente optimista, porque no revisa stops dentro de los huecos.
+5. **Sensibilidad al costo.** El modelo de costo está en puntos base. Con un spread fijo de 2.5 puntos,
+   E = +0.084R; con 3.6 puntos, E = +0.065R (t = 1.31). Con spread ×2.5 y deslizamiento ×1, E = +0.066R.
+
+**Conclusión honesta:** S1-US100 es la mejor candidata que salió de la investigación, pero su ventaja actual
+podría ser cero. Por eso la demo existe: el bot arranca con riesgo bajo, compara cada trade contra lo que
+predijo el backtest, y el Learner le baja el riesgo o la pausa si con ≥50 trades reales la probabilidad de
+ganar baja de 20% o de 5%. Hacen falta ~270 trades reales (alrededor de un año a su ritmo) para distinguir
+una ventaja de +0.10R de cero.
+
+**Lo que encontró en el código, ya corregido** (con tests nuevos que fallaban antes del arreglo):
+- **Cierre registrado dos veces** si la reconciliación coincidía con un cierre en curso; uno salía como una
+  pérdida falsa de −1R. Ahora cada cierre lleva un candado y el registro es idempotente
+  (`tests/test_engine.py`).
+- **Precio de salida de los cierres en el servidor.** Ahora filtra por origen (SL/TP/CLOSE_OUT primero) y ya
+  no inventa −1R cuando falta el detalle.
+- **Cuenta de $100 frente al tamaño mínimo del bróker.** Si el mínimo arriesga más de lo normal, se permite
+  hasta un tope (2% en normal, 3% en agresivo) y se avisa; si supera el tope, se rechaza.
+- **Posición sin stop en el servidor.** Si no se puede reponer en 3 intentos, se cierra a mercado ("primero
+  proteger"). El stop local ya no se actualiza si Capital.com no lo confirma. A las posiciones adoptadas se les
+  pone el stop desde el precio actual.
+- **Stream "medio abierto"** (conectado pero sin precios): si pasan 3 minutos sin precios con el mercado
+  abierto, se reconecta.
+- **Arranque con credenciales malas o Capital.com caído.** El scheduler y el watchdog arrancan antes, así que
+  `/health` responde y el dashboard muestra el error.
+- **Login del dashboard:** 5 intentos fallidos bloquean esa IP 15 minutos. **Telegram:** `/vincular` ya no
+  funciona si ya hay un chat vinculado, y se limita a 5 intentos por hora.
+- **Detalles menores:** cuántos decimales tiene cada instrumento, la vela incompleta al reiniciar y un aviso si
+  la cuenta no está en USD.

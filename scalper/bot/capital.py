@@ -253,6 +253,17 @@ class Stream:
             backoff = min(60, backoff * 2)
 
     async def _pinger(self, ws):
+        """Pings every 4 min and detects a "half-open" stream: if no quotes arrive for 3 min while the market
+        is open, it closes the connection so run() reconnects."""
+        from datetime import datetime, timezone
+        from .schedule import slot_at
+        last_ping = time.time()
         while True:
-            await asyncio.sleep(240)
-            await ws.send(self._msg("ping"))
+            await asyncio.sleep(30)
+            if time.time() - last_ping > 240:
+                await ws.send(self._msg("ping"))
+                last_ping = time.time()
+            if slot_at(datetime.now(timezone.utc)) not in ("cerrado", "rollover") and time.time() - self.last_msg > 180:
+                self.log("ERROR", "-", "stream sin precios 3 min: reconecto", "error")
+                await ws.close()
+                return

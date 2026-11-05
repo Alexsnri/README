@@ -66,6 +66,10 @@ class Telegram:
                     chat = str(msg.get("chat", {}).get("id", ""))
                     text = (msg.get("text") or "").strip()
                     if text.startswith("/vincular"):
+                        self.pair_tries = [t for t in getattr(self, "pair_tries", []) if time.time() - t < 3600]
+                        if self.chat or len(self.pair_tries) >= 5:
+                            continue   # already linked (or too many attempts): ignored
+                        self.pair_tries.append(time.time())
                         if text.split()[-1] == self.code:
                             self.chat = chat
                             self.store.kv_set("telegram_chat", chat)

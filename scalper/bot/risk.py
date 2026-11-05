@@ -26,8 +26,12 @@ def floor_step(x, step):
     return round(n * step, 10)
 
 
-def position_size(equity, risk_pct, stop_dist, rules: DealingRules, slip=0.0):
-    """Size such that hitting the stop loses at most `risk_pct`% of `equity`. Returns (size, real_risk_usd, reason)."""
+def position_size(equity, risk_pct, stop_dist, rules: DealingRules, slip=0.0, min_cap_pct=None):
+    """Size such that hitting the stop loses at most `risk_pct`% of `equity`. Returns (size, real_risk_usd, reason).
+
+    With a small account the minimum size may risk more than `risk_pct`. If `min_cap_pct` is given, the
+    minimum size is allowed as long as its risk does not go over `min_cap_pct`% (a hard cap); otherwise it is
+    rejected."""
     if equity <= 0 or risk_pct <= 0:
         return 0.0, 0.0, "sin capital o riesgo 0"
     if stop_dist <= 0:
@@ -37,8 +41,11 @@ def position_size(equity, risk_pct, stop_dist, rules: DealingRules, slip=0.0):
     per_unit = (stop_dist + slip) * rules.value_per_point
     size = floor_step(risk_usd / per_unit, rules.step)
     if size < rules.min_size:
-        return 0.0, rules.min_size * per_unit, (f"el tamaño mínimo ({rules.min_size}) arriesgaría "
-                                                f"${rules.min_size * per_unit:.2f} > ${risk_usd:.2f}")
+        min_risk = rules.min_size * per_unit
+        if min_cap_pct is not None and min_risk <= equity * min_cap_pct / 100.0 + 1e-12:
+            return rules.min_size, min_risk, "tamaño mínimo"
+        return 0.0, min_risk, (f"el tamaño mínimo ({rules.min_size}) arriesgaría ${min_risk:.2f} > ${risk_usd:.2f}"
+                               + (f" y > tope {min_cap_pct}%" if min_cap_pct is not None else ""))
     size = min(size, rules.max_size)
     return size, size * per_unit, "ok"
 

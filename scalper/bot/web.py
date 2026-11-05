@@ -31,7 +31,12 @@ class Web:
         self.cfg, self.eng, self.learner, self.info, self.log, self.store = cfg, engine, learner, info, log, store
         self.pw = password
         self.code = pairing_code
-        self.secret = hashlib.sha256(("cookie:" + password).encode()).hexdigest()
+        salt = store.kv_get("cookie_salt")
+        if not salt:
+            salt = __import__("secrets").token_hex(16)
+            store.kv_set("cookie_salt", salt)
+        self.secret = hashlib.sha256(f"cookie:{salt}:{password}".encode()).hexdigest()
+        self.fails = {}   # ip -> [timestamps of failed attempts]
         self.heartbeat = time.time()
         self.app = web.Application()
         r = self.app.router
@@ -57,13 +62,24 @@ class Web:
         return web.Response(text=LOGIN.replace("%ERR%", ""), content_type="text/html")
 
     async def login_post(self, req):
+        ip = req.headers.get("X-Forwarded-For", req.remote or "?").split(",")[0].strip()
+        now = time.time()
+        recent = [t for t in self.fails.get(ip, []) if now - t < 900]
+        if len(recent) >= 5:
+            return web.Response(text=LOGIN.replace("%ERR%", '<p style="color:#ff6b81">Demasiados intentos. '
+                                'Espera 15 minutos.</p>'), content_type="text/html", status=429)
         data = await req.post()
-        await asyncio.sleep(0.5)   # slows down brute force
+        await asyncio.sleep(0.5)
         if hmac.compare_digest(str(data.get("pw", "")), self.pw):
+            self.fails.pop(ip, None)
             resp = web.HTTPFound("/")
             resp.set_cookie("s", self.secret, max_age=90 * 86400, httponly=True, samesite="Lax",
                             secure=req.secure or req.headers.get("X-Forwarded-Proto") == "https")
             raise resp
+        self.fails[ip] = recent + [now]
+        if len(self.fails) > 1000:
+            self.fails.clear()
+        self.log("SEGUR", "-", f"intento de acceso fallido al dashboard ({len(recent) + 1}/5)", "warn")
         return web.Response(text=LOGIN.replace("%ERR%", '<p style="color:#ff6b81">Contraseña incorrecta</p>'),
                             content_type="text/html")
 

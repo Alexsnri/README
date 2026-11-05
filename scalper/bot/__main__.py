@@ -153,6 +153,35 @@ async def amain():
         spawn("telegram-envio", tg.sender)
         spawn("telegram-comandos", tg.poller)
 
+    async def scheduler():
+        last_prune = 0
+        while True:
+            webapp.heartbeat = time.time()
+            if broker is not None and engine.ready:
+                await engine.tick_schedule()
+                now = datetime.fromtimestamp(engine.now(), timezone.utc).astimezone(schedule.CDMX)
+                hh = cfg["reportes"]["resumen_diario_hora_cdmx"]
+                if now.strftime("%H:%M") >= hh and store.kv_get("ultimo_resumen") != now.date().isoformat():
+                    store.kv_set("ultimo_resumen", now.date().isoformat())
+                    rep = report.build(store, learner, engine.account, engine.start_balance, engine.now())
+                    report.write_daily(os.path.join(cfg["data_dir"], "reports"), rep)
+                    tg.send(report.to_text(rep))
+                    log("RESUM", "-", "resumen diario enviado")
+            if time.time() - last_prune > 86400:
+                store.prune()
+                last_prune = time.time()
+            await asyncio.sleep(10 if not cfg["sim"] else 1)
+
+    spawn("scheduler", scheduler)
+
+    async def watchdog():
+        while True:
+            await asyncio.sleep(60)
+            if time.time() - webapp.heartbeat > 300:
+                log("ERROR", "-", "el bot dejó de latir 5 min: reinicio el proceso", "error")
+                os._exit(3)
+
+    spawn("watchdog", watchdog)
     if broker is None:
         engine.status = "sin credenciales"
         log("ERROR", "-", "faltan CAPITAL_API_KEY / CAPITAL_IDENTIFIER / CAPITAL_API_PASSWORD; el bot no opera hasta "
@@ -188,35 +217,6 @@ async def amain():
         spawn("reconciliacion", engine.loop_reconcile)
         spawn("cuenta", engine.loop_account)
 
-    async def scheduler():
-        last_prune = 0
-        while True:
-            webapp.heartbeat = time.time()
-            if broker is not None:
-                await engine.tick_schedule()
-                now = datetime.fromtimestamp(engine.now(), timezone.utc).astimezone(schedule.CDMX)
-                hh = cfg["reportes"]["resumen_diario_hora_cdmx"]
-                if now.strftime("%H:%M") >= hh and store.kv_get("ultimo_resumen") != now.date().isoformat():
-                    store.kv_set("ultimo_resumen", now.date().isoformat())
-                    rep = report.build(store, learner, engine.account, engine.start_balance, engine.now())
-                    report.write_daily(os.path.join(cfg["data_dir"], "reports"), rep)
-                    tg.send(report.to_text(rep))
-                    log("RESUM", "-", "resumen diario enviado")
-            if time.time() - last_prune > 86400:
-                store.prune()
-                last_prune = time.time()
-            await asyncio.sleep(10 if not cfg["sim"] else 1)
-
-    spawn("scheduler", scheduler)
-
-    async def watchdog():
-        while True:
-            await asyncio.sleep(60)
-            if time.time() - webapp.heartbeat > 300:
-                log("ERROR", "-", "el bot dejó de latir 5 min: reinicio el proceso", "error")
-                os._exit(3)
-
-    spawn("watchdog", watchdog)
     loop = asyncio.get_running_loop()
     for sig in (signal.SIGINT, signal.SIGTERM):
         try:

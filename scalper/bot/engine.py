@@ -38,7 +38,9 @@ class Bars:
         self.cur5 = None
         self.m1 = deque(maxlen=240)         # last 4 h of 1m bars (dashboard chart)
 
-    def seed(self, rows):
+    def seed(self, rows, now=None):
+        if now is not None:
+            rows = [r for r in rows if int(r["t"]) + 300 <= now]   # the bar still forming is built live
         for r in rows:
             self.b5.append((int(r["t"]), r["o"], r["h"], r["l"], r["c"]))
 
@@ -104,6 +106,7 @@ class Engine:
         self.last_score = None
         self.stop_hist = {}       # deal_id -> [(ts, level, reason)]
         self.status = "arrancando"
+        self.ready = False
         self.errors = deque(maxlen=20)
         self.started = time.time()
         self.last_slot = None
@@ -120,7 +123,11 @@ class Engine:
             await self._load_rules(inst)
             await self._backfill(inst)
         await self.reconcile(first=True)
+        cur = (self.account.get("currency") or "USD")
+        if cur != "USD":
+            self.log("ERROR", "-", f"la cuenta está en {cur}, no en USD: el P&L por punto puede no ser exacto", "error")
         self.status = "operando" if not self.paused else "pausado"
+        self.ready = True
 
     async def _demo_balance(self):
         target = self.cfg.get("demo", {}).get("saldo_inicial")
@@ -169,7 +176,11 @@ class Engine:
             min_stop_dist=dist(dr.get("minStopOrProfitDistance")),
             margin_factor=float(mf),
             value_per_point=float(ins.get("lotSize") or 1.0))
-        self.decimals[inst] = int(round(math.log10(snap.get("decimalPlacesFactor", 100)))) if snap else 2
+        dpf = snap.get("decimalPlacesFactor") if snap else None
+        if dpf is None:
+            self.decimals[inst] = 5 if INSTRUMENTS[inst].family == "fx" else 2
+        else:   # the API may give the number of decimals (e.g. 5) or a factor (e.g. 100000)
+            self.decimals[inst] = int(dpf) if dpf <= 10 else int(round(math.log10(dpf)))
         r = self.rules[inst]
         self.log("REGLAS", inst, f"mín {r.min_size} paso {r.step} stop mín {r.min_stop_dist:g} margen "
                  f"{r.margin_factor * 100:.1f}%")
@@ -202,7 +213,7 @@ class Engine:
         for r in rows:
             self.store.add_bar(inst, r["t"], r["o"], r["h"], r["l"], r["c"])
         allrows = sorted(saved + rows, key=lambda r: r["t"])
-        self.bars[inst].seed(allrows)
+        self.bars[inst].seed(allrows, now=self.now())
         self.log("DATOS", inst, f"{len(allrows)} velas de 5m cargadas")
 
     # ================================================================ quotes
@@ -260,6 +271,13 @@ class Engine:
                 ok = srv is not None and abs(float(srv["position"].get("stopLevel") or 0) - new) < 10 ** -self.decimals.get(p["instrumento"], 2) * 2
             except ApiError as e:
                 self.log("ERROR", p["instrumento"], f"no pude mover el stop: {e}", "error")
+                return False
+            if not ok:
+                if srv is not None and srv["position"].get("stopLevel"):
+                    p["stop"] = float(srv["position"]["stopLevel"])   # keep what the server really has
+                self.log("ERROR", p["instrumento"], f"Capital.com no confirmó el stop {new:g}; sigue en {p['stop']:g}",
+                         "error")
+                self.store.save_position(p)
                 return False
         p["stop"] = new
         p["moves"] = p.get("moves", 0) + 1
@@ -352,7 +370,11 @@ class Engine:
         equity = self.account["balance"] or self.start_balance or 100.0
         mult = self.learner.mult.get(arm["key"], 1.0)
         pct = self.risk.risk_pct(schedule.risk_multiplier(ts), mult)
-        size, risk_usd, why = position_size(equity, pct, stop_dist, rules_i, slip=0.5 * (ask - bid))
+        size, risk_usd, why = position_size(equity, pct, stop_dist, rules_i, slip=0.5 * (ask - bid),
+                                            min_cap_pct=self.risk.p.get("tamano_minimo_tope_pct"))
+        if why == "tamaño mínimo":
+            self.log("RISK", inst, f"uso el tamaño mínimo {size:g}: arriesga ${risk_usd:.2f} "
+                     f"({risk_usd / equity * 100:.2f}%) en vez de {pct:.2f}% (cuenta chica)", "warn")
         item["etapa"] = "risk"
         if size <= 0:
             item["resultado"] = why
@@ -418,8 +440,15 @@ class Engine:
                  else f"stop {stop:g} (sombra)")
 
     async def close(self, p, reason):
-        if p["deal_id"] not in self.positions:
+        if p["deal_id"] not in self.positions or p.get("_closing"):
             return
+        p["_closing"] = True   # no other task (reconcile, flatten) may record it while the close is in flight
+        try:
+            await self._close(p, reason)
+        finally:
+            p.pop("_closing", None)
+
+    async def _close(self, p, reason):
         inst = p["instrumento"]
         bid, ask, _ = self.quotes.get(inst, (p["entry"], p["entry"], 0))
         level = bid if p["dir"] > 0 else ask
@@ -429,14 +458,18 @@ class Engine:
                 conf = await self.br.confirm(r.get("dealReference", ""))
                 level = float(conf.get("level") or level)
             except ApiError as e:
-                if e.status == 404:   # it was already closed (stop/TP): reconciliation records it
-                    await self.reconcile()
+                if e.status == 404:   # it was already closed on the server (stop/TP): record it once
+                    level2, why = await self._closing_info(p["deal_id"], p)
+                    await self._record_close(p, level2, why)
                     return
                 self.log("ERROR", inst, f"no pude cerrar: {e}", "error")
                 return
         await self._record_close(p, level, reason)
 
     async def _record_close(self, p, level, reason):
+        if self.positions.get(p["deal_id"]) is not p:
+            return   # already recorded (idempotent)
+        self.positions.pop(p["deal_id"], None)
         d = p["dir"]
         r_mult = d * (level - p["entry"]) / abs(p["entry"] - p["stop0"]) if p["entry"] != p["stop0"] else 0.0
         rules_i = self.rules.get(p["instrumento"], DealingRules())
@@ -487,7 +520,7 @@ class Engine:
             self.log("ERROR", "-", f"no pude leer posiciones: {e}", "error")
             return
         for deal, p in list(self.positions.items()):
-            if p["shadow"]:
+            if p["shadow"] or p.get("_closing"):
                 continue
             sp = server.get(deal)
             if sp is None:
@@ -496,11 +529,19 @@ class Engine:
                 continue
             srv_stop = sp["position"].get("stopLevel")
             if not srv_stop:
+                p["stop_fails"] = p.get("stop_fails", 0) + 1
                 self.log("ERROR", p["instrumento"], "¡posición sin stop en el servidor! lo vuelvo a poner", "error")
                 try:
                     await self.br.update_position(deal, p["stop"], p.get("tp"))
+                    p["stop_fails"] = 0
                 except ApiError as e:
                     self.log("ERROR", p["instrumento"], f"no pude reponer el stop: {e}", "error")
+                    if p["stop_fails"] >= 3:   # protect first: no stop on the server -> close at market
+                        self.log("ERROR", p["instrumento"], "3 intentos sin stop: cierro a mercado", "error")
+                        await self.close(p, "sin stop en servidor")
+            elif abs(float(srv_stop) - p["stop"]) > 1e-9:
+                p["stop"] = float(srv_stop)      # the server is the truth
+                self.store.save_position(p)
         known = set(self.positions)
         for deal, sp in server.items():
             if deal in known:
@@ -514,7 +555,10 @@ class Engine:
                 df = self.bars[inst].df5() if inst in self.bars else None
                 from . import indicators as ind
                 atr = float(ind.atr(df).iloc[-1]) if df is not None and len(df) > 20 else lvl * 0.002
-                stop = round(lvl - d * 2 * atr, self.decimals.get(inst, 2))
+                q = self.quotes.get(inst)
+                cur = (q[0] if d > 0 else q[1]) if q else lvl
+                ref = min(lvl, cur) if d > 0 else max(lvl, cur)   # from the current price if it is already losing
+                stop = round(ref - d * 2 * atr, self.decimals.get(inst, 2))
                 try:
                     await self.br.update_position(deal, stop, pos.get("profitLevel"))
                     self.log("STOP", inst, f"posición sin stop: puse stop {stop:g}", "warn")
@@ -536,15 +580,18 @@ class Engine:
             acts = await self.br.activity(last_period=86400, deal_id=deal)
         except ApiError:
             acts = []
-        for a in acts:
-            src = a.get("source")
-            lvl = a.get("level") or (a.get("details") or {}).get("level")
-            if lvl and a.get("status", "ACCEPTED") in ("ACCEPTED", "EXECUTED"):
-                why = {"SL": "stop en servidor", "TP": "objetivo en servidor", "CLOSE_OUT": "cierre por margen",
-                       "USER": "cerrada a mano", "DEALER": "cerrada por el bróker", "SYSTEM": "sistema"}.get(src, src)
-                return float(lvl), why
+        names = {"SL": "stop en servidor", "TP": "objetivo en servidor", "CLOSE_OUT": "cierre por margen",
+                 "USER": "cerrada a mano", "DEALER": "cerrada por el bróker", "SYSTEM": "sistema"}
+        acts = sorted(acts, key=lambda a: str(a.get("dateUTC") or a.get("date") or ""), reverse=True)
+        for prefer in (("SL", "TP", "CLOSE_OUT"), ("USER", "DEALER", "SYSTEM")):
+            for a in acts:
+                src = a.get("source")
+                lvl = a.get("level") or (a.get("details") or {}).get("level")
+                if src in prefer and lvl and str(a.get("status", "ACCEPTED")).upper() in ("ACCEPTED", "EXECUTED"):
+                    return float(lvl), names[src]
+        # no detail: last known price (not the stop, so a fake -1R is not invented)
         bid, ask, _ = self.quotes.get(p["instrumento"], (p["stop"], p["stop"], 0))
-        return (p["stop"] if p["stop"] else (bid if p["dir"] > 0 else ask)), "cerrada en el servidor (sin detalle)"
+        return (bid if p["dir"] > 0 else ask), "cerrada en el servidor (sin detalle; precio aproximado)"
 
     async def refresh_account(self):
         try:

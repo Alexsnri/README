@@ -9,6 +9,7 @@ perfiles:
     riesgo_por_trade_pct: 1.0
     arranque: {trades: 300, riesgo_por_trade_pct: 0.5}   # hasta medir la ventaja real en demo
     riesgo_abierto_max_pct: 3.0
+    tamano_minimo_tope_pct: 2.0    # si el tamaño mínimo del bróker arriesga más que lo normal, se permite hasta 2%
     posiciones_max: 2
     stop_diario_R: -6
     stop_semanal_R: -15
@@ -23,6 +24,7 @@ perfiles:
     riesgo_por_trade_pct: 2.0
     arranque: {trades: 0, riesgo_por_trade_pct: 2.0}
     riesgo_abierto_max_pct: 5.0
+    tamano_minimo_tope_pct: 3.0
     posiciones_max: 2
     stop_diario_R: -6
     stop_semanal_R: -12
