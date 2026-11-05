@@ -149,7 +149,8 @@ class Info:
         nxt = self.next_events(1)
         out["news"] = {"texto": (f"BLOQUEO: {blk}" if blk else "libre") +
                        (f" · próximo: {nxt[0]['moneda']} {nxt[0]['evento']} {nxt[0]['hora_ny']} NY" if nxt else ""),
-                       "dir": None, "peso": 0, "razon": self.cfg["news"]["razon"], "bloqueo": bool(blk)}
+                       "dir": None, "peso": 0, "razon": self.cfg["news"]["razon"], "bloqueo": bool(blk),
+                       "guardia": bool(self.cfg["news"].get("bloqueo"))}
         # Correlation
         other = "US500" if inst != "US500" else "US100"
         txt, cdir = "sin datos", None
