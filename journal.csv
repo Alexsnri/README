@@ -1,0 +1,7 @@
+fecha,mercado,estrategia,direccion,entrada,salida,tamano,resultado_usd,R,motivo
+2026-10-27,US500,M,compra,7650.5,7704.0,1.2,64.2,0.32,salida de la estrategia
+2026-10-28,USDJPY,T,venta,157.448,157.945,11800,-37.25,-0.19,salida de la estrategia
+2026-11-05,XAUUSD,T,venta,4000.29,4100.05,1.01,-100.76,-0.51,stop
+2026-11-05,USOIL,T,compra,100.979,91.576,18.6,-174.9,-0.88,stop
+2026-11-06,US30,T,compra,53275.5,51451.5,0.032,-58.37,-1.0,stop
+2026-11-06,DE30,D,compra,26507.7,25643.1,0.053,-51.36,-1.0,stop
