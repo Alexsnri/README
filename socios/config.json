@@ -1,0 +1,28 @@
+{
+  "nicho": "Finanzas personales para trabajadores y familias en México y Latinoamérica",
+  "region": "MX",
+  "idioma": "es",
+  "palabras_clave": [
+    "finanzas personales",
+    "cómo ahorrar dinero",
+    "salir de deudas",
+    "presupuesto mensual",
+    "tarjeta de crédito consejos",
+    "educación financiera",
+    "ahorrar con poco sueldo",
+    "organizar mi quincena",
+    "cetes para principiantes",
+    "libertad financiera"
+  ],
+  "filtros": {
+    "suscriptores_min": 10000,
+    "suscriptores_max": 500000,
+    "dias_desde_ultimo_video_max": 30,
+    "vistas_entre_suscriptores_min": 0.03,
+    "videos_a_revisar": 10
+  },
+  "busqueda": {
+    "dias_hacia_atras": 120,
+    "resultados_por_palabra": 50
+  }
+}

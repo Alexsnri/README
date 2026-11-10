@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# Socios: datos de personas (correos de creadores) y conversaciones. Nunca al repo público.
+socios/data/
