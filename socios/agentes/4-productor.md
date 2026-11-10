@@ -24,7 +24,7 @@ Primero se lanza **Entrada**. Si vende, se construye Principal con lo que pidan 
 - Tono de finanzas: organización y hábitos, nunca recomendaciones de inversión concretas.
 - Entrega en `socios/productos/[creador]/`: guía, plantilla, textos de la página de venta,
   3 historias y un guion de video de lanzamiento para el creador.
-- Si el producto es una app o calculadora, se programa aquí en el repo (como Quincy).
+- Si el producto es una app o calculadora, se programa aquí en el repo.
 
 ## 4. Revisar antes de entregar
 

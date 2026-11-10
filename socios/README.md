@@ -8,7 +8,7 @@ automáticamente: 50% el creador y 50% nosotros.
 
 | Tema | Decisión | Por qué |
 |---|---|---|
-| Nicho | **Finanzas personales para trabajadores en México y Latinoamérica** (ahorro, deudas, quincena, presupuesto) | Es un tema que crece y no pasa de moda. La gente sí paga por plantillas y planes de dinero y confía en quien le explica. Además ya tenemos Quincy como prueba real. Se excluyen trading, cripto y «hazte rico». |
+| Nicho | **Finanzas personales para trabajadores en México y Latinoamérica** (ahorro, deudas, quincena, presupuesto) | Es un tema que crece y no pasa de moda. La gente sí paga por plantillas y planes de dinero y confía en quien le explica. Se excluyen trading, cripto y «hazte rico». |
 | Vender, cobrar, entregar y repartir | **Whop + página propia en tu dominio** | Whop cobra, entrega el producto y le paga al creador su parte en cada venta («revenue share»). Página propia para que se vea de marca y no genérico. |
 | Correo | **Tu Gmail personal** (gratis); dominio y Google Workspace cuando haya ventas | Para 20 correos personalizados al día basta. Instantly y ListKit no hacen falta. |
 | Buscar creadores | **API de YouTube (gratis)** + el script `scripts/buscar_creadores.py` | 10,000 consultas al día sin costo. Instagram y TikTok se revisan a mano desde el enlace del canal. |

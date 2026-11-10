@@ -47,9 +47,7 @@ ahorro en pareja), para no ponerlos a competir. Es real y se respeta.
 
 ## Pruebas reales (lo único que se puede usar como respaldo)
 
-- Hice **Quincy** (https://alexsnri.github.io/README/quincy/): app gratis de finanzas para trabajadores en
-  México con calculadoras de aguinaldo, finiquito, vacaciones, PTU y tandas con la ley de 2026.
-  Se puede mencionar como «una app de finanzas que hice para trabajadores en México».
+- Trabajo en educación financiera para México (dicho así, sin nombrar proyectos anteriores).
 - Estoy terminando un libro de finanzas personales para México en forma de historia. Se menciona solo así,
   sin título, y el capítulo 1 se manda como muestra **cuando el creador pida ver algo**.
 - *(Agrega aquí cada resultado real conforme llegue: ventas de un lanzamiento, testimonios con permiso.)*
@@ -58,7 +56,7 @@ ahorro en pareja), para no ponerlos a competir. Es real y se respeta.
 
 - Los correos salen de la cuenta personal de Gmail del dueño. La dirección y el nombre están en
   `socios/data/remitente.json` (fuera del repo, porque el repo es público).
-- Firma: solo el nombre de pila, sin marca y sin cargo. Así escribe una persona, no una agencia.
+- Firma: **Alejandro Sánchez**, sin marca y sin cargo. Así escribe una persona, no una agencia.
 
 ## Lo que NO prometemos nunca
 

@@ -32,7 +32,7 @@ Lee antes de escribir: `socios/agentes/oferta.md` (qué ofrecemos y qué no) y e
 - 40 a 120 palabras. Si te pregunta algo, contesta eso primero, en la primera línea.
 - Tutea si él tutea; usa «usted» si él lo usa. Copia su nivel de formalidad y su largo.
 - Sin emojis salvo que él los use. Sin listas largas. Sin «espero que estés muy bien».
-- Firma solo con el nombre de pila (`socios/data/remitente.json`). En primera persona: «yo», no «nosotros».
+- Firma «Alejandro Sánchez». En primera persona: «yo», no «nosotros».
 - Para llamada: ofrece **dos horarios concretos** en hora de CDMX (mañana o pasado, entre 10:00 y 19:00)
   y la opción de que proponga otro. Videollamada de 15 minutos por Google Meet.
 
@@ -54,7 +54,7 @@ Lee antes de escribir: `socios/agentes/oferta.md` (qué ofrecemos y qué no) y e
 |---|---|
 | «¿Cuánto cuesta?» | Nada. No cobramos por adelantado. Ganamos solo si se vende, de la misma venta. |
 | «¿Qué gano yo?» | Su porcentaje de cada venta (`oferta.md`), pagado automático por Whop cada vez que alguien compra. Él lo ve en su panel en tiempo real. |
-| «¿Quién eres? / ¿Por qué confiar?» | Quién eres en dos líneas + pruebas reales de `oferta.md` (aquí sí puedes mandar el enlace de Quincy) + «no firmas exclusividad y te puedes salir cuando quieras». La confianza viene de que él no arriesga. |
+| «¿Quién eres? / ¿Por qué confiar?» | Quién eres en dos líneas + pruebas reales de `oferta.md` (el capítulo 1 del libro como muestra) + «no firmas exclusividad y te puedes salir cuando quieras». La confianza viene de que él no arriesga. |
 | «Ya tengo un producto» | Mejor: ya sabemos que su gente compra. Proponemos uno que complemente al suyo (otra necesidad, otro precio) o mejorar el que tiene. |
 | «No tengo tiempo» | Lo que le toca es poco y concreto (`oferta.md` → «lo que pone el creador»). Todo lo demás es nuestro. |
 | «Mándame más información» | Una frase con el resumen y propones la llamada de 15 min: «Es más rápido que te enseñe una idea hecha para tu canal». Si insiste, manda el resumen de `oferta.md` en 5 líneas y vuelve a ofrecer horario. |

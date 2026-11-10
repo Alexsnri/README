@@ -40,7 +40,7 @@ hasta que aplique la anterior.
 | 3 | **El colchón.** Un fondo para que una emergencia no se vuelva deuda. | Meta de 1 mes de gastos y dónde guardarla. |
 | 4 | **La deuda que muerde.** Por qué el pago mínimo es una trampa (con números reales de CAT). | Plan avalancha o bola de nieve; cómo negociar con el banco. |
 | 5 | **Que el dinero trabaje.** Interés compuesto, inflación, CETES y aportaciones voluntarias a la Afore, explicados sin vender nada. | Primera inversión con poco dinero. |
-| 6 | **Lo que te toca.** Aguinaldo, PTU, vacaciones, prima y finiquito como aceleradores (calculadoras de Quincy). | Calcular lo suyo y decidir a qué va cada peso extra. |
+| 6 | **Lo que te toca.** Aguinaldo, PTU, vacaciones, prima y finiquito como aceleradores (con calculadora en el cuaderno de trabajo). | Calcular lo suyo y decidir a qué va cada peso extra. |
 | 7 | **Ganar más y protegerlo.** Pedir aumento, ingreso extra y no perder lo ganado. | Guion para pedir aumento; lista de protección. |
 
 Epílogo: Daniel un año después, y el secreto de Doña Chela.

@@ -20,8 +20,8 @@ Decir que no tiene que sentirse como dejar dinero y una oportunidad en la mesa, 
    - `[nombre], algo para tu gente`
    - `una idea con tu nombre`
 2. **Apertura (1–2 líneas):** el detalle concreto de su canal y lo que eso dice de su audiencia.
-3. **Quién soy (1 línea, sin marca):** «Llevo un tiempo haciendo cosas de educación financiera para
-   México; hice una app de finanzas para trabajadores y estoy terminando un libro».
+3. **Quién soy (1 línea, sin marca):** «Llevo tiempo trabajando en educación financiera para México y estoy
+   terminando un libro de dinero para gente que vive de su quincena».
 4. **La sociedad (1–2 líneas):** «Te propongo que seamos socios: yo construyo todo (el producto, la
    página, los cobros y la atención) y tú se lo presentas a tu gente. La mitad de cada venta es tuya».
 5. **Que se sienta parte (1 línea):** «Saldría con tu nombre y con lo que tu gente te pide; tú decides
@@ -37,14 +37,14 @@ Decir que no tiene que sentirse como dejar dinero y una oportunidad en la mesa, 
 > Hola, Aldo. En tus videos de tarjetas, la pregunta que más se repite es «¿por cuál deuda empiezo si
 > gano poco?», y la gente te responde a ti, no al banco. Esa confianza no se compra.
 >
-> Llevo tiempo haciendo cosas de educación financiera para México: hice una app de finanzas para
-> trabajadores y estoy terminando un libro. Te propongo que seamos socios: yo construyo todo y tú se lo
+> Llevo tiempo trabajando en educación financiera para México y estoy terminando un libro de dinero
+> para gente que vive de su quincena. Te propongo que seamos socios: yo construyo todo y tú se lo
 > presentas a tu gente. La mitad de cada venta es tuya, sin poner un peso. Saldría con tu nombre y tú
 > decides qué entra.
 >
 > ¿Qué es lo que más te pregunta tu gente que todavía no has podido resolverles a fondo?
 >
-> [nombre de pila]
+> Alejandro Sánchez
 
 ## Reglas
 
