@@ -19,10 +19,44 @@
     "suscriptores_max": 500000,
     "dias_desde_ultimo_video_max": 30,
     "vistas_entre_suscriptores_min": 0.03,
-    "videos_a_revisar": 10
+    "videos_a_revisar": 10,
+    "relevancia_min": 0.4
   },
   "busqueda": {
     "dias_hacia_atras": 120,
     "resultados_por_palabra": 50
-  }
+  },
+  "terminos_tema": [
+    "dinero",
+    "ahorr",
+    "deuda",
+    "finanz",
+    "presupuesto",
+    "quincena",
+    "sueldo",
+    "salario",
+    "tarjeta",
+    "crédito",
+    "credito",
+    "invert",
+    "inversi",
+    "cetes",
+    "gasto",
+    "pobre",
+    "rico",
+    "millon",
+    "ingreso",
+    "afore",
+    "retiro",
+    "banco",
+    "interés",
+    "interes",
+    "tasa",
+    "libertad financiera",
+    "cashback",
+    "buen fin",
+    "pagar",
+    "préstamo",
+    "prestamo"
+  ]
 }

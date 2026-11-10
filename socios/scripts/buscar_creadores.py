@@ -43,13 +43,14 @@ YA_VENDE = re.compile(
     r"mi curso|mi ebook|mi libro|mentor[ií]a|membres[ií]a|plantilla de pago",
     re.I,
 )
-CORREOS_IGNORADOS = ("example.com", "sentry", "wixpress", "noreply", "no-reply")
+CORREOS_IGNORADOS = ("example.com", "sentry", "wixpress", "noreply", "no-reply", "pixabay", "epidemicsound",
+                     "artlist", "envato", "canva.com", "donacion", "donation")
 
 COLUMNAS = [
     "canal_id", "canal", "url", "pais", "suscriptores", "videos",
     "vistas_medianas", "vistas_entre_subs", "likes_por_vista", "comentarios_por_vista",
     "dias_ultimo_video", "videos_por_mes", "correo", "instagram", "tiktok",
-    "ya_vende", "puntaje", "videos_recientes", "estado", "notas", "actualizado",
+    "ya_vende", "relevancia", "puntaje", "videos_recientes", "estado", "notas", "actualizado",
 ]
 
 
@@ -121,7 +122,17 @@ def extraer(textos: list[str], patron: re.Pattern) -> str:
     return ""
 
 
-def analizar(canal: dict, videos: list[dict], ahora: dt.datetime) -> dict:
+def relevancia(videos: list[dict], terminos: list[str]) -> float:
+    """Fracción de videos recientes cuyo título o etiquetas hablan del tema."""
+    if not videos:
+        return 0.0
+    def habla(v: dict) -> bool:
+        texto = (v["snippet"].get("title", "") + " " + " ".join(v["snippet"].get("tags", []))).lower()
+        return any(t in texto for t in terminos)
+    return round(sum(habla(v) for v in videos) / len(videos), 2)
+
+
+def analizar(canal: dict, videos: list[dict], ahora: dt.datetime, terminos: list[str] = ()) -> dict:
     sn, st = canal["snippet"], canal.get("statistics", {})
     subs = int(st.get("subscriberCount", 0) or 0)
     vistas = [int(v["statistics"].get("viewCount", 0)) for v in videos]
@@ -153,10 +164,12 @@ def analizar(canal: dict, videos: list[dict], ahora: dt.datetime) -> dict:
         "comentarios_por_vista": round(sum(coments) / total_vistas, 4),
         "dias_ultimo_video": dias_ultimo,
         "videos_por_mes": por_mes,
-        "correo": extraer(textos, CORREO),
+        # El correo del canal manda; el de las descripciones de videos es respaldo (suele ser de créditos).
+        "correo": extraer(textos[:1], CORREO) or extraer(textos[1:], CORREO),
         "instagram": extraer(textos, INSTAGRAM),
         "tiktok": extraer(textos, TIKTOK),
         "ya_vende": "sí" if any(YA_VENDE.search(t or "") for t in textos) else "no",
+        "relevancia": relevancia(videos, list(terminos)),
         "videos_recientes": " | ".join(v["snippet"]["title"] for v in videos[:3]),
     }
 
@@ -179,7 +192,8 @@ def puntaje(p: dict) -> float:
 def pasa_filtros(p: dict, f: dict) -> bool:
     return (f["suscriptores_min"] <= p["suscriptores"] <= f["suscriptores_max"]
             and p["dias_ultimo_video"] <= f["dias_desde_ultimo_video_max"]
-            and p["vistas_entre_subs"] >= f["vistas_entre_suscriptores_min"])
+            and p["vistas_entre_subs"] >= f["vistas_entre_suscriptores_min"]
+            and p["relevancia"] >= f.get("relevancia_min", 0))
 
 
 def leer_existentes() -> dict[str, dict]:
@@ -226,8 +240,9 @@ def main() -> None:
         uploads = c.get("contentDetails", {}).get("relatedPlaylists", {}).get("uploads")
         if not uploads:
             continue
-        p = analizar(c, videos_recientes(uploads, f["videos_a_revisar"]), ahora)
+        p = analizar(c, videos_recientes(uploads, f["videos_a_revisar"]), ahora, cfg.get("terminos_tema", []))
         if not pasa_filtros(p, f):
+            existentes.pop(p["canal_id"], None)  # dejó de calificar (p. ej. por el filtro de tema)
             continue
         p["puntaje"] = puntaje(p)
         p["actualizado"] = ahora.date().isoformat()
