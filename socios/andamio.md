@@ -15,11 +15,11 @@ la audiencia de un creador, el creador lo presenta y Whop reparte cada venta en 
 | Cobro, entrega de archivos y acceso | Whop (un producto por edición) | ~3% + tarjeta por venta |
 | Reparto con cada creador | Whop revenue share (automático en cada venta) | incluido |
 | Capítulo gratis a cambio del correo | Producto **gratis** en Whop: entrega el capítulo y guarda el correo del lector | $0 |
-| Correo de Andamio | Gmail nuevo de la marca (sin dominio por ahora) | $0 |
+| Correo a creadores | Tu Gmail personal, firmado con tu nombre; la marca no aparece hasta la llamada | $0 |
 | Encontrar creadores | `scripts/buscar_creadores.py` (API de YouTube) | $0 |
 | Escribir, diseñar y programar | Claude Code + agentes de `agentes/` | ya pagado |
 
-Sin dominio propio el correo sale de Gmail. Para 20 correos personales al día funciona; cuando lleguen las
+A los creadores les escribe una persona, no una marca. Para 20 correos personales al día Gmail funciona; cuando lleguen las
 primeras ventas, el dominio y Workspace son la primera compra.
 
 ## El producto insignia: «Las siete quincenas»
