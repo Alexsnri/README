@@ -10,12 +10,12 @@ automáticamente: 50% el creador y 50% nosotros.
 |---|---|---|
 | Nicho | **Finanzas personales para trabajadores en México y Latinoamérica** (ahorro, deudas, quincena, presupuesto) | Es un tema que crece y no pasa de moda. La gente sí paga por plantillas y planes de dinero y confía en quien le explica. Además ya tenemos Quincy como prueba real. Se excluyen trading, cripto y «hazte rico». |
 | Vender, cobrar, entregar y repartir | **Whop + página propia en tu dominio** | Whop cobra, entrega el producto y le paga al creador su parte en cada venta («revenue share»). Página propia para que se vea de marca y no genérico. |
-| Correo | **Google Workspace con dominio propio** (la única suscripción, unos $7 USD al mes) | Correo profesional y Gmail para que el Closer prepare respuestas. Instantly y ListKit no hacen falta para 20 correos personalizados al día. |
+| Correo | **Gmail nuevo de la marca** (gratis); dominio y Google Workspace cuando haya ventas | Para 20 correos personalizados al día basta. Instantly y ListKit no hacen falta. |
 | Buscar creadores | **API de YouTube (gratis)** + el script `scripts/buscar_creadores.py` | 10,000 consultas al día sin costo. Instagram y TikTok se revisan a mano desde el enlace del canal. |
 | Producto | Gratis: Google Sheets o Notion, Canva o Gamma, y código aquí si es app | Sin suscripciones. |
 | Agentes | Claude Code (esta sesión) | Ya lo pagas, no hay costo extra. |
 
-**Costo:** dominio ~$10–15 USD al año + Workspace ~$7 USD al mes. Whop no cobra mensualidad; se queda
+**Costo:** $0 al mes por ahora. Whop no cobra mensualidad; se queda
 un porcentaje de cada venta (~3% más el procesamiento de tarjeta). Revisa la cifra actual en
 https://docs.whop.com/fees.
 
@@ -36,14 +36,12 @@ pedir «usa el closer con este correo».
 
 ## Pasos para arrancar (en orden)
 
-1. **Nombre y dominio.** Elige un nombre de marca y compra el dominio (Cloudflare Registrar o Namecheap).
-2. **Google Workspace** con ese dominio (plan Business Starter) y crea `hola@tudominio`.
-   Configura SPF, DKIM y DMARC (Workspace te guía). Sin esto, tus correos caen en spam.
-3. **Llave de YouTube.** En console.cloud.google.com: crea un proyecto, activa «YouTube Data API v3»
-   y crea una API key. Dásela a Claude en la sesión (por el formulario seguro, no en el chat).
+1. **Marca:** Andamio (ver `andamio.md`). Crea un Gmail de la marca para escribir a los creadores.
+2. **Llave de YouTube:** ya está creada. En Google Cloud, restríngela a «YouTube Data API v3».
+3. Cuando haya ventas: dominio propio + Google Workspace, con SPF, DKIM y DMARC.
 4. **Buscar:** `python3 socios/scripts/buscar_creadores.py` → `socios/data/prospectos.csv`.
 5. **Whop:** crea tu negocio (o usa el que tienes) y activa los pagos a tu cuenta.
-6. **Conectar Gmail de Workspace a Claude** para que el Closer revise respuestas cada hora y te deje
+6. **Conectar el Gmail de la marca a Claude** para que el Closer revise respuestas cada hora y te deje
    los borradores listos. Tú solo das «Enviar» desde el celular.
 7. Calienta el buzón: 5 correos al día la primera semana, luego subes 5 por semana hasta 20.
 
