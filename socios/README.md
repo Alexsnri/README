@@ -23,6 +23,7 @@ https://docs.whop.com/fees.
 
 | Agente | Archivo | Qué hace |
 |---|---|---|
+| Plan de la plataforma | `andamio.md` | Marca, producto insignia, ediciones con creadores y orden de trabajo. |
 | Cazador | `agentes/1-cazador.md` | Encuentra creadores y los califica. |
 | Escritor | `agentes/2-escritor.md` | Primer correo personalizado. |
 | **Closer** | `agentes/3-closer.md` | Contesta como experto en ventas hasta el sí o la llamada. |
