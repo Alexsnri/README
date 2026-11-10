@@ -31,12 +31,20 @@ Nunca «propuesta», «colaboración», «oportunidad» ni signos de exclamació
    - «Autor de un libro» pesa en su marca.
    - Si vende asesorías o cursos: quien compra el libro es su próximo cliente.
 5. **Exclusividad real:** «Solo trabajo con un creador por tema, y quiero que el de [tema] seas tú».
-6. **Cierre con seguridad, sin presión:** da por hecho el sí, pide una sola palabra y deja una salida
-   limpia. Esa salida es la que da confianza:
-   «Contéstame con un "va" y esta misma semana te mando el primer capítulo y cómo quedaría con tu
-   nombre. Si no te late, me lo dices y no te vuelvo a escribir. Así de simple.»
-   (España: «vale» / «si no te convence»; Argentina: «dale» / «si no te cierra, me lo decís».)
-   Si dices que no le vuelves a escribir, cúmplelo: un «no» cierra el hilo, sin seguimientos.
+6. **Cierre que da confianza (hay mucha estafa por correo; esto lo separa de ellas):**
+   - Dile lo que **nunca** le vas a pedir: dinero, contraseñas ni acceso a sus cuentas.
+   - Que juzgue el trabajo antes de comprometerse: el primer capítulo.
+   - Una cara real: videollamada de 15 minutos, con cámara, cuando le acomode.
+   - Una salida limpia: «con un "no, gracias" basta y no te vuelvo a escribir».
+   Nada de urgencia, nada de «contesta con una palabra», nada de enlaces. Si dice que no, el hilo se
+   cierra y no se le vuelve a escribir.
+
+   Texto base (México): «Para que no tengas que creerme a ciegas: nunca te voy a pedir dinero,
+   contraseñas ni acceso a tus cuentas. Si te interesa, te mando el primer capítulo para que juzgues el
+   trabajo tú mismo y, si te gusta, lo platicamos en una videollamada de 15 minutos, con cámara, cuando
+   te acomode. Y si no es para ti, con un "no, gracias" basta y no te vuelvo a escribir.»
+7. **Firma verificable:** nombre completo y, cuando exista, un enlace a un perfil real (LinkedIn o
+   Instagram personal) para que pueda comprobar que eres una persona.
 
 ## Reglas
 
