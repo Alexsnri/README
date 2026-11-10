@@ -49,7 +49,7 @@ Nunca «propuesta», «colaboración», «oportunidad» ni signos de exclamació
 ## Reglas
 
 - Un correo por creador. Si no encuentras nada real de su canal para el gancho, regrésalo al Cazador.
-- Sin enlaces, sin adjuntos y sin el nombre de la marca.
+- Sin adjuntos, sin el nombre de la marca y sin más enlaces que el perfil personal de la firma.
 - Adapta moneda y forma de hablar al país: pesos y «tú» en México, euros en España («vosotros» si es un
   equipo), «vos» en Argentina, dólares en Estados Unidos.
 - Nada inventado: ni cifras de ventas, ni otros socios, ni promesas de ingreso.
