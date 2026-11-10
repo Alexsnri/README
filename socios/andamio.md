@@ -35,7 +35,7 @@ hasta que aplique la anterior.
 
 | Quincena | Lección | Lo que el lector hace esa quincena |
 |---|---|---|
-| 1 | **Lo primero es tuyo.** Antes de pagarle a nadie, apártate el 10%. | Transferencia automática el día de pago. |
+| 1 | **Lo primero es tuyo.** Antes de pagarle a nadie, apártate algo, aunque sea poco, en automático, y súbelo con cada aumento. | Transferencia automática el día de pago. |
 | 2 | **Cada peso con nombre.** Un presupuesto por quincena, no por mes. | Plantilla de quincena; cazar gastos hormiga. |
 | 3 | **El colchón.** Un fondo para que una emergencia no se vuelva deuda. | Meta de 1 mes de gastos y dónde guardarla. |
 | 4 | **La deuda que muerde.** Por qué el pago mínimo es una trampa (con números reales de CAT). | Plan avalancha o bola de nieve; cómo negociar con el banco. |
@@ -54,6 +54,8 @@ Epílogo: Daniel un año después, y el secreto de Doña Chela.
   testimonio.
 
 **Precio:** $249 MXN libro + cuaderno · $449 MXN con audiolibro y plan de 30 días.
+
+**Respaldo:** cada consejo sale de investigación publicada o de datos oficiales, citados al final de cada capítulo. La base completa está en `libro/evidencia.md`.
 
 **Cuidado legal:** es educación financiera, no asesoría de inversión. No recomienda acciones, criptos ni
 productos de ningún banco, y cada cifra de ley viene de fuente oficial de 2026.
