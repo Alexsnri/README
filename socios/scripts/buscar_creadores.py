@@ -216,9 +216,12 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--palabras", nargs="+", help="palabras clave (por defecto, las de config.json)")
     ap.add_argument("--max", type=int, default=0, help="revisar como máximo N canales (para probar)")
+    ap.add_argument("--region", help="país de la búsqueda, código de 2 letras (por defecto, el de config.json)")
     args = ap.parse_args()
 
     cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
+    if args.region:
+        cfg["region"] = args.region.upper()
     palabras = args.palabras or cfg["palabras_clave"]
     f = cfg["filtros"]
     ahora = dt.datetime.now(dt.timezone.utc)
