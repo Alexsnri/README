@@ -1,0 +1,433 @@
+{
+ "timezone": "America/Mexico_City",
+ "items": [
+  {
+   "id": "2026-11-02-feed-01-aguinaldo-tabla",
+   "date": "2026-11-02",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/01-aguinaldo-tabla.jpg",
+   "caption": "¿Cuánto te toca de aguinaldo este año? 💸\nPor ley son mínimo 15 días de salario, y te lo tienen que pagar antes del 20 de diciembre (art. 87 LFT).\nSi entraste a mitad de año, te toca la parte proporcional.\nCalcula el tuyo en 10 segundos, gratis y sin registro 👉 link en bio\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico"
+  },
+  {
+   "id": "2026-11-02-story-01-aguinaldo",
+   "date": "2026-11-02",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-01-aguinaldo.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-02-reel-01-aguinaldo-ley",
+   "date": "2026-11-02",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-01-aguinaldo-ley.mp4",
+   "caption": "Tu aguinaldo no es un regalo: es ley 💸 Mínimo 15 días de salario y te lo tienen que pagar antes del 20 de diciembre.\nMándaselo a quien todavía no sabe cuánto le toca 👇 Calcula el tuyo gratis: link en bio.\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico"
+  },
+  {
+   "id": "2026-11-03-story-05-mi-futuro",
+   "date": "2026-11-03",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-05-mi-futuro.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-04-feed-02-vacaciones-dignas",
+   "date": "2026-11-04",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/02-vacaciones-dignas.jpg",
+   "caption": "Con un año trabajado te tocan 12 días de vacaciones. No 6.\nY cada año suben: 14, 16, 18, 20... más 25% de prima vacacional.\nGuarda este post y mándaselo a quien todavía cree que son 6 días 👀\n\n#vacacionesdignas #LFT #derechoslaborales #trabajo #mexico"
+  },
+  {
+   "id": "2026-11-05-story-02-tanda",
+   "date": "2026-11-05",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-02-tanda.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-06-feed-03-si-renuncias",
+   "date": "2026-11-06",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/03-si-renuncias.jpg",
+   "caption": "¿Vas a renunciar antes de diciembre? Ojo: el aguinaldo proporcional también te toca.\nTu finiquito incluye los días trabajados, el aguinaldo proporcional, las vacaciones que no tomaste y su prima.\nCalcula tu finiquito antes de firmar nada 👉 link en bio\n\n#finiquito #renuncia #derechoslaborales #trabajo #mexico"
+  },
+  {
+   "id": "2026-11-06-reel-02-renuncias",
+   "date": "2026-11-06",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-02-renuncias.mp4",
+   "caption": "¿Vas a renunciar? No pierdes tu aguinaldo. Tu finiquito incluye días no pagados, aguinaldo proporcional, vacaciones y prima vacacional.\nGuárdalo por si acaso y calcula el tuyo: link en bio.\n\n#finiquito #renuncia #derechoslaborales #trabajo #mexico"
+  },
+  {
+   "id": "2026-11-07-story-04-dias-en-verde",
+   "date": "2026-11-07",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-04-dias-en-verde.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-08-carousel-c4-aguinaldo-wrapped",
+   "date": "2026-11-08",
+   "time": "13:30",
+   "type": "carousel",
+   "media": "https://quincy-mx.github.io/marketing/carruseles/c4-aguinaldo-wrapped/01.jpg",
+   "children": [
+    "https://quincy-mx.github.io/marketing/carruseles/c4-aguinaldo-wrapped/01.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c4-aguinaldo-wrapped/02.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c4-aguinaldo-wrapped/03.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c4-aguinaldo-wrapped/04.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c4-aguinaldo-wrapped/05.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c4-aguinaldo-wrapped/06.jpg"
+   ],
+   "title": "Tu Aguinaldo Wrapped",
+   "caption": "Tu aguinaldo también tiene su Wrapped ✨ Así se ve con un sueldo de $12,000 al mes. Desliza 👉\n¿Y el tuyo? Hazlo en 10 segundos y súbelo a tus historias: quincy-mx.github.io/aguinaldo (link en bio).\n\n#aguinaldo #wrapped #aguinaldo2026 #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-09-carousel-c3-finiquito-liquidacion",
+   "date": "2026-11-09",
+   "time": "13:30",
+   "type": "carousel",
+   "media": "https://quincy-mx.github.io/marketing/carruseles/c3-finiquito-liquidacion/01.jpg",
+   "children": [
+    "https://quincy-mx.github.io/marketing/carruseles/c3-finiquito-liquidacion/01.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c3-finiquito-liquidacion/02.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c3-finiquito-liquidacion/03.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c3-finiquito-liquidacion/04.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c3-finiquito-liquidacion/05.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c3-finiquito-liquidacion/06.jpg"
+   ],
+   "title": "¿Finiquito o liquidación?",
+   "caption": "¿Finiquito o liquidación? No es lo mismo. Desliza y guárdalo por si acaso 📌\nCalcula el tuyo gratis: link en bio.\n\n#finiquito #liquidacion #derechoslaborales #PROFEDET #mexico"
+  },
+  {
+   "id": "2026-11-09-story-01-aguinaldo",
+   "date": "2026-11-09",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-01-aguinaldo.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-11-feed-05-aguinaldo-isr",
+   "date": "2026-11-11",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/05-aguinaldo-isr.jpg",
+   "caption": "Tu aguinaldo no paga ISR hasta $3,519.30 (30 veces la UMA de 2026).\nSolo lo que pase de esa cantidad paga impuesto. Por eso el depósito a veces llega un poco menor de lo que calculaste.\n\n#aguinaldo #ISR #SAT #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-11-story-05-mi-futuro",
+   "date": "2026-11-11",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-05-mi-futuro.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-11-reel-03-aguinaldo-isr",
+   "date": "2026-11-11",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-03-aguinaldo-isr.mp4",
+   "caption": "¿Por qué tu aguinaldo llega incompleto? Los primeros $3,519.30 no pagan ISR; solo lo que pasa de ahí.\nGuárdalo para diciembre 📌 Calcula el tuyo: link en bio.\n\n#aguinaldo #ISR #SAT #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-12-story-02-tanda",
+   "date": "2026-11-12",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-02-tanda.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-13-carousel-c2-tanda",
+   "date": "2026-11-13",
+   "time": "13:30",
+   "type": "carousel",
+   "media": "https://quincy-mx.github.io/marketing/carruseles/c2-tanda/01.jpg",
+   "children": [
+    "https://quincy-mx.github.io/marketing/carruseles/c2-tanda/01.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c2-tanda/02.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c2-tanda/03.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c2-tanda/04.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c2-tanda/05.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c2-tanda/06.jpg"
+   ],
+   "title": "¿Qué número de la tanda te conviene?",
+   "caption": "¿Qué número de la tanda te conviene? Hicimos la cuenta 👉 desliza.\nArma la tuya con ruleta y calendario, gratis: link en bio.\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-13-reel-04-tanda-numero",
+   "date": "2026-11-13",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-04-tanda-numero.mp4",
+   "caption": "¿Pides el número 1 o el 10 de la tanda? 🤔 El 1 recibe un préstamo sin intereses; el 10 presta su dinero gratis.\nEtiqueta a quien organiza tu tanda 👇 Calcula la tuya: link en bio.\n\n#tanda #ahorro #CETES #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-14-story-04-dias-en-verde",
+   "date": "2026-11-14",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-04-dias-en-verde.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-15-feed-07-hoy-puedes-gastar",
+   "date": "2026-11-15",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/07-hoy-puedes-gastar.jpg",
+   "caption": "Cayó la quincena 🎉 Antes de que desaparezca:\nQuincy te da un solo número al día: cuánto puedes gastar hoy para llegar a la siguiente.\nSi hoy gastas menos, mañana tienes más.\nSin conectar tu banco. Tus datos no salen de tu teléfono.\n\n#quincena #presupuesto #ahorro #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-15-story-03-ticket",
+   "date": "2026-11-15",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-03-ticket.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-16-story-01-aguinaldo",
+   "date": "2026-11-16",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-01-aguinaldo.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-17-feed-08-ptu-tope",
+   "date": "2026-11-17",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/08-ptu-tope.jpg",
+   "caption": "¿Sabías que tu reparto de utilidades tiene tope?\nSon 3 meses de salario, o el promedio de lo que recibiste en los últimos 3 años: lo que más te convenga.\nGuárdalo para mayo 📌\n\n#PTU #utilidades #derechoslaborales #trabajo #mexico"
+  },
+  {
+   "id": "2026-11-18-story-05-mi-futuro",
+   "date": "2026-11-18",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-05-mi-futuro.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-19-feed-09-salario-minimo",
+   "date": "2026-11-19",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/09-salario-minimo.jpg",
+   "caption": "El salario mínimo de 2026 es de $315.04 al día ($440.87 en la frontera norte).\nSi en tu recibo dice menos, algo está mal.\nManda esto al grupo de la chamba 👇\n\n#salariominimo #CONASAMI #trabajo #derechoslaborales #mexico"
+  },
+  {
+   "id": "2026-11-19-reel-05-te-despiden",
+   "date": "2026-11-19",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-05-te-despiden.mp4",
+   "caption": "¿Te despidieron sin causa? No firmes nada todavía. Te tocan 3 meses de salario, 12 días por año y tu finiquito. Tienes 2 meses para reclamar y PROFEDET te asesora gratis.\nMándaselo a quien lo necesite. Link en bio.\n\n#liquidacion #despido #PROFEDET #derechoslaborales #mexico"
+  },
+  {
+   "id": "2026-11-20-story-02-tanda",
+   "date": "2026-11-20",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-02-tanda.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-21-feed-10-tanda-ruleta",
+   "date": "2026-11-21",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/10-tanda-ruleta.jpg",
+   "caption": "Se acabaron los pleitos por el número de la tanda 🎡\nGira la ruleta, sortea los turnos y manda el calendario al grupo de WhatsApp. Cada quien ve cuándo paga y cuándo le toca.\nGratis, sin registro y sin que nadie maneje el dinero.\n\n#tanda #ahorro #whatsapp #familia #mexico"
+  },
+  {
+   "id": "2026-11-21-reel-06-ruleta-tanda",
+   "date": "2026-11-21",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-06-ruleta-tanda.mp4",
+   "caption": "Se acabaron los pleitos por el número de la tanda 🎡 Gira la ruleta, sortea los turnos y manda el calendario al grupo.\nOrganiza la tuya gratis: link en bio.\n\n#tanda #ahorro #whatsapp #familia #mexico"
+  },
+  {
+   "id": "2026-11-22-story-04-dias-en-verde",
+   "date": "2026-11-22",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-04-dias-en-verde.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-23-carousel-c1-aguinaldo",
+   "date": "2026-11-23",
+   "time": "13:30",
+   "type": "carousel",
+   "media": "https://quincy-mx.github.io/marketing/carruseles/c1-aguinaldo/01.jpg",
+   "children": [
+    "https://quincy-mx.github.io/marketing/carruseles/c1-aguinaldo/01.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c1-aguinaldo/02.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c1-aguinaldo/03.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c1-aguinaldo/04.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c1-aguinaldo/05.jpg",
+    "https://quincy-mx.github.io/marketing/carruseles/c1-aguinaldo/06.jpg"
+   ],
+   "title": "5 cosas de tu aguinaldo",
+   "caption": "5 cosas que tienes que saber de tu aguinaldo 💸 Desliza y guárdalo para diciembre.\n¿Ya sabes cuánto te toca? Calcúlalo gratis: link en bio.\n\n#aguinaldo #aguinaldo2026 #finanzaspersonales #derechoslaborales #mexico"
+  },
+  {
+   "id": "2026-11-23-story-01-aguinaldo",
+   "date": "2026-11-23",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-01-aguinaldo.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-25-story-05-mi-futuro",
+   "date": "2026-11-25",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-05-mi-futuro.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-25-reel-07-hoy-puedes-gastar",
+   "date": "2026-11-25",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-07-hoy-puedes-gastar.mp4",
+   "caption": "La regla que me salvó la quincena: lo que te llega, menos pagos fijos y ahorro, entre los días que faltan. Ese es tu número de hoy.\n¿Cuál es el tuyo? Calcúlalo gratis: link en bio.\n\n#quincena #presupuesto #ahorro #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-26-story-02-tanda",
+   "date": "2026-11-26",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-02-tanda.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-27-feed-05-aguinaldo-isr",
+   "date": "2026-11-27",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/05-aguinaldo-isr.jpg",
+   "caption": "Antes de gastar el aguinaldo en ofertas: los primeros $3,519.30 no pagan ISR, lo demás sí. Haz tus cuentas con lo que de verdad te va a llegar.\nLink en bio.\n\n#aguinaldo #ISR #blackfriday #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-11-28-story-04-dias-en-verde",
+   "date": "2026-11-28",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-04-dias-en-verde.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-11-30-feed-11-ticket",
+   "date": "2026-11-30",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/11-ticket.jpg",
+   "caption": "¿En qué se te fue la quincena? 🧾\nQuincy te arma el ticket: lo que te llegó, lo que pagaste, lo que gastaste y lo que te queda.\nComparte el tuyo (puedes ocultar las cantidades).\n\n#quincena #ticket #finanzaspersonales #ahorro #mexico"
+  },
+  {
+   "id": "2026-11-30-story-03-ticket",
+   "date": "2026-11-30",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-03-ticket.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-12-01-story-01-aguinaldo",
+   "date": "2026-12-01",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-01-aguinaldo.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-12-01-reel-08-faltan-18-dias",
+   "date": "2026-12-01",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-08-faltan-18-dias.mp4",
+   "caption": "Faltan 18 días para el límite del aguinaldo (19 de diciembre) ⏳ Antes de gastarlo: paga lo que te cobra intereses, aparta para enero y págate primero.\nCompártelo con tu equipo. Link en bio.\n\n#aguinaldo #aguinaldo2026 #ahorro #mexico"
+  },
+  {
+   "id": "2026-12-03-reel-10-aguinaldo-wrapped",
+   "date": "2026-12-03",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-10-aguinaldo-wrapped.mp4",
+   "caption": "Tu aguinaldo también tiene su Wrapped ✨ Cuánto te toca, cuántos días faltan, cuánto no paga ISR y cuánto te daría en CETES.\nHaz el tuyo en 10 segundos y súbelo a tus historias: quincy-mx.github.io/aguinaldo (link en bio).\n\n#aguinaldo #wrapped #aguinaldo2026 #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-12-07-story-01-aguinaldo",
+   "date": "2026-12-07",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-01-aguinaldo.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-12-10-feed-13-aguinaldo-a-rendir",
+   "date": "2026-12-10",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/13-aguinaldo-a-rendir.jpg",
+   "caption": "$10,000 de aguinaldo, un año después 👇\nEn el colchón: la inflación le quita unos $333 de valor.\nEn CETES: ganarías unos $550, ya con la retención de ISR.\nCon CETES a 28 días al 6.22% e inflación de 3.45% (Banxico, octubre de 2026). La tasa cambia cada semana y no es una recomendación: primero paga tu tarjeta y aparta para emergencias.\nHaz tu cuenta con tu aguinaldo 👉 quincy-mx.github.io/aguinaldo-a-rendir (link en bio)\n\n#aguinaldo #CETES #ahorro #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-12-15-feed-07-hoy-puedes-gastar",
+   "date": "2026-12-15",
+   "time": "13:30",
+   "type": "feed",
+   "media": "https://quincy-mx.github.io/marketing/ig/07-hoy-puedes-gastar.jpg",
+   "caption": "Cayó la quincena y ya casi el aguinaldo 🎄 Antes de que desaparezcan: Quincy te dice cuánto puedes gastar al día para llegar a la siguiente.\nLink en bio.\n\n#quincena #aguinaldo #presupuesto #mexico"
+  },
+  {
+   "id": "2026-12-15-story-03-ticket",
+   "date": "2026-12-15",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-03-ticket.jpg",
+   "caption": ""
+  },
+  {
+   "id": "2026-12-17-reel-09-aguinaldo-a-rendir",
+   "date": "2026-12-17",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-09-aguinaldo-a-rendir.mp4",
+   "caption": "¿Tu aguinaldo se va a ir en las posadas? 🎄 $10,000 en el colchón pierden unos $333 de valor en un año; en CETES ganarías unos $550, ya con ISR (tasa de octubre, cambia cada semana).\nPrimero paga tu tarjeta y aparta para emergencias. Haz tu cuenta gratis: quincy-mx.github.io/aguinaldo-a-rendir (link en bio).\n\n#aguinaldo #CETES #ahorro #finanzaspersonales #mexico"
+  },
+  {
+   "id": "2026-12-18-story-01-aguinaldo",
+   "date": "2026-12-18",
+   "time": "13:35",
+   "type": "story",
+   "media": "https://quincy-mx.github.io/marketing/ig/story-01-aguinaldo.jpg",
+   "caption": ""
+  },
+  {
+   "id": "fijado-reel-00-conoce-quincy",
+   "date": "fijado",
+   "time": "20:00",
+   "type": "reel",
+   "media": "https://quincy-mx.github.io/marketing/video/animados/reel-00-conoce-quincy.mp4",
+   "caption": "Te presento Quincy 👋 La app que te dice lo que te toca, cuándo te toca y cuánto te queda.\nTu límite diario, tu aguinaldo, tus vacaciones y tu tanda. Gratis, sin registro y sin bancos.\nLink en bio.\n\n#quincy #finanzaspersonales #aguinaldo #quincena #mexico"
+  }
+ ]
+}

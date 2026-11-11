@@ -1,0 +1,177 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Quincy//Recordatorios TikTok//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Quincy · TikTok
+BEGIN:VEVENT
+UID:quincy-tiktok-01-aguinaldo-ley@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261103T020000Z
+DTEND:20261103T021500Z
+SUMMARY:Subir a TikTok: Tu aguinaldo no es un regalo
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "Tu aguinaldo no es un regalo".\n
+ 2) TikTok: + → sube el video → pega el texto (botón Copiar texto) →
+  Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-02-renuncias@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261107T020000Z
+DTEND:20261107T021500Z
+SUMMARY:Subir a TikTok: ¿Renuncias? No pierdes tu aguinaldo
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "¿Renuncias? No pierdes tu aguin
+ aldo".\n2) TikTok: + → sube el video → pega el texto (botón Copiar te
+ xto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-03-aguinaldo-isr@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261112T020000Z
+DTEND:20261112T021500Z
+SUMMARY:Subir a TikTok: ¿Por qué tu aguinaldo llega incompleto?
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "¿Por qué tu aguinaldo llega in
+ completo?".\n2) TikTok: + → sube el video → pega el texto (botón Copi
+ ar texto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-04-tanda-numero@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261114T020000Z
+DTEND:20261114T021500Z
+SUMMARY:Subir a TikTok: ¿Pides el número 1 o el 10?
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "¿Pides el número 1 o el 10?".\
+ n2) TikTok: + → sube el video → pega el texto (botón Copiar texto) 
+ → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-05-te-despiden@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261120T020000Z
+DTEND:20261120T021500Z
+SUMMARY:Subir a TikTok: ¿Te despidieron? No firmes nada todavía
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "¿Te despidieron? No firmes nada
+  todavía".\n2) TikTok: + → sube el video → pega el texto (botón Copi
+ ar texto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-06-ruleta-tanda@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261122T020000Z
+DTEND:20261122T021500Z
+SUMMARY:Subir a TikTok: Se acabaron los pleitos por el número
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "Se acabaron los pleitos por el n
+ úmero".\n2) TikTok: + → sube el video → pega el texto (botón Copiar 
+ texto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-07-hoy-puedes-gastar@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261126T020000Z
+DTEND:20261126T021500Z
+SUMMARY:Subir a TikTok: La regla que me salvó la quincena
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "La regla que me salvó la quince
+ na".\n2) TikTok: + → sube el video → pega el texto (botón Copiar text
+ o) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-08-faltan-18-dias@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261202T020000Z
+DTEND:20261202T021500Z
+SUMMARY:Subir a TikTok: Faltan 18 días para tu aguinaldo
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "Faltan 18 días para tu aguinald
+ o".\n2) TikTok: + → sube el video → pega el texto (botón Copiar texto
+ ) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-10-aguinaldo-wrapped@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261204T020000Z
+DTEND:20261204T021500Z
+SUMMARY:Subir a TikTok: Tu aguinaldo también tiene su Wrapped
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "Tu aguinaldo también tiene su W
+ rapped".\n2) TikTok: + → sube el video → pega el texto (botón Copiar 
+ texto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:quincy-tiktok-09-aguinaldo-a-rendir@alexsnri.github.io
+DTSTAMP:20261028T230933Z
+DTSTART:20261218T020000Z
+DTEND:20261218T021500Z
+SUMMARY:Subir a TikTok: ¿Tu aguinaldo se va a ir en las posadas?
+DESCRIPTION:1) Abre https://quincy-mx.github.io/marketing/programar.html e
+ n Safari y toca Guardar video en el reel "¿Tu aguinaldo se va a ir en las
+  posadas?".\n2) TikTok: + → sube el video → pega el texto (botón Copi
+ ar texto) → Publicar.\nTambién puedes subirlo a YouTube Shorts.
+URL:https://quincy-mx.github.io/marketing/programar.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Subir reel de Quincy a TikTok
+TRIGGER:-PT10M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
